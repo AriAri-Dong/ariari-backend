@@ -1,7 +1,5 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
-import com.ariari.ariari.commons.auth.springsecurity.domain.CustomUserDetails;
-import com.ariari.ariari.commons.auth.springsecurity.domain.JwtAuthentication;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.MemberRepository;
 import jakarta.servlet.FilterChain;

@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.auth.springsecurity.domain;
+package com.ariari.ariari.commons.auth.springsecurity;
 
 import lombok.Setter;
 import org.springframework.security.core.Authentication;

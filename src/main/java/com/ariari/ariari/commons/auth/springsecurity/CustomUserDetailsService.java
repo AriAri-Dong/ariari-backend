@@ -1,6 +1,5 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
-import com.ariari.ariari.commons.auth.springsecurity.domain.CustomUserDetails;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;

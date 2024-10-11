@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.auth.springsecurity.domain;
+package com.ariari.ariari.commons.auth.springsecurity;
 
 import com.ariari.ariari.commons.exception.NotAuthenticatedException;
 import lombok.Getter;
