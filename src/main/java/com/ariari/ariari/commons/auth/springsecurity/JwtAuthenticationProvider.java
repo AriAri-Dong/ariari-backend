@@ -1,5 +1,7 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
+import com.ariari.ariari.commons.exception.BannedTokenException;
+import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -12,15 +14,15 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final JwtManager jwtManager;
     private final CustomUserDetailsService customUserDetailsService;
-//    private final BannedTokenRepository bannedTokenRepository;
+    private final JwtControlManager jwtControlManager;
 
     @Override
     public Authentication authenticate(Authentication authentication) {
         String jwtToken = ((JwtAuthentication) authentication).getCredentials();
 
-//        if (bannedTokenRepository.findByToken(jwtToken).isPresent()) {
-//            throw new BannedJwtTokenException();
-//        }
+        if (jwtControlManager.isBannedToken(jwtToken)) {
+            throw new BannedTokenException();
+        }
 
         jwtManager.validateToken(jwtToken);
 

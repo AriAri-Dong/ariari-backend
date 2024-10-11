@@ -1,30 +1,50 @@
 package com.ariari.ariari.commons.auth;
 
+import com.ariari.ariari.commons.auth.dto.JwtTokenDto;
+import com.ariari.ariari.commons.manager.JwtControlManager;
+import com.ariari.ariari.commons.manager.JwtManager;
+import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.ariari.ariari.commons.manager.JwtManager.TokenType.*;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthService {
 
-    /**
-     * kakao login callback
-     */
-    @GetMapping("/login/kakao")
-    public JwtTokenDto login(@RequestParam(name = "code") String code) {
-//        log.info("kakao auth controller start : {}", code);
+    private final MemberRepository memberRepository;
+    private final JwtManager jwtManager;
+    private final JwtControlManager jwtControlManager;
 
-        String token = kakaoAuthManager.getKakaoToken(code);
-//        log.info("kakao token : {}", token);
+    public JwtTokenDto login(Long kakaoId) {
+        Member member = memberRepository.findByKakaoId(kakaoId).orElse(null);
 
-        Long kakaoId = kakaoAuthManager.getKakaoId(token);
-//        log.info("kakaoId : {}", kakaoId);
+        if (member == null) {
+            member = signUp(kakaoId);
+        }
 
-//        log.info("kakao auth controller end");
-        return kakaoAuthService.login(kakaoId);
+        String accessToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), ACCESS_TOKEN);
+        String refreshToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), REFRESH_TOKEN);
+
+        return JwtTokenDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
+    private Member signUp(Long kakaoId) {
+        Member newMember = Member.createMember(kakaoId);
+        newMember.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
+        memberRepository.save(newMember);
+        return newMember;
+    }
+
+    public void logout(JwtTokenDto jwtTokenDto) {
+        jwtControlManager.banToken(jwtTokenDto.getAccessToken());
+        jwtControlManager.banToken(jwtTokenDto.getRefreshToken());
+    }
 
 }
