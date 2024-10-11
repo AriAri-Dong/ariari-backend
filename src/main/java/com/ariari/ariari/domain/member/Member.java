@@ -1,5 +1,8 @@
 package com.ariari.ariari.domain.member;
 
+import com.ariari.ariari.domain.alarm.Alarm;
+import com.ariari.ariari.domain.block.Block;
+import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +11,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,8 +21,7 @@ import java.util.Set;
 @Getter
 public class Member {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
@@ -29,11 +33,26 @@ public class Member {
 
     // private String memberCode;
 
+    private LocalDateTime deletedDateTime;
+
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<GrantedAuthority> authorities = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "school_id")
+    private School school;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Alarm> alarms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
+    private List<Block> blockings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
+    private List<Block> blockeds = new ArrayList<>();
 
     public static Member createMember(Long kakaoId) {
         Member member = new Member(kakaoId);
