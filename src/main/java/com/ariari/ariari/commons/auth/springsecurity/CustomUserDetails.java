@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
-import com.ariari.ariari.commons.exception.NotAuthenticatedException;
+import com.ariari.ariari.commons.exception.exceptions.NotAuthenticatedException;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

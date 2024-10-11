@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
-import com.ariari.ariari.commons.exception.BannedTokenException;
+import com.ariari.ariari.commons.exception.exceptions.BannedTokenException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
 import lombok.RequiredArgsConstructor;

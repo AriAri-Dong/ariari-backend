@@ -1,7 +1,9 @@
 package com.ariari.ariari.commons.manager;
 
-import com.ariari.ariari.commons.exception.NotValidTokenException;
+import com.ariari.ariari.commons.exception.exceptions.ExpiredTokenException;
+import com.ariari.ariari.commons.exception.exceptions.NotValidTokenException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -50,7 +52,10 @@ public class JwtManager {
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
+            throw new ExpiredTokenException();
+        }
+        catch (Exception e) {
             log.error("★★★ fail to validate token ★★★", e);
             throw new NotValidTokenException();
         }
