@@ -2,6 +2,8 @@ package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.domain.alarm.Alarm;
 import com.ariari.ariari.domain.block.Block;
+import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
+import com.ariari.ariari.domain.clubmember.ClubMember;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,20 +31,20 @@ public class Member {
 
     private String nickName;
 
-    // private String profileUri
+    // private String profilePath
 
     // private String memberCode;
 
-    private LocalDateTime deletedDateTime;
-
     @CreationTimestamp
     private LocalDateTime createdDateTime;
+
+    private LocalDateTime deletedDateTime;
 
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "school_id")
+    @JoinColumn(name = "school_id")
     private School school;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
@@ -53,6 +55,12 @@ public class Member {
 
     @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
     private List<Block> blockeds = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ClubMember> clubMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ClubBookmark> clubBookmarks = new ArrayList<>();
 
     public static Member createMember(Long kakaoId) {
         Member member = new Member(kakaoId);
