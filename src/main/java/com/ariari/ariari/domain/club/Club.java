@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.club.enums.ClubCategory;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.RegionType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -53,5 +54,9 @@ public class Club {
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubMember> clubMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private List<ClubPost> clubPosts = new ArrayList<>();
+
 
 }

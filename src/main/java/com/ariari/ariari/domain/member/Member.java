@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.alarm.Alarm;
 import com.ariari.ariari.domain.block.Block;
 import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
 import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -37,7 +38,6 @@ public class Member {
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
-
     private LocalDateTime deletedDateTime;
 
     @ElementCollection(fetch = FetchType.LAZY)
@@ -53,7 +53,7 @@ public class Member {
     @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
     private List<Block> blockings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "blockedMember", cascade = CascadeType.REMOVE)
     private List<Block> blockeds = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
@@ -61,6 +61,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ClubPost> clubPosts = new ArrayList<>();
 
     public static Member createMember(Long kakaoId) {
         Member member = new Member(kakaoId);
