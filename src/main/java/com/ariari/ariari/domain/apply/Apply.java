@@ -7,7 +7,9 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,10 @@ public class Apply {
 
     // 저장 상태 필드
     // 포트폴리오 파일 필드
+
+    @CreationTimestamp
+    private LocalDateTime createdDateTime;
+    private LocalDateTime deletedDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
