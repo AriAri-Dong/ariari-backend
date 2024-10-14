@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.alarm;
 
+import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,9 @@ public class Alarm {
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
 }
