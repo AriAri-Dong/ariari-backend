@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.domain.alarm.Alarm;
+import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.block.Block;
 import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
 import com.ariari.ariari.domain.clubmember.ClubMember;
@@ -64,6 +65,10 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ClubPost> clubPosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Apply> applies = new ArrayList<>();
+
 
     public static Member createMember(Long kakaoId) {
         Member member = new Member(kakaoId);

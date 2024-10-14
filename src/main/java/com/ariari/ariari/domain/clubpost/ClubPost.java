@@ -46,7 +46,7 @@ public class ClubPost {
     @OneToMany(mappedBy = "clubPost")
     private List<ClubPostImage> clubPostImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "clubPost")
+    @OneToMany(mappedBy = "clubPost", cascade = CascadeType.REMOVE)
     private List<ClubPostComment> clubPostComments = new ArrayList<>();
 
 }
