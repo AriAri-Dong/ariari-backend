@@ -1,6 +1,6 @@
-package com.ariari.ariari.domain.alarm;
+package com.ariari.ariari.domain.recruitment.image;
 
-import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,22 +11,19 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Alarm {
+public class RecruitmentImage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "alarm_id")
+    @Column(name = "recruitment_image_id")
     private Long id;
 
-    private String title;
-    private String body;
-    private String path;
-    private Boolean isChecked = Boolean.FALSE;
+    private String imagePath;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "recruitment_id")
+    private Recruitment recruitment;
 
 }

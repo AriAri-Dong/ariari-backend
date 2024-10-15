@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.clubmember;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.clubmember.enums.ClubMemberRole;
+import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class ClubMember {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private ClubMemberRole clubMemberRole;
+    private ClubMemberRoleType clubMemberRoleType;
     private String clubMemberRoleName;
     private Boolean isInAttendance = Boolean.FALSE;
 

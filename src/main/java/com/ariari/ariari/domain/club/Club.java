@@ -1,10 +1,11 @@
 package com.ariari.ariari.domain.club;
 
-import com.ariari.ariari.domain.club.enums.ClubCategory;
+import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.RegionType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
 import com.ariari.ariari.domain.clubpost.ClubPost;
+import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class Club {
     private String introduction;
 
     @Enumerated(EnumType.STRING)
-    private ClubCategory clubCategory;
+    private ClubCategoryType clubCategoryType;
 
     @Enumerated(EnumType.STRING)
     private RegionType regionType;
@@ -58,5 +59,7 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubPost> clubPosts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private List<Recruitment> recruitments = new ArrayList<>();
 
 }
