@@ -52,8 +52,11 @@ dependencies {
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.3.4'
 
-	// s3 의존성, 공식문서 의존성버전은 확인하지 못하였음, 블로그에 나온 버전은 구버전이므로 latest-version 사용
-	implementation 'com.amazonaws:aws-java-sdk-s3:latest-version'
+	// s3 의존성
+	// Spring Boot와 AWS의 통합을 도와주는 라이브러리
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
+	// Java 어플리케이션에서 Amazon S3(Simple Storage Service) 버킷에 접근할 수 있게 해주는 라이브러리
+	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
 }
 
 tasks.named('test') {
