@@ -11,10 +11,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeletedImageService {
 
     private final DeletedImageRepository deletedImageRepository;
+    private final S3Manager s3Manager;
 
+    /**
+     * delete image logically
+     */
     public void deleteImageLogically(String imagePath) {
         DeletedImage deletedImage = new DeletedImage(imagePath);
         deletedImageRepository.save(deletedImage);
+    }
+
+    /**
+     * delete image physically
+     */
+    public void deleteDeletedImage(DeletedImage deletedImage) {
+        String imagePath = deletedImage.getImagePath();
+        deletedImageRepository.delete(deletedImage);
+        s3Manager.deleteImageByFileName(imagePath);
     }
 
 }
