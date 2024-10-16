@@ -7,11 +7,14 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.ariari.ariari.commons.manager.JwtManager.TokenType.*;
 
-@RestController
+@Service
+@Transactional
 @RequiredArgsConstructor
 public class AuthService {
 
