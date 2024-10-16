@@ -21,4 +21,8 @@ public class DeletedImage {
     @CreationTimestamp
     private LocalDateTime createdDateTime; // 논리 삭제 처리된 날짜,시간
 
+    public DeletedImage(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
 }
