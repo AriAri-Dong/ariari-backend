@@ -24,13 +24,24 @@ public class S3TestController {
         }
     }
 
-    @PostMapping("/delete/{filename}")
+    @PostMapping("/delete/name/{filename}")
     public String deleteFileByName(@PathVariable(name = "filename") String fileName) {
         try {
             s3Manager.deleteImageByFileName(fileName);
             return "File removed successfully!";
         } catch (Exception e) {
             log.info("★★★★★★★★★★★★★★★★★★★★★★★★★REMOVE ERROR by name"); // 예외 처리 수정 예정
+            return "File remove failed!";
+        }
+    }
+
+    @PostMapping("/delete/path")
+    public String deleteFileByPath() {
+        try {
+            s3Manager.deleteImageByFilePath(""); // 인자에 원하는 경로 추가
+            return "File removed successfully!";
+        } catch (Exception e) {
+            log.info("★★★★★★★★★★★★★★★★★★★★★★★★★REMOVE ERROR by path"); // 예외 처리 수정 예정
             return "File remove failed!";
         }
     }
