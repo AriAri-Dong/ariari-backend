@@ -33,7 +33,7 @@ public class DeletedImageScheduler {
         List<DeletedImage> deletedImages = deletedImageRepository.findByCreatedDateTimeBefore(localDateTime);
 
         for (DeletedImage deletedImage : deletedImages) {
-            s3Manager.deleteImageByFileName(deletedImage.getImagePath());
+            s3Manager.deleteImageByFilePath(deletedImage.getImagePath());
             deletedImageRepository.delete(deletedImage);
         }
 
