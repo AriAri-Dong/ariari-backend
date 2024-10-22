@@ -57,6 +57,14 @@ dependencies {
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter:3.1.1'
 	// Java 어플리케이션에서 Amazon S3(Simple Storage Service) 버킷에 접근할 수 있게 해주는 라이브러리
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
+
+	// email
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.3.4'
+//	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+
+	// thymeleaf
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

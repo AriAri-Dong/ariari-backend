@@ -39,5 +39,4 @@ public class DeletedImageScheduler {
 
         log.info("delete image scheduler end : {}", LocalDateTime.now());
     }
-
 }
