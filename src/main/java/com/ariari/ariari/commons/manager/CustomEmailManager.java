@@ -23,6 +23,7 @@ public class CustomEmailManager {
     private final SpringTemplateEngine templateEngine;
     private final AuthCodeManager authCodeManager;
 
+    // 이메일로 text 전송
     public void makeAuthCodeMail(String toEmail) {
         String authCode = authCodeManager.createAuthCode(toEmail); // 암호생성
         SimpleMailMessage message = new SimpleMailMessage();

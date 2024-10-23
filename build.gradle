@@ -59,9 +59,9 @@ dependencies {
 	implementation 'com.amazonaws:aws-java-sdk-s3:1.12.767'
 
 	// email
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.3.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.3.4'
 //	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
 
 	// thymeleaf
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
