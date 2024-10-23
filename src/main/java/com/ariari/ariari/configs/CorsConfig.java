@@ -15,7 +15,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*")  // 모든 출처 허용 , 플러터로 네이티브 앱을 만들 시에 따로 경로가 존재하지 않기 때문에 모든 경로를 허용해야한다.
+                        .allowedOrigins("*")  // 모든 출처 허용 , 나중에 수정 예정
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");  // 모든 헤더 허용
             }
