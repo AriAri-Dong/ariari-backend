@@ -1,9 +1,9 @@
 package com.ariari.ariari.commons.manager;
 
 import com.ariari.ariari.commons.enums.ViewsContentType;
+import com.ariari.ariari.manager.RedisManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ViewsManager {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisManager redisManager;
 
     @Value("${views-manager.expiration-date.view-duplicate}")
     private int VIEW_DUPLICATE_EXPIRED_DAYS;
@@ -34,13 +34,12 @@ public class ViewsManager {
 
     public void addClientIp(ViewsContentType viewsContentType, Long id, String clientIp) {
         String key = resolveClientIpKey(viewsContentType, id, clientIp);
-        redisTemplate.opsForValue().set(key, INVALID_DATA, VIEW_DUPLICATE_EXPIRED_DAYS, TimeUnit.DAYS);
+        redisManager.setExData(key, INVALID_DATA, VIEW_DUPLICATE_EXPIRED_DAYS, TimeUnit.DAYS);
     }
 
     public boolean checkForDuplicateView(ViewsContentType viewsContentType, Long id, String clientIp) {
         String key = resolveClientIpKey(viewsContentType, id, clientIp);
-        Object result = redisTemplate.opsForValue().get(key);
-        return result != null;
+        return redisManager.checkExistingData(key);
     }
 
     public void addViews(ViewsContentType viewsContentType, Long id) {
@@ -48,12 +47,12 @@ public class ViewsManager {
         String now = dateFormat.format(new Date());
 
         String key = resolveViewsKey(viewsContentType, id, now);
-        Integer views = (Integer) redisTemplate.opsForValue().get(key);
+        Integer views = (Integer) redisManager.getData(key);
 
         if (views != null) {
-            redisTemplate.opsForValue().set(key, views + 1, VIEW_EXPIRED_DAYS, TimeUnit.DAYS);
+            redisManager.setExData(key, views + 1, VIEW_EXPIRED_DAYS, TimeUnit.DAYS);
         } else {
-            redisTemplate.opsForValue().set(key, 1, VIEW_EXPIRED_DAYS, TimeUnit.DAYS);
+            redisManager.setExData(key, 1, VIEW_EXPIRED_DAYS, TimeUnit.DAYS);
         }
     }
 
