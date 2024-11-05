@@ -23,6 +23,8 @@ jobs:
         run: |
           cat <<EOT >> src/main/resources/application.yml
           spring:
+            jackson:
+              time-zone: Asia/Seoul
             application:
               name: ariari
             datasource:
