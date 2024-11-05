@@ -2,6 +2,7 @@ package com.ariari.ariari.commons.manager;
 
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +24,12 @@ public class ViewsManager {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private static final int VIEW_DUPLICATE_EXPIRED_DAYS = 1;   // yml 로 옮기기
-    private static final int VIEW_EXPIRED_DAYS = 14;
+    @Value("${views-manager.expiration-date.view-duplicate}")
+    private int VIEW_DUPLICATE_EXPIRED_DAYS;
+
+    @Value("${views-manager.expiration-date.view}")
+    private int VIEW_EXPIRED_DAYS;
+
     private static final boolean INVALID_DATA = true;
 
     public void addClientIp(ViewsContentType viewsContentType, Long id, String clientIp) {
