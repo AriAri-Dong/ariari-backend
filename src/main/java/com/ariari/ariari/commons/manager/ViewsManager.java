@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ViewsManager {
 
-    private final RedisTemplate<String, Integer> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private static final int VIEW_DUPLICATE_EXPIRED_DAYS = 1;
     private static final int VIEW_EXPIRED_DAYS = 14;
@@ -32,7 +32,7 @@ public class ViewsManager {
 
     public boolean checkForDuplicateView(ViewsContentType viewsContentType, Long id, String clientIp) {
         String key = resolveKey(viewsContentType, id, clientIp);
-        Integer result = redisTemplate.opsForValue().get(key);
+        Object result = redisTemplate.opsForValue().get(key);
         return result != null;
     }
 
