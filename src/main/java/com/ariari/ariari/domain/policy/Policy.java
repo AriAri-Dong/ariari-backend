@@ -21,7 +21,7 @@ public class Policy {
 
     private String body;
 
-    private Integer order;
+    private Integer orders;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
