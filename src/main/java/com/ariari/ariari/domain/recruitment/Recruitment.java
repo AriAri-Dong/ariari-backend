@@ -1,6 +1,8 @@
 package com.ariari.ariari.domain.recruitment;
 
 
+import com.ariari.ariari.commons.enums.ViewsContentType;
+import com.ariari.ariari.commons.manager.ViewsContent;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
@@ -17,7 +19,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Recruitment {
+public class Recruitment implements ViewsContent {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recruitment_id")
@@ -28,7 +30,7 @@ public class Recruitment {
     private String imagePtah;
     private LocalDateTime dueDateTime;
     private Integer maxParticipants;
-    private Long views;
+    private Long views = 0L;
     private Boolean isPortfolioRequired;
 
     @CreationTimestamp
@@ -47,5 +49,15 @@ public class Recruitment {
 
     @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
     private List<Apply> applies = new ArrayList<>();
+
+    @Override
+    public void addViews(long n) {
+        this.views += n;
+    }
+
+    @Override
+    public ViewsContentType getViewsContentType() {
+        return ViewsContentType.RECRUITMENT;
+    }
 
 }

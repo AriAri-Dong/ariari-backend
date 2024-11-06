@@ -1,5 +1,7 @@
 package com.ariari.ariari.domain.club;
 
+import com.ariari.ariari.commons.enums.ViewsContentType;
+import com.ariari.ariari.commons.manager.ViewsContent;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.RegionType;
@@ -19,7 +21,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Club {
+public class Club implements ViewsContent {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "club_id")
@@ -42,7 +44,7 @@ public class Club {
 
     private String ScopeTypeName;
 
-    private Long viewCount;
+    private Long views = 0L;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
@@ -61,5 +63,15 @@ public class Club {
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Recruitment> recruitments = new ArrayList<>();
+
+    @Override
+    public void addViews(long n) {
+        ;this.views += n;
+    }
+
+    @Override
+    public ViewsContentType getViewsContentType() {
+        return ViewsContentType.CLUB;
+    }
 
 }
