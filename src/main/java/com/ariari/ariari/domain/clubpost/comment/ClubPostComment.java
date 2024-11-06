@@ -18,7 +18,7 @@ public class ClubPostComment {
     private String body;
     private Boolean secret;
     Long depth;
-    Long order;
+    Long orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
