@@ -29,7 +29,7 @@ public class ClubPost {
     @Enumerated(EnumType.STRING)
     private ClubPostType clubPostType;
 
-    private Integer order;
+    private Integer orders;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
