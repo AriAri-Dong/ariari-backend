@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.manager;
+package com.ariari.ariari.commons.manager.views;
 
 import com.ariari.ariari.commons.enums.ViewsContentType;
 

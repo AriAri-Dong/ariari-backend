@@ -1,8 +1,5 @@
-package com.ariari.ariari.commons.manager;
+package com.ariari.ariari.commons.manager.views;
 
-import com.ariari.ariari.commons.enums.ViewsContentType;
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.manager.RedisManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

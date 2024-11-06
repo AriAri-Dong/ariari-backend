@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.recruitment;
 
 
 import com.ariari.ariari.commons.enums.ViewsContentType;
-import com.ariari.ariari.commons.manager.ViewsContent;
+import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;

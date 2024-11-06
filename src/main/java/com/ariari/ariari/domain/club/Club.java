@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.enums.ViewsContentType;
-import com.ariari.ariari.commons.manager.ViewsContent;
+import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.RegionType;
