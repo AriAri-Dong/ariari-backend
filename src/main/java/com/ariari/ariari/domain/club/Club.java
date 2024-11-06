@@ -74,4 +74,14 @@ public class Club implements ViewsContent {
         return ViewsContentType.CLUB;
     }
 
+    /**
+     * for test
+     */
+    public Club(String name, String introduction, ClubCategoryType clubCategoryType, School school) {
+        this.name = name;
+        this.introduction = introduction;
+        this.clubCategoryType = clubCategoryType;
+        this.school = school;
+    }
+
 }
