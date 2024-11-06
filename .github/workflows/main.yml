@@ -1,0 +1,136 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Give Gradle wrapper execute permissions
+        run: chmod +x ./gradlew  # gradlew에 실행 권한 부여
+
+      - name: Create application.yml file
+        run: |
+          cat <<EOT >> src/main/resources/application.yml
+          spring:
+            jackson:
+              time-zone: Asia/Seoul
+            application:
+              name: ariari
+            datasource:
+              driver-class-name: com.mysql.cj.jdbc.Driver
+              url: jdbc:mysql://mysql:3306/ariari?serverTimezone=Asia/Seoul
+              username: ${DB_USERNAME}
+              password: ${DB_PASSWORD}
+            mail:
+              host: smtp.naver.com
+              port: 465
+              username: ${MAIL_USERNAME}
+              password: ${MAIL_PASSWORD}
+              properties:
+                mail:
+                  smtp:
+                    auth: true
+                    ssl:
+                      enable: true
+                      trust: smtp.naver.com
+                  debug: true
+            jpa:
+              database: mysql
+              database-platform: org.hibernate.dialect.MySQLDialect
+              show-sql: true
+              hibernate:
+                ddl-auto: create-drop
+              properties:
+                hibernate:
+                  format_sql: true
+            data:
+              redis:
+                host: redis
+                port: 6379
+            servlet:
+              multipart:
+                maxFileSize: 10MB
+                maxRequestSize: 10MB
+          server:
+            port: 8080
+          jwt:
+            secret-key: ${JWT_SECRET_KEY}
+            access-expiration-time: 1800000
+            refresh-expiration-time: 180000000
+          kakao:
+            client:
+              id: ${KAKAO_CLIENT_ID}
+              secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: http://localhost:8080/login/kakao
+            login-uri: https://kauth.kakao.com/oauth/authorize
+            auth-uri: https://kauth.kakao.com/oauth/token
+            kapi-uri: https://kapi.kakao.com/v2/user/me
+          cloud:
+            aws:
+              credentials:
+                accessKey: ${AWS_ACCESS_KEY}
+                secretKey: ${AWS_SECRET_KEY}
+              s3:
+                bucket: airaribucket
+              region:
+                static: ap-northeast-2
+              stack:
+                auto: false
+          EOT
+        env:
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
+          KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: iuholic83/ariari:latest
+
+      - name: Deploy with SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /home/rsa-key-20240912/ariari
+            docker-compose pull
+            docker-compose up -d --build
