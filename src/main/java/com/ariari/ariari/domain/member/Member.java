@@ -10,6 +10,7 @@ import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +32,7 @@ public class Member {
 
     private Long kakaoId;
 
+    @Setter
     private String nickName;
 
     // private String profilePath
@@ -44,6 +46,7 @@ public class Member {
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
