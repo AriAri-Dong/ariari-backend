@@ -5,6 +5,8 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.SchoolRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class TestDataSetter {
     private final MemberRepository memberRepository;
     private final SchoolRepository schoolRepository;
     private final ClubRepository clubRepository;
+    private final RecruitmentRepository recruitmentRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -60,6 +63,22 @@ public class TestDataSetter {
         club3.addViews(4);
         club2.addViews(1);
         club6.addViews(3);
+
+        // recruitment
+        Recruitment recruitment1 = new Recruitment("recruitment1", "body1", club1);
+        Recruitment recruitment2 = new Recruitment("recruitment2", "body2", club2);
+        Recruitment recruitment3 = new Recruitment("recruitment3", "body3", club3);
+        Recruitment recruitment4 = new Recruitment("recruitment4", "body4", club4);
+        Recruitment recruitment5 = new Recruitment("recruitment5", "body5", club5);
+        Recruitment recruitment6 = new Recruitment("recruitment6", "body6", club6);
+        Recruitment recruitment7 = new Recruitment("recruitment7", "body7", club7);
+        Recruitment recruitment8 = new Recruitment("recruitment8", "body8", club8);
+        Recruitment recruitment9 = new Recruitment("recruitment9", "body9", club9);
+        Recruitment recruitment10 = new Recruitment("recruitment10", "body10", club10);
+        Recruitment recruitment11 = new Recruitment("recruitment11", "body11", club11);
+        Recruitment recruitment12 = new Recruitment("recruitment12", "body12", club12);
+        recruitmentRepository.saveAll(List.of(recruitment1, recruitment2, recruitment3, recruitment4, recruitment5, recruitment6, recruitment7, recruitment8, recruitment9, recruitment10, recruitment11, recruitment12));
+
     }
 
 }
