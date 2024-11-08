@@ -35,7 +35,6 @@ public class Recruitment implements ViewsContent {
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
-    private LocalDateTime deletedDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
