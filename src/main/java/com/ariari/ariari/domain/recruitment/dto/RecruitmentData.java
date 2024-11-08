@@ -11,8 +11,13 @@ import java.util.List;
 @Builder
 public class RecruitmentData {
 
+    private String title;
+    private String body;
+
     public static RecruitmentData fromEntity(Recruitment recruitment) {
         return RecruitmentData.builder()
+                .title(recruitment.getTitle())
+                .body(recruitment.getBody())
                 .build();
     }
 

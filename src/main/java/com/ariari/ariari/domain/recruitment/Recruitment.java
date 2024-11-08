@@ -59,4 +59,13 @@ public class Recruitment implements ViewsContent {
         return ViewsContentType.RECRUITMENT;
     }
 
+    /**
+     * for test
+     */
+    public Recruitment(String title, String body, Club club) {
+        this.title = title;
+        this.body = body;
+        this.club = club;
+    }
+
 }
