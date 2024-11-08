@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
+import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.RegionType;
@@ -49,8 +50,6 @@ public class Club implements ViewsContent {
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
-    private LocalDateTime deletedDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
@@ -59,10 +58,14 @@ public class Club implements ViewsContent {
     private List<ClubMember> clubMembers = new ArrayList<>();
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private List<ClubBookmark> clubBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club")
     private List<ClubPost> clubPosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "club")
     private List<Recruitment> recruitments = new ArrayList<>();
+
 
     @Override
     public void addViews(long n) {
