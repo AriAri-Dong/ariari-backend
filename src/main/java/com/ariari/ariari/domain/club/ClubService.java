@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.club.enums.ClubAffiliationType;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,9 @@ public class ClubService {
             }
 
             Member member = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+            if (member.getSchool() == null) {
+                throw new NoSchoolAuthException();
+            }
 
             if (clubCategoryType == null) {
                 clubs = clubRepository.findRankingBySchool(member.getSchool());
