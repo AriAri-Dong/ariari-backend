@@ -27,36 +27,8 @@ public class RecruitmentListService {
     private final MemberRepository memberRepository;
     private final RecruitmentRepository recruitmentRepository;
 
-    public RecruitmentListRes findRankingList(Long memberId, ClubAffiliationType clubAffiliationType) {
-
-        List<Recruitment> recruitments;
-        if (clubAffiliationType.equals(ClubAffiliationType.EXTERNAL)) {
-            recruitments = recruitmentRepository.findExternalRanking();
-        } else {
-            if (memberId == null) {
-                throw new NotAuthenticatedException();
-            }
-
-            Member member = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
-            if (member.getSchool() == null) {
-                throw new NoSchoolAuthException();
-            }
-
-            recruitments = recruitmentRepository.findInternalRanking(member.getSchool());
-        }
-
-        return RecruitmentListRes.fromList(recruitments);
-    }
-
     public RecruitmentListRes findExternalList(Long memberId, ClubCategoryType clubCategoryType, Pageable pageable) {
-
-        Page<Recruitment> page;
-        if (clubCategoryType != null) {
-            page = recruitmentRepository.findExternalByClubCategoryType(clubCategoryType, pageable);
-        } else {
-            page = recruitmentRepository.findExternal(pageable);
-        }
-
+        Page<Recruitment> page = recruitmentRepository.findExternalByClubCategoryType(clubCategoryType, pageable);
         return RecruitmentListRes.fromPage(page);
     }
 
@@ -66,13 +38,7 @@ public class RecruitmentListService {
             throw new NoSchoolAuthException();
         }
 
-        Page<Recruitment> page;
-        if (clubCategoryType != null) {
-            page = recruitmentRepository.findInternalByClubCategoryType(member.getSchool(), clubCategoryType, pageable);
-        } else {
-            page = recruitmentRepository.findInternal(member.getSchool(), pageable);
-        }
-
+        Page<Recruitment> page = recruitmentRepository.findInternalByClubCategoryType(member.getSchool(), clubCategoryType, pageable);
         return RecruitmentListRes.fromPage(page);
     }
 

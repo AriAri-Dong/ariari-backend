@@ -19,13 +19,6 @@ public class RecruitmentController {
 
     private final RecruitmentListService recruitmentListService;
 
-    @GetMapping("/ranking")
-    public RecruitmentListRes recruitmentRanking(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                    ClubAffiliationType clubAffiliationType) {
-        Long memberId = CustomUserDetails.getMemberId(userDetails, false);
-        return recruitmentListService.findRankingList(memberId, clubAffiliationType);
-    }
-
     @GetMapping("/external")
     public RecruitmentListRes externalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                          @RequestParam(required = false) ClubCategoryType clubCategoryType,
