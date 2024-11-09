@@ -4,11 +4,15 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 public class ClubMember {
 
@@ -32,5 +36,7 @@ public class ClubMember {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+
 
 }

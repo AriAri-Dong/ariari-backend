@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.manager.views;
 
 import com.ariari.ariari.manager.RedisManager;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -84,6 +85,10 @@ public class ViewsManager {
 
     private String resolveViewsKey(ViewsContent content, String date) {
         return content.getViews().toString() + content.getId() + '_' + date;
+    }
+
+    public static String getClientIp(HttpServletRequest request) {
+        return request.getHeader("x-forwarded-for");
     }
 
 }

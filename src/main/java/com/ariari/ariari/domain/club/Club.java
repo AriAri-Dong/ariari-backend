@@ -11,6 +11,8 @@ import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 public class Club implements ViewsContent {
 

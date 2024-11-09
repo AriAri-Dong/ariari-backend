@@ -20,7 +20,7 @@ public class RecruitmentController {
     private final RecruitmentListService recruitmentListService;
 
     @GetMapping("/external")
-    public RecruitmentListRes externalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public RecruitmentListRes findExternalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                          @RequestParam(required = false) ClubCategoryType clubCategoryType,
                                                          Pageable pageable) {
         Long memberId = CustomUserDetails.getMemberId(userDetails, false);
@@ -28,7 +28,7 @@ public class RecruitmentController {
     }
 
     @GetMapping("/internal")
-    public RecruitmentListRes internalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public RecruitmentListRes findInternalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                       @RequestParam(required = false) ClubCategoryType clubCategoryType,
                                                       Pageable pageable) {
         Long memberId = CustomUserDetails.getMemberId(userDetails, true);
