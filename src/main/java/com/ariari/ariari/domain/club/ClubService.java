@@ -1,9 +1,8 @@
 package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.EntityDeleteManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
-import com.ariari.ariari.domain.club.deletedclub.DeletedClub;
-import com.ariari.ariari.domain.club.deletedclub.DeletedClubRepository;
 import com.ariari.ariari.domain.club.dto.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.ClubModifyReq;
 import com.ariari.ariari.domain.club.dto.ClubSaveReq;
@@ -13,16 +12,9 @@ import com.ariari.ariari.domain.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
-import com.ariari.ariari.domain.recruitment.deletedrecruitment.DeletedRecruitment;
-import com.ariari.ariari.domain.recruitment.deletedrecruitment.DeletedRecruitmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,10 +24,8 @@ public class ClubService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
-    private final DeletedClubRepository deletedClubRepository;
-    private final RecruitmentRepository recruitmentRepository;
-    private final DeletedRecruitmentRepository deletedRecruitmentRepository;
     private final ViewsManager viewsManager;
+    private final EntityDeleteManager entityDeleteManager;
 
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -49,6 +39,7 @@ public class ClubService {
         return ClubDetailRes.fromEntity(club);
     }
 
+    @Transactional(readOnly = false)
     public void saveClub(Long reqMemberId, ClubSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
@@ -65,6 +56,7 @@ public class ClubService {
         clubMemberRepository.save(clubMember);
     }
 
+    @Transactional(readOnly = false)
     public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -78,10 +70,7 @@ public class ClubService {
         modifyReq.modifyEntity(club);
     }
 
-    /**
-     * 논리 삭제 처리
-     * 연관관계 엔티티 : Recruitment(logical), ...
-     */
+    @Transactional(readOnly = false)
     public void removeClub(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -91,20 +80,8 @@ public class ClubService {
         if (!clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
             throw new NoClubAuthException();
         }
-        
-        // 연관관계 처리
-        List<Recruitment> recruitments = club.getRecruitments();
-        for (Recruitment recruitment : recruitments) {
-            DeletedRecruitment deletedRecruitment = DeletedRecruitment.fromRecruitment(recruitment);
-            deletedRecruitmentRepository.save(deletedRecruitment);
-            recruitmentRepository.delete(recruitment);
-        }
 
-        // 논리 삭제 처리
-        DeletedClub deletedClub = DeletedClub.fromClub(club);
-        deletedClubRepository.save(deletedClub);
-        clubRepository.delete(club);
-
+        entityDeleteManager.deleteClub(club);
     }
 
 }

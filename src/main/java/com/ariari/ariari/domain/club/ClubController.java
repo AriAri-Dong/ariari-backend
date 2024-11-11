@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/clubs")
 @RequiredArgsConstructor
@@ -30,7 +29,6 @@ public class ClubController {
                                     @RequestParam(required = false) ClubCategoryType clubCategoryType,
                                     Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, false);
-        log.info("!!!~!~ {} {}", userDetails, reqMemberId);
         return clubListService.findClubList(reqMemberId, clubCategoryType, pageable);
     }
 
