@@ -73,7 +73,12 @@ public class ClubListService {
 
     public ClubListRes findClubListBySearch(Long reqMemberId, String query, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElse(null);
-        Page<Club> page = clubRepository.findByNameContains(query, reqMember.getSchool(), pageable);
+        School school = null;
+        if (reqMember != null) {
+            school = reqMember.getSchool();
+        }
+
+        Page<Club> page = clubRepository.findByNameContains(query, school, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
