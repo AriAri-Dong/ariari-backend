@@ -2,7 +2,12 @@ package com.ariari.ariari.test;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
+import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.clubbookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.clubmember.ClubMemberRepository;
+import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
@@ -26,11 +31,13 @@ public class TestDataSetter {
     private final MemberRepository memberRepository;
     private final SchoolRepository schoolRepository;
     private final ClubRepository clubRepository;
+    private final ClubMemberRepository clubMemberRepository;
+    private final ClubBookmarkRepository clubBookmarkRepository;
     private final RecruitmentRepository recruitmentRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
-        // School
+        // school
         School school1 = new School("세종대학교");
         School school2 = new School("두종대학교");
         School school3 = new School("네종대학교");
@@ -63,6 +70,32 @@ public class TestDataSetter {
         club3.addViews(4);
         club2.addViews(1);
         club6.addViews(3);
+
+        // clubMember
+        ClubMember clubMember1 = ClubMember.builder()
+                .club(club1)
+                .member(member1)
+                .clubMemberRoleType(ClubMemberRoleType.ADMIN)
+                .build();
+        ClubMember clubMember2 = ClubMember.builder()
+                .club(club4)
+                .member(member1)
+                .clubMemberRoleType(ClubMemberRoleType.ADMIN)
+                .build();
+        ClubMember clubMember3 = ClubMember.builder()
+                .club(club12)
+                .member(member1)
+                .clubMemberRoleType(ClubMemberRoleType.ADMIN)
+                .build();
+        clubMemberRepository.saveAll(List.of(clubMember1, clubMember2, clubMember3));
+
+        // clubBookmark
+        ClubBookmark clubBookmark1 = new ClubBookmark(member1, club1);
+        ClubBookmark clubBookmark2 = new ClubBookmark(member1, club2);
+        ClubBookmark clubBookmark3 = new ClubBookmark(member1, club3);
+        ClubBookmark clubBookmark4 = new ClubBookmark(member1, club7);
+        ClubBookmark clubBookmark5 = new ClubBookmark(member1, club8);
+        clubBookmarkRepository.saveAll(List.of(clubBookmark1, clubBookmark2, clubBookmark3, clubBookmark4, clubBookmark5));
 
         // recruitment
         Recruitment recruitment1 = new Recruitment("recruitment1", "body1", club1);

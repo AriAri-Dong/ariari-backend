@@ -12,7 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByKakaoId(Long kakaoId);
 
-    @Query("select m from Member m join fetch m.clubBookmarks where m.id= :id")
+    @Query("select m from Member m left join fetch m.clubBookmarks where m.id= :id")
     Optional<Member> findByIdWithClubBookmarks(Long id);
 
 }

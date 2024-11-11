@@ -20,12 +20,4 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
 
     Optional<ClubMember> findByClubAndMember(Club club, Member member);
 
-    @Query("select cm from ClubMember cm where cm.member= :member and cm.club.school is null")
-    @EntityGraph(attributePaths = "club")
-    Page<ClubMember> findExternalByMember(Member member, Pageable pageable);
-
-    @Query("select cm from ClubMember cm where cm.member= :member and cm.club.school= :school")
-    @EntityGraph(attributePaths = "club")
-    Page<ClubMember> findInternalByMember(Member member, School school, Pageable pageable);
-
 }
