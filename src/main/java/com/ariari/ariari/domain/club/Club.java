@@ -11,10 +11,7 @@ import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -50,6 +47,9 @@ public class Club implements ViewsContent {
     private String ScopeTypeName;
 
     private Long views = 0L;
+
+    @Setter
+    private Boolean hasRecruitment = Boolean.FALSE;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
