@@ -87,6 +87,12 @@ jobs:
                 static: ap-northeast-2
               stack:
                 auto: false
+          email:
+            code:
+              characters:${EMAIL_CODE_CHARACTERS}
+              code-length:${EMAIL_CODE_LENGTH}
+              expiration-time:${EMAIL_CODE_EXPIRATION}
+              
           EOT
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
@@ -98,6 +104,9 @@ jobs:
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          EMAIL_CODE_CHARACTERS: ${{secrets.EMAIL_CODE_CHARACTERS}}
+          EMAIL_CODE_LENGTH: ${{secrets.EMAIL_CODE_LENGTH}}
+          EMAIL_CODE_EXPIRATION: ${{secrets.EMAIL_CODE_EXPIRATION}}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2

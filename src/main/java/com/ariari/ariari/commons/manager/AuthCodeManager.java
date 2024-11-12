@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.manager;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -11,9 +12,14 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class AuthCodeManager {
-    private static final String CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // 숫자랑 영어대문자
-    private static final int CODE_LENGTH = 6;
-    private static final long EXPIRATION_TIME = 5;
+    @Value("${email.code.characters}")
+    private String CHARACTERS;
+
+    @Value("${email.code.code-length}")
+    private int CODE_LENGTH;
+
+    @Value("${email.code.expiration-time}")
+    private long EXPIRATION_TIME;
 
     private final StringRedisTemplate redisTemplate;
 
