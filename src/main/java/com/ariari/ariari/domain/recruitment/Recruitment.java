@@ -47,7 +47,7 @@ public class Recruitment implements ViewsContent {
     private List<Question> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
-    private List<Apply> applies = new ArrayList<>();
+    private List<Apply> applys = new ArrayList<>();
 
     @Override
     public void addViews(long n) {

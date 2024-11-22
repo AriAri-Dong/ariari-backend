@@ -70,7 +70,7 @@ public class Member {
     private List<ClubPost> clubPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Apply> applies = new ArrayList<>();
+    private List<Apply> applys = new ArrayList<>();
 
 
     public static Member createMember(Long kakaoId) {
