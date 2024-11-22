@@ -1,5 +1,6 @@
 package com.ariari.ariari.commons.entitydelete;
 
+import com.ariari.ariari.commons.exception.exceptions.UnexpectedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +24,7 @@ public class EntityDeleteManagerV1 implements EntityDeleteManager {
     private final EntityRelationManager entityRelationManager;
 
     @Override
-    public void deleteEntity(Object entity) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
+    public void deleteEntity(Object entity) {
         // 자식 엔티티들 삭제
         List<Object> childEntities = entityRelationManager.getChildEntities(entity);
         for (Object childEntity : childEntities) {
@@ -35,7 +36,12 @@ public class EntityDeleteManagerV1 implements EntityDeleteManager {
         } else { // 물리 삭제
             String key = resolveMapKey(entity.getClass());
             JpaRepository<?, ?> jpaRepository = repositoryMap.get(key);
-            jpaRepository.getClass().getMethod("delete", Object.class).invoke(jpaRepository, entity);
+            try {
+                jpaRepository.getClass().getMethod("delete", Object.class).invoke(jpaRepository, entity);
+            } catch (Exception e) {
+                log.error("엔티티 삭제 중 리플렉션 에러 발생", e);
+                throw new UnexpectedException();
+            }
         }
 
     }

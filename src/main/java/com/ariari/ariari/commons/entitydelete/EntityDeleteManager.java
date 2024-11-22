@@ -4,6 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 
 public interface EntityDeleteManager {
 
-    void deleteEntity(Object entity) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException;
+    void deleteEntity(Object entity);
 
 }
