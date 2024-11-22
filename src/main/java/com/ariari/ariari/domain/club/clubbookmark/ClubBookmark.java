@@ -23,4 +23,9 @@ public class ClubBookmark {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    public ClubBookmark(Member member, Club club) {
+        this.member = member;
+        this.club = club;
+    }
+
 }

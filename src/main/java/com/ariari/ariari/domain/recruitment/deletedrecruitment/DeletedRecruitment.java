@@ -1,7 +1,10 @@
 package com.ariari.ariari.domain.recruitment.deletedrecruitment;
 
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -10,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 public class DeletedRecruitment {
 
@@ -32,5 +37,11 @@ public class DeletedRecruitment {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    public static DeletedRecruitment fromRecruitment(Recruitment recruitment) {
+        return DeletedRecruitment.builder()
+                .title(recruitment.getTitle())
+                .body(recruitment.getBody())
+                .build();
+    }
 
 }

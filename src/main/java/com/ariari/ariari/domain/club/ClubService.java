@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.EntityDeleteManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
-import com.ariari.ariari.domain.club.deletedclub.DeletedClubRepository;
 import com.ariari.ariari.domain.club.dto.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.ClubModifyReq;
 import com.ariari.ariari.domain.club.dto.ClubSaveReq;
@@ -24,10 +24,10 @@ public class ClubService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
-    private final DeletedClubRepository deletedClubRepository;
     private final ViewsManager viewsManager;
+    private final EntityDeleteManager entityDeleteManager;
 
-    public ClubDetailRes findClubDetail(Long memberId, Long clubId, String clientIp) {
+    public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
         // views 처리
@@ -39,25 +39,28 @@ public class ClubService {
         return ClubDetailRes.fromEntity(club);
     }
 
-    public void saveClub(Long memberId, ClubSaveReq saveReq) {
-        Member member = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+    @Transactional(readOnly = false)
+    public void saveClub(Long reqMemberId, ClubSaveReq saveReq) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
         Club club = saveReq.toEntity();
+        club.setHasRecruitment(Boolean.FALSE);
         clubRepository.save(club);
 
         // 요청 Member 를 admin ClubMember 로 저장
         ClubMember clubMember = ClubMember.builder()
                 .club(club)
-                .member(member)
+                .member(reqMember)
                 .clubMemberRoleType(ClubMemberRoleType.ADMIN)
                 .build();
         clubMemberRepository.save(clubMember);
     }
 
-    public void modifyClub(Long memberId, Long clubId, ClubModifyReq modifyReq) {
-        Member member = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+    @Transactional(readOnly = false)
+    public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member).orElseThrow(NotFoundEntityException::new);
+        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotFoundEntityException::new);
 
         // ClubMember 권한 검증
         if (clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
@@ -67,8 +70,18 @@ public class ClubService {
         modifyReq.modifyEntity(club);
     }
 
-    public void removeClub(Long memberId, Long clubId) {
+    @Transactional(readOnly = false)
+    public void removeClub(Long reqMemberId, Long clubId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
 
+        // ClubMember 권한 검증
+        if (!clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
+            throw new NoClubAuthException();
+        }
+
+        entityDeleteManager.deleteClub(club);
     }
 
 }

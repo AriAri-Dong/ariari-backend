@@ -1,10 +1,13 @@
 package com.ariari.ariari.domain.club.deletedclub;
 
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.RegionType;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +16,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 public class DeletedClub {
 
@@ -47,5 +52,12 @@ public class DeletedClub {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
+
+    public static DeletedClub fromClub(Club club) {
+        return DeletedClub.builder()
+                .name(club.getName())
+                .name(club.getIntroduction())
+                .build();
+    }
 
 }
