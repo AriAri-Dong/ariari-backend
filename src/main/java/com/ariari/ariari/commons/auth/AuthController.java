@@ -1,10 +1,8 @@
 package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.JwtTokenDto;
-import com.ariari.ariari.commons.manager.KakaoAuthManager;
+import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,13 +1,17 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
+import com.ariari.ariari.commons.exception.dto.ExceptionRes;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.MemberRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,29 +28,38 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final MemberRepository memberRepository;
     private final JwtManager jwtManager;
     private final AuthenticationManager authenticationManager;
+    private final ObjectMapper objectMapper;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("========== JwtFilter start ==========");
 
         String token = jwtManager.extractToken(request);
-//        log.info("token : {}", token);
 
-        if (token == null) {
-            JwtAuthentication jwtAuthentication = new JwtAuthentication();
-        } else {
+        if (token != null) {
             JwtAuthentication jwtAuthentication = new JwtAuthentication(token);
-            Authentication authenticate = authenticationManager.authenticate(jwtAuthentication);
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//            log.info("authentication : {}", authentication);
-//            log.info("userDetails : {}", authentication.getDetails());
-//            log.info("email : {}", ((CustomUserDetails) authentication.getDetails()).getMemberId());
-//            log.info("authorities : {}", authentication.getAuthorities());
+
+            try {
+                Authentication authenticate = authenticationManager.authenticate(jwtAuthentication);
+                SecurityContextHolder.getContext().setAuthentication(authenticate);
+            } catch (Exception e) {
+                setErrorResponse(response);
+                return;
+            }
         }
 
-        log.info("========== JwtFilter end : {} ==========", token);
         filterChain.doFilter(request, response);
+    }
+
+    private void setErrorResponse(HttpServletResponse response) throws IOException {
+        ExceptionRes responseBody = ExceptionRes.builder()
+                .code(HttpStatus.UNAUTHORIZED.value())
+                .message("회원 인증에 실패했습니다.")
+                .build();
+
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(responseBody));
     }
 
 }

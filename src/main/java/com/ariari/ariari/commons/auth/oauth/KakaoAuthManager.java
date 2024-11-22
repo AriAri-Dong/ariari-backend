@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.manager;
+package com.ariari.ariari.commons.auth.oauth;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
