@@ -19,7 +19,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EntityDeleteManagerV1 implements EntityDeleteManager {
 
-    private final String LOGICAL_DELETE_METHOD_NAME = "deleteLogically";
     private final Map<String, JpaRepository<?, ?>> repositoryMap;
     private final EntityRelationManager entityRelationManager;
 

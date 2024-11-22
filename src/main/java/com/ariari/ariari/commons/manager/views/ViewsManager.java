@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.manager.views;
 
-import com.ariari.ariari.manager.RedisManager;
+import com.ariari.ariari.commons.manager.RedisManager;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

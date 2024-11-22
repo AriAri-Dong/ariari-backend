@@ -1,4 +1,4 @@
-package com.ariari.ariari.manager;
+package com.ariari.ariari.commons.manager;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
