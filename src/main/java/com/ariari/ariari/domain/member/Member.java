@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.member;
 
+import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.domain.alarm.Alarm;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.block.Block;
@@ -24,7 +25,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Member {
+public class Member implements LogicalDeleteEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -85,6 +86,11 @@ public class Member {
 
     public void addAuthority(GrantedAuthority authority) {
         this.authorities.add(authority);
+    }
+
+    @Override
+    public void deleteLogically() {
+        this.deletedDateTime = LocalDateTime.now();
     }
 
 }

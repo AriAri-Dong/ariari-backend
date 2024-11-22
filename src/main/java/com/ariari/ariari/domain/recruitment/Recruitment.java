@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment;
 
 
+import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.domain.apply.Apply;
@@ -19,7 +20,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Recruitment implements ViewsContent {
+public class Recruitment implements ViewsContent, LogicalDeleteEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recruitment_id")
@@ -35,6 +36,7 @@ public class Recruitment implements ViewsContent {
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
+    private LocalDateTime deletedDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
@@ -66,6 +68,11 @@ public class Recruitment implements ViewsContent {
         this.title = title;
         this.body = body;
         this.club = club;
+    }
+
+    @Override
+    public void deleteLogically() {
+        this.deletedDateTime = LocalDateTime.now();
     }
 
 }

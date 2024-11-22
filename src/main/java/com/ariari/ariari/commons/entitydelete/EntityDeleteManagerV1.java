@@ -19,6 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class EntityDeleteManagerV1 implements EntityDeleteManager {
 
+    private final String LOGICAL_DELETE_METHOD_NAME = "deleteLogically";
     private final Map<String, JpaRepository<?, ?>> repositoryMap;
     private final EntityRelationManager entityRelationManager;
 
@@ -30,16 +31,14 @@ public class EntityDeleteManagerV1 implements EntityDeleteManager {
             deleteEntity(childEntity);
         }
 
-        // 엔티티 삭제 -> 논리 삭제 여부 판단
-        Class<?> entityClass = entity.getClass();
-        try { // 논리 삭제
-            Method deleteMethod = entityClass.getMethod("deleteEntity");
-            deleteMethod.invoke(entity);
-        } catch (NoSuchMethodException e) { // 물리 삭제
-            String key = resolveMapKey(entityClass);
+        if (entity instanceof LogicalDeleteEntity) { // 논리 삭제
+            ((LogicalDeleteEntity) entity).deleteLogically();
+        } else { // 물리 삭제
+            String key = resolveMapKey(entity.getClass());
             JpaRepository<?, ?> jpaRepository = repositoryMap.get(key);
             jpaRepository.getClass().getMethod("delete", Object.class).invoke(jpaRepository, entity);
         }
+
     }
 
     private String resolveMapKey(Class<?> clazz) {

@@ -53,6 +53,7 @@ public class Club implements ViewsContent {
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
+    private LocalDateTime deletedDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
