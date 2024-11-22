@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.EntityDeleteManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.dto.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.ClubModifyReq;
@@ -25,7 +24,6 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ViewsManager viewsManager;
-    private final EntityDeleteManager entityDeleteManager;
 
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -81,7 +79,6 @@ public class ClubService {
             throw new NoClubAuthException();
         }
 
-        entityDeleteManager.deleteClub(club);
     }
 
 }
