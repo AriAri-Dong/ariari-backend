@@ -1,5 +1,6 @@
 package com.ariari.ariari.commons.entitydelete;
 
+import com.ariari.ariari.commons.exception.exceptions.UnexpectedException;
 import com.ariari.ariari.domain.alarm.Alarm;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.apply.answer.Answer;
@@ -50,19 +51,24 @@ public class EntityRelationManager {
         CHILD_ENTITY_MAP.put(School.class, List.of(Club.class, Member.class));
     }
 
-    public List<Object> getChildEntities(Object entity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public List<Object> getChildEntities(Object entity) {
         List<Object> childEntities = new ArrayList<>();
 
         List<Class<?>> childClasses = getChildClasses(entity);
-        for (Class<?> childClass : childClasses) {
-            Method method = entity.getClass().getMethod(resolveMethodName(childClass));
-            List<?> result = (List<?>) method.invoke(entity);
+        try {
+            for (Class<?> childClass : childClasses) {
+                Method method = entity.getClass().getMethod(resolveMethodName(childClass));
+                List<?> result = (List<?>) method.invoke(entity);
 
-            for (Object o : result) {
-                log.info("child : {}", o);
+                for (Object o : result) {
+                    log.info("child : {}", o);
+                }
+
+                childEntities.addAll(result);
             }
-
-            childEntities.addAll(result);
+        } catch (Exception e) {
+            log.error("자식 엔티티 조회 중 리플렉션 에러 발생", e);
+            throw new UnexpectedException();
         }
 
         return childEntities;
