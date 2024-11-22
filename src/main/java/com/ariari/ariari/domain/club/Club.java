@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club;
 
+import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
@@ -23,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Club implements ViewsContent {
+public class Club implements ViewsContent, LogicalDeleteEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "club_id")
@@ -92,4 +93,8 @@ public class Club implements ViewsContent {
         this.school = school;
     }
 
+    @Override
+    public void deleteLogically() {
+        this.deletedDateTime = LocalDateTime.now();
+    }
 }
