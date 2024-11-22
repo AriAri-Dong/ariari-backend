@@ -82,7 +82,6 @@ public class ClubService {
         }
 
         entityDeleteManager.deleteEntity(club);
-
     }
 
 }
