@@ -34,7 +34,7 @@ public class JwtControlManager {
         redisManager.setExData(resolveRedisKey(token), true, diffMilli, TimeUnit.MILLISECONDS);
     }
 
-    public String resolveRedisKey(String token) {
+    private String resolveRedisKey(String token) {
         return REDIS_BANNED_TOKEN_KEY + "_" + token;
     }
 
