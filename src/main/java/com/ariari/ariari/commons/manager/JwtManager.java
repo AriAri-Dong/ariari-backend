@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
@@ -73,6 +74,16 @@ public class JwtManager {
                 .getPayload();
 
         return Long.parseLong(payload.getSubject());
+    }
+
+    public Date getExpiration(String token) {
+        Claims payload = Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return payload.getExpiration();
     }
 
     public Collection<? extends GrantedAuthority> getAuthorities(String token) {

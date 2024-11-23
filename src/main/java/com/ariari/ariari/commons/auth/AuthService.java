@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.auth;
 
-import com.ariari.ariari.commons.auth.dto.JwtTokenDto;
+import com.ariari.ariari.commons.auth.dto.JwtTokenReq;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.Member;
@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 import static com.ariari.ariari.commons.manager.JwtManager.TokenType.*;
 
@@ -22,7 +23,7 @@ public class AuthService {
     private final JwtManager jwtManager;
     private final JwtControlManager jwtControlManager;
 
-    public JwtTokenDto login(Long kakaoId) {
+    public JwtTokenReq login(Long kakaoId) {
         Member member = memberRepository.findByKakaoId(kakaoId).orElse(null);
 
         if (member == null) {
@@ -32,7 +33,7 @@ public class AuthService {
         String accessToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), ACCESS_TOKEN);
         String refreshToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), REFRESH_TOKEN);
 
-        return JwtTokenDto.builder()
+        return JwtTokenReq.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -45,9 +46,15 @@ public class AuthService {
         return newMember;
     }
 
-    public void logout(JwtTokenDto jwtTokenDto) {
-        jwtControlManager.banToken(jwtTokenDto.getAccessToken());
-        jwtControlManager.banToken(jwtTokenDto.getRefreshToken());
+    public void logout(JwtTokenReq jwtTokenReq) {
+        String accessToken = jwtTokenReq.getAccessToken();
+        String refreshToken = jwtTokenReq.getRefreshToken();
+
+        Date accessExpiration = jwtManager.getExpiration(accessToken);
+        Date refreshExpiration = jwtManager.getExpiration(refreshToken);
+
+        jwtControlManager.banToken(accessToken, accessExpiration);
+        jwtControlManager.banToken(refreshToken, refreshExpiration);
     }
 
 }
