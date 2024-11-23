@@ -1,5 +1,6 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
+import com.ariari.ariari.commons.exception.CustomException;
 import com.ariari.ariari.commons.exception.dto.ExceptionRes;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -41,8 +42,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Authentication authenticate = authenticationManager.authenticate(jwtAuthentication);
                 SecurityContextHolder.getContext().setAuthentication(authenticate);
-            } catch (Exception e) {
-                setErrorResponse(response);
+            } catch (CustomException e) {
+                setErrorResponse(response, e.getMessage());
                 return;
             }
         }
@@ -50,10 +51,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void setErrorResponse(HttpServletResponse response) throws IOException {
+    private void setErrorResponse(HttpServletResponse response, String message) throws IOException {
         ExceptionRes responseBody = ExceptionRes.builder()
                 .code(HttpStatus.UNAUTHORIZED.value())
-                .message("회원 인증에 실패했습니다.")
+                .message(message)
                 .build();
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
