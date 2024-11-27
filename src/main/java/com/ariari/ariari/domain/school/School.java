@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.school;
 
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class School {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "school_id")
     private Long id;
 

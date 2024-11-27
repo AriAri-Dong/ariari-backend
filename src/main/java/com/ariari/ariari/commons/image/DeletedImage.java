@@ -1,5 +1,6 @@
 package com.ariari.ariari.commons.image;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 public class DeletedImage {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "deleted_image_id")
     private Long id;
 

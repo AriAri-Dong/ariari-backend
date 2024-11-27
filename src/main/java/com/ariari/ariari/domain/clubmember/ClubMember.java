@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.clubmember;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ClubMember {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "club_member_id")
     private Long id;
 

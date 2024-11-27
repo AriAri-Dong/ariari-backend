@@ -4,6 +4,7 @@ package com.ariari.ariari.domain.recruitment;
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
@@ -22,7 +23,7 @@ import java.util.List;
 @Getter
 public class Recruitment implements ViewsContent, LogicalDeleteEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "recruitment_id")
     private Long id;
 

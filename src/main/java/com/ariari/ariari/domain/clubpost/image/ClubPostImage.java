@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.clubpost.image;
 
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.clubpost.ClubPost;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 public class ClubPostImage {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "club_post_image_id")
     private Long id;
 

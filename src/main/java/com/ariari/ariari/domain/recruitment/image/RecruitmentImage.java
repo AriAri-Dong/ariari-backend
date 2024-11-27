@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.image;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 public class RecruitmentImage {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "recruitment_image_id")
     private Long id;
 

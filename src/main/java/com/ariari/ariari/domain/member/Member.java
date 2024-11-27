@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.alarm.Alarm;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.block.Block;
@@ -27,7 +28,7 @@ import java.util.Set;
 @Getter
 public class Member implements LogicalDeleteEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "member_id")
     private Long id;
 

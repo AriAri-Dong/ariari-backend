@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.club;
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
@@ -14,6 +15,7 @@ import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.List;
 @Getter
 public class Club implements ViewsContent, LogicalDeleteEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "club_id")
     private Long id;
 

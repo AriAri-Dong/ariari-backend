@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.clubpost;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.clubpost.comment.ClubPostComment;
 import com.ariari.ariari.domain.clubpost.image.ClubPostImage;
@@ -19,7 +20,7 @@ import java.util.List;
 @Getter
 public class ClubPost {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "club_post_id")
     private Long id;
 

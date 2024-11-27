@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.question;
 
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.apply.answer.Answer;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 public class Question {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "question_id")
     private Long id;
 

@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.apply.answer;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.recruitment.question.Question;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Answer {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "answer_id")
     private Long id;
 

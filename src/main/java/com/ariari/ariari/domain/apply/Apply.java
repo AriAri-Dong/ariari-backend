@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.apply;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.apply.answer.Answer;
 import com.ariari.ariari.domain.apply.enums.ApplyStatusType;
 import com.ariari.ariari.domain.member.Member;
@@ -18,7 +19,7 @@ import java.util.List;
 @Getter
 public class Apply {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "apply_id")
     private Long id;
 

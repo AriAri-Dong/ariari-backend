@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.clubpost.comment;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ClubPostComment {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "club_post_comment_id")
     private Long id;
 

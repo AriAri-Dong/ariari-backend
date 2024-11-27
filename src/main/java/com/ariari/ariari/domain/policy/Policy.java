@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.policy;
 
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 public class Policy {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "policy_id")
     private Long id;
 

@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.clubbookmark;
 
+import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class ClubBookmark {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @CustomPkGenerate
     @Column(name = "club_bookmark_id")
     private Long id;
 
