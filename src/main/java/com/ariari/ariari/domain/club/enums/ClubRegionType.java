@@ -1,5 +1,5 @@
 package com.ariari.ariari.domain.club.enums;
 
-public enum RegionType {
+public enum ClubRegionType {
     ETC
 }

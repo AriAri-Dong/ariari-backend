@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.block.Block;
 import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
 import com.ariari.ariari.domain.clubmember.ClubMember;
 import com.ariari.ariari.domain.clubpost.ClubPost;
+import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -32,14 +33,18 @@ public class Member implements LogicalDeleteEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @Column(unique = true)
     private Long kakaoId;
 
     @Setter
+    @Column(length = 20, unique = true)
     private String nickName;
 
-    // private String profilePath
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ProfileType profileType;
 
-    // private String memberCode;
+    private Integer point;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
@@ -53,25 +58,25 @@ public class Member implements LogicalDeleteEntity {
     @JoinColumn(name = "school_id")
     private School school;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member")
     private List<Alarm> alarms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "blockingMember")
     private List<Block> blockings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "blockedMember", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "blockedMember")
     private List<Block> blockeds = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member")
     private List<ClubMember> clubMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member")
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member")
     private List<ClubPost> clubPosts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member")
     private List<Apply> applys = new ArrayList<>();
 
 

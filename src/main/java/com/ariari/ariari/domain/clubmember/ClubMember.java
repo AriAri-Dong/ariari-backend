@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.clubmember;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,14 +22,16 @@ public class ClubMember {
     @Column(name = "club_member_id")
     private Long id;
 
+    @Column(length = 20)
     private String name;
-    private String phoneNumber;
-    private String email;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 10)
     private ClubMemberRoleType clubMemberRoleType;
-    private String clubMemberRoleName;
-    private Boolean isInAttendance = Boolean.FALSE;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ClubMemberStatusType clubMemberStatusType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

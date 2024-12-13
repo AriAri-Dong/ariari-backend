@@ -15,7 +15,11 @@ public class School {
     @Column(name = "school_id")
     private Long id;
 
+    @Column(length = 20)
     private String name;
+
+    @Column(length = 30)
+    private String email;
 
     public School(String name) {
         this.name = name;

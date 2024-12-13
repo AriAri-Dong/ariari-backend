@@ -44,7 +44,6 @@ public class ClubService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
         Club club = saveReq.toEntity();
-        club.setHasRecruitment(Boolean.FALSE);
         clubRepository.save(club);
 
         // 요청 Member 를 admin ClubMember 로 저장

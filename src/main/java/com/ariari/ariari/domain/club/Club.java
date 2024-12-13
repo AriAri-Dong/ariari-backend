@@ -4,10 +4,11 @@ import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
+import com.ariari.ariari.domain.applyform.ApplyForm;
 import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
-import com.ariari.ariari.domain.club.enums.RegionType;
+import com.ariari.ariari.domain.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
 import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.recruitment.Recruitment;
@@ -15,7 +16,6 @@ import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,27 +32,28 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
     @Column(name = "club_id")
     private Long id;
 
+    @Column(length = 20)
     private String name;
-    private String imagePath;
-    private String introduction;
+
+    @Column(length = 1000)
+    private String body;
+
+    private String profileUri;
+    private String bannerUri;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private ClubCategoryType clubCategoryType;
 
     @Enumerated(EnumType.STRING)
-    private RegionType regionType;
+    @Column(length = 20)
+    private ClubRegionType clubRegionType;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private ParticipantType participantType;
 
-    private String clubScope;
-
-    private String ScopeTypeName;
-
     private Long views = 0L;
-
-    @Setter
-    private Boolean hasRecruitment = Boolean.FALSE;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
@@ -62,10 +63,10 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
     @JoinColumn(name = "school_id")
     private School school;
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "club")
     private List<ClubMember> clubMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "club")
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "club")
@@ -73,6 +74,9 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "club")
     private List<Recruitment> recruitments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club")
+    private List<ApplyForm> applyForms = new ArrayList<>();
 
 
     @Override
@@ -88,9 +92,9 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
     /**
      * for test
      */
-    public Club(String name, String introduction, ClubCategoryType clubCategoryType, School school) {
+    public Club(String name, String body, ClubCategoryType clubCategoryType, School school) {
         this.name = name;
-        this.introduction = introduction;
+        this.body = body;
         this.clubCategoryType = clubCategoryType;
         this.school = school;
     }

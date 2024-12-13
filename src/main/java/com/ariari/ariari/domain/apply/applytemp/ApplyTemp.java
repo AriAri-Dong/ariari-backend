@@ -1,8 +1,7 @@
-package com.ariari.ariari.domain.apply;
+package com.ariari.ariari.domain.apply.applytemp;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import com.ariari.ariari.domain.apply.applyanswer.ApplyAnswer;
-import com.ariari.ariari.domain.apply.enums.ApplyStatusType;
+import com.ariari.ariari.domain.apply.applytemp.applyanswertemp.ApplyAnswerTemp;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
@@ -17,15 +16,11 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Apply {
+public class ApplyTemp {
 
     @Id @CustomPkGenerate
-    @Column(name = "apply_id")
+    @Column(name = "apply_temp_id")
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private ApplyStatusType applyStatusType;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
@@ -38,7 +33,7 @@ public class Apply {
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
 
-    @OneToMany(mappedBy = "apply")
-    private List<ApplyAnswer> applyAnswers = new ArrayList<>();
+    @OneToMany(mappedBy = "applyTemp")
+    private List<ApplyAnswerTemp> applyAnswerTemps = new ArrayList<>();
 
 }

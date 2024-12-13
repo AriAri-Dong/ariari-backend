@@ -7,8 +7,9 @@ import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
-import com.ariari.ariari.domain.recruitment.question.Question;
+import com.ariari.ariari.domain.recruitment.recruitmentnote.RecruitmentNote;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,13 +28,24 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @Column(name = "recruitment_id")
     private Long id;
 
+    @Column(length = 30)
     private String title;
+
+    @Column(length = 2000)
     private String body;
-    private String imagePtah;
-    private LocalDateTime dueDateTime;
-    private Integer maxParticipants;
+
+    private String posterUri;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private ProcedureType procedureType;
+
+    private Boolean isActivated = Boolean.TRUE;
+
+    private Integer limits;
     private Long views = 0L;
-    private Boolean isPortfolioRequired;
+
+    private LocalDateTime endDateTime;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
@@ -46,11 +58,12 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @OneToMany(mappedBy = "recruitment")
     private List<RecruitmentImage> recruitmentImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
-    private List<Question> questions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "recruitment")
     private List<Apply> applys = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recruitment")
+    private List<RecruitmentNote> recruitmentNotes = new ArrayList<>();
+
 
     @Override
     public void addViews(long n) {
