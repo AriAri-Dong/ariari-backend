@@ -4,13 +4,12 @@ import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import com.ariari.ariari.domain.applyform.ApplyForm;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
-import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
@@ -68,9 +67,6 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "club")
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
-
-    @OneToMany(mappedBy = "club")
-    private List<ClubPost> clubPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "club")
     private List<Recruitment> recruitments = new ArrayList<>();

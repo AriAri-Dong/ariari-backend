@@ -2,12 +2,11 @@ package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import com.ariari.ariari.domain.alarm.Alarm;
-import com.ariari.ariari.domain.apply.Apply;
-import com.ariari.ariari.domain.block.Block;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
+import com.ariari.ariari.domain.member.alarm.Alarm;
+import com.ariari.ariari.domain.recruitment.apply.Apply;
+import com.ariari.ariari.domain.member.block.Block;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.clubmember.ClubMember;
-import com.ariari.ariari.domain.clubpost.ClubPost;
 import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
@@ -72,9 +71,6 @@ public class Member implements LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "member")
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<ClubPost> clubPosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Apply> applys = new ArrayList<>();

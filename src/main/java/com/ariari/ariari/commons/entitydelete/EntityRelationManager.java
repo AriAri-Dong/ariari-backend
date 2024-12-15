@@ -1,18 +1,15 @@
 package com.ariari.ariari.commons.entitydelete;
 
 import com.ariari.ariari.commons.exception.exceptions.UnexpectedException;
-import com.ariari.ariari.domain.alarm.Alarm;
-import com.ariari.ariari.domain.apply.Apply;
-import com.ariari.ariari.domain.apply.applyanswer.ApplyAnswer;
+import com.ariari.ariari.domain.member.alarm.Alarm;
+import com.ariari.ariari.domain.recruitment.apply.Apply;
+import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.clubmember.ClubMember;
-import com.ariari.ariari.domain.clubpost.ClubPost;
-import com.ariari.ariari.domain.clubpost.comment.ClubPostComment;
-import com.ariari.ariari.domain.clubpost.image.ClubPostImage;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
-import com.ariari.ariari.domain.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,13 +35,11 @@ public class EntityRelationManager {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initChildEntityMap() {
-        CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, ClubPost.class, ClubPostComment.class, Apply.class, Alarm.class, ClubBookmark.class));
-        CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class, ClubPost.class));
+        CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, Apply.class, Alarm.class, ClubBookmark.class));
+        CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class));
         CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, ApplyQuestion.class, RecruitmentImage.class));
         CHILD_ENTITY_MAP.put(Apply.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(ApplyQuestion.class, List.of(ApplyAnswer.class));
-        CHILD_ENTITY_MAP.put(ClubPost.class, List.of(ClubPostComment.class, ClubPostImage.class));
-        CHILD_ENTITY_MAP.put(ClubPostComment.class, List.of());
         CHILD_ENTITY_MAP.put(School.class, List.of(Club.class, Member.class));
     }
 

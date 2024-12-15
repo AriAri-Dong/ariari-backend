@@ -9,7 +9,6 @@ import com.ariari.ariari.domain.club.dto.ClubSaveReq;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

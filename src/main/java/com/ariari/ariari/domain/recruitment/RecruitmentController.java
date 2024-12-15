@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.recruitment;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
-import com.ariari.ariari.domain.club.enums.ClubAffiliationType;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.recruitment.dto.RecruitmentListRes;
 import lombok.RequiredArgsConstructor;

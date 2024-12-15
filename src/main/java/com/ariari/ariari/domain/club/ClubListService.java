@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmarkRepository;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.dto.ClubListRes;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
@@ -12,13 +12,10 @@ import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

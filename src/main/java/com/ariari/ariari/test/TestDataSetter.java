@@ -2,8 +2,8 @@ package com.ariari.ariari.test;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmarkRepository;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
 import com.ariari.ariari.domain.clubmember.ClubMemberRepository;

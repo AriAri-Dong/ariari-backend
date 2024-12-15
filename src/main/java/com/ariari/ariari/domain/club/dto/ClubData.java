@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.dto;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubbookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.member.Member;
 import lombok.Builder;
 import lombok.Data;
