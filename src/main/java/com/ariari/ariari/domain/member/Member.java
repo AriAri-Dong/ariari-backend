@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import com.ariari.ariari.domain.member.alarm.Alarm;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.member.block.Block;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
@@ -58,7 +58,7 @@ public class Member implements LogicalDeleteEntity {
     private School school;
 
     @OneToMany(mappedBy = "member")
-    private List<Alarm> alarms = new ArrayList<>();
+    private List<MemberAlarm> memberAlarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "blockingMember")
     private List<Block> blockings = new ArrayList<>();

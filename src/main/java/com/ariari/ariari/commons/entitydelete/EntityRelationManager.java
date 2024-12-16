@@ -1,7 +1,7 @@
 package com.ariari.ariari.commons.entitydelete;
 
 import com.ariari.ariari.commons.exception.exceptions.UnexpectedException;
-import com.ariari.ariari.domain.member.alarm.Alarm;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
 import com.ariari.ariari.domain.club.Club;
@@ -35,7 +35,7 @@ public class EntityRelationManager {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initChildEntityMap() {
-        CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, Apply.class, Alarm.class, ClubBookmark.class));
+        CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, Apply.class, MemberAlarm.class, ClubBookmark.class));
         CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class));
         CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, ApplyQuestion.class, RecruitmentImage.class));
         CHILD_ENTITY_MAP.put(Apply.class, List.of(ApplyAnswer.class));

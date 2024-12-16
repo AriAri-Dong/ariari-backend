@@ -1,30 +1,24 @@
-package com.ariari.ariari.domain.member.alarm;
+package com.ariari.ariari.domain.club.activity.like;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
+import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Alarm {
+public class ClubActivityLike {
 
     @Id @CustomPkGenerate
-    @Column(name = "alarm_id")
+    @Column(name = "club_activity_like_id")
     private Long id;
 
-    private String title;
-    private String body;
-    private String path;
-    private Boolean isChecked = Boolean.FALSE;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_activity_id")
+    private ClubActivity clubActivity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
