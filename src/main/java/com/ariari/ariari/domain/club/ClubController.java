@@ -50,10 +50,9 @@ public class ClubController {
     }
 
     @GetMapping("/my")
-    public ClubListRes findMyClubList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                      Pageable pageable) {
+    public ClubListRes findMyClubList(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long reqMemberId = getMemberId(userDetails, true);
-        return clubListService.findMyClubList(reqMemberId, pageable);
+        return clubListService.findMyClubList(reqMemberId);
     }
 
     @GetMapping("/my-bookmarks")
