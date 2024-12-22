@@ -6,7 +6,7 @@ import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
-import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;

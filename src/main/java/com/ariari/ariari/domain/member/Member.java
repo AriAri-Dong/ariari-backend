@@ -6,7 +6,7 @@ import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.member.block.Block;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
-import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;

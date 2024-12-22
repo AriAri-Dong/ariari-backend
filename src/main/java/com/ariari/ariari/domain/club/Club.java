@@ -9,7 +9,7 @@ import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
-import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;

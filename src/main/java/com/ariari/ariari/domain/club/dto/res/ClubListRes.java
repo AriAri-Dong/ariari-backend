@@ -4,7 +4,7 @@ import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.dto.ClubData;
-import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;

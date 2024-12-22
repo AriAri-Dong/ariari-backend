@@ -1,13 +1,11 @@
-package com.ariari.ariari.domain.clubmember;
+package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.clubmember.enums.ClubMemberStatusType;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

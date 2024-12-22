@@ -4,7 +4,7 @@ package com.ariari.ariari.domain.club.activity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
-import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

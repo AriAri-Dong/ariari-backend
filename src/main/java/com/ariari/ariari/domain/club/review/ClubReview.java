@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.review;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import com.ariari.ariari.domain.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

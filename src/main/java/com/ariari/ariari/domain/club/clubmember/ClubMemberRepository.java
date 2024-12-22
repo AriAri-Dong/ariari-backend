@@ -1,13 +1,11 @@
-package com.ariari.ariari.domain.clubmember;
+package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.school.School;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
