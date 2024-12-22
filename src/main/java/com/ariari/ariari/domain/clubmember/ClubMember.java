@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Getter
 public class ClubMember {
 
@@ -31,7 +29,7 @@ public class ClubMember {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private ClubMemberStatusType clubMemberStatusType;
+    private ClubMemberStatusType clubMemberStatusType = ClubMemberStatusType.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -41,6 +39,11 @@ public class ClubMember {
     @JoinColumn(name = "club_id")
     private Club club;
 
-
+    public ClubMember(String name, ClubMemberRoleType clubMemberRoleType, Member member, Club club) {
+        this.name = name;
+        this.clubMemberRoleType = clubMemberRoleType;
+        this.member = member;
+        this.club = club;
+    }
 
 }

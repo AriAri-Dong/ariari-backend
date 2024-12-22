@@ -3,7 +3,8 @@ package com.ariari.ariari.domain.club;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
-import com.ariari.ariari.domain.club.dto.ClubListRes;
+import com.ariari.ariari.domain.club.dto.res.ClubListRes;
+import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.clubmember.ClubMember;
 import com.ariari.ariari.domain.clubmember.ClubMemberRepository;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,31 +30,31 @@ public class ClubListService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubBookmarkRepository clubBookmarkRepository;
 
-    public ClubListRes findClubList(Long reqMemberId, ClubCategoryType clubCategoryType, Pageable pageable) {
+    public ClubListRes searchClubPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElse(null);
         School school = null;
         if (reqMember != null) {
             school = reqMember.getSchool();
         }
 
-        Page<Club> page = clubRepository.findByParams(school, clubCategoryType, pageable);
+        Page<Club> page = clubRepository.searchClubPage(school, condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
-    public ClubListRes findExternalList(Long reqMemberId, ClubCategoryType clubCategoryType, Pageable pageable) {
+    public ClubListRes searchExternalPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElse(null);
 
-        Page<Club> page = clubRepository.findExternalByParams(clubCategoryType, pageable);
+        Page<Club> page = clubRepository.searchExternalPage(condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
-    public ClubListRes findInternalList(Long reqMemberId, ClubCategoryType clubCategoryType, Pageable pageable) {
+    public ClubListRes searchInternalPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
         if (reqMember.getSchool() == null) {
             throw new NoSchoolAuthException();
         }
 
-        Page<Club> page = clubRepository.findInternalByParams(reqMember.getSchool(), clubCategoryType, pageable);
+        Page<Club> page = clubRepository.searchInternalPage(reqMember.getSchool(), condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
@@ -67,7 +70,7 @@ public class ClubListService {
         return ClubListRes.fromClubBookmarkPage(page, reqMember);
     }
 
-    public ClubListRes findClubListBySearch(Long reqMemberId, String query, Pageable pageable) {
+    public ClubListRes findClubListByWord(Long reqMemberId, String query, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElse(null);
         School school = null;
         if (reqMember != null) {
@@ -76,6 +79,24 @@ public class ClubListService {
 
         Page<Club> page = clubRepository.findByNameContains(query, school, pageable);
         return ClubListRes.fromPage(page, reqMember);
+    }
+
+    public ClubListRes findExternalClubRankingList(Long reqMemberId, ClubCategoryType categoryType) {
+        Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElse(null);
+
+        List<Club> clubs = clubRepository.findExternalClubRankingList(categoryType);
+        return ClubListRes.fromList(clubs, reqMember);
+    }
+
+    public ClubListRes findInternalClubRankingList(Long reqMemberId, ClubCategoryType categoryType) {
+        Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        if (reqMember.getSchool() == null) {
+            throw new NoSchoolAuthException();
+        }
+
+        List<Club> clubs = clubRepository.findInternalClubRankingList(reqMember.getSchool(), categoryType);
+        return ClubListRes.fromList(clubs, reqMember);
     }
 
 }

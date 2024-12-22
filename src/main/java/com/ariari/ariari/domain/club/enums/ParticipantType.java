@@ -1,5 +1,9 @@
 package com.ariari.ariari.domain.club.enums;
 
 public enum ParticipantType {
-    ETC
+
+    UNIVERSITY_STUDENT,
+    GRADUATE_STUDENT,
+    OFFICE_WORKER
+
 }

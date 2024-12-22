@@ -29,7 +29,7 @@ public class S3Manager {
     }
 
     //s3에 이미지 저장하기
-    public String uploadImage(MultipartFile image, String domain) throws IOException {
+    public String uploadImage(MultipartFile image, String domain) {
         String fileName = UUID.randomUUID() + "_" + domain + "_" + image.getOriginalFilename(); // 고유한 파일 이름 생성
 
         // 메타데이터 설정
@@ -38,7 +38,12 @@ public class S3Manager {
         metadata.setContentLength(image.getSize());
 
         // S3에 파일 업로드 요청 생성
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, image.getInputStream(), metadata);
+        PutObjectRequest putObjectRequest = null;
+        try {
+            putObjectRequest = new PutObjectRequest(bucket, fileName, image.getInputStream(), metadata);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // S3에 파일 업로드
         amazonS3.putObject(putObjectRequest);

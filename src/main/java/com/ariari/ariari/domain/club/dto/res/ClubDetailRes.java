@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.club.dto;
+package com.ariari.ariari.domain.club.dto.res;
 
 import com.ariari.ariari.domain.club.Club;
 import lombok.Data;

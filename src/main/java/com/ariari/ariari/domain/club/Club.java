@@ -22,8 +22,6 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Getter
 public class Club implements ViewsContent, LogicalDeleteEntity {
 
@@ -37,6 +35,7 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
     @Column(length = 1000)
     private String body;
 
+    @Setter
     private String profileUri;
     private String bannerUri;
 
@@ -92,6 +91,15 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
         this.name = name;
         this.body = body;
         this.clubCategoryType = clubCategoryType;
+        this.school = school;
+    }
+
+    public Club(String name, String body, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, School school) {
+        this.name = name;
+        this.body = body;
+        this.clubCategoryType = clubCategoryType;
+        this.clubRegionType = clubRegionType;
+        this.participantType = participantType;
         this.school = school;
     }
 

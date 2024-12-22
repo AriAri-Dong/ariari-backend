@@ -2,16 +2,18 @@ package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
-import com.ariari.ariari.domain.club.dto.ClubDetailRes;
-import com.ariari.ariari.domain.club.dto.ClubListRes;
-import com.ariari.ariari.domain.club.dto.ClubModifyReq;
-import com.ariari.ariari.domain.club.dto.ClubSaveReq;
+import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
+import com.ariari.ariari.domain.club.dto.req.ClubSaveReq;
+import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
+import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
+import com.ariari.ariari.domain.club.dto.res.ClubListRes;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.*;
 
@@ -24,27 +26,27 @@ public class ClubController {
     private final ClubService clubService;
 
     @GetMapping
-    public ClubListRes findClubList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                    @RequestParam(required = false) ClubCategoryType clubCategoryType,
-                                    Pageable pageable) {
+    public ClubListRes searchClubPage(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                      @ModelAttribute ClubSearchCondition condition,
+                                      Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, false);
-        return clubListService.findClubList(reqMemberId, clubCategoryType, pageable);
+        return clubListService.searchClubPage(reqMemberId, condition, pageable);
     }
 
     @GetMapping("/external")
-    public ClubListRes findExternalList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                        @RequestParam(required = false) ClubCategoryType clubCategoryType,
-                                        Pageable pageable) {
+    public ClubListRes searchExternalPage(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                          @ModelAttribute ClubSearchCondition condition,
+                                          Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, false);
-        return clubListService.findExternalList(reqMemberId, clubCategoryType, pageable);
+        return clubListService.searchExternalPage(reqMemberId, condition, pageable);
     }
 
     @GetMapping("/internal")
-    public ClubListRes findInternalList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                        @RequestParam(required = false) ClubCategoryType clubCategoryType,
-                                        Pageable pageable) {
+    public ClubListRes searchInternal(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                      @ModelAttribute ClubSearchCondition condition,
+                                      Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
-        return clubListService.findInternalList(reqMemberId, clubCategoryType, pageable);
+        return clubListService.searchInternalPage(reqMemberId, condition, pageable);
     }
 
     @GetMapping("/my")
@@ -62,11 +64,25 @@ public class ClubController {
     }
 
     @GetMapping("/search")
-    public ClubListRes findClubListBySearch(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                        @RequestParam String query,
-                                        Pageable pageable) {
+    public ClubListRes findClubListByWord(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                          @RequestParam String query,
+                                          Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, false);
-        return clubListService.findClubListBySearch(reqMemberId, query, pageable);
+        return clubListService.findClubListByWord(reqMemberId, query, pageable);
+    }
+
+    @GetMapping("/external/ranking")
+    public ClubListRes findClubExternalRankingList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                   @RequestParam(required = false) ClubCategoryType categoryType) {
+        Long reqMemberId = getMemberId(userDetails, false);
+        return clubListService.findExternalClubRankingList(reqMemberId, categoryType);
+    }
+
+    @GetMapping("/internal/ranking")
+    public ClubListRes findClubInternalRankingList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                   @RequestParam(required = false) ClubCategoryType categoryType) {
+        Long reqMemberId = getMemberId(userDetails, true);
+        return clubListService.findInternalClubRankingList(reqMemberId, categoryType);
     }
 
     @GetMapping("/{clubId}")
@@ -82,11 +98,15 @@ public class ClubController {
 
     @PostMapping
     public void saveClub(@AuthenticationPrincipal CustomUserDetails userDetails,
-                         @RequestBody ClubSaveReq saveReq) {
+                         @RequestPart ClubSaveReq saveReq,
+                         @RequestPart(required = false) MultipartFile file) {
         Long reqMemberId = getMemberId(userDetails, true);
-        clubService.saveClub(reqMemberId, saveReq);
+        clubService.saveClub(reqMemberId, saveReq, file);
     }
 
+    /**
+     * 수정 예정
+     */
     @PatchMapping("/{clubId}")
     public void modifyClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                            @PathVariable Long clubId,

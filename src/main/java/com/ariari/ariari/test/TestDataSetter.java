@@ -72,21 +72,24 @@ public class TestDataSetter {
         club6.addViews(3);
 
         // clubMember
-        ClubMember clubMember1 = ClubMember.builder()
-                .club(club1)
-                .member(member1)
-                .clubMemberRoleType(ClubMemberRoleType.ADMIN)
-                .build();
-        ClubMember clubMember2 = ClubMember.builder()
-                .club(club4)
-                .member(member1)
-                .clubMemberRoleType(ClubMemberRoleType.ADMIN)
-                .build();
-        ClubMember clubMember3 = ClubMember.builder()
-                .club(club12)
-                .member(member1)
-                .clubMemberRoleType(ClubMemberRoleType.ADMIN)
-                .build();
+        ClubMember clubMember1 = new ClubMember(
+                "clubMember1",
+                ClubMemberRoleType.ADMIN,
+                member1,
+                club1
+        );
+        ClubMember clubMember2 = new ClubMember(
+                "clubMember2",
+                ClubMemberRoleType.ADMIN,
+                member1,
+                club4
+        );
+        ClubMember clubMember3 = new ClubMember(
+                "clubMember3",
+                ClubMemberRoleType.ADMIN,
+                member1,
+                club12
+        );
         clubMemberRepository.saveAll(List.of(clubMember1, clubMember2, clubMember3));
 
         // clubBookmark
@@ -95,6 +98,10 @@ public class TestDataSetter {
         ClubBookmark clubBookmark3 = new ClubBookmark(member1, club3);
         ClubBookmark clubBookmark4 = new ClubBookmark(member1, club7);
         ClubBookmark clubBookmark5 = new ClubBookmark(member1, club8);
+        ClubBookmark clubBookmark6 = new ClubBookmark(null, club3);
+        ClubBookmark clubBookmark7 = new ClubBookmark(null, club3);
+        ClubBookmark clubBookmark8 = new ClubBookmark(null, club2);
+
         clubBookmarkRepository.saveAll(List.of(clubBookmark1, clubBookmark2, clubBookmark3, clubBookmark4, clubBookmark5));
 
         // recruitment
