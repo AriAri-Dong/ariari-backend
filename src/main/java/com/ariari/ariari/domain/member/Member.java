@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.member.block.Block;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.member.enums.ProfileType;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -71,6 +72,9 @@ public class Member implements LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "member")
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<RecruitmentBookmark> recruitmentBookmarks = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<Apply> applys = new ArrayList<>();

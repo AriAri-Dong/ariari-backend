@@ -31,4 +31,9 @@ public class RecruitmentNote {
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
 
+    public RecruitmentNote(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
+    }
+
 }

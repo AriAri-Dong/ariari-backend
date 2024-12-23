@@ -29,4 +29,8 @@ public class ApplyQuestion {
     @JoinColumn(name = "apply_form_id")
     private ApplyForm applyForm;
 
+    public ApplyQuestion(String body) {
+        this.body = body;
+    }
+
 }

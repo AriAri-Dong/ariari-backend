@@ -28,7 +28,12 @@ public class ApplyForm {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @OneToMany(mappedBy = "applyForm")
+    @OneToMany(mappedBy = "applyForm", cascade = CascadeType.PERSIST)
     private List<ApplyQuestion> applyQuestions = new ArrayList<>();
+
+    public ApplyForm(Club club, List<ApplyQuestion> applyQuestions) {
+        this.club = club;
+        this.applyQuestions = applyQuestions;
+    }
 
 }

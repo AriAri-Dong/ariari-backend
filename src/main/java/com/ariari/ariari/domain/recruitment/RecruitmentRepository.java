@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> {
+public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>, RecruitmentRepositoryCustom {
 
     @Query("select r from Recruitment r where r.club.school is null and (:clubCategoryType is null or r.club.clubCategoryType= :clubCategoryType)")
     Page<Recruitment> findExternalByClubCategoryType(ClubCategoryType clubCategoryType, Pageable pageable);

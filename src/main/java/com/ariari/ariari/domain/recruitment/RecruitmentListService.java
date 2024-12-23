@@ -5,7 +5,7 @@ import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
-import com.ariari.ariari.domain.recruitment.dto.RecruitmentListRes;
+import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentListRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,18 +24,20 @@ public class RecruitmentListService {
     private final RecruitmentRepository recruitmentRepository;
 
     public RecruitmentListRes findExternalList(Long memberId, ClubCategoryType clubCategoryType, Pageable pageable) {
+        Member reqMember = memberRepository.findById(memberId).orElse(null);
+
         Page<Recruitment> page = recruitmentRepository.findExternalByClubCategoryType(clubCategoryType, pageable);
-        return RecruitmentListRes.fromPage(page);
+        return RecruitmentListRes.fromPage(page, reqMember);
     }
 
     public RecruitmentListRes findInternalList(Long memberId, ClubCategoryType clubCategoryType, Pageable pageable) {
-        Member member = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
-        if (member.getSchool() == null) {
+        Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+        if (reqMember.getSchool() == null) {
             throw new NoSchoolAuthException();
         }
 
-        Page<Recruitment> page = recruitmentRepository.findInternalByClubCategoryType(member.getSchool(), clubCategoryType, pageable);
-        return RecruitmentListRes.fromPage(page);
+        Page<Recruitment> page = recruitmentRepository.findInternalByClubCategoryType(reqMember.getSchool(), clubCategoryType, pageable);
+        return RecruitmentListRes.fromPage(page, reqMember);
     }
 
 }

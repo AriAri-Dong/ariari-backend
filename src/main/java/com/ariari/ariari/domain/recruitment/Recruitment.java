@@ -13,6 +13,7 @@ import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @Column(length = 2000)
     private String body;
 
+    @Setter
     private String posterUri;
 
     @Enumerated(EnumType.STRING)
@@ -61,7 +63,7 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @OneToMany(mappedBy = "recruitment")
     private List<Apply> applys = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recruitment")
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.PERSIST)
     private List<RecruitmentNote> recruitmentNotes = new ArrayList<>();
 
 
@@ -82,6 +84,16 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
         this.title = title;
         this.body = body;
         this.club = club;
+    }
+
+    public Recruitment(String title, String body, ProcedureType procedureType, Integer limits, LocalDateTime endDateTime, Club club, List<RecruitmentNote> recruitmentNotes) {
+        this.title = title;
+        this.body = body;
+        this.procedureType = procedureType;
+        this.limits = limits;
+        this.endDateTime = endDateTime;
+        this.club = club;
+        this.recruitmentNotes = recruitmentNotes;
     }
 
     @Override
