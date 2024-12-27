@@ -9,10 +9,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>, RecruitmentRepositoryCustom {
 
-    @Query("select r from Recruitment r where r.club.school is null and (:clubCategoryType is null or r.club.clubCategoryType= :clubCategoryType)")
-    Page<Recruitment> findExternalByClubCategoryType(ClubCategoryType clubCategoryType, Pageable pageable);
-
-    @Query("select r from Recruitment r where r.club.school= :school and (:clubCategoryType is null or r.club.clubCategoryType= :clubCategoryType)")
-    Page<Recruitment> findInternalByClubCategoryType(School school, ClubCategoryType clubCategoryType, Pageable pageable);
-
 }

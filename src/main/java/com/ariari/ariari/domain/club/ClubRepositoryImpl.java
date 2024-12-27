@@ -37,7 +37,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
                         categoryIn(condition.getClubCategoryTypes()),
                         regionIn(condition.getClubRegionTypes()),
                         participantIn(condition.getParticipantTypes()))
-                .orderBy()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -46,7 +45,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
             query.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
         List<Club> content = query.fetch();
-
 
         Long total = queryFactory
                 .select(club.count())

@@ -32,6 +32,7 @@ public class ClubListService {
 
     public ClubListRes searchClubPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElse(null);
+
         School school = null;
         if (reqMember != null) {
             school = reqMember.getSchool();

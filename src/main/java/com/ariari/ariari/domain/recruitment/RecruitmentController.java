@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.recruitment;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
-import com.ariari.ariari.domain.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.dto.req.RecruitmentSaveReq;
 import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentDetailRes;
 import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentListRes;
@@ -26,9 +26,9 @@ public class RecruitmentController {
     public RecruitmentDetailRes findRecruitmentDetail(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                       @PathVariable Long recruitmentId,
                                                       HttpServletRequest request) {
-        Long memberId = CustomUserDetails.getMemberId(userDetails, false);
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
         String clientIp = ViewsManager.getClientIp(request);
-        return recruitmentService.findRecruitmentDetail(memberId, recruitmentId, clientIp);
+        return recruitmentService.findRecruitmentDetail(reqMemberId, recruitmentId, clientIp);
     }
 
     // 등록
@@ -37,28 +37,50 @@ public class RecruitmentController {
                                 @PathVariable Long clubId,
                                 @RequestPart RecruitmentSaveReq saveReq,
                                 @RequestPart(required = false) MultipartFile file) {
-        Long memberId = CustomUserDetails.getMemberId(userDetails, true);
-        recruitmentService.saveRecruitment(memberId, clubId, saveReq, file);
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        recruitmentService.saveRecruitment(reqMemberId, clubId, saveReq, file);
     }
 
     // 모집 마감
 
     // 삭제
-
-    @GetMapping("/external")
-    public RecruitmentListRes findExternalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                         @RequestParam(required = false) ClubCategoryType clubCategoryType,
-                                                         Pageable pageable) {
-        Long memberId = CustomUserDetails.getMemberId(userDetails, false);
-        return recruitmentListService.findExternalList(memberId, clubCategoryType, pageable);
+    @DeleteMapping("/recruitments/{recruitmentId}")
+    public void removeRecruitment(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                  @PathVariable Long recruitmentId) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        recruitmentService.removeRecruitment(reqMemberId, recruitmentId);
     }
 
-    @GetMapping("/internal")
-    public RecruitmentListRes findInternalRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                      @RequestParam(required = false) ClubCategoryType clubCategoryType,
-                                                      Pageable pageable) {
-        Long memberId = CustomUserDetails.getMemberId(userDetails, true);
-        return recruitmentListService.findInternalList(memberId, clubCategoryType, pageable);
+    @GetMapping("/recruitments")
+    public RecruitmentListRes findRecruitmentPage(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                  @ModelAttribute ClubSearchCondition condition,
+                                                  Pageable pageable) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
+        return recruitmentListService.searchRecruitmentPage(reqMemberId, condition, pageable);
     }
+
+    @GetMapping("/recruitments/external")
+    public RecruitmentListRes findExternalPage(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                          @ModelAttribute ClubSearchCondition condition,
+                                                          Pageable pageable) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
+        return recruitmentListService.searchExternalPage(reqMemberId, condition, pageable);
+    }
+
+    @GetMapping("/recruitments/internal")
+    public RecruitmentListRes findInternalPage(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                          @ModelAttribute ClubSearchCondition condition,
+                                                          Pageable pageable) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        return recruitmentListService.searchInternalPage(reqMemberId, condition, pageable);
+    }
+
+    // 북마크 리스트 조회
+
+    // 동아리의 리스트 조회
+
+    // 교외 랭킹 리스트 조회
+
+    // 교내 랭킹 리스트 조회
 
 }

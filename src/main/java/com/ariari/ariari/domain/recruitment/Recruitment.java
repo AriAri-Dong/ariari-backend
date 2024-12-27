@@ -7,6 +7,7 @@ import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
@@ -57,6 +58,10 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apply_form_id")
+    private ApplyForm applyForm;
+
     @OneToMany(mappedBy = "recruitment")
     private List<RecruitmentImage> recruitmentImages = new ArrayList<>();
 
@@ -65,7 +70,6 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "recruitment", cascade = CascadeType.PERSIST)
     private List<RecruitmentNote> recruitmentNotes = new ArrayList<>();
-
 
     @Override
     public void addViews(long n) {
@@ -86,13 +90,14 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
         this.club = club;
     }
 
-    public Recruitment(String title, String body, ProcedureType procedureType, Integer limits, LocalDateTime endDateTime, Club club, List<RecruitmentNote> recruitmentNotes) {
+    public Recruitment(String title, String body, ProcedureType procedureType, Integer limits, LocalDateTime endDateTime, Club club, ApplyForm applyForm, List<RecruitmentNote> recruitmentNotes) {
         this.title = title;
         this.body = body;
         this.procedureType = procedureType;
         this.limits = limits;
         this.endDateTime = endDateTime;
         this.club = club;
+        this.applyForm = applyForm;
         this.recruitmentNotes = recruitmentNotes;
     }
 

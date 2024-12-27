@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.recruitment.dto.req;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteSaveReq;
@@ -22,7 +23,7 @@ public class RecruitmentSaveReq {
 
     private List<RecruitmentNoteSaveReq> recruitmentNotes = new ArrayList<>();
 
-    public Recruitment toEntity(Club club) {
+    public Recruitment toEntity(Club club, ApplyForm applyForm) {
         List<RecruitmentNote> recruitmentNoteList = recruitmentNotes.stream().map(RecruitmentNoteSaveReq::toEntity).toList();
 
         return new Recruitment(
@@ -32,6 +33,7 @@ public class RecruitmentSaveReq {
                 limits,
                 endDateTime,
                 club,
+                applyForm,
                 recruitmentNoteList
         );
     }
