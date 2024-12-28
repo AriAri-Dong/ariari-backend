@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.recruitment.dto.res;
 import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.dto.RecruitmentData;
 import lombok.Data;
 import org.springframework.data.domain.Page;

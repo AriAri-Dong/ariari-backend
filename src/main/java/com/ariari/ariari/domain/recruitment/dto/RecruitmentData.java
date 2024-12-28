@@ -3,10 +3,12 @@ package com.ariari.ariari.domain.recruitment.dto;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
+import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.keyvalue.repository.query.PredicateQueryCreator;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +21,11 @@ public class RecruitmentData {
 
     private String title;
     private String body;
+    private String posterUri;
+    private ProcedureType procedureType;
+    private Integer limits;
+    private LocalDateTime createdDateTime;
+    private LocalDateTime endDateTime;
 
     private Boolean isActivated;
     private Boolean isMyBookmark;
@@ -27,6 +34,11 @@ public class RecruitmentData {
         return RecruitmentData.builder()
                 .title(recruitment.getTitle())
                 .body(recruitment.getBody())
+                .posterUri(recruitment.getPosterUri())
+                .procedureType(recruitment.getProcedureType())
+                .limits(recruitment.getLimits())
+                .createdDateTime(recruitment.getCreatedDateTime())
+                .endDateTime(recruitment.getEndDateTime())
                 .isActivated(recruitment.getIsActivated())
                 .isMyBookmark(getMyBookmarkRecruitments(reqMember).contains(recruitment))
                 .build();

@@ -15,8 +15,10 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
 import com.ariari.ariari.domain.recruitment.dto.req.RecruitmentSaveReq;
 import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentDetailRes;
+import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,7 @@ public class RecruitmentService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
     private final RecruitmentRepository recruitmentRepository;
     private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
@@ -49,9 +52,9 @@ public class RecruitmentService {
         Member reqMember = memberRepository.findById(memberId).orElse(null);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
 
-        School reqSchool = reqMember.getSchool();
         School recruitmentSchool = recruitment.getClub().getSchool();
-        if (recruitmentSchool != null && reqSchool != null && !recruitmentSchool.equals(reqSchool)) {
+        if (recruitmentSchool != null &&
+                (reqMember == null || reqMember.getSchool() == null || !recruitmentSchool.equals(reqMember.getSchool()))) {
             throw new NoSchoolAuthException();
         }
 
@@ -60,7 +63,9 @@ public class RecruitmentService {
             viewsManager.addClientIp(recruitment, clientIp);
         }
 
-        return RecruitmentDetailRes.fromEntity(recruitment, reqMember);
+        Integer bookmarks = recruitmentBookmarkRepository.countByRecruitment(recruitment).intValue();
+
+        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember);
     }
 
     @Transactional(readOnly = false)
@@ -76,6 +81,9 @@ public class RecruitmentService {
         ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElseThrow(NotFoundEntityException::new);
 
         Recruitment recruitment = saveReq.toEntity(club, applyForm);
+        for (RecruitmentNote recruitmentNote : recruitment.getRecruitmentNotes()) {
+            recruitmentNote.setRecruitment(recruitment);
+        }
 
         String uri = s3Manager.uploadImage(file, "recruitment");
         recruitment.setPosterUri(uri);

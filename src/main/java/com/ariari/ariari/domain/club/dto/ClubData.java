@@ -2,6 +2,9 @@ package com.ariari.ariari.domain.club.dto;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +23,10 @@ public class ClubData {
     private String name;
     private String profileUri;
     private String body;
+    private String bannerUri;
+    private ClubCategoryType clubCategoryType;
+    private ClubRegionType clubRegionType;
+    private ParticipantType participantType;
 
     private Boolean isMyBookmark = false;
 
@@ -45,6 +52,10 @@ public class ClubData {
                 .name(club.getName())
                 .profileUri(club.getProfileUri())
                 .body(club.getBody())
+                .bannerUri(club.getBannerUri())
+                .clubCategoryType(club.getClubCategoryType())
+                .clubRegionType(club.getClubRegionType())
+                .participantType(club.getParticipantType())
                 .isMyBookmark(myBookmarkClubs.contains(club))
                 .build();
     }

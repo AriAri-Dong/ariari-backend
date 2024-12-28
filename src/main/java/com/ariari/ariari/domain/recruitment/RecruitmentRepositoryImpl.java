@@ -132,7 +132,7 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     }
 
     @Override
-    public List<Recruitment> findExternalRecruitmentRankingList() {
+    public List<Recruitment> findExternalRankingList() {
         return queryFactory
                 .selectFrom(recruitment)
                 .where(isActivated(),
@@ -143,7 +143,7 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     }
 
     @Override
-    public List<Recruitment> findinternalRecruitmentRankingList(School school) {
+    public List<Recruitment> findInternalRankingList(School school) {
         return queryFactory
                 .selectFrom(recruitment)
                 .where(isActivated(),

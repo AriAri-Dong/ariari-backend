@@ -24,4 +24,9 @@ public class RecruitmentBookmark {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public RecruitmentBookmark(Recruitment recruitment, Member member) {
+        this.recruitment = recruitment;
+        this.member = member;
+    }
+
 }

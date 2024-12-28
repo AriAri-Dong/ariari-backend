@@ -41,9 +41,8 @@ public class RecruitmentController {
         recruitmentService.saveRecruitment(reqMemberId, clubId, saveReq, file);
     }
 
-    // 모집 마감
+    // 모집 마감 or 마감일 수정
 
-    // 삭제
     @DeleteMapping("/recruitments/{recruitmentId}")
     public void removeRecruitment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                   @PathVariable Long recruitmentId) {
@@ -76,11 +75,30 @@ public class RecruitmentController {
     }
 
     // 북마크 리스트 조회
+    @GetMapping("/recruitments/my-bookmarks")
+    public RecruitmentListRes findMyBookmarkRecruitmentList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        return recruitmentListService.findMyBookmarkRecruitmentList(reqMemberId);
+    }
 
     // 동아리의 리스트 조회
+    @GetMapping("/clubs/{clubId}/recruitments")
+    public RecruitmentListRes findRecruitmentListInClub(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                        @PathVariable Long clubId) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        return recruitmentListService.findRecruitmentListInClub(reqMemberId, clubId);
+    }
 
-    // 교외 랭킹 리스트 조회
+    @GetMapping("/recruitments/external/ranking")
+    public RecruitmentListRes findExternalRankingList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
+        return recruitmentListService.findExternalRankingList(reqMemberId);
+    }
 
-    // 교내 랭킹 리스트 조회
+    @GetMapping("/recruitments/internal/ranking")
+    public RecruitmentListRes findInternalRankingList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        return recruitmentListService.findInternalRankingList(reqMemberId);
+    }
 
 }

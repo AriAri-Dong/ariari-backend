@@ -13,11 +13,13 @@ public class RecruitmentDetailRes {
 
     private RecruitmentData recruitmentData;
     private ClubData clubData;
+    private Integer bookmarks;
 
-    public static RecruitmentDetailRes fromEntity(Recruitment recruitment, Member reqMember) {
+    public static RecruitmentDetailRes fromEntity(Recruitment recruitment, Integer bookmarks, Member reqMember) {
         return new RecruitmentDetailRes(
                 RecruitmentData.fromEntity(recruitment, reqMember),
-                ClubData.fromEntity(recruitment.getClub(), reqMember)
+                ClubData.fromEntity(recruitment.getClub(), reqMember),
+                bookmarks
         );
     }
 

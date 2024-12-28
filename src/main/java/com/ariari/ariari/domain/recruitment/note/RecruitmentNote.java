@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class RecruitmentNote {
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
