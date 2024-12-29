@@ -2,9 +2,15 @@ package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.JwtTokenReq;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "auth", description = "인증 관련 어노테이션")
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -16,6 +22,8 @@ public class AuthController {
      * kakao login callback
      */
     @GetMapping("/login/kakao")
+    @Operation(summary = "로그인", description = "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenReq.class)))
     public JwtTokenReq login(@RequestParam(name = "code") String code) {
 
         String token = kakaoAuthManager.getKakaoToken(code);
