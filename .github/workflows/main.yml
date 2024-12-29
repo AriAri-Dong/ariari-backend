@@ -141,5 +141,6 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /home/ubuntu/ariari
-            docker-compose pull
-            docker-compose up -d --build
+            /usr/local/bin/docker-compose pull
+            /usr/local/bin/docker-compose up -d --build
+
