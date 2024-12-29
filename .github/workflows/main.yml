@@ -140,6 +140,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /home/rsa-key-20240912/ariari
+            cd /home/ubuntu/ariari
             docker-compose pull
             docker-compose up -d --build
