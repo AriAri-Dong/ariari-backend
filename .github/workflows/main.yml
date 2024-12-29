@@ -89,9 +89,9 @@ jobs:
                 auto: false
           email:
             code:
-              characters:${EMAIL_CODE_CHARACTERS}
-              code-length:${EMAIL_CODE_LENGTH}
-              expiration-time:${EMAIL_CODE_EXPIRATION}
+              characters: ${EMAIL_CODE_CHARACTERS}
+              code-length: ${EMAIL_CODE_LENGTH}
+              expiration-time: ${EMAIL_CODE_EXPIRATION}
 
           views-manager:
             expiration-date:
