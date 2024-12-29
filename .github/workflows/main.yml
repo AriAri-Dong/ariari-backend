@@ -109,9 +109,9 @@ jobs:
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-          EMAIL_CODE_CHARACTERS: ${{ secrets.EMAIL_CODE_CHARACTERS }}
-          EMAIL_CODE_LENGTH: ${{ secrets.EMAIL_CODE_LENGTH }}
-          EMAIL_CODE_EXPIRATION: ${{ secrets.EMAIL_CODE_EXPIRATION }}
+          EMAIL_CODE_CHARACTERS: ${{ secrets.MAIL_CODE_CHARACTERS }}
+          EMAIL_CODE_LENGTH: ${{ secrets.MAIL_CODE_LENGTH }}
+          EMAIL_CODE_EXPIRATION: ${{ secrets.MAIL_CODE_EXPIRATION }}
           VIEW_DUPLICATE_DUE: ${{ secrets.VIEW_DUPLICATE_DUE }}
           VIEW_DUE: ${{ secrets.VIEW_DUE }}
 
