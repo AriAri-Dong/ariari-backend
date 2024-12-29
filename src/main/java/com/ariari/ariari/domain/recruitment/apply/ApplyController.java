@@ -2,10 +2,12 @@ package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
-import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySearchCondition;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInTeamSearchCondition;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchType;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyListRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,12 +74,19 @@ public class ApplyController {
     @GetMapping("/club/{clubId}/applies")
     public ApplyListRes searchAppliesInClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                                             @PathVariable Long clubId,
-                                            @ModelAttribute ApplySearchCondition condition) {
+                                            @ModelAttribute AppliesInTeamSearchCondition condition,
+                                            Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
-        applyListService.searchAppliesInClub(reqMemberId, clubId, condition);
-        return null;
+        return applyListService.searchAppliesInClub(reqMemberId, clubId, condition, pageable);
     }
 
     // 내 지원 리스트 조회
+    @GetMapping("/applies/my")
+    public ApplyListRes findMyApplies(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                      @RequestParam MyAppliesSearchType searchType,
+                                      Pageable pageable) {
+        Long reqMemberId = getMemberId(userDetails, true);
+        return applyListService.findMyApplies(reqMemberId, pageable, searchType);
+    }
 
 }
