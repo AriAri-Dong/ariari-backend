@@ -82,7 +82,7 @@ jobs:
                 accessKey: ${AWS_ACCESS_KEY}
                 secretKey: ${AWS_SECRET_KEY}
               s3:
-                bucket: airaribucket
+                bucket: ${AWS_S3_BUCKET}
               region:
                 static: ap-northeast-2
               stack:
@@ -109,6 +109,7 @@ jobs:
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           EMAIL_CODE_CHARACTERS: ${{ secrets.MAIL_CODE_CHARACTERS }}
           EMAIL_CODE_LENGTH: ${{ secrets.MAIL_CODE_LENGTH }}
           EMAIL_CODE_EXPIRATION: ${{ secrets.MAIL_CODE_EXPIRATION }}
