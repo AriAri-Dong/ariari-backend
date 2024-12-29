@@ -112,8 +112,8 @@ jobs:
           EMAIL_CODE_CHARACTERS: ${{secrets.EMAIL_CODE_CHARACTERS}}
           EMAIL_CODE_LENGTH: ${{secrets.EMAIL_CODE_LENGTH}}
           EMAIL_CODE_EXPIRATION: ${{secrets.EMAIL_CODE_EXPIRATION}}
-          VIEW_DUPLICATE_DUE : ${{VIEW_DUPLICATE_DUE}}
-          VIEW_DUE : ${{VIEW_DUE}}
+          VIEW_DUPLICATE_DUE: ${{VIEW_DUPLICATE_DUE}}
+          VIEW_DUE: ${{VIEW_DUE}}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
