@@ -24,6 +24,9 @@ public class Apply {
     @Column(name = "apply_id")
     private Long id;
 
+    @Column(length = 20)
+    private String name;
+
     @Setter
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
@@ -43,7 +46,8 @@ public class Apply {
     @OneToMany(mappedBy = "apply", cascade = CascadeType.PERSIST)
     private List<ApplyAnswer> applyAnswers = new ArrayList<>();
 
-    public Apply(Member member, Recruitment recruitment, List<ApplyAnswer> applyAnswers) {
+    public Apply(String name, Member member, Recruitment recruitment, List<ApplyAnswer> applyAnswers) {
+        this.name = name;
         this.member = member;
         this.recruitment = recruitment;
         this.applyAnswers = applyAnswers;

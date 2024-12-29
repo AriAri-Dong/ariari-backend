@@ -13,14 +13,13 @@ import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
-import com.ariari.ariari.domain.recruitment.apply.exception.NoApplyAuthException;
-import com.ariari.ariari.domain.recruitment.apply.exception.NoSavingApplyAuthException;
+import com.ariari.ariari.domain.recruitment.apply.exception.*;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,7 +28,6 @@ public class ApplyService {
 
     private final MemberRepository memberRepository;
     private final RecruitmentRepository recruitmentRepository;
-    private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ApplyRepository applyRepository;
 
@@ -58,8 +56,12 @@ public class ApplyService {
         if (club.getSchool() != null) {
             School reqSchool = reqMember.getSchool();
             if (reqSchool == null || !reqSchool.equals(club.getSchool())) {
-                throw new NoSavingApplyAuthException();
+                throw new SavingApplyException();
             }
+        }
+
+        if (recruitment.getIsActivated().equals(false) || recruitment.getEndDateTime().isBefore(LocalDateTime.now())) {
+            throw new ClosedRecruitmentException();
         }
 
         Apply apply = saveReq.toEntity(reqMember, recruitment);
@@ -67,7 +69,50 @@ public class ApplyService {
     }
 
     @Transactional(readOnly = false)
-    public void processApply(Long reqMemberId, Long applyId, ApplyStatusType applyStatusType) {
+    public void approveApply(Long reqMemberId, Long applyId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
+        Club club = apply.getRecruitment().getClub();
+
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoApplyAuthException::new);
+        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
+            throw new NoApplyAuthException();
+        }
+
+        if (apply.getApplyStatusType().equals(ApplyStatusType.REFUSAL)) {
+            throw new ApplyProcessingException();
+        }
+
+        apply.setApplyStatusType(ApplyStatusType.APPROVE);
+
+        ClubMember clubMember = new ClubMember(
+                apply.getName(),
+                ClubMemberRoleType.GENERAL,
+                apply.getMember(),
+                club);
+        clubMemberRepository.save(clubMember);
+    }
+
+    @Transactional(readOnly = false)
+    public void refuseApply(Long reqMemberId, Long applyId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
+        Club club = apply.getRecruitment().getClub();
+
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoApplyAuthException::new);
+        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
+            throw new NoApplyAuthException();
+        }
+
+        if (apply.getApplyStatusType().equals(ApplyStatusType.APPROVE)) {
+            throw new ApplyProcessingException();
+        }
+
+        apply.setApplyStatusType(ApplyStatusType.REFUSAL);
+    }
+
+    @Transactional(readOnly = false)
+    public void processApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
 
@@ -76,7 +121,27 @@ public class ApplyService {
             throw new NoApplyAuthException();
         }
 
-        apply.setApplyStatusType(applyStatusType);
+        if (!apply.getApplyStatusType().equals(ApplyStatusType.PENDENCY)) {
+            throw new ApplyProcessingException();
+        }
+
+        apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
+    }
+
+    @Transactional(readOnly = false)
+    public void removeApply(Long reqMemberId, Long applyId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
+
+        if (!apply.getMember().equals(reqMember)) {
+            throw new NoApplyAuthException();
+        }
+
+        if (apply.getCreatedDateTime().plusMonths(1).isAfter(LocalDateTime.now())) {
+            throw new RemovingApplyException();
+        }
+
+        applyRepository.delete(apply);
     }
 
 }

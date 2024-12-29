@@ -16,6 +16,7 @@ import java.util.Map;
 @Data
 public class ApplySaveReq {
 
+    private String name;
     private List<ApplyAnswerReq> applyAnswers = new ArrayList<>();
 
     public Apply toEntity(Member member, Recruitment recruitment) {
@@ -23,6 +24,7 @@ public class ApplySaveReq {
         List<ApplyAnswer> applyAnswerList = applyAnswers.stream().map(aa -> aa.toEntity(applyQuestionMap)).toList();
 
         Apply apply = new Apply(
+                this.name,
                 member,
                 recruitment,
                 applyAnswerList
