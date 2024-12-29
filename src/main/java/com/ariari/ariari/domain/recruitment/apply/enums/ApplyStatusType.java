@@ -5,6 +5,7 @@ public enum ApplyStatusType {
     PENDENCY,
     APPROVE,
     REFUSAL,
-    STANDBY
+    STANDBY // 이거 필요 ?
+    // 면접 대기 추가 필요
 
 }

@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -23,9 +24,10 @@ public class Apply {
     @Column(name = "apply_id")
     private Long id;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private ApplyStatusType applyStatusType;
+    private ApplyStatusType applyStatusType = ApplyStatusType.PENDENCY;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
@@ -38,7 +40,13 @@ public class Apply {
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
 
-    @OneToMany(mappedBy = "apply")
+    @OneToMany(mappedBy = "apply", cascade = CascadeType.PERSIST)
     private List<ApplyAnswer> applyAnswers = new ArrayList<>();
+
+    public Apply(Member member, Recruitment recruitment, List<ApplyAnswer> applyAnswers) {
+        this.member = member;
+        this.recruitment = recruitment;
+        this.applyAnswers = applyAnswers;
+    }
 
 }
