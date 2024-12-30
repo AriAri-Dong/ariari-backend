@@ -15,10 +15,15 @@ public class ApplyDetailRes {
     private ApplyData applyData;
     private List<ApplyAnswerData> applyAnswerData;
 
+    private String fileUri;
+    private String portfolioUrl;
+
     public static ApplyDetailRes fromEntity(Apply apply) {
         return new ApplyDetailRes(
                 ApplyData.fromEntity(apply),
-                ApplyAnswerData.fromEntities(apply.getApplyAnswers())
+                ApplyAnswerData.fromEntities(apply.getApplyAnswers()),
+                apply.getFileUri(),
+                apply.getPortfolioUrl()
         );
     }
 

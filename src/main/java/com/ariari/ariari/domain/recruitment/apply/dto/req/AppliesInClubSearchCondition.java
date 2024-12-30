@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class AppliesInTeamSearchCondition {
+public class AppliesInClubSearchCondition {
 
     private Boolean isPendent;
     private String query;

@@ -2,7 +2,8 @@ package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInTeamSearchCondition;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Apply> searchApplyByClub(Club club, AppliesInTeamSearchCondition condition, Pageable pageable) {
+    public Page<Apply> searchApplyByClub(Club club, AppliesInClubSearchCondition condition, Pageable pageable) {
         List<Apply> content = queryFactory.select(apply)
                 .from(apply)
                 .where(apply.recruitment.club.eq(club),
@@ -47,10 +48,10 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     }
 
     @Override
-    public Page<Apply> findFinalizedAppliesByMember(Member member, Pageable pageable) {
+    public Page<Apply> searchByMember(Member member, MyAppliesSearchType searchType, Pageable pageable) {
         List<Apply> content = queryFactory.selectFrom(apply)
-                .where(apply.member.eq(member),
-                        apply.applyStatusType.in(APPROVE, REFUSAL))
+                .where(memberEq(member),
+                        searchMyCond(searchType))
                 .orderBy(apply.createdDateTime.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -58,8 +59,8 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
 
         Long total = queryFactory.select(apply.count())
                 .from(apply)
-                .where(apply.member.eq(member),
-                        apply.applyStatusType.in(APPROVE, REFUSAL))
+                .where(memberEq(member),
+                        searchMyCond(searchType))
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
@@ -81,6 +82,20 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
             return null;
         }
         return apply.createdDateTime.between(start, end);
+    }
+
+    private BooleanExpression memberEq(Member member) {
+        return apply.member.eq(member);
+    }
+
+    private BooleanExpression searchMyCond(MyAppliesSearchType searchType) {
+        if (searchType.equals(MyAppliesSearchType.IN_PROGRESS)) {
+            return apply.applyStatusType.in(PENDENCY, INTERVIEW);
+        } else if (searchType.equals(MyAppliesSearchType.FINALIZED)) {
+            return apply.applyStatusType.in(APPROVE, REFUSAL);
+        } else {
+            return null;
+        }
     }
 
 }

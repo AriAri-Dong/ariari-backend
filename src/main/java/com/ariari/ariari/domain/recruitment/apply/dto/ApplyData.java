@@ -4,7 +4,6 @@ import com.ariari.ariari.domain.member.dto.MemberData;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
-import com.ariari.ariari.domain.recruitment.apply.temp.enums.ApplyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -23,8 +22,6 @@ public class ApplyData {
     private String recruitmentTitle;
     private String clubName;
 
-    private ApplyType applyType;
-
     public static ApplyData fromEntity(Apply apply) {
         return new ApplyData(
                 apply.getId(),
@@ -32,29 +29,12 @@ public class ApplyData {
                 apply.getCreatedDateTime(),
                 MemberData.fromEntity(apply.getMember()),
                 apply.getRecruitment().getTitle(),
-                apply.getRecruitment().getClub().getName(),
-                ApplyType.APPLY
+                apply.getRecruitment().getClub().getName()
         );
     }
 
     public static List<ApplyData> fromEntities(List<Apply> applies) {
         return applies.stream().map(ApplyData::fromEntity).toList();
-    }
-
-    public static ApplyData fromEntity(ApplyTemp applyTemp) {
-        return new ApplyData(
-                applyTemp.getId(),
-                null,
-                applyTemp.getCreatedDateTime(),
-                MemberData.fromEntity(applyTemp.getMember()),
-                applyTemp.getRecruitment().getTitle(),
-                applyTemp.getRecruitment().getClub().getName(),
-                ApplyType.APPLY_TEMP
-        );
-    }
-
-    public static List<ApplyData> fromApplyTemps(List<ApplyTemp> applyTemps) {
-        return applyTemps.stream().map(ApplyData::fromEntity).toList();
     }
 
 }

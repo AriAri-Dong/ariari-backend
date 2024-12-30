@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
-import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInTeamSearchCondition;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchType;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyListRes;
@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
 
@@ -33,9 +34,10 @@ public class ApplyController {
     @PostMapping("/recruitments/{recruitmentId}/applies")
     public void saveApply(@AuthenticationPrincipal CustomUserDetails userDetails,
                           @PathVariable Long recruitmentId,
-                          @RequestBody ApplySaveReq saveReq) {
+                          @RequestPart ApplySaveReq saveReq,
+                          @RequestPart(required = false) MultipartFile file) {
         Long reqMemberId = getMemberId(userDetails, true);
-        applyService.saveApply(reqMemberId, recruitmentId, saveReq);
+        applyService.saveApply(reqMemberId, recruitmentId, saveReq, file);
     }
 
     // 수정 : 합격 approve
@@ -74,7 +76,7 @@ public class ApplyController {
     @GetMapping("/club/{clubId}/applies")
     public ApplyListRes searchAppliesInClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                                             @PathVariable Long clubId,
-                                            @ModelAttribute AppliesInTeamSearchCondition condition,
+                                            @ModelAttribute AppliesInClubSearchCondition condition,
                                             Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
         return applyListService.searchAppliesInClub(reqMemberId, clubId, condition, pageable);
@@ -83,7 +85,7 @@ public class ApplyController {
     // 내 지원 리스트 조회
     @GetMapping("/applies/my")
     public ApplyListRes findMyApplies(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                      @RequestParam MyAppliesSearchType searchType,
+                                      @RequestParam(required = false) MyAppliesSearchType searchType,
                                       Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
         return applyListService.findMyApplies(reqMemberId, pageable, searchType);

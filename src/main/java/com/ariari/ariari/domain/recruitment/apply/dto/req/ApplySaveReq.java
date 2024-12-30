@@ -17,14 +17,16 @@ import java.util.Map;
 public class ApplySaveReq {
 
     private String name;
+    private String portfolioUrl;
     private List<ApplyAnswerReq> applyAnswers = new ArrayList<>();
 
     public Apply toEntity(Member member, Recruitment recruitment) {
-        Map<Long, ApplyQuestion> applyQuestionMap = getApplyQuestionMap(recruitment);
+        Map<Long, ApplyQuestion> applyQuestionMap = recruitment.getApplyForm().getApplyQuestionMap();
         List<ApplyAnswer> applyAnswerList = applyAnswers.stream().map(aa -> aa.toEntity(applyQuestionMap)).toList();
 
         Apply apply = new Apply(
                 this.name,
+                portfolioUrl,
                 member,
                 recruitment,
                 applyAnswerList
@@ -35,17 +37,6 @@ public class ApplySaveReq {
         }
 
         return apply;
-    }
-
-    private Map<Long, ApplyQuestion> getApplyQuestionMap(Recruitment recruitment) {
-        List<ApplyQuestion> applyQuestions = recruitment.getApplyForm().getApplyQuestions();
-
-        HashMap<Long, ApplyQuestion> applyQuestionMap = new HashMap<>();
-        for (ApplyQuestion applyQuestion : applyQuestions) {
-            applyQuestionMap.put(applyQuestion.getId(), applyQuestion);
-        }
-
-        return applyQuestionMap;
     }
 
 }

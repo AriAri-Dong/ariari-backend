@@ -32,6 +32,11 @@ public class Apply {
     @Column(length = 20)
     private ApplyStatusType applyStatusType = ApplyStatusType.PENDENCY;
 
+    @Setter
+    private String fileUri;
+
+    private String portfolioUrl;
+
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
@@ -46,8 +51,9 @@ public class Apply {
     @OneToMany(mappedBy = "apply", cascade = CascadeType.PERSIST)
     private List<ApplyAnswer> applyAnswers = new ArrayList<>();
 
-    public Apply(String name, Member member, Recruitment recruitment, List<ApplyAnswer> applyAnswers) {
+    public Apply(String name, String portfolioUrl, Member member, Recruitment recruitment, List<ApplyAnswer> applyAnswers) {
         this.name = name;
+        this.portfolioUrl = portfolioUrl;
         this.member = member;
         this.recruitment = recruitment;
         this.applyAnswers = applyAnswers;

@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestio
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -19,12 +20,14 @@ public class ApplyAnswerTemp {
     @Column(name = "apply_answer_temp_id")
     private Long id;
 
+    @Setter
     @Column(length = 200)
     private String body;
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_temp_id")
     private ApplyTemp applyTemp;
@@ -32,5 +35,10 @@ public class ApplyAnswerTemp {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "apply_question_id")
     private ApplyQuestion applyQuestion;
+
+    public ApplyAnswerTemp(String body, ApplyQuestion applyQuestion) {
+        this.body = body;
+        this.applyQuestion = applyQuestion;
+    }
 
 }
