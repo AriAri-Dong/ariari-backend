@@ -29,4 +29,10 @@ public class PassReviewNote {
     @JoinColumn(name = "pass_review_id")
     private PassReview passReview;
 
+    public PassReviewNote(NoteType noteType, String title, String body){
+        this.noteType = noteType;
+        this.title = title;
+        this.body = body;
+    }
+
 }

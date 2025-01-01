@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,9 @@ public class PassReview {
     private String title;
 
     @Enumerated(EnumType.STRING)
+    private ProcedureType procedureType;
+
+    @Enumerated(EnumType.STRING)
     private InterviewType interviewType;
 
     @Enumerated(EnumType.STRING)
@@ -45,4 +49,18 @@ public class PassReview {
 
     @OneToMany(mappedBy = "passReview")
     private List<PassReviewNote> passReviewNoteDataList = new ArrayList<>();
+
+    public PassReview(String title, ProcedureType procedureType, InterviewType interviewType, InterviewRatioType interviewRatioType,
+                      Integer interviewMood, ClubMember clubMember){
+        this.title = title;
+        this.procedureType = procedureType;
+        this.interviewType = interviewType;
+        this.interviewRatioType = interviewRatioType;
+        this.interviewMood = interviewMood;
+        this.clubMember = clubMember;
+    }
+
+
+
+
 }
