@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
+import com.ariari.ariari.domain.club.passreview.access.PassReviewAccess;
 import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.member.block.Block;
@@ -78,6 +79,9 @@ public class Member implements LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Apply> applys = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<PassReviewAccess> passReviewAccessList = new ArrayList<>();
 
 
     public static Member createMember(Long kakaoId) {

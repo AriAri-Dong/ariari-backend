@@ -4,12 +4,15 @@ import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -40,4 +43,6 @@ public class PassReview {
     @JoinColumn(name = "club_member_id")
     private ClubMember clubMember;
 
+    @OneToMany(mappedBy = "passReview")
+    private List<PassReviewNote> passReviewNoteDataList = new ArrayList<>();
 }

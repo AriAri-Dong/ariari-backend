@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.club.passreview.note;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.domain.club.passreview.enums.NoteType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,9 @@ public class PassReviewNote {
     @Id @CustomPkGenerate
     @Column(name = "pass_review_note_id")
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private NoteType noteType;
 
     @Column(length = 50)
     private String title;
