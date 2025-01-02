@@ -1,6 +1,5 @@
 package com.ariari.ariari.commons.image;
 
-import com.ariari.ariari.commons.manager.S3Manager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DeletedImageScheduler {
 
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
     private final DeletedImageRepository deletedImageRepository;
 
     private static final int SAVE_PERIOD = 15;
@@ -33,7 +32,7 @@ public class DeletedImageScheduler {
         List<DeletedImage> deletedImages = deletedImageRepository.findByCreatedDateTimeBefore(localDateTime);
 
         for (DeletedImage deletedImage : deletedImages) {
-            s3Manager.deleteImageByFilePath(deletedImage.getImagePath());
+            fileManager.deleteFile(deletedImage.getImagePath());
             deletedImageRepository.delete(deletedImage);
         }
 

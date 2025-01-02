@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.recruitment.apply.temp;
 
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.S3Manager;
+import com.ariari.ariari.commons.image.FileManager;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -31,7 +31,7 @@ public class ApplyTempService {
     private final RecruitmentRepository recruitmentRepository;
     private final ApplyTempRepository applyTempRepository;
     private final EntityDeleteManager entityDeleteManager;
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
 
     public ApplyTempDetailRes findApplyTempDetail(Long reqMemberId, Long applyTempId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -65,7 +65,7 @@ public class ApplyTempService {
 
         // 파일 처리
         if (file != null) {
-            String fileUri = s3Manager.uploadImage(file, "applyTemp");
+            String fileUri = fileManager.saveFile(file, "applyTemp");
             applyTemp.setFileUri(fileUri);
         }
 
@@ -86,10 +86,10 @@ public class ApplyTempService {
         // 파일 처리 ( 이미 존재하면 삭제하고 재등록 )
         if (file != null) {
             if (applyTemp.getFileUri() != null) {
-                s3Manager.deleteImageByFilePath(applyTemp.getFileUri());
+                fileManager.deleteFile(applyTemp.getFileUri());
             }
 
-            String fileUri = s3Manager.uploadImage(file, "applyTemp");
+            String fileUri = fileManager.saveFile(file, "applyTemp");
             applyTemp.setFileUri(fileUri);
         }
 
@@ -105,7 +105,7 @@ public class ApplyTempService {
         }
 
         // 파일 삭제
-        s3Manager.deleteImageByFilePath(applyTemp.getFileUri());
+        fileManager.deleteFile(applyTemp.getFileUri());
 
         entityDeleteManager.deleteEntity(applyTemp);
     }
@@ -119,7 +119,7 @@ public class ApplyTempService {
             throw new NoApplyTempAuthException();
         }
 
-        s3Manager.deleteImageByFileName(applyTemp.getFileUri());
+        fileManager.deleteFile(applyTemp.getFileUri());
         applyTemp.setFileUri(null);
     }
 

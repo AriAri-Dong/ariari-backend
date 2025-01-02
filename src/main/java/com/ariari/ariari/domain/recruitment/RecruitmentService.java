@@ -3,7 +3,7 @@ package com.ariari.ariari.domain.recruitment;
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.S3Manager;
+import com.ariari.ariari.commons.image.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
@@ -25,8 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
-
 /**
  * 1. 상세 조회
  * 2. 등록
@@ -46,7 +44,7 @@ public class RecruitmentService {
     private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
     private final EntityDeleteManager entityDeleteManager;
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
 
     public RecruitmentDetailRes findRecruitmentDetail(Long memberId, Long recruitmentId, String clientIp) {
         Member reqMember = memberRepository.findById(memberId).orElse(null);
@@ -85,7 +83,7 @@ public class RecruitmentService {
             recruitmentNote.setRecruitment(recruitment);
         }
 
-        String uri = s3Manager.uploadImage(file, "recruitment");
+        String uri = fileManager.saveFile(file, "recruitment");
         recruitment.setPosterUri(uri);
 
         recruitmentRepository.save(recruitment);

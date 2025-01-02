@@ -3,7 +3,7 @@ package com.ariari.ariari.domain.club;
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.S3Manager;
+import com.ariari.ariari.commons.image.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
@@ -31,7 +31,7 @@ public class ClubService {
     private final ClubMemberRepository clubMemberRepository;
     private final ViewsManager viewsManager;
     private final EntityDeleteManager entityDeleteManager;
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
 
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -69,7 +69,7 @@ public class ClubService {
         clubMemberRepository.save(clubMember);
 
         // 이미지 파일 처리
-        String uri = s3Manager.uploadImage(file, "club");
+        String uri = fileManager.saveFile(file, "club");
         club.setProfileUri(uri);
     }
 

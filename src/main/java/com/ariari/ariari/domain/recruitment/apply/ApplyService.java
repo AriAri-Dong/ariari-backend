@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.S3Manager;
+import com.ariari.ariari.commons.image.FileManager;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
@@ -33,7 +33,7 @@ public class ApplyService {
     private final RecruitmentRepository recruitmentRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ApplyRepository applyRepository;
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
 
     public ApplyDetailRes findApplyDetail(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -72,7 +72,7 @@ public class ApplyService {
 
         // 파일 처리
         if (file != null) {
-            String fileUri = s3Manager.uploadImage(file, "apply");
+            String fileUri = fileManager.saveFile(file, "apply");
             apply.setFileUri(fileUri);
         }
 
