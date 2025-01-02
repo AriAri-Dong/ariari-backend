@@ -29,8 +29,8 @@ public class AuthTestController {
     }
 
     @GetMapping("/token")
-    public String getTokenForTest(@RequestParam(name = "userId") Long userId) {
-        Member member = memberRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+    public String getTokenForTest(@RequestParam String nickname) {
+        Member member = memberRepository.findByNickName(nickname).orElseThrow(NoSuchElementException::new);
         return jwtManager.generateToken(member.getAuthorities(), member.getId(), JwtManager.TokenType.ACCESS_TOKEN);
     }
 

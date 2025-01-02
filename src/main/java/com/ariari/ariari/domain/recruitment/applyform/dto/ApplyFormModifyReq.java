@@ -15,10 +15,17 @@ public class ApplyFormModifyReq {
 
     public ApplyForm toEntity(Club club) {
         List<ApplyQuestion> applyQuestions = this.applyQuestionList.stream().map(ApplyQuestion::new).toList();
-        return new ApplyForm(
+
+        ApplyForm applyForm = new ApplyForm(
                 club,
                 applyQuestions
         );
+
+        for (ApplyQuestion applyQuestion : applyQuestions) {
+            applyQuestion.setApplyForm(applyForm);
+        }
+
+        return applyForm;
     }
 
 }

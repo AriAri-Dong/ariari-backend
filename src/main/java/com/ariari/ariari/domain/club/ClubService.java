@@ -36,10 +36,10 @@ public class ClubService {
     private final DeletedImageService deletedImageService;
 
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = null;
         if (reqMemberId != null) {
-            Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
              reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
         }
 
@@ -49,7 +49,7 @@ public class ClubService {
             viewsManager.addClientIp(club, clientIp);
         }
 
-        return ClubDetailRes.fromEntity(club, reqClubMember);
+        return ClubDetailRes.fromEntity(club, reqClubMember, reqMember);
     }
 
     @Transactional(readOnly = false)

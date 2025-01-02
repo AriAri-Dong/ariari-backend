@@ -39,6 +39,7 @@ public class ApplyForm {
     }
 
 
+
     public Map<Long, ApplyQuestion> getApplyQuestionMap() {
         HashMap<Long, ApplyQuestion> applyQuestionMap = new HashMap<>();
         for (ApplyQuestion applyQuestion : this.applyQuestions) {

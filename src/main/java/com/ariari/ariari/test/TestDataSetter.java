@@ -8,21 +8,37 @@ import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
+import com.ariari.ariari.domain.recruitment.apply.Apply;
+import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
+import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
+import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
+import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.SchoolRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 @Transactional
@@ -34,6 +50,11 @@ public class TestDataSetter {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubBookmarkRepository clubBookmarkRepository;
     private final RecruitmentRepository recruitmentRepository;
+    private final ApplyFormRepository applyFormRepository;
+    private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
+    private final ApplyRepository applyRepository;
+
+    private final EntityManager em;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -47,77 +68,201 @@ public class TestDataSetter {
         Member admin = Member.createMember(null);
         admin.addAuthority(new SimpleGrantedAuthority("ROLE_MANAGER"));
         admin.addAuthority(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Member member1 = Member.createMember(null);
-        member1.setNickName("haus");
-        member1.setSchool(school1);
-        memberRepository.saveAll(List.of(admin, member1));
+        Member m1 = Member.createMember(null);
+        m1.setNickName("m1");
+        m1.setSchool(school1);
+        Member m2 = Member.createMember(null);
+        m2.setNickName("m2");
+        m2.setSchool(school1);
+        Member m3 = Member.createMember(null);
+        m3.setNickName("m3");
+        m3.setSchool(school1);
+        Member m4 = Member.createMember(null);
+        m4.setNickName("m4");
+        m4.setSchool(school1);
+        Member m5 = Member.createMember(null);
+        m5.setNickName("m5");
+        m5.setSchool(school1);
+        Member m6 = Member.createMember(null);
+        m6.setNickName("m6");
+        m6.setSchool(school1);
+        Member m7 = Member.createMember(null);
+        m7.setNickName("m7");
+        m7.setSchool(school2);
+        Member m8 = Member.createMember(null);
+        m8.setNickName("m8");
+        memberRepository.saveAll(List.of(admin, m1, m2, m3, m4, m5, m6, m7, m8));
 
         // club
-        Club club1 = new Club("club1", "intro", ClubCategoryType.AMITY, null);
-        Club club2 = new Club("club2", "intro", ClubCategoryType.AMITY, null);
-        Club club3 = new Club("club3", "intro", ClubCategoryType.AMITY, null);
-        Club club4 = new Club("club4", "intro", ClubCategoryType.SPORTS, null);
-        Club club5 = new Club("club5", "intro", ClubCategoryType.STARTUP, null);
-        Club club6 = new Club("club6", "intro", ClubCategoryType.EMPLOYMENT, null);
-        Club club7 = new Club("club7", "intro", ClubCategoryType.AMITY, school1);
-        Club club8 = new Club("club8", "intro", ClubCategoryType.AMITY, school1);
-        Club club9 = new Club("club9", "intro", ClubCategoryType.AMITY, school1);
-        Club club10 = new Club("club10", "intro", ClubCategoryType.SPORTS, school1);
-        Club club11 = new Club("club11", "intro", ClubCategoryType.STARTUP, school1);
-        Club club12 = new Club("club12", "intro", ClubCategoryType.EMPLOYMENT, school1);
-        clubRepository.saveAll(List.of(club1, club2, club3, club4, club5, club6, club7, club8, club9, club10, club11, club12));
+        Club c1 = new Club("c1", "intro", ClubCategoryType.AMITY, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.UNIVERSITY_STUDENT, school1);
+        Club c2 = new Club("c2", "intro", ClubCategoryType.AMITY, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.UNIVERSITY_STUDENT, school1);
+        Club c3 = new Club("c3", "intro", ClubCategoryType.AMITY, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.UNIVERSITY_STUDENT, school1);
+        Club c4 = new Club("c4", "intro", ClubCategoryType.SPORTS, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.UNIVERSITY_STUDENT, school1);
+        Club c5 = new Club("c5", "intro", ClubCategoryType.STARTUP, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.UNIVERSITY_STUDENT, school1);
+        Club c6 = new Club("c6", "intro", ClubCategoryType.EMPLOYMENT, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.UNIVERSITY_STUDENT, school1);
+        Club c7 = new Club("c7", "intro", ClubCategoryType.AMITY, ClubRegionType.JEONNAM, ParticipantType.UNIVERSITY_STUDENT, school2);
+        Club c8 = new Club("c8", "intro", ClubCategoryType.AMITY, ClubRegionType.JEONNAM, ParticipantType.UNIVERSITY_STUDENT, school2);
+        Club c9 = new Club("c9", "intro", ClubCategoryType.AMITY, ClubRegionType.SEOUL_GYEONGGI, ParticipantType.OFFICE_WORKER, null);
+        Club c10 = new Club("c10", "intro", ClubCategoryType.SPORTS, ClubRegionType.CHUNGCHEONG, ParticipantType.OFFICE_WORKER, null);
+        Club c11 = new Club("c11", "intro", ClubCategoryType.STARTUP, ClubRegionType.GYEONGNAM, ParticipantType.OFFICE_WORKER, null);
+        Club c12 = new Club("c12", "intro", ClubCategoryType.EMPLOYMENT, ClubRegionType.JEJU, ParticipantType.OFFICE_WORKER, null);
+        clubRepository.saveAll(List.of(c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12));
 
-        club3.addViews(4);
-        club2.addViews(1);
-        club6.addViews(3);
+        c3.addViews(4);
+        c2.addViews(1);
+        c6.addViews(3);
 
         // clubMember
-        ClubMember clubMember1 = new ClubMember(
-                "clubMember1",
-                ClubMemberRoleType.ADMIN,
-                member1,
-                club1
-        );
-        ClubMember clubMember2 = new ClubMember(
-                "clubMember2",
-                ClubMemberRoleType.ADMIN,
-                member1,
-                club4
-        );
-        ClubMember clubMember3 = new ClubMember(
-                "clubMember3",
-                ClubMemberRoleType.ADMIN,
-                member1,
-                club12
-        );
-        clubMemberRepository.saveAll(List.of(clubMember1, clubMember2, clubMember3));
+        ClubMember cm1_1 = new ClubMember("cm1_1", ClubMemberRoleType.ADMIN, m1, c1);
+        ClubMember cm1_2 = new ClubMember("cm1_2", ClubMemberRoleType.MANAGER, m2, c1);
+        ClubMember cm1_3 = new ClubMember("cm1_3", ClubMemberRoleType.GENERAL, m3, c1);
+        ClubMember cm1_4 = new ClubMember("cm1_4", ClubMemberRoleType.GENERAL, m4, c1);
+
+        ClubMember cm2_1 = new ClubMember("cm2_1", ClubMemberRoleType.GENERAL, m1, c2);
+        ClubMember cm2_2 = new ClubMember("cm2_2", ClubMemberRoleType.ADMIN, m2, c2);
+        ClubMember cm2_3 = new ClubMember("cm2_3", ClubMemberRoleType.GENERAL, m3, c2);
+
+        ClubMember cm3_1 = new ClubMember("clubMember3_1", ClubMemberRoleType.ADMIN, m1, c3);
+        ClubMember cm4_1 = new ClubMember("clubMember4_1", ClubMemberRoleType.ADMIN, m1, c4);
+        ClubMember cm5_1 = new ClubMember("clubMember5_1", ClubMemberRoleType.GENERAL, m1, c5);
+        ClubMember cm6_1 = new ClubMember("clubMember6_1", ClubMemberRoleType.GENERAL, m1, c6);
+
+        ClubMember cm7_1 = new ClubMember("clubMember7_1", ClubMemberRoleType.ADMIN, m7, c7);
+        ClubMember cm8_1 = new ClubMember("clubMember8_1", ClubMemberRoleType.ADMIN, m7, c8);
+
+        ClubMember cm9_1 = new ClubMember("clubMember9_1", ClubMemberRoleType.ADMIN, m1, c9);
+        ClubMember cm10_1 = new ClubMember("clubMember10_1", ClubMemberRoleType.ADMIN, m1, c10);
+        ClubMember cm11_1 = new ClubMember("clubMember11_1", ClubMemberRoleType.GENERAL, m1, c11);
+        ClubMember cm12_1 = new ClubMember("clubMember12_1", ClubMemberRoleType.GENERAL, m1, c12);
+        clubMemberRepository.saveAll(List.of(cm1_1, cm1_2, cm1_3, cm1_4, cm2_1, cm2_2, cm2_3, cm3_1, cm4_1, cm5_1, cm6_1, cm7_1, cm8_1, cm9_1, cm10_1, cm11_1, cm12_1));
 
         // clubBookmark
-        ClubBookmark clubBookmark1 = new ClubBookmark(member1, club1);
-        ClubBookmark clubBookmark2 = new ClubBookmark(member1, club2);
-        ClubBookmark clubBookmark3 = new ClubBookmark(member1, club3);
-        ClubBookmark clubBookmark4 = new ClubBookmark(member1, club7);
-        ClubBookmark clubBookmark5 = new ClubBookmark(member1, club8);
-        ClubBookmark clubBookmark6 = new ClubBookmark(null, club3);
-        ClubBookmark clubBookmark7 = new ClubBookmark(null, club3);
-        ClubBookmark clubBookmark8 = new ClubBookmark(null, club2);
+        ClubBookmark cb1 = new ClubBookmark(m1, c1);
+        ClubBookmark cb2 = new ClubBookmark(m1, c2);
+        ClubBookmark cb3 = new ClubBookmark(m1, c3);
+        ClubBookmark cb4 = new ClubBookmark(m1, c4);
+        ClubBookmark cb5 = new ClubBookmark(m1, c11);
+        ClubBookmark cb6 = new ClubBookmark(m1, c12);
+        ClubBookmark cb7 = new ClubBookmark(m2, c8);
+        ClubBookmark cb8 = new ClubBookmark(m2, c12);
+        clubBookmarkRepository.saveAll(List.of(cb1, cb2, cb3, cb4, cb5, cb6, cb7, cb8));
 
-        clubBookmarkRepository.saveAll(List.of(clubBookmark1, clubBookmark2, clubBookmark3, clubBookmark4, clubBookmark5));
+        // applyForm
+        ApplyQuestion aq1_1 = new ApplyQuestion("aq1_1");
+        ApplyQuestion aq1_2 = new ApplyQuestion("aq1_2");
+        ApplyQuestion aq1_3 = new ApplyQuestion("aq1_3");
+        ApplyForm af1 = new ApplyForm(c1, List.of(aq1_1, aq1_2, aq1_3));
+        aq1_1.setApplyForm(af1);
+        aq1_2.setApplyForm(af1);
+        aq1_3.setApplyForm(af1);
+        ApplyQuestion aq2_1 = new ApplyQuestion("aq2_1");
+        ApplyQuestion aq2_2 = new ApplyQuestion("aq2_2");
+        ApplyQuestion aq2_3 = new ApplyQuestion("aq2_3");
+        ApplyForm af2 = new ApplyForm(c2, List.of(aq2_1, aq2_2, aq2_3));
+        aq2_1.setApplyForm(af2);
+        aq2_2.setApplyForm(af2);
+        aq2_3.setApplyForm(af2);
+        ApplyQuestion aq3_1 = new ApplyQuestion("aq3_1");
+        ApplyQuestion aq3_2 = new ApplyQuestion("aq3_2");
+        ApplyQuestion aq3_3 = new ApplyQuestion("aq3_3");
+        ApplyForm af3 = new ApplyForm(c9, List.of(aq3_1, aq3_2, aq3_3));
+        aq3_1.setApplyForm(af3);
+        aq3_2.setApplyForm(af3);
+        aq3_3.setApplyForm(af3);
+        ApplyQuestion aq4_1 = new ApplyQuestion("aq4_1");
+        ApplyQuestion aq4_2 = new ApplyQuestion("aq4_2");
+        ApplyQuestion aq4_3 = new ApplyQuestion("aq4_3");
+        ApplyForm af4 = new ApplyForm(c10, List.of(aq4_1, aq4_2, aq4_3));
+        aq4_1.setApplyForm(af4);
+        aq4_2.setApplyForm(af4);
+        aq4_3.setApplyForm(af4);
+        applyFormRepository.saveAll(List.of(af1, af2, af3, af4));
 
         // recruitment
-        Recruitment recruitment1 = new Recruitment("recruitment1", "body1", club1);
-        Recruitment recruitment2 = new Recruitment("recruitment2", "body2", club2);
-        Recruitment recruitment3 = new Recruitment("recruitment3", "body3", club3);
-        Recruitment recruitment4 = new Recruitment("recruitment4", "body4", club4);
-        Recruitment recruitment5 = new Recruitment("recruitment5", "body5", club5);
-        Recruitment recruitment6 = new Recruitment("recruitment6", "body6", club6);
-        Recruitment recruitment7 = new Recruitment("recruitment7", "body7", club7);
-        Recruitment recruitment8 = new Recruitment("recruitment8", "body8", club8);
-        Recruitment recruitment9 = new Recruitment("recruitment9", "body9", club9);
-        Recruitment recruitment10 = new Recruitment("recruitment10", "body10", club10);
-        Recruitment recruitment11 = new Recruitment("recruitment11", "body11", club11);
-        Recruitment recruitment12 = new Recruitment("recruitment12", "body12", club12);
-        recruitmentRepository.saveAll(List.of(recruitment1, recruitment2, recruitment3, recruitment4, recruitment5, recruitment6, recruitment7, recruitment8, recruitment9, recruitment10, recruitment11, recruitment12));
+        RecruitmentNote rn1_1 = new RecruitmentNote("question1", "answer1");
+        RecruitmentNote rn1_2 = new RecruitmentNote("question2", "answer2");
+        Recruitment r1 = new Recruitment("r1", "body1", ProcedureType.DOCUMENT, 10, LocalDateTime.now().plusMonths(1), c1, af1, List.of(rn1_1, rn1_2));
+        rn1_1.setRecruitment(r1);
+        rn1_2.setRecruitment(r1);
+        RecruitmentNote rn2_1 = new RecruitmentNote("question1", "answer1");
+        RecruitmentNote rn2_2 = new RecruitmentNote("question2", "answer2");
+        Recruitment r2 = new Recruitment("r2", "body2", ProcedureType.DOCUMENT, 10, LocalDateTime.now().plusMonths(1), c2, af2, List.of(rn2_1, rn2_2));
+        rn2_1.setRecruitment(r2);
+        rn2_2.setRecruitment(r2);
+        Recruitment r3 = new Recruitment("r3", "body3", c3);
+        Recruitment r4 = new Recruitment("r4", "body4", c4);
+        Recruitment r5 = new Recruitment("r5", "body5", c5);
+        Recruitment r6 = new Recruitment("r6", "body6", c6);
+        Recruitment r7 = new Recruitment("r7", "body7", c7);
+        Recruitment r8 = new Recruitment("r8", "body8", c8);
+        RecruitmentNote rn9_1 = new RecruitmentNote("q1", "a1");
+        RecruitmentNote rn9_2 = new RecruitmentNote("q2", "a2");
+        Recruitment r9 = new Recruitment("r9", "body9", ProcedureType.INTERVIEW, 20, LocalDateTime.now().plusMonths(2), c9, af3, List.of(rn9_1, rn9_2));
+        rn9_1.setRecruitment(r9);
+        rn9_2.setRecruitment(r9);
+        RecruitmentNote rn10_1 = new RecruitmentNote("q1", "a1");
+        RecruitmentNote rn10_2 = new RecruitmentNote("q2", "a2");
+        Recruitment r10 = new Recruitment("r10", "body10", ProcedureType.INTERVIEW, 30, LocalDateTime.now().plusMonths(3), c10, af4, List.of(rn10_1, rn10_2));
+        rn10_1.setRecruitment(r10);
+        rn10_2.setRecruitment(r10);
+        Recruitment r11 = new Recruitment("r11", "body11", c11);
+        Recruitment r12 = new Recruitment("r12", "body12", c12);
+        Recruitment r13 = new Recruitment("r13", "body12", c1);
+        Recruitment r14 = new Recruitment("r14", "body12", c1);
+        Recruitment r15 = new Recruitment("r15", "body12", c1);
+        recruitmentRepository.saveAll(List.of(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15));
+
+        // recruitmentBookmark
+        RecruitmentBookmark rb1 = new RecruitmentBookmark(r1, m1);
+        RecruitmentBookmark rb2 = new RecruitmentBookmark(r2, m1);
+        RecruitmentBookmark rb3 = new RecruitmentBookmark(r3, m1);
+        RecruitmentBookmark rb4 = new RecruitmentBookmark(r9, m1);
+        recruitmentBookmarkRepository.saveAll(List.of(rb1, rb2, rb3, rb4));
+
+        // apply
+        ApplyAnswer aa1_1_1 = new ApplyAnswer("aa1_1_1", aq1_1);
+        ApplyAnswer aa1_2_1 = new ApplyAnswer("aa1_2_1", aq1_2);
+        ApplyAnswer aa1_3_1 = new ApplyAnswer("aa1_3_1", aq1_3);
+        Apply a1 = new Apply("a1", "portfolioUri1", m5, r1, List.of(aa1_1_1, aa1_2_1, aa1_3_1));
+        aa1_1_1.setApply(a1);
+        aa1_2_1.setApply(a1);
+        aa1_3_1.setApply(a1);
+        ApplyAnswer aa1_1_2 = new ApplyAnswer("aa1_1_2", aq1_1);
+        ApplyAnswer aa1_2_2 = new ApplyAnswer("aa1_2_2", aq1_2);
+        ApplyAnswer aa1_3_2 = new ApplyAnswer("aa1_3_2", aq1_3);
+        Apply a2 = new Apply("a2", "portfolioUri2", m6, r1, List.of(aa1_1_2, aa1_2_2, aa1_3_2));
+        aa1_1_2.setApply(a1);
+        aa1_2_2.setApply(a1);
+        aa1_3_2.setApply(a1);
+        ApplyAnswer aa2_1_1 = new ApplyAnswer("aa2_1_1", aq2_1);
+        ApplyAnswer aa2_2_1 = new ApplyAnswer("aa2_2_1", aq2_2);
+        ApplyAnswer aa2_3_1 = new ApplyAnswer("aa2_3_1", aq2_3);
+        Apply a3 = new Apply("a3", "portfolioUri3", m5, r2, List.of(aa2_1_1, aa2_2_1, aa2_3_1));
+        aa2_1_1.setApply(a3);
+        aa2_2_1.setApply(a3);
+        aa2_3_1.setApply(a3);
+        ApplyAnswer aa2_1_2 = new ApplyAnswer("aa2_1_2", aq2_1);
+        ApplyAnswer aa2_2_2 = new ApplyAnswer("aa2_2_2", aq2_2);
+        ApplyAnswer aa2_3_2 = new ApplyAnswer("aa2_3_2", aq2_3);
+        Apply a4 = new Apply("a4", "portfolioUri4", m6, r2, List.of(aa2_1_2, aa2_2_2, aa2_3_2));
+        aa2_1_2.setApply(a4);
+        aa2_2_2.setApply(a4);
+        aa2_3_2.setApply(a4);
+        ApplyAnswer aa3_1_1 = new ApplyAnswer("aa3_1_1", aq3_1);
+        ApplyAnswer aa3_2_1 = new ApplyAnswer("aa3_2_1", aq3_2);
+        ApplyAnswer aa3_3_1 = new ApplyAnswer("aa3_3_1", aq3_3);
+        Apply a5 = new Apply("a5", "portfolioUri5", m1, r9, List.of(aa3_1_1, aa3_2_1, aa3_3_1));
+        aa3_1_1.setApply(a5);
+        aa3_2_1.setApply(a5);
+        aa3_3_1.setApply(a5);
+        ApplyAnswer aa4_1_1 = new ApplyAnswer("aa4_1_1", aq4_1);
+        ApplyAnswer aa4_2_1 = new ApplyAnswer("aa4_2_1", aq4_2);
+        ApplyAnswer aa4_3_1 = new ApplyAnswer("aa4_3_1", aq4_3);
+        Apply a6 = new Apply("a6", "portfolioUri6", m1, r10, List.of(aa4_1_1, aa4_2_1, aa4_3_1));
+        aa4_1_1.setApply(a6);
+        aa4_2_1.setApply(a6);
+        aa4_3_1.setApply(a6);
+        applyRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6));
 
     }
 

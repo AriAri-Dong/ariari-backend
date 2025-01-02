@@ -11,6 +11,7 @@ import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,7 +106,7 @@ public class ClubController {
     /**
      * 수정 예정
      */
-    @PatchMapping("/{clubId}")
+    @PatchMapping(value = "/{clubId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void modifyClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                            @PathVariable Long clubId,
                            @RequestPart ClubModifyReq modifyReq,

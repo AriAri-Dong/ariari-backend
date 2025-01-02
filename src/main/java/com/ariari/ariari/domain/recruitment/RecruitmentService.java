@@ -83,8 +83,10 @@ public class RecruitmentService {
             recruitmentNote.setRecruitment(recruitment);
         }
 
-        String uri = fileManager.saveFile(file, "recruitment");
-        recruitment.setPosterUri(uri);
+        if (file != null) {
+            String uri = fileManager.saveFile(file, "recruitment");
+            recruitment.setPosterUri(uri);
+        }
 
         recruitmentRepository.save(recruitment);
     }

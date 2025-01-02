@@ -87,16 +87,6 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
         return ViewsContentType.CLUB;
     }
 
-    /**
-     * for test
-     */
-    public Club(String name, String body, ClubCategoryType clubCategoryType, School school) {
-        this.name = name;
-        this.body = body;
-        this.clubCategoryType = clubCategoryType;
-        this.school = school;
-    }
-
     public Club(String name, String body, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, School school) {
         this.name = name;
         this.body = body;
