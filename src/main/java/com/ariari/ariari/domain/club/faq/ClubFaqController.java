@@ -9,7 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/clubs/{clubId}/clubFaqs")
+@RequestMapping("/clubs/{clubId}/faqs")
 @RequiredArgsConstructor
 public class ClubFaqController {
 

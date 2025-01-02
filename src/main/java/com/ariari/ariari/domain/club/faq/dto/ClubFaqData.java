@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.faq.dto;
 
+import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
 import com.ariari.ariari.domain.club.faq.ClubFaq;
 import com.ariari.ariari.domain.club.faq.enums.ClubFaqColorType;
 import lombok.AllArgsConstructor;
@@ -11,17 +12,22 @@ import java.util.List;
 @AllArgsConstructor
 public class ClubFaqData {
 
+    private Long id;
     private String title;
     private String body;
     private String clubFaqClassification;
     private ClubFaqColorType clubFaqColorType;
 
+    private ClubMemberData clubMemberData;
+
     public static ClubFaqData fromEntity(ClubFaq clubFaq) {
         return new ClubFaqData(
+                clubFaq.getId(),
                 clubFaq.getTitle(),
                 clubFaq.getBody(),
                 clubFaq.getClubFaqClassification(),
-                clubFaq.getClubFaqColorType()
+                clubFaq.getClubFaqColorType(),
+                ClubMemberData.fromEntity(clubFaq.getClubMember())
         );
     }
 

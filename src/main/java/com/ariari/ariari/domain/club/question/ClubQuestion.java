@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.club.question;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.question.answer.ClubAnswer;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,5 +37,15 @@ public class ClubQuestion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToOne(mappedBy = "clubQuestion")
+    public ClubAnswer clubAnswer;
+
+    public ClubQuestion(String title, String body, Club club, Member member) {
+        this.title = title;
+        this.body = body;
+        this.club = club;
+        this.member = member;
+    }
 
 }
