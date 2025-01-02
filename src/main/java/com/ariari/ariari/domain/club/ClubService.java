@@ -74,13 +74,16 @@ public class ClubService {
         clubMemberRepository.save(clubMember);
 
         // 이미지 파일 처리
-        String uri = fileManager.saveFile(file, "club");
-        club.setProfileUri(uri);
+        if (file != null) {
+            String uri = fileManager.saveFile(file, "club");
+            club.setProfileUri(uri);
+        }
+
     }
 
     // 디자인 x
     @Transactional(readOnly = false)
-    public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq) {
+    public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq, MultipartFile profileFile, MultipartFile bannerFile) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotFoundEntityException::new);
@@ -91,6 +94,20 @@ public class ClubService {
         }
 
         modifyReq.modifyEntity(club);
+
+        // 이미지 처리
+        if (profileFile != null) {
+            String profileUri = fileManager.saveFile(profileFile, "club");
+            fileManager.deleteFile(club.getProfileUri());
+            club.setProfileUri(profileUri);
+        }
+
+        if (bannerFile != null) {
+            String bannerUri = fileManager.saveFile(bannerFile, "club");
+            fileManager.deleteFile(club.getBannerUri());
+            club.setBannerUri(bannerUri);
+        }
+
     }
 
     @Transactional(readOnly = false)

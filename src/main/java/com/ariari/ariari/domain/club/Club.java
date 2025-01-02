@@ -32,11 +32,14 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
     @Column(length = 20)
     private String name;
 
+    @Setter
     @Column(length = 1000)
     private String body;
 
     @Setter
     private String profileUri;
+
+    @Setter
     private String bannerUri;
 
     @Enumerated(EnumType.STRING)

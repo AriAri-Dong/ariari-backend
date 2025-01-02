@@ -108,9 +108,11 @@ public class ClubController {
     @PatchMapping("/{clubId}")
     public void modifyClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                            @PathVariable Long clubId,
-                           @RequestBody ClubModifyReq modifyReq) {
+                           @RequestPart ClubModifyReq modifyReq,
+                           @RequestPart(required = false) MultipartFile profileFile,
+                           @RequestPart(required = false) MultipartFile bannerFile) {
         Long reqMemberId = getMemberId(userDetails, true);
-        clubService.modifyClub(reqMemberId, clubId, modifyReq);
+        clubService.modifyClub(reqMemberId, clubId, modifyReq, profileFile, bannerFile);
     }
 
     @DeleteMapping("/{clubId}")
