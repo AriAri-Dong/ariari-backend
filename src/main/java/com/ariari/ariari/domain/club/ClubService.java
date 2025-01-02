@@ -35,6 +35,11 @@ public class ClubService {
 
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = null;
+        if (reqMemberId != null) {
+            Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+             reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
+        }
 
         // views 처리
         if (!viewsManager.checkForDuplicateView(club, clientIp)) {
@@ -42,7 +47,7 @@ public class ClubService {
             viewsManager.addClientIp(club, clientIp);
         }
 
-        return ClubDetailRes.fromEntity(club);
+        return ClubDetailRes.fromEntity(club, reqClubMember);
     }
 
     @Transactional(readOnly = false)
@@ -73,6 +78,7 @@ public class ClubService {
         club.setProfileUri(uri);
     }
 
+    // 디자인 x
     @Transactional(readOnly = false)
     public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);

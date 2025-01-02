@@ -22,6 +22,10 @@ public class ClubMemberData {
     private ProfileType profileType;
 
     public static ClubMemberData fromEntity(ClubMember clubMember) {
+        if (clubMember == null) {
+            return null;
+        }
+
         return ClubMemberData.builder()
                 .id(clubMember.getId())
                 .name(clubMember.getName())

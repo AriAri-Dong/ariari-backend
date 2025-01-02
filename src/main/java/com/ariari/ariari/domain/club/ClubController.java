@@ -89,7 +89,6 @@ public class ClubController {
                                         @PathVariable Long clubId,
                                         HttpServletRequest request) {
         Long reqMemberId = getMemberId(userDetails, false);
-
         String clientIp = ViewsManager.getClientIp(request);
 
         return clubService.findClubDetail(reqMemberId, clubId, clientIp);
