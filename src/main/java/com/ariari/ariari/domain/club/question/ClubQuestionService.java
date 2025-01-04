@@ -53,7 +53,7 @@ public class ClubQuestionService {
         if (!clubQuestion.getMember().equals(reqMember)) {
             Club club = clubQuestion.getClub();
             ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubQuestionAuthException::new);
-            if ( reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
+            if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
                 throw new NoClubQuestionAuthException();
             }
         }

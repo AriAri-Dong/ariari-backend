@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
 import com.ariari.ariari.domain.club.question.answer.dto.req.ClubAnswerSaveReq;
+import com.ariari.ariari.domain.club.question.answer.exception.ExistingClubAnswerException;
 import com.ariari.ariari.domain.club.question.answer.exception.NoClubAnswerException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -34,6 +35,10 @@ public class ClubAnswerService {
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
             throw new NoClubAuthException();
+        }
+
+        if (clubAnswerRepository.findByClubQuestion(clubQuestion).isPresent()) {
+            throw new ExistingClubAnswerException();
         }
 
         ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion, reqClubMember);

@@ -34,7 +34,6 @@ public class ClubMemberController {
         return clubMemberService.findClubMemberList(reqMemberId, clubId, statusType, pageable);
     }
 
-    // 동아리 회원 권한 수정
     @Operation(summary = "동아리 회원 권한 수정", description = "동아리 회원 권한을 수정합니다. 최고 관리자 권한은 [최고 관리자 권한 위임] API를 사용해야 합니다. '스텝' 권한 이상의 동아리 회원이 타 동아리 회원의 권한을 수정할 수 있습니다.")
     @PutMapping("/{clubMemberId}/role")
     public void modifyRoleType(@AuthenticationPrincipal CustomUserDetails userDetails,
@@ -50,7 +49,6 @@ public class ClubMemberController {
         clubMemberService.modifyRoleType(reqMemberId, clubId, clubMemberId, roleType);
     }
 
-    // 최고 관리자 권한 위임
     @Operation(summary = "최고 관리자 권한 위임", description = "최고 관리자 권한을 위임합니다. '최고 관리자' 동아리 회원만이 최고 관리자 권한을 위임할 수 있습니다.")
     @PatchMapping("/{clubMemberId}/entrust-admin")
     public void entrustAdmin(@AuthenticationPrincipal CustomUserDetails userDetails,
@@ -60,7 +58,6 @@ public class ClubMemberController {
         clubMemberService.entrustAdmin(reqMemberId, clubId, clubMemberId);
     }
 
-    // 동아리 회원 상태 수정
     @Operation(summary = "동아리 회원 상태 수정", description = "1명의 동아리 회원 상태를 수정합니다.")
     @PutMapping("/{clubMemberId}/status")
     public void modifyStatusType(@AuthenticationPrincipal CustomUserDetails userDetails,
@@ -71,7 +68,6 @@ public class ClubMemberController {
         clubMemberService.modifyStatusType(reqMemberId, clubId, clubMemberId, statusType);
     }
 
-    // 동아리 회원 상태 배치 수정
     @Operation(summary = "동아리 회원 상태 배치 수정", description = "여러 동아리 회원 상태를 수정합니다.")
     @PutMapping("/status")
     public void modifyStatusTypes(@AuthenticationPrincipal CustomUserDetails userDetails,
@@ -82,7 +78,6 @@ public class ClubMemberController {
         clubMemberService.modifyStatusTypes(reqMemberId, clubId, clubMemberIds, statusType);
     }
 
-    // 동아리 회원 삭제
     @Operation(summary = "동아리 회원 삭제", description = "동아리 회원을 삭제합니다.")
     @DeleteMapping("/{clubMemberId}")
     public void removeClubMember(@AuthenticationPrincipal CustomUserDetails userDetails,
