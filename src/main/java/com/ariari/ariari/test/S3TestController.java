@@ -20,7 +20,7 @@ public class S3TestController {
             String imageUrl = fileManager.saveFile(file, "도메인명");
             return "File uploaded successfully! imageUrl: " + imageUrl;
         } catch (Exception e) {
-            log.info("★★★★★★★★★★★★★★★★★★★★★★★★★UPLOAD ERROR"); // 예외 처리 수정 예정
+            log.error("★★★★★★★★★★★★★★★★★★★★★★★★★UPLOAD ERROR", e); // 예외 처리 수정 예정
             return "File upload failed!";
         }
     }

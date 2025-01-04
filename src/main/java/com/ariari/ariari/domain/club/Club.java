@@ -57,6 +57,7 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
     private Long views = 0L;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
     private LocalDateTime deletedDateTime;
 

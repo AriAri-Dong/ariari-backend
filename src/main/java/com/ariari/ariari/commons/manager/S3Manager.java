@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-@Component
+//@Component
 public class S3Manager implements FileManager {
     private final AmazonS3 amazonS3;
 
