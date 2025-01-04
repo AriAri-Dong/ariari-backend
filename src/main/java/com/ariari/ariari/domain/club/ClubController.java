@@ -56,11 +56,12 @@ public class ClubController {
         return clubListService.searchInternalPage(reqMemberId, condition, pageable);
     }
 
-    @Operation(summary = "내 동아리 조회", description = "내가 속한 전체 동아리 리스트를 조회합니다.")
+    @Operation(summary = "내 동아리 조회", description = "내가 속한 전체 동아리 리스트를 조회합니다. (페이지네이션)")
     @GetMapping("/my")
-    public ClubListRes findMyClubList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ClubListRes findMyClubList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                      Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
-        return clubListService.findMyClubList(reqMemberId);
+        return clubListService.findMyClubList(reqMemberId, pageable);
     }
 
     @Operation(summary = "내 북마크 동아리 조회", description = "내가 북마크 등록한 동아리 리스트를 조회합니다. (페이지네이션)")
@@ -117,7 +118,7 @@ public class ClubController {
     }
 
     @Operation(summary = "동아리 수정", description = "")
-    @PatchMapping(value = "/{clubId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{clubId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void modifyClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                            @PathVariable Long clubId,
                            @RequestPart ClubModifyReq modifyReq,

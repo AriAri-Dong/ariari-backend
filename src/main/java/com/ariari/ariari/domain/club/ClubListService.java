@@ -59,10 +59,10 @@ public class ClubListService {
         return ClubListRes.fromPage(page, reqMember);
     }
 
-    public ClubListRes findMyClubList(Long reqMemberId) {
+    public ClubListRes findMyClubList(Long reqMemberId, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        List<ClubMember> clubMembers = clubMemberRepository.findByMember(reqMember);
-        return ClubListRes.fromClubMemberPage(clubMembers, reqMember);
+        Page<ClubMember> page = clubMemberRepository.findByMember(reqMember, pageable);
+        return ClubListRes.fromClubMemberPage(page, reqMember);
     }
 
     public ClubListRes findMyBookmarkClubsList(Long reqMemberId, Pageable pageable) {

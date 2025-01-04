@@ -32,12 +32,12 @@ public class ClubListRes {
         );
     }
 
-    public static ClubListRes fromClubMemberPage(List<ClubMember> clubMembers, Member reqMember) {
-        List<Club> clubs = clubMembers.stream().map(ClubMember::getClub).toList();
+    public static ClubListRes fromClubMemberPage(Page<ClubMember> page, Member reqMember) {
+        List<Club> clubs = page.getContent().stream().map(ClubMember::getClub).toList();
 
         return new ClubListRes(
-                ClubData.fromEntities(clubs, reqMember)
-                ,null
+                ClubData.fromEntities(clubs, reqMember),
+                PageInfo.fromPage(page)
         );
     }
 

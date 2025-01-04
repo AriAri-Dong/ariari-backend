@@ -35,11 +35,12 @@ public class ClubService {
     private final FileManager fileManager;
     private final DeletedImageService deletedImageService;
 
+    @Transactional
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Member reqMember = memberRepository.findById(reqMemberId).orElse(null);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = null;
-        if (reqMemberId != null) {
+        if (reqMember != null) {
              reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
         }
 
@@ -52,7 +53,7 @@ public class ClubService {
         return ClubDetailRes.fromEntity(club, reqClubMember, reqMember);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void saveClub(Long reqMemberId, ClubSaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
@@ -84,7 +85,7 @@ public class ClubService {
     }
 
     // 디자인 x
-    @Transactional(readOnly = false)
+    @Transactional
     public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq, MultipartFile profileFile, MultipartFile bannerFile) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -112,7 +113,7 @@ public class ClubService {
 
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void removeClub(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
