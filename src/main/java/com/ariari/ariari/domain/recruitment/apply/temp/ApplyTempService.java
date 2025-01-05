@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
+import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.image.FileManager;
 import com.ariari.ariari.domain.club.Club;
@@ -53,7 +54,7 @@ public class ApplyTempService {
         if (club.getSchool() != null) {
             School reqSchool = reqMember.getSchool();
             if (reqSchool == null || !reqSchool.equals(club.getSchool())) {
-                throw new SavingApplyException();
+                throw new NoSchoolAuthException();
             }
         }
 

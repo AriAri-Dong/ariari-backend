@@ -20,10 +20,11 @@ public class ApplyQuestion {
     @Column(name = "question_id")
     private Long id;
 
-    @Column(length = 30)
+    @Column(length = 50)
     private String body;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @Setter

@@ -27,6 +27,7 @@ public class ClubQuestion {
     private String body;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
     private LocalDateTime deletedDateTime;
 

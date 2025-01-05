@@ -1,5 +1,6 @@
 package com.ariari.ariari.commons.auth.springsecurity;
 
+import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public CustomUserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByIdWithAuthorities(Long.valueOf(memberId)).orElseThrow(NoSuchElementException::new);
+        Member member = memberRepository.findByIdWithAuthorities(Long.valueOf(memberId)).orElseThrow(NotFoundEntityException::new);
         return new CustomUserDetails(member.getId(), member.getAuthorities());
     }
 

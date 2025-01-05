@@ -25,6 +25,7 @@ public class ClubAnswer {
     private String body;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @OneToOne(fetch = FetchType.LAZY)

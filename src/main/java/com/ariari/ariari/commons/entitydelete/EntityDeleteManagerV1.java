@@ -39,6 +39,7 @@ public class EntityDeleteManagerV1 implements EntityDeleteManager {
             try {
                 jpaRepository.getClass().getMethod("delete", Object.class).invoke(jpaRepository, entity);
             } catch (Exception e) {
+                log.info("!!! {} {}", entity, entity.getClass());
                 log.error("엔티티 삭제 중 리플렉션 에러 발생", e);
                 throw new UnexpectedException();
             }
