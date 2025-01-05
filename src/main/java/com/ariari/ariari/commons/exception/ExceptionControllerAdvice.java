@@ -15,6 +15,7 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public ExceptionRes handleInternalException(HttpServletRequest request, Exception e) {
+        log.error("exception !!", e);
         return ExceptionRes.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message("알 수 없는 에러가 발생했습니다.")

@@ -1,6 +1,17 @@
 package com.ariari.ariari.commons.entitydelete;
 
 import com.ariari.ariari.commons.exception.exceptions.UnexpectedException;
+import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
+import com.ariari.ariari.domain.club.attendance.AttendanceRecord;
+import com.ariari.ariari.domain.club.event.ClubEvent;
+import com.ariari.ariari.domain.club.faq.ClubFaq;
+import com.ariari.ariari.domain.club.financial.FinancialRecord;
+import com.ariari.ariari.domain.club.notice.ClubNotice;
+import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.domain.club.question.ClubQuestion;
+import com.ariari.ariari.domain.club.question.answer.ClubAnswer;
+import com.ariari.ariari.domain.club.review.ClubReview;
 import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
@@ -8,8 +19,12 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +51,10 @@ public class EntityRelationManager {
     @EventListener(ApplicationReadyEvent.class)
     public void initChildEntityMap() {
         CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, Apply.class, MemberAlarm.class, ClubBookmark.class));
-        CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class));
-        CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, ApplyQuestion.class, RecruitmentImage.class));
+        CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class, ClubNotice.class, ClubEvent.class, ApplyForm.class, FinancialRecord.class, ClubActivity.class, ClubFaq.class, ClubQuestion.class));
+        CHILD_ENTITY_MAP.put(ClubMember.class, List.of(ClubAnswer.class, ClubReview.class, AttendanceRecord.class, PassReview.class, ClubActivityComment.class, ClubNotice.class, ClubFaq.class, ClubActivity.class));
+        CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, ApplyTemp.class, RecruitmentImage.class, RecruitmentNote.class, RecruitmentBookmark.class));
+        CHILD_ENTITY_MAP.put(ApplyForm.class, List.of(Recruitment.class));
         CHILD_ENTITY_MAP.put(Apply.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(ApplyQuestion.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(School.class, List.of(Club.class, Member.class));
@@ -59,6 +76,7 @@ public class EntityRelationManager {
                 childEntities.addAll(result);
             }
         } catch (Exception e) {
+            log.info("parent : {}", entity.getClass());
             log.error("자식 엔티티 조회 중 리플렉션 에러 발생", e);
             throw new UnexpectedException();
         }

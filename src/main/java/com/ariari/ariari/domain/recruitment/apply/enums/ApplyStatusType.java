@@ -5,6 +5,6 @@ public enum ApplyStatusType {
     PENDENCY,
     APPROVE,
     REFUSAL,
-    STANDBY
+    INTERVIEW
 
 }

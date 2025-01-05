@@ -6,6 +6,9 @@ import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.domain.school.dto.SchoolData;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class ClubData {
 
     private Long id;
@@ -30,9 +33,11 @@ public class ClubData {
 
     private Boolean isMyBookmark = false;
 
+    private SchoolData schoolData;
+
     public static ClubData fromEntity(Club club, Member reqMember) {
         Set<Club> myBookmarkClubs = getMyBookmarkClubs(reqMember);
-        return fromEntity(club, myBookmarkClubs);
+        return fromEntity(club, myBookmarkClubs, reqMember);
     }
 
     public static List<ClubData> fromEntities(List<Club> clubs, Member reqMember) {
@@ -41,23 +46,28 @@ public class ClubData {
 
         List<ClubData> clubDataList = new ArrayList<>();
         for (Club club : clubs) {
-            clubDataList.add(fromEntity(club, myBookmarkClubs));
+            clubDataList.add(fromEntity(club, myBookmarkClubs, reqMember));
         }
          return clubDataList;
     }
 
-    private static ClubData fromEntity(Club club, Set<Club> myBookmarkClubs) {
-        return ClubData.builder()
-                .id(club.getId())
-                .name(club.getName())
-                .profileUri(club.getProfileUri())
-                .body(club.getBody())
-                .bannerUri(club.getBannerUri())
-                .clubCategoryType(club.getClubCategoryType())
-                .clubRegionType(club.getClubRegionType())
-                .participantType(club.getParticipantType())
-                .isMyBookmark(myBookmarkClubs.contains(club))
-                .build();
+    private static ClubData fromEntity(Club club, Set<Club> myBookmarkClubs, Member reqMember) {
+        SchoolData schoolData = null;
+        if (reqMember != null && reqMember.getSchool() != null) {
+            schoolData = SchoolData.fromEntity(reqMember.getSchool());
+        }
+        return new ClubData(
+                club.getId(),
+                club.getName(),
+                club.getProfileUri(),
+                club.getBody(),
+                club.getBannerUri(),
+                club.getClubCategoryType(),
+                club.getClubRegionType(),
+                club.getParticipantType(),
+                myBookmarkClubs.contains(club),
+                schoolData
+        );
     }
 
     /**

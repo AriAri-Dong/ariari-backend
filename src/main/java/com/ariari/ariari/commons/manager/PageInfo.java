@@ -14,9 +14,17 @@ public class PageInfo {
 
     public static PageInfo fromPage(Page<?> page) {
         return PageInfo.builder()
-                .contentSize(page.getContent().size())
+                .contentSize(page.getSize())
                 .totalSize((int) page.getTotalElements())
                 .totalPages(page.getTotalPages())
+                .build();
+    }
+
+    public static PageInfo fromOther(Integer contentSize, Integer totalSize, Integer pageSize){
+        return PageInfo.builder()
+                .contentSize(contentSize)
+                .totalSize(totalSize)
+                .totalPages(totalSize % pageSize == 0 ? totalSize / pageSize : totalSize / pageSize + 1)
                 .build();
     }
 

@@ -7,7 +7,10 @@ import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
@@ -16,14 +19,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@SQLRestriction("deleted_date_time is null")
 public class Recruitment implements ViewsContent, LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
@@ -43,6 +49,7 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @Column(length = 20)
     private ProcedureType procedureType;
 
+    @Setter
     private Boolean isActivated = Boolean.TRUE;
 
     private Integer limits;
@@ -51,6 +58,7 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     private LocalDateTime endDateTime;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
     private LocalDateTime deletedDateTime;
 
@@ -63,13 +71,19 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     private ApplyForm applyForm;
 
     @OneToMany(mappedBy = "recruitment")
-    private List<RecruitmentImage> recruitmentImages = new ArrayList<>();
+    private List<Apply> applys = new ArrayList<>();
 
     @OneToMany(mappedBy = "recruitment")
-    private List<Apply> applys = new ArrayList<>();
+    private List<ApplyTemp> applyTemps = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recruitment")
+    private List<RecruitmentImage> recruitmentImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "recruitment", cascade = CascadeType.PERSIST)
     private List<RecruitmentNote> recruitmentNotes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.PERSIST)
+    private List<RecruitmentBookmark> recruitmentBookmarks = new ArrayList<>();
 
     @Override
     public void addViews(long n) {

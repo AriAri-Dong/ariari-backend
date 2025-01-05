@@ -10,7 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @NoArgsConstructor
@@ -22,6 +24,7 @@ public class ApplyForm {
     private Long id;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,6 +37,16 @@ public class ApplyForm {
     public ApplyForm(Club club, List<ApplyQuestion> applyQuestions) {
         this.club = club;
         this.applyQuestions = applyQuestions;
+    }
+
+
+
+    public Map<Long, ApplyQuestion> getApplyQuestionMap() {
+        HashMap<Long, ApplyQuestion> applyQuestionMap = new HashMap<>();
+        for (ApplyQuestion applyQuestion : this.applyQuestions) {
+            applyQuestionMap.put(applyQuestion.getId(), applyQuestion);
+        }
+        return applyQuestionMap;
     }
 
 }

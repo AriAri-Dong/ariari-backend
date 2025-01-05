@@ -1,11 +1,12 @@
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.4'
-	id 'io.spring.dependency-management' version '1.1.6'
+	id 'io.spring.dependency-management' version '1.1.4'
 }
 
 group = 'com.ariari'
 version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
 
 java {
 	toolchain {
@@ -72,18 +73,17 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-}
 
-def generated = 'build/generated/querydsl'
-
-tasks.withType(JavaCompile).configureEach {
-	options.getGeneratedSourceOutputDirectory().set(file(generated))
-}
-
-sourceSets {
-	main.java.srcDirs += [ generated ]
+	//Mybatis
+	implementation 'org.mybatis:mybatis:3.5.15'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // MyBatis Spring 통합 지원
+	implementation 'javax.annotation:javax.annotation-api:1.3.2' // javax 관련 라이브러리
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+clean {
+	delete file('src/main/generated')
 }

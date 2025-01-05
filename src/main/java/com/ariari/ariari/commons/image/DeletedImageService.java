@@ -1,6 +1,5 @@
 package com.ariari.ariari.commons.image;
 
-import com.ariari.ariari.commons.manager.S3Manager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeletedImageService {
 
     private final DeletedImageRepository deletedImageRepository;
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
 
     /**
      * delete image logically
@@ -27,7 +26,7 @@ public class DeletedImageService {
     public void deleteDeletedImage(DeletedImage deletedImage) {
         String imagePath = deletedImage.getImagePath();
         deletedImageRepository.delete(deletedImage);
-        s3Manager.deleteImageByFileName(imagePath);
+        fileManager.deleteFile(imagePath);
     }
 
 }

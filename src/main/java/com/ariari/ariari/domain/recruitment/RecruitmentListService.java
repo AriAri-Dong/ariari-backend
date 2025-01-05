@@ -12,6 +12,7 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
 import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentListRes;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-/**
- * 작성 중
- */
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -34,9 +32,13 @@ public class RecruitmentListService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final RecruitmentRepository recruitmentRepository;
+    private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
 
     public RecruitmentListRes searchRecruitmentPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
-        Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElse(null);
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
         
         School school = null;
         if (reqMember != null) {
@@ -48,7 +50,10 @@ public class RecruitmentListService {
     }
 
     public RecruitmentListRes searchExternalPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
-        Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElse(null);
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
 
         Page<Recruitment> page = recruitmentRepository.searchExternalPage(condition, pageable);
         return RecruitmentListRes.fromPage(page, reqMember);
@@ -65,11 +70,11 @@ public class RecruitmentListService {
         return RecruitmentListRes.fromPage(page, reqMember);
     }
     
-    public RecruitmentListRes findMyBookmarkRecruitmentList(Long reqMemberId) {
+    public RecruitmentListRes findMyBookmarkRecruitmentList(Long reqMemberId, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
-        List<Recruitment> recruitments = reqMember.getRecruitmentBookmarks().stream().map(RecruitmentBookmark::getRecruitment).toList();
-        return RecruitmentListRes.fromList(recruitments, reqMember);
+        Page<RecruitmentBookmark> page = recruitmentBookmarkRepository.findByMember(reqMember, pageable);
+        return RecruitmentListRes.fromBookmarkPage(page, reqMember);
     }
 
     public RecruitmentListRes findRecruitmentListInClub(Long reqMemberId, Long clubId) {
@@ -86,7 +91,10 @@ public class RecruitmentListService {
     }
 
     public RecruitmentListRes findExternalRankingList(Long reqMemberId) {
-        Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElse(null);
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
 
         List<Recruitment> recruitments = recruitmentRepository.findExternalRankingList();
         return RecruitmentListRes.fromList(recruitments, reqMember);

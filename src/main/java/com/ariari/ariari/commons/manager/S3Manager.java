@@ -4,21 +4,18 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.util.IOUtils;
+import com.ariari.ariari.commons.image.FileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-@Component
-public class S3Manager {
+//@Component
+public class S3Manager implements FileManager {
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
@@ -29,7 +26,8 @@ public class S3Manager {
     }
 
     //s3에 이미지 저장하기
-    public String uploadImage(MultipartFile image, String domain) {
+    @Override
+    public String saveFile(MultipartFile image, String domain) {
         String fileName = UUID.randomUUID() + "_" + domain + "_" + image.getOriginalFilename(); // 고유한 파일 이름 생성
 
         // 메타데이터 설정
@@ -62,7 +60,8 @@ public class S3Manager {
 
 
     // s3에서 이미지 제거하기(경로)
-    public void deleteImageByFilePath(String filePath){
+    @Override
+    public void deleteFile(String filePath){
         String bucketUrlPrefix = String.format("https://%s.s3.%s.amazonaws.com/", bucket, amazonS3.getRegionName());
         checkValidFilePath(filePath, bucketUrlPrefix); // 형식검사
         String fileKey = filePath.substring(bucketUrlPrefix.length()); // 형식에 맞게 문자열 파싱

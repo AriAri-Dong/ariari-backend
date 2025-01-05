@@ -6,8 +6,11 @@ import lombok.Data;
 @Data
 public class ClubModifyReq {
 
-    public void modifyEntity(Club club) {
+    private String body;
 
+
+    public void modifyEntity(Club club) {
+        club.setBody(body);
     }
 
 }

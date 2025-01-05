@@ -3,16 +3,16 @@ package com.ariari.ariari.domain.club.clubmember.dto;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
+import com.ariari.ariari.domain.member.dto.MemberData;
 import com.ariari.ariari.domain.member.enums.ProfileType;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class ClubMemberData {
 
     private Long id;
@@ -21,14 +21,21 @@ public class ClubMemberData {
     private ClubMemberStatusType clubMemberStatusType;
     private ProfileType profileType;
 
+    private MemberData memberData;
+
     public static ClubMemberData fromEntity(ClubMember clubMember) {
-        return ClubMemberData.builder()
-                .id(clubMember.getId())
-                .name(clubMember.getName())
-                .clubMemberRoleType(clubMember.getClubMemberRoleType())
-                .clubMemberStatusType(clubMember.getClubMemberStatusType())
-                .profileType(clubMember.getMember().getProfileType())
-                .build();
+        if (clubMember == null) {
+            return null;
+        }
+
+        return new ClubMemberData(
+                clubMember.getId(),
+                clubMember.getName(),
+                clubMember.getClubMemberRoleType(),
+                clubMember.getClubMemberStatusType(),
+                clubMember.getMember().getProfileType(),
+                MemberData.fromEntity(clubMember.getMember())
+        );
     }
 
     public static List<ClubMemberData> fromEntities(List<ClubMember> clubMembers) {

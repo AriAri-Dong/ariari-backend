@@ -26,7 +26,7 @@ public class RecruitmentSaveReq {
     public Recruitment toEntity(Club club, ApplyForm applyForm) {
         List<RecruitmentNote> recruitmentNoteList = recruitmentNotes.stream().map(RecruitmentNoteSaveReq::toEntity).toList();
 
-        return new Recruitment(
+        Recruitment recruitment = new Recruitment(
                 title,
                 body,
                 procedureType,
@@ -36,6 +36,12 @@ public class RecruitmentSaveReq {
                 applyForm,
                 recruitmentNoteList
         );
+
+        for (RecruitmentNote recruitmentNote : recruitmentNoteList) {
+            recruitmentNote.setRecruitment(recruitment);
+        }
+
+        return recruitment;
     }
 
 }

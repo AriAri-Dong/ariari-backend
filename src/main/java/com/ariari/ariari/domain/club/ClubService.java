@@ -3,7 +3,8 @@ package com.ariari.ariari.domain.club;
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.S3Manager;
+import com.ariari.ariari.commons.image.DeletedImageService;
+import com.ariari.ariari.commons.image.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
@@ -31,10 +32,20 @@ public class ClubService {
     private final ClubMemberRepository clubMemberRepository;
     private final ViewsManager viewsManager;
     private final EntityDeleteManager entityDeleteManager;
-    private final S3Manager s3Manager;
+    private final FileManager fileManager;
+    private final DeletedImageService deletedImageService;
 
+    @Transactional
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = null;
+        if (reqMember != null) {
+             reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
+        }
 
         // views 처리
         if (!viewsManager.checkForDuplicateView(club, clientIp)) {
@@ -42,10 +53,10 @@ public class ClubService {
             viewsManager.addClientIp(club, clientIp);
         }
 
-        return ClubDetailRes.fromEntity(club);
+        return ClubDetailRes.fromEntity(club, reqClubMember, reqMember);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void saveClub(Long reqMemberId, ClubSaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
@@ -69,12 +80,16 @@ public class ClubService {
         clubMemberRepository.save(clubMember);
 
         // 이미지 파일 처리
-        String uri = s3Manager.uploadImage(file, "club");
-        club.setProfileUri(uri);
+        if (file != null) {
+            String uri = fileManager.saveFile(file, "club");
+            club.setProfileUri(uri);
+        }
+
     }
 
-    @Transactional(readOnly = false)
-    public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq) {
+    // 디자인 x
+    @Transactional
+    public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq, MultipartFile profileFile, MultipartFile bannerFile) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotFoundEntityException::new);
@@ -85,9 +100,23 @@ public class ClubService {
         }
 
         modifyReq.modifyEntity(club);
+
+        // 이미지 처리
+        if (profileFile != null) {
+            String profileUri = fileManager.saveFile(profileFile, "club");
+            deletedImageService.deleteImageLogically(profileUri);
+            club.setProfileUri(profileUri);
+        }
+
+        if (bannerFile != null) {
+            String bannerUri = fileManager.saveFile(bannerFile, "club");
+            deletedImageService.deleteImageLogically(bannerUri);
+            club.setBannerUri(bannerUri);
+        }
+
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void removeClub(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);

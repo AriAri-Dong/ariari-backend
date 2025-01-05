@@ -119,6 +119,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
 
     @Override
     public Page<Club> findByNameContains(String query, School school, Pageable pageable) {
+
         JPAQuery<Club> jpaQuery = queryFactory
                 .selectFrom(club)
                 .where(schoolIsNull()

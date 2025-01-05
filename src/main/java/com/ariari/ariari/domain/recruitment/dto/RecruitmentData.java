@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Builder
 public class RecruitmentData {
 
+    private Long id;
     private String title;
     private String body;
     private String posterUri;
@@ -32,6 +33,7 @@ public class RecruitmentData {
 
     public static RecruitmentData fromEntity(Recruitment recruitment, Member reqMember) {
         return RecruitmentData.builder()
+                .id(recruitment.getId())
                 .title(recruitment.getTitle())
                 .body(recruitment.getBody())
                 .posterUri(recruitment.getPosterUri())
@@ -56,6 +58,7 @@ public class RecruitmentData {
 
     private static RecruitmentData fromEntity(Recruitment recruitment, Set<Recruitment> myBookmarkRecruitments) {
         return RecruitmentData.builder()
+                .id(recruitment.getId())
                 .title(recruitment.getTitle())
                 .body(recruitment.getBody())
                 .isActivated(recruitment.getIsActivated())

@@ -3,7 +3,7 @@ package com.ariari.ariari.domain.club.enums;
 public enum ClubRegionType {
 
     SEOUL_GYEONGGI,
-    CHUNGCEONG,
+    CHUNGCHEONG,
     GYEONGNAM,
     GYEONGBUK,
     JEONNAM,
