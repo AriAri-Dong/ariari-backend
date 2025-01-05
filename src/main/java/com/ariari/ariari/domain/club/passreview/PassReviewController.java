@@ -1,12 +1,18 @@
 package com.ariari.ariari.domain.club.passreview;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
-import com.ariari.ariari.domain.club.passreview.service.PassReviewService;
+import com.ariari.ariari.domain.club.passreview.dto.PassReviewData;
+import com.ariari.ariari.domain.club.passreview.dto.req.PassReviewSaveReq;
+import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewListRes;
+import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewRes;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
 
 @RestController
 @RequestMapping("/pass-review")
@@ -24,8 +30,34 @@ public class PassReviewController {
 
     // 합격후기 등록하기 -> 권한 검사
 
-//    @GetMapping
-//    public PassReviewListRes searchPassReviewPage(@AuthenticationPrincipal CustomUserDetails userDetails){
-//
-//    }
+    @GetMapping("/{clubId}")
+    public PassReviewListRes search_pass_review_page(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                  Pageable pageable,
+                                                  @PathVariable(name = "clubId") Long clubId){
+        Long reqMemberId = getMemberId(userDetails, false);
+        return passReviewService.searchPassReviewPage(reqMemberId, clubId, pageable);
+    }
+
+    @GetMapping("/{passReviewId}")
+    public PassReviewData find_pass_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                @PathVariable(name = "passReviewId") Long passReviewId){
+        //Long reqMemberId = getMemberId(userDetails, false);
+        return passReviewService.findPassReviewDetail(passReviewId);
+    }
+
+    @PostMapping("/access/{passReviewId}")
+    public void access_pass_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                          @PathVariable(name = "passReviewId") Long passReviewId){
+        Long reqMemberId = getMemberId(userDetails, false);
+        passReviewService.accessPassReivew(reqMemberId, passReviewId);
+    }
+
+    @PostMapping("/{clubId}")
+    public void save_pass_review(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                 @RequestBody PassReviewSaveReq passReviewSaveReq,
+                                 @PathVariable(name = "clubId") Long clubId){
+        Long reqMemberId = getMemberId(userDetails, false);
+        passReviewService.savePassReview(reqMemberId, passReviewSaveReq, clubId);
+    }
+
 }

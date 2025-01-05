@@ -11,7 +11,6 @@ import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
@@ -20,8 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import com.ariari.ariari.domain.club.passreview.dto.PassReviewNoteData.*;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -49,7 +46,7 @@ public class PassReviewData {
     private List<PassReviewNoteData> interviewNotes;
     @Schema(description = "서류 관련 문항 개수", example = "")
     private int documentNoteCount;
-    @Schema(description = "면접 전형 관련 문항들", example = "질문과 문항만 담겨 있음")
+    @Schema(description = "면접 전형 관련 개수", example = "질문과 문항만 담겨 있음")
     private int interviewNoteCount;
     @Schema(description = "작성일자", example = "localDateTime, ...")
     private LocalDateTime createdDateTime;
@@ -102,7 +99,7 @@ public class PassReviewData {
     // 이거 LAZY로 계속 검색되는 코드인가...?
     public static int getPassReviewNoteCount(PassReview passReview, NoteType noteType) {
         int count = 0;
-        List<PassReviewNote> passReviewNotes = passReview.getPassReviewNoteDataList();
+        List<PassReviewNote> passReviewNotes = passReview.getPassReviewNotes();
         for (PassReviewNote passReviewNote : passReviewNotes){
             if(passReviewNote.getNoteType().equals(noteType)){
                 count += 1;

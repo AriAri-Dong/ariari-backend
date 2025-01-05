@@ -24,4 +24,8 @@ public class PassReviewAccess {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public PassReviewAccess(PassReview passReview, Member member) {
+        this.passReview = passReview;
+        this.member = member;
+    }
 }

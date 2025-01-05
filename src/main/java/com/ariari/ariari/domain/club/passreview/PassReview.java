@@ -47,8 +47,8 @@ public class PassReview {
     @JoinColumn(name = "club_member_id")
     private ClubMember clubMember;
 
-    @OneToMany(mappedBy = "passReview")
-    private List<PassReviewNote> passReviewNoteDataList = new ArrayList<>();
+    @OneToMany(mappedBy = "passReview", cascade = CascadeType.PERSIST)
+    private List<PassReviewNote> passReviewNotes = new ArrayList<>();
 
     public PassReview(String title, ProcedureType procedureType, InterviewType interviewType, InterviewRatioType interviewRatioType,
                       Integer interviewMood, ClubMember clubMember){

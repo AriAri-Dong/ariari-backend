@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.club.passreview.enums.NoteType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -25,6 +26,7 @@ public class PassReviewNote {
     @Column(length = 200)
     private String body;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pass_review_id")
     private PassReview passReview;
