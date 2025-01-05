@@ -30,6 +30,7 @@
         INNER JOIN club_member cm
             ON pr.club_member_id = cm.club_member_id
                 AND cm.club_id = #{clubId}
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <select id="countByClubAndReqMember">

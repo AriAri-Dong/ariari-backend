@@ -7,6 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface PassReviewMapper {
-    List<PassReviewRes> findByClubAndReqMember(Long clubId, Long memberId);
+    List<PassReviewRes> findByClubAndReqMember(Long clubId, Long memberId, int size, int offset);
     Integer countByClubAndReqMember(Long clubId, Long memberId);
 }
