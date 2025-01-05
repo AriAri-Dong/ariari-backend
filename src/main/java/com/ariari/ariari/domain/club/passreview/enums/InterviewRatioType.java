@@ -4,7 +4,6 @@ public enum InterviewRatioType {
 
     ONE_VS_ONE,
     ONE_VS_MANY,
-    MANY_VS_ONE,
     MANY_VS_MANY
 
 }

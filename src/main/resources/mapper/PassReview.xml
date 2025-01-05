@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ariari.ariari.domain.club.passreview.mapper.PassReviewMapper">
+    <select id ="findByClubAndReqMember">
+        SELECT
+            pr.pass_review_id,
+            pr.title,
+            pr.created_date_time,
+            CASE
+                WHEN EXISTS (
+                    SELECT pra.pass_review_access_id
+                    FROM pass_review_access pra
+                    WHERE pra.pass_review_id = pr.pass_review_id
+                    AND pra.member_id = #{reqMemberId}
+                ) THEN true ELSE false END AS wasAccessed,
+            COUNT(
+                    SELECT pass_review_note_id
+                    FROM pass_review_note prn
+                    WHERE prn.pass_review_id = pr.pass_review_id
+                    AND prn.note_type = 'DOCUMENT'
+            ) AS documentNoteCount,
+            COUNT(
+                    SELECT pass_review_note_id
+                    FROM pass_review_note prn
+                    WHERE prn.pass_review_id = pr.pass_review_id
+                        AND prn.note_type = 'DOCUMENT'
+            ) AS interviewNoteCount
+        FROM pass_review pr
+        INNER JOIN club_member cm
+            ON pr.club_member_id = cm.club_member_id
+                AND cm.club_id = #{clubId}
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="countByClubAndReqMember">
+        SELECT COUNT(*)
+        FROM pass_review pr
+            INNER JOIN club_member cm
+                ON pr.club_member_id = cm.club_member_id
+                    AND cm.club_id = #{clubId}
+    </select>
+</mapper>

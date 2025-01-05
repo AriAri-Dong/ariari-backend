@@ -20,4 +20,12 @@ public class PageInfo {
                 .build();
     }
 
+    public static PageInfo fromOther(Integer contentSize, Integer totalSize, Integer pageSize){
+        return PageInfo.builder()
+                .contentSize(contentSize)
+                .totalSize(totalSize)
+                .totalPages(totalSize % pageSize == 0 ? totalSize / pageSize : totalSize / pageSize + 1)
+                .build();
+    }
+
 }
