@@ -14,4 +14,6 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>,
 
     List<Recruitment> findByClub(Club club);
 
+
+
 }

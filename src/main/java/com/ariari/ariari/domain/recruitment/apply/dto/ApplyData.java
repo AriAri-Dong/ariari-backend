@@ -15,6 +15,7 @@ import java.util.List;
 public class ApplyData {
 
     private Long id;
+    private String name;
     private ApplyStatusType applyStatusType;
     private LocalDateTime createdDateTime;
 
@@ -25,6 +26,7 @@ public class ApplyData {
     public static ApplyData fromEntity(Apply apply) {
         return new ApplyData(
                 apply.getId(),
+                apply.getName(),
                 apply.getApplyStatusType(),
                 apply.getCreatedDateTime(),
                 MemberData.fromEntity(apply.getMember()),

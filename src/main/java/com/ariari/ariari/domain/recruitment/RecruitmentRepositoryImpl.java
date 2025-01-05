@@ -34,7 +34,6 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     public Page<Recruitment> searchRecruitmentPage(School school, ClubSearchCondition condition, Pageable pageable) {
         JPAQuery<Recruitment> query = queryFactory
                 .selectFrom(recruitment)
-                .join(recruitment.club, club)
                 .where(isActivated(),
                         schoolIsNull()
                                 .or(schoolEq(school)),
@@ -53,7 +52,6 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
         Long total = queryFactory
                 .select(recruitment.count())
                 .from(recruitment)
-                .join(recruitment.club, club)
                 .where(isActivated(),
                         schoolIsNull()
                                 .or(schoolEq(school)),
@@ -69,7 +67,6 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     public Page<Recruitment> searchExternalPage(ClubSearchCondition condition, Pageable pageable) {
         JPAQuery<Recruitment> query = queryFactory
                 .selectFrom(recruitment)
-                .join(recruitment.club, club)
                 .where(isActivated(),
                         schoolIsNull(),
                         categoryIn(condition.getClubCategoryTypes()),
@@ -87,7 +84,6 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
         Long total = queryFactory
                 .select(recruitment.count())
                 .from(recruitment)
-                .join(recruitment.club, club)
                 .where(isActivated(),
                         schoolIsNull(),
                         categoryIn(condition.getClubCategoryTypes()),
@@ -102,7 +98,6 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     public Page<Recruitment> searchInternalPage(School school, ClubSearchCondition condition, Pageable pageable) {
         JPAQuery<Recruitment> query = queryFactory
                 .selectFrom(recruitment)
-                .join(recruitment.club, club)
                 .where(isActivated(),
                         schoolEq(school),
                         categoryIn(condition.getClubCategoryTypes()),
@@ -120,7 +115,6 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
         Long total = queryFactory
                 .select(recruitment.count())
                 .from(recruitment)
-                .join(recruitment.club, club)
                 .where(isActivated(),
                         schoolEq(school),
                         categoryIn(condition.getClubCategoryTypes()),
@@ -154,28 +148,28 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     }
 
     private BooleanExpression schoolEq(School school) {
-        return school == null ? null : club.school.eq(school);
+        return school == null ? null : recruitment.club.school.eq(school);
     }
 
     private BooleanExpression schoolIsNull() {
-        return club.school.isNull();
+        return recruitment.club.school.isNull();
     }
 
     private BooleanExpression isActivated() {
         return recruitment.isActivated.eq(true)
-                .and(recruitment.endDateTime.before(LocalDateTime.now()));
+                .and(recruitment.endDateTime.after(LocalDateTime.now()));
     }
 
     private BooleanExpression categoryIn(List<ClubCategoryType> categoryTypes) {
-        return categoryTypes.isEmpty() ? null : club.clubCategoryType.in(categoryTypes);
+        return categoryTypes.isEmpty() ? null : recruitment.club.clubCategoryType.in(categoryTypes);
     }
 
     private BooleanExpression regionIn(List<ClubRegionType> regionTypes) {
-        return regionTypes.isEmpty() ? null : club.clubRegionType.in(regionTypes);
+        return regionTypes.isEmpty() ? null : recruitment.club.clubRegionType.in(regionTypes);
     }
 
     private BooleanExpression participantIn(List<ParticipantType> participantTypes) {
-        return participantTypes.isEmpty() ? null : club.participantType.in(participantTypes);
+        return participantTypes.isEmpty() ? null : recruitment.club.participantType.in(participantTypes);
     }
 
 }

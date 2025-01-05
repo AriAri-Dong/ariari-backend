@@ -13,6 +13,7 @@ import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
@@ -21,16 +22,12 @@ import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentDetailRes;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-/**
- * 1. 상세 조회
- * 2. 등록
- * 3. 수정 -> 마감
- * 4. 삭제
- */
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -41,13 +38,18 @@ public class RecruitmentService {
     private final ClubMemberRepository clubMemberRepository;
     private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
     private final RecruitmentRepository recruitmentRepository;
+    private final ApplyRepository applyRepository;
     private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
     private final EntityDeleteManager entityDeleteManager;
     private final FileManager fileManager;
 
-    public RecruitmentDetailRes findRecruitmentDetail(Long memberId, Long recruitmentId, String clientIp) {
-        Member reqMember = memberRepository.findById(memberId).orElse(null);
+    @Transactional
+    public RecruitmentDetailRes findRecruitmentDetail(Long reqMemberId, Long recruitmentId, String clientIp) {
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
 
         School recruitmentSchool = recruitment.getClub().getSchool();
@@ -63,12 +65,19 @@ public class RecruitmentService {
 
         Integer bookmarks = recruitmentBookmarkRepository.countByRecruitment(recruitment).intValue();
 
-        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember);
+        Boolean isMyCLub = Boolean.FALSE;
+        Boolean isMyApply = Boolean.FALSE;
+        if (reqMemberId != null) {
+            isMyCLub = clubMemberRepository.findByClubAndMember(recruitment.getClub(), reqMember).isPresent();
+            isMyApply = applyRepository.findByMemberAndRecruitment(reqMember, recruitment).isPresent();
+        }
+
+        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember, isMyCLub, isMyApply);
     }
 
-    @Transactional(readOnly = false)
-    public void saveRecruitment(Long memberId, Long clubId, RecruitmentSaveReq saveReq, MultipartFile file) {
-        Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+    @Transactional
+    public void saveRecruitment(Long reqMemberId, Long clubId, RecruitmentSaveReq saveReq, MultipartFile file) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
 
@@ -87,13 +96,27 @@ public class RecruitmentService {
             String uri = fileManager.saveFile(file, "recruitment");
             recruitment.setPosterUri(uri);
         }
-
+        log.info("title {}", saveReq.getTitle());
         recruitmentRepository.save(recruitment);
     }
 
-    @Transactional(readOnly = false)
-    public void removeRecruitment(Long memberId, Long recruitmentId) {
-        Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+    @Transactional
+    public void closeRecruitment(Long reqMemberId, Long recruitmentId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
+        Club club = recruitment.getClub();
+        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+
+        if (clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
+            throw new NoClubAuthException();
+        }
+
+        recruitment.setIsActivated(Boolean.FALSE);
+    }
+
+    @Transactional
+    public void removeRecruitment(Long reqMemberId, Long recruitmentId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
@@ -106,5 +129,6 @@ public class RecruitmentService {
 
         entityDeleteManager.deleteEntity(recruitment);
     }
+
 
 }

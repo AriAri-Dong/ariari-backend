@@ -24,6 +24,7 @@ public class ApplyForm {
     private Long id;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.dto.SchoolData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,6 +52,10 @@ public class ClubData {
     }
 
     private static ClubData fromEntity(Club club, Set<Club> myBookmarkClubs, Member reqMember) {
+        SchoolData schoolData = null;
+        if (reqMember != null && reqMember.getSchool() != null) {
+            schoolData = SchoolData.fromEntity(reqMember.getSchool());
+        }
         return new ClubData(
                 club.getId(),
                 club.getName(),
@@ -61,7 +66,7 @@ public class ClubData {
                 club.getClubRegionType(),
                 club.getParticipantType(),
                 myBookmarkClubs.contains(club),
-                SchoolData.fromEntity(reqMember.getSchool())
+                schoolData
         );
     }
 

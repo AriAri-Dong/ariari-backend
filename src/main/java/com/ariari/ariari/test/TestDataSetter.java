@@ -205,11 +205,11 @@ public class TestDataSetter {
         Recruitment r10 = new Recruitment("r10", "body10", ProcedureType.INTERVIEW, 30, LocalDateTime.now().plusMonths(3), c10, af4, List.of(rn10_1, rn10_2));
         rn10_1.setRecruitment(r10);
         rn10_2.setRecruitment(r10);
-        Recruitment r11 = new Recruitment("r11", "body11", c11);
-        Recruitment r12 = new Recruitment("r12", "body12", c12);
-        Recruitment r13 = new Recruitment("r13", "body12", c1);
-        Recruitment r14 = new Recruitment("r14", "body12", c1);
-        Recruitment r15 = new Recruitment("r15", "body12", c1);
+        Recruitment r11 = new Recruitment("r11", "body11", ProcedureType.DOCUMENT, 50, LocalDateTime.now().plusMonths(3), c11, null, null);
+        Recruitment r12 = new Recruitment("r12", "body12", ProcedureType.DOCUMENT, 50, LocalDateTime.now().plusMonths(3), c12, null, null);
+        Recruitment r13 = new Recruitment("r13", "body12", ProcedureType.DOCUMENT, 50, LocalDateTime.now().plusMonths(3), c1, null, null);
+        Recruitment r14 = new Recruitment("r14", "body12", ProcedureType.DOCUMENT, 50, LocalDateTime.now().plusMonths(3), c1, null, null);
+        Recruitment r15 = new Recruitment("r15", "body12", ProcedureType.DOCUMENT, 50, LocalDateTime.now().plusMonths(3), c1, null, null);
         recruitmentRepository.saveAll(List.of(r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15));
 
         // recruitmentBookmark

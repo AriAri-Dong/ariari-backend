@@ -89,12 +89,14 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     }
 
     private BooleanExpression searchMyCond(MyAppliesSearchType searchType) {
+        if (searchType == null) {
+            return null;
+        }
+
         if (searchType.equals(MyAppliesSearchType.IN_PROGRESS)) {
             return apply.applyStatusType.in(PENDENCY, INTERVIEW);
-        } else if (searchType.equals(MyAppliesSearchType.FINALIZED)) {
-            return apply.applyStatusType.in(APPROVE, REFUSAL);
         } else {
-            return null;
+            return apply.applyStatusType.in(APPROVE, REFUSAL);
         }
     }
 

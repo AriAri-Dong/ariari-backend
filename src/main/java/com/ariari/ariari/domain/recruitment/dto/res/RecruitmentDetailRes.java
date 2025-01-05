@@ -15,11 +15,16 @@ public class RecruitmentDetailRes {
     private ClubData clubData;
     private Integer bookmarks;
 
-    public static RecruitmentDetailRes fromEntity(Recruitment recruitment, Integer bookmarks, Member reqMember) {
+    private Boolean isMyClub;
+    private Boolean isMyApply;
+
+    public static RecruitmentDetailRes fromEntity(Recruitment recruitment, Integer bookmarks, Member reqMember, Boolean isMyClub, Boolean isMyApply) {
         return new RecruitmentDetailRes(
                 RecruitmentData.fromEntity(recruitment, reqMember),
                 ClubData.fromEntity(recruitment.getClub(), reqMember),
-                bookmarks
+                bookmarks,
+                isMyClub,
+                isMyApply
         );
     }
 

@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
+import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +20,8 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Apply {
+@SQLRestriction("deleted_date_time is null")
+public class Apply implements LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "apply_id")
@@ -38,7 +41,9 @@ public class Apply {
     private String portfolioUrl;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
+    private LocalDateTime deletedDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -57,6 +62,11 @@ public class Apply {
         this.member = member;
         this.recruitment = recruitment;
         this.applyAnswers = applyAnswers;
+    }
+
+    @Override
+    public void deleteLogically() {
+        this.deletedDateTime = LocalDateTime.now();
     }
 
 }

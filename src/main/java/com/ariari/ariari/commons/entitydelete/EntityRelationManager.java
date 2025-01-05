@@ -19,7 +19,9 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
@@ -51,7 +53,7 @@ public class EntityRelationManager {
         CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, Apply.class, MemberAlarm.class, ClubBookmark.class));
         CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class, ClubNotice.class, ClubEvent.class, ApplyForm.class, FinancialRecord.class, ClubActivity.class, ClubFaq.class, ClubQuestion.class));
         CHILD_ENTITY_MAP.put(ClubMember.class, List.of(ClubAnswer.class, ClubReview.class, AttendanceRecord.class, PassReview.class, ClubActivityComment.class, ClubNotice.class, ClubFaq.class, ClubActivity.class));
-        CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, RecruitmentImage.class, RecruitmentNote.class));
+        CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, ApplyTemp.class, RecruitmentImage.class, RecruitmentNote.class, RecruitmentBookmark.class));
         CHILD_ENTITY_MAP.put(ApplyForm.class, List.of(Recruitment.class));
         CHILD_ENTITY_MAP.put(Apply.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(ApplyQuestion.class, List.of(ApplyAnswer.class));
