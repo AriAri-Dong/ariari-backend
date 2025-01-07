@@ -10,6 +10,8 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
+import com.ariari.ariari.domain.club.financial.FinancialRecord;
+import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
@@ -53,6 +55,7 @@ public class TestDataSetter {
     private final ApplyFormRepository applyFormRepository;
     private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
     private final ApplyRepository applyRepository;
+    private final FinancialRecordRepository financialRecordRepository;
 
     private final EntityManager em;
 
@@ -263,6 +266,17 @@ public class TestDataSetter {
         aa4_2_1.setApply(a6);
         aa4_3_1.setApply(a6);
         applyRepository.saveAll(List.of(a1, a2, a3, a4, a5, a6));
+
+        // financial-record
+        FinancialRecord fr1 = new FinancialRecord(10000L, "body1", LocalDateTime.now().minusMinutes(8), c1);
+        FinancialRecord fr2 = new FinancialRecord(40000L, "body2", LocalDateTime.now().minusMinutes(7), c1);
+        FinancialRecord fr3 = new FinancialRecord(50000L, "body3", LocalDateTime.now().minusMinutes(6), c1);
+        FinancialRecord fr4 = new FinancialRecord(-30000L, "body4", LocalDateTime.now().minusMinutes(5), c1);
+        FinancialRecord fr5 = new FinancialRecord(50000L, "body5", LocalDateTime.now().minusMinutes(4), c1);
+        FinancialRecord fr6 = new FinancialRecord(50000L, "body6", LocalDateTime.now().minusMinutes(3), c1);
+        FinancialRecord fr7 = new FinancialRecord(50000L, "body7", LocalDateTime.now().minusMinutes(2), c1);
+        FinancialRecord fr8 = new FinancialRecord(50000L, "body8", LocalDateTime.now().minusMinutes(1), c1);
+        financialRecordRepository.saveAll(List.of(fr1, fr2, fr3, fr4, fr5, fr6, fr7, fr8));
 
     }
 

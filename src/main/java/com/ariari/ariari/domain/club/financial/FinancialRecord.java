@@ -18,7 +18,7 @@ public class FinancialRecord {
     @Column(name = "financial_record_id")
     private Long id;
 
-    private Integer amount;
+    private Long amount;
 
     @Column(length = 100)
     private String body;
@@ -26,10 +26,24 @@ public class FinancialRecord {
     private LocalDateTime recordDateTime;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
+
+    public FinancialRecord(Long amount, String body, LocalDateTime recordDateTime, Club club) {
+        this.amount = amount;
+        this.body = body;
+        this.recordDateTime = recordDateTime;
+        this.club = club;
+    }
+
+    public void modify(Long amount, String body, LocalDateTime recordDateTime) {
+        this.amount = amount;
+        this.body = body;
+        this.recordDateTime = recordDateTime;
+    }
 
 }
