@@ -13,7 +13,7 @@ import java.util.List;
 public class ApplyDetailRes {
 
     private ApplyData applyData;
-    private List<ApplyAnswerData> applyAnswerData;
+    private List<ApplyAnswerData> applyAnswerDataList;
 
     private String fileUri;
     private String portfolioUrl;

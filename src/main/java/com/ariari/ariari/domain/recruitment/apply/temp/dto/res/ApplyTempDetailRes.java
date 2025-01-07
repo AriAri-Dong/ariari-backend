@@ -12,8 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplyTempDetailRes {
 
-    private ApplyTempData applyTempData;
-    private List<ApplyAnswerTempData> applyAnswerTempDataList;
+    private ApplyTempData applyData;
+    private List<ApplyAnswerTempData> applyAnswerDataList;
 
     private String fileUri;
     private String portfolioUrl;

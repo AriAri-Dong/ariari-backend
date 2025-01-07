@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.applyform;
 
+import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
@@ -28,13 +29,18 @@ public class ApplyFormService {
     private final ClubMemberRepository clubMemberRepository;
     private final ApplyFormRepository applyFormRepository;
 
-    public ApplyFormRes findApplyForm(Long memberId, Long clubId) {
-        Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
+    public ApplyFormRes findApplyForm(Long reqMemberId, Long clubId) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+        if (club.getSchool() != null) {
+            if (reqMemberId == null) {
+                throw new NoSchoolAuthException();
+            }
+
+            Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NoSchoolAuthException::new);
+            if (!reqMember.getSchool().equals(club.getSchool())) {
+                throw new NoSchoolAuthException();
+            }
         }
 
         ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElse(null);
