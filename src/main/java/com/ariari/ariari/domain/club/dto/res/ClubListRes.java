@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClubListRes {
 
-    private List<ClubData> contents;
+    private List<ClubData> clubDataList;
     private PageInfo pageInfo;
 
     public static ClubListRes fromList(List<Club> clubs, Member reqMember) {

@@ -3,6 +3,8 @@ package com.ariari.ariari.domain.club.faq.dto;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
 import com.ariari.ariari.domain.club.faq.ClubFaq;
 import com.ariari.ariari.domain.club.faq.enums.ClubFaqColorType;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClubFaqData {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String title;
     private String body;

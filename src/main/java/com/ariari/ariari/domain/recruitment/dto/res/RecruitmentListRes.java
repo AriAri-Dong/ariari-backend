@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RecruitmentListRes {
 
-    private List<RecruitmentData> contents;
+    private List<RecruitmentData> recruitmentDataList;
     private PageInfo pageInfo;
 
     public static RecruitmentListRes fromList(List<Recruitment> recruitments, Member reqMember) {

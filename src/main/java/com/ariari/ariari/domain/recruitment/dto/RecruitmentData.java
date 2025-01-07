@@ -4,6 +4,8 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.keyvalue.repository.query.PredicateQueryCreator;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 @Builder
 public class RecruitmentData {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String title;
     private String body;

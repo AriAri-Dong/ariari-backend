@@ -8,6 +8,8 @@ import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.dto.SchoolData;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ClubData {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String name;
     private String profileUri;
