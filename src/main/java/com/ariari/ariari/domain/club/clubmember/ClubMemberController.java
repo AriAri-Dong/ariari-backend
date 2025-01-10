@@ -18,14 +18,14 @@ import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.*;
 
 @Tag(name = "club-member", description = "동아리 회원 기능")
 @RestController
-@RequestMapping("/clubs/{clubId}/club-members")
+@RequestMapping
 @RequiredArgsConstructor
 public class ClubMemberController {
 
     private final ClubMemberService clubMemberService;
 
     @Operation(summary = "동아리 회원 리스트 조회", description = "동아리 내 전체 회원 리스트를 조회합니다. (페이지네이션)")
-    @GetMapping
+    @GetMapping("/clubs/{clubId}/club-members")
     public ClubMemberListRes findClubMemberList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                 @PathVariable Long clubId,
                                                 @RequestParam ClubMemberStatusType statusType,
@@ -35,9 +35,8 @@ public class ClubMemberController {
     }
 
     @Operation(summary = "동아리 회원 권한 수정", description = "동아리 회원 권한을 수정합니다. 최고 관리자 권한은 [최고 관리자 권한 위임] API를 사용해야 합니다. '스텝' 권한 이상의 동아리 회원이 타 동아리 회원의 권한을 수정할 수 있습니다.")
-    @PutMapping("/{clubMemberId}/role")
+    @PutMapping("/club-members/{clubMemberId}/role")
     public void modifyRoleType(@AuthenticationPrincipal CustomUserDetails userDetails,
-                               @PathVariable Long clubId,
                                @PathVariable Long clubMemberId,
                                @RequestBody ClubMemberRoleType roleType) {
         Long reqMemberId = getMemberId(userDetails, true);
@@ -46,30 +45,28 @@ public class ClubMemberController {
             throw new ModifyingClubMemberRoleTypeException();
         }
 
-        clubMemberService.modifyRoleType(reqMemberId, clubId, clubMemberId, roleType);
+        clubMemberService.modifyRoleType(reqMemberId, clubMemberId, roleType);
     }
 
     @Operation(summary = "최고 관리자 권한 위임", description = "최고 관리자 권한을 위임합니다. '최고 관리자' 동아리 회원만이 최고 관리자 권한을 위임할 수 있습니다.")
-    @PatchMapping("/{clubMemberId}/entrust-admin")
+    @PatchMapping("/club_members/{clubMemberId}/entrust-admin")
     public void entrustAdmin(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @PathVariable Long clubId,
                              @PathVariable Long clubMemberId) {
         Long reqMemberId = getMemberId(userDetails, true);
-        clubMemberService.entrustAdmin(reqMemberId, clubId, clubMemberId);
+        clubMemberService.entrustAdmin(reqMemberId, clubMemberId);
     }
 
     @Operation(summary = "동아리 회원 상태 수정", description = "1명의 동아리 회원 상태를 수정합니다.")
-    @PutMapping("/{clubMemberId}/status")
+    @PutMapping("/club-members/{clubMemberId}/status")
     public void modifyStatusType(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                 @PathVariable Long clubId,
                                  @PathVariable Long clubMemberId,
                                  @RequestBody ClubMemberStatusType statusType) {
         Long reqMemberId = getMemberId(userDetails, true);
-        clubMemberService.modifyStatusType(reqMemberId, clubId, clubMemberId, statusType);
+        clubMemberService.modifyStatusType(reqMemberId, clubMemberId, statusType);
     }
 
     @Operation(summary = "동아리 회원 상태 배치 수정", description = "여러 동아리 회원 상태를 수정합니다.")
-    @PutMapping("/status")
+    @PutMapping("/clubs/{clubId}/club-members/status")
     public void modifyStatusTypes(@AuthenticationPrincipal CustomUserDetails userDetails,
                                   @PathVariable Long clubId,
                                   @RequestParam List<Long> clubMemberIds,
@@ -79,12 +76,11 @@ public class ClubMemberController {
     }
 
     @Operation(summary = "동아리 회원 삭제", description = "동아리 회원을 삭제합니다.")
-    @DeleteMapping("/{clubMemberId}")
+    @DeleteMapping("/club-members/{clubMemberId}")
     public void removeClubMember(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                 @PathVariable Long clubId,
                                  @PathVariable Long clubMemberId) {
         Long reqMemberId = getMemberId(userDetails, true);
-        clubMemberService.removeClubMember(reqMemberId, clubId, clubMemberId);
+        clubMemberService.removeClubMember(reqMemberId, clubMemberId);
     }
 
     // (추가 예정) 동아리 회원 초대 코드 생성

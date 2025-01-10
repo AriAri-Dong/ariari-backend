@@ -13,7 +13,7 @@ import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.ge
 
 @Tag(name = "apply-form", description = "지원 형식 기능 (Club <-> ApplyForm -> 1:다 형식입니다. 조회할 때엔 마지막으로 등록된 1개의 지원 형식을 조회합니다.)")
 @RestController
-@RequestMapping("/clubs/{clubId}/apply-form")
+@RequestMapping("/clubs/{clubId}/apply-forms")
 @RequiredArgsConstructor
 public class ApplyFormController {
 

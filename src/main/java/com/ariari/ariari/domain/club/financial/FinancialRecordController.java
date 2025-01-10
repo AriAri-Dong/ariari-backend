@@ -14,14 +14,14 @@ import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.ge
 
 @Tag(name = "financial-record", description = "회계 기록 기능")
 @RestController
-@RequestMapping("/clubs/{clubId}/financial-records")
+@RequestMapping
 @RequiredArgsConstructor
 public class FinancialRecordController {
 
     private final FinancialRecordService financialRecordService;
 
     @Operation(summary = "회계 잔액 조회", description = "회계 잔액을 조회합니다.")
-    @GetMapping("/balance")
+    @GetMapping("/clubs/{clubId}/financial-records/balance")
     public Long findBalance(@AuthenticationPrincipal CustomUserDetails userDetails,
                             @PathVariable Long clubId) {
         Long reqMemberId = getMemberId(userDetails, true);
@@ -29,7 +29,7 @@ public class FinancialRecordController {
     }
 
     @Operation(summary = "회계 기록 등록", description = "동아리 관리자만이 사용할 수 있으며, 동아리 잔액에 영향을 미칩니다. 수입 지출 구분 필드 없이 +/- 로 구분됩니다. 잔액은 음수가 될 수 있습니다.")
-    @PostMapping
+    @PostMapping("/clubs/{clubId}/financial-records")
     public void saveFinancialRecord(@AuthenticationPrincipal CustomUserDetails userDetails,
                                     @PathVariable Long clubId,
                                     @RequestBody FinancialRecordSaveReq saveReq) {
@@ -38,7 +38,7 @@ public class FinancialRecordController {
     }
 
     @Operation(summary = "회계 기록 리스트 조회", description = "(페이지네이션)")
-    @GetMapping
+    @GetMapping("/clubs/{clubId}/financial-records")
     public FinancialRecordListRes findFinancialRecords(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                        @PathVariable Long clubId,
                                                        Pageable pageable) {

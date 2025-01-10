@@ -46,7 +46,7 @@ public class RecruitmentController {
     }
 
     @Operation(summary = "모집 마감", description = "모집을 조기 마감합니다. 동아리 관리자만이 가능합니다.")
-    @PutMapping("/recruitment/{recruitmentId}")
+    @PutMapping("/recruitments/{recruitmentId}")
     public void closeRecruitment(@AuthenticationPrincipal CustomUserDetails userDetails,
                                  @PathVariable Long recruitmentId) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
