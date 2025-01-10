@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.keyvalue.repository.query.PredicateQueryCreator;
@@ -18,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-@Builder
+@AllArgsConstructor
 public class RecruitmentData {
 
     @JsonSerialize(using = ToStringSerializer.class)
@@ -29,24 +30,26 @@ public class RecruitmentData {
     private ProcedureType procedureType;
     private Integer limits;
     private LocalDateTime createdDateTime;
+    private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
     private Boolean isActivated;
     private Boolean isMyBookmark;
 
     public static RecruitmentData fromEntity(Recruitment recruitment, Member reqMember) {
-        return RecruitmentData.builder()
-                .id(recruitment.getId())
-                .title(recruitment.getTitle())
-                .body(recruitment.getBody())
-                .posterUri(recruitment.getPosterUri())
-                .procedureType(recruitment.getProcedureType())
-                .limits(recruitment.getLimits())
-                .createdDateTime(recruitment.getCreatedDateTime())
-                .endDateTime(recruitment.getEndDateTime())
-                .isActivated(recruitment.getIsActivated())
-                .isMyBookmark(getMyBookmarkRecruitments(reqMember).contains(recruitment))
-                .build();
+        return new RecruitmentData(
+                recruitment.getId(),
+                recruitment.getTitle(),
+                recruitment.getBody(),
+                recruitment.getPosterUri(),
+                recruitment.getProcedureType(),
+                recruitment.getLimits(),
+                recruitment.getCreatedDateTime(),
+                recruitment.getStartDateTime(),
+                recruitment.getEndDateTime(),
+                recruitment.getIsActivated(),
+                getMyBookmarkRecruitments(reqMember).contains(recruitment)
+        );
     }
 
     public static List<RecruitmentData> fromEntities(List<Recruitment> recruitments, Member reqMember) {
@@ -60,13 +63,19 @@ public class RecruitmentData {
     }
 
     private static RecruitmentData fromEntity(Recruitment recruitment, Set<Recruitment> myBookmarkRecruitments) {
-        return RecruitmentData.builder()
-                .id(recruitment.getId())
-                .title(recruitment.getTitle())
-                .body(recruitment.getBody())
-                .isActivated(recruitment.getIsActivated())
-                .isMyBookmark(myBookmarkRecruitments.contains(recruitment))
-                .build();
+        return new RecruitmentData(
+                recruitment.getId(),
+                recruitment.getTitle(),
+                recruitment.getBody(),
+                recruitment.getPosterUri(),
+                recruitment.getProcedureType(),
+                recruitment.getLimits(),
+                recruitment.getCreatedDateTime(),
+                recruitment.getStartDateTime(),
+                recruitment.getEndDateTime(),
+                recruitment.getIsActivated(),
+                myBookmarkRecruitments.contains(recruitment)
+        );
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment;
 
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
@@ -12,6 +13,7 @@ import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +22,10 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ariari.ariari.domain.club.QClub.*;
+import static com.ariari.ariari.domain.club.QClub.club;
 import static com.ariari.ariari.domain.recruitment.QRecruitment.recruitment;
 
+@Slf4j
 @RequiredArgsConstructor
 public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
 
@@ -147,6 +150,16 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public boolean existsDuplicatePeriodRecruitment(Club club, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return !queryFactory
+                .selectFrom(recruitment)
+                .where(clubEq(club),
+                        isActivated(),
+                        periodOverlapped(startDateTime, endDateTime))
+                .fetch().isEmpty();
+    }
+
     private BooleanExpression schoolEq(School school) {
         return school == null ? null : recruitment.club.school.eq(school);
     }
@@ -170,6 +183,17 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
 
     private BooleanExpression participantIn(List<ParticipantType> participantTypes) {
         return participantTypes.isEmpty() ? null : recruitment.club.participantType.in(participantTypes);
+    }
+
+    private BooleanExpression clubEq(Club clubParam) {
+        return club.eq(clubParam);
+    }
+
+    private BooleanExpression periodOverlapped(LocalDateTime start, LocalDateTime end) {
+        return recruitment.startDateTime.between(start, end)
+                .or(recruitment.endDateTime.between(start, end))
+                .or(recruitment.startDateTime.before(start)
+                        .and(recruitment.endDateTime.after(end)));
     }
 
 }

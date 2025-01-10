@@ -16,9 +16,12 @@ import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
+import com.ariari.ariari.domain.recruitment.applyform.exception.NoApplyFormException;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
 import com.ariari.ariari.domain.recruitment.dto.req.RecruitmentSaveReq;
 import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentDetailRes;
+import com.ariari.ariari.domain.recruitment.exception.ExistsDuplicatePeriodRecruitment;
+import com.ariari.ariari.domain.recruitment.exception.StartAfterEndException;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
@@ -85,7 +88,15 @@ public class RecruitmentService {
             throw new NoClubAuthException();
         }
 
-        ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElseThrow(NotFoundEntityException::new);
+        ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElseThrow(NoApplyFormException::new);
+
+        if (recruitmentRepository.existsDuplicatePeriodRecruitment(club, saveReq.getStartDateTime(), saveReq.getEndDateTime())) {
+            throw new ExistsDuplicatePeriodRecruitment();
+        }
+
+        if (saveReq.getStartDateTime().isAfter(saveReq.getEndDateTime())) {
+            throw new StartAfterEndException();
+        }
 
         Recruitment recruitment = saveReq.toEntity(club, applyForm);
         for (RecruitmentNote recruitmentNote : recruitment.getRecruitmentNotes()) {

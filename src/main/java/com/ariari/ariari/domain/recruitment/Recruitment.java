@@ -55,6 +55,7 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     private Integer limits;
     private Long views = 0L;
 
+    private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
     @CreationTimestamp
@@ -104,11 +105,12 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
         this.club = club;
     }
 
-    public Recruitment(String title, String body, ProcedureType procedureType, Integer limits, LocalDateTime endDateTime, Club club, ApplyForm applyForm, List<RecruitmentNote> recruitmentNotes) {
+    public Recruitment(String title, String body, ProcedureType procedureType, Integer limits, LocalDateTime startDateTime, LocalDateTime endDateTime, Club club, ApplyForm applyForm, List<RecruitmentNote> recruitmentNotes) {
         this.title = title;
         this.body = body;
         this.procedureType = procedureType;
         this.limits = limits;
+        this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.club = club;
         this.applyForm = applyForm;

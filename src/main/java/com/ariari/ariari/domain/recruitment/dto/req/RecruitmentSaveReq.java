@@ -18,6 +18,7 @@ public class RecruitmentSaveReq {
     private String title;
     private String body;
     private ProcedureType procedureType;
+    private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Integer limits;
 
@@ -31,6 +32,7 @@ public class RecruitmentSaveReq {
                 body,
                 procedureType,
                 limits,
+                startDateTime,
                 endDateTime,
                 club,
                 applyForm,
