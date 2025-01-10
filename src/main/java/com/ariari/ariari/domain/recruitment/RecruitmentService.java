@@ -107,7 +107,7 @@ public class RecruitmentService {
             String uri = fileManager.saveFile(file, "recruitment");
             recruitment.setPosterUri(uri);
         }
-        log.info("title {}", saveReq.getTitle());
+
         recruitmentRepository.save(recruitment);
     }
 

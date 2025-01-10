@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Data
 public class ApplyTempSaveReq {
 
@@ -26,7 +25,6 @@ public class ApplyTempSaveReq {
         Map<Long, ApplyQuestion> applyQuestionMap = recruitment.getApplyForm().getApplyQuestionMap();
         List<ApplyAnswerTemp> applyAnswerTemps = applyAnswerTemp.stream().map(aa -> aa.toEntity(applyQuestionMap)).toList();
 
-        log.info("!!! {} {}", this.name, this.portfolioUrl);
         ApplyTemp applyTemp = new ApplyTemp(
                 this.name,
                 this.portfolioUrl,
