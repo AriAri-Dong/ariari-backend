@@ -5,7 +5,7 @@ import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
-import com.ariari.ariari.domain.club.attendance.AttendanceRecord;
+import com.ariari.ariari.domain.club.event.attendance.Attendance;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.club.faq.ClubFaq;
@@ -64,7 +64,7 @@ public class ClubMember implements LogicalDeleteEntity {
     private List<ClubReview> clubReviews;
 
     @OneToMany(mappedBy = "clubMember")
-    private List<AttendanceRecord> attendanceRecords;
+    private List<Attendance> attendances;
 
     @OneToMany(mappedBy = "clubMember")
     private List<PassReview> passReviews;

@@ -3,7 +3,7 @@ package com.ariari.ariari.commons.entitydelete;
 import com.ariari.ariari.commons.exception.exceptions.UnexpectedException;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
-import com.ariari.ariari.domain.club.attendance.AttendanceRecord;
+import com.ariari.ariari.domain.club.event.attendance.Attendance;
 import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.faq.ClubFaq;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
@@ -53,13 +53,14 @@ public class EntityRelationManager {
     public void initChildEntityMap() {
         CHILD_ENTITY_MAP.put(Member.class, List.of(ClubMember.class, Apply.class, MemberAlarm.class, ClubBookmark.class));
         CHILD_ENTITY_MAP.put(Club.class, List.of(ClubMember.class, ClubBookmark.class, Recruitment.class, ClubNotice.class, ClubEvent.class, ApplyForm.class, FinancialRecord.class, ClubActivity.class, ClubFaq.class, ClubQuestion.class));
-        CHILD_ENTITY_MAP.put(ClubMember.class, List.of(ClubAnswer.class, ClubReview.class, AttendanceRecord.class, PassReview.class, ClubActivityComment.class, ClubNotice.class, ClubFaq.class, ClubActivity.class));
+        CHILD_ENTITY_MAP.put(ClubMember.class, List.of(ClubAnswer.class, ClubReview.class, Attendance.class, PassReview.class, ClubActivityComment.class, ClubNotice.class, ClubFaq.class, ClubActivity.class));
         CHILD_ENTITY_MAP.put(Recruitment.class, List.of(Apply.class, ApplyTemp.class, RecruitmentImage.class, RecruitmentNote.class, RecruitmentBookmark.class));
         CHILD_ENTITY_MAP.put(ApplyForm.class, List.of(Recruitment.class));
         CHILD_ENTITY_MAP.put(Apply.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(ApplyTemp.class, List.of(ApplyAnswerTemp.class));
         CHILD_ENTITY_MAP.put(ApplyQuestion.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(School.class, List.of(Club.class, Member.class));
+        CHILD_ENTITY_MAP.put(ClubEvent.class, List.of(Attendance.class));
     }
 
     public List<Object> getChildEntities(Object entity) {
