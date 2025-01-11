@@ -33,7 +33,7 @@ public class AttendanceTokenManager {
     }
 
     private String createKey() {
-        return UUID.randomUUID().toString();
+        return "ATTENDANCE_TOKEN_" + UUID.randomUUID().toString();
     }
 
 }
