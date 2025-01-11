@@ -83,6 +83,16 @@ public class ClubMemberController {
         clubMemberService.removeClubMember(reqMemberId, clubMemberId);
     }
 
+    @Operation(summary = "동아리 회원 검색", description = "query 로 동아리 내 회원을 검색합니다. (contains 방식)")
+    @GetMapping("/clubs/{clubId}/club-members/search")
+    public ClubMemberListRes searchClubMembers(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                               @PathVariable Long clubId,
+                                               @RequestParam String query,
+                                               Pageable pageable) {
+        Long reqMemberId = getMemberId(userDetails, true);
+        return clubMemberService.searchClubMembers(reqMemberId, clubId, query, pageable);
+    }
+
     // (추가 예정) 동아리 회원 초대 코드 생성
 
     // (추가 예정) 동아리 회원 초대 (입장)

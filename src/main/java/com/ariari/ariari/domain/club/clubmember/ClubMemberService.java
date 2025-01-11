@@ -13,6 +13,7 @@ import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +39,8 @@ public class ClubMemberService {
             throw new NoClubAuthException();
         }
 
-        List<ClubMember> clubMembers = clubMemberRepository.findByClub(club, statusType, pageable);
-        return ClubMemberListRes.fromEntities(clubMembers);
+        Page<ClubMember> page = clubMemberRepository.findByClub(club, statusType, pageable);
+        return ClubMemberListRes.createRes(page);
     }
 
     @Transactional
@@ -113,6 +114,19 @@ public class ClubMemberService {
         }
 
         entityDeleteManager.deleteEntity(clubMember);
+    }
+
+    public ClubMemberListRes searchClubMembers(Long reqMemberId, Long clubId, String query, Pageable pageable) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+
+        if (!reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
+            throw new NoClubAuthException();
+        }
+
+        Page<ClubMember> page = clubMemberRepository.findByClubAndNameContains(club, query, pageable);
+        return ClubMemberListRes.createRes(page);
     }
 
 }
