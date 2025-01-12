@@ -33,6 +33,7 @@ public class ClubEvent {
     private LocalDateTime eventDateTime;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

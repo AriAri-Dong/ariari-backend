@@ -27,4 +27,9 @@ public class ClubNoticeImage {
     @JoinColumn(name = "club_notice_id")
     private ClubNotice clubNotice;
 
+    public ClubNoticeImage(String imageUri, ClubNotice clubNotice) {
+        this.imageUri = imageUri;
+        this.clubNotice = clubNotice;
+    }
+
 }

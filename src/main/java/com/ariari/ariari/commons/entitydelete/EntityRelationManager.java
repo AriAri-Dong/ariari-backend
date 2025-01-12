@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.faq.ClubFaq;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.notice.ClubNotice;
+import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
 import com.ariari.ariari.domain.club.passreview.PassReview;
 import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.answer.ClubAnswer;
@@ -61,6 +62,7 @@ public class EntityRelationManager {
         CHILD_ENTITY_MAP.put(ApplyQuestion.class, List.of(ApplyAnswer.class));
         CHILD_ENTITY_MAP.put(School.class, List.of(Club.class, Member.class));
         CHILD_ENTITY_MAP.put(ClubEvent.class, List.of(Attendance.class));
+        CHILD_ENTITY_MAP.put(ClubNotice.class, List.of(ClubNoticeImage.class));
     }
 
     public List<Object> getChildEntities(Object entity) {
