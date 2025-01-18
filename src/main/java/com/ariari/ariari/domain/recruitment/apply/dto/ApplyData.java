@@ -4,6 +4,8 @@ import com.ariari.ariari.domain.member.dto.MemberData;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,7 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplyData {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
+    private String name;
     private ApplyStatusType applyStatusType;
     private LocalDateTime createdDateTime;
 
@@ -25,6 +29,7 @@ public class ApplyData {
     public static ApplyData fromEntity(Apply apply) {
         return new ApplyData(
                 apply.getId(),
+                apply.getName(),
                 apply.getApplyStatusType(),
                 apply.getCreatedDateTime(),
                 MemberData.fromEntity(apply.getMember()),

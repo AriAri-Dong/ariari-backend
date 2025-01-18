@@ -32,6 +32,7 @@ public class ApplyTemp {
     private String portfolioUrl;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

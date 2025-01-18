@@ -1,10 +1,12 @@
 package com.ariari.ariari.domain.recruitment;
 
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.school.School;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface RecruitmentRepositoryCustom {
@@ -18,5 +20,7 @@ public interface RecruitmentRepositoryCustom {
     List<Recruitment> findExternalRankingList();
 
     List<Recruitment> findInternalRankingList(School school);
+
+    boolean existsDuplicatePeriodRecruitment(Club club, LocalDateTime startDateTime, LocalDateTime endDateTime);
 
 }

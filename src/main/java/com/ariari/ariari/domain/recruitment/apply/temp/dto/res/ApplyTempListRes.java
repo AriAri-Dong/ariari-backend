@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.temp.dto.res;
 
 import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyListRes;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.ApplyTempData;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplyTempListRes {
 
-    private List<ApplyTempData> applyTempDataList;
+    private List<ApplyTempData> applyDataList;
     private PageInfo pageInfo;
 
     public static ApplyTempListRes fromPage(Page<ApplyTemp> page) {

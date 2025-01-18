@@ -32,6 +32,7 @@ public class ClubFaq {
     private ClubFaqColorType clubFaqColorType;
 
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -18,19 +18,21 @@ public class RecruitmentSaveReq {
     private String title;
     private String body;
     private ProcedureType procedureType;
+    private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Integer limits;
 
     private List<RecruitmentNoteSaveReq> recruitmentNotes = new ArrayList<>();
 
     public Recruitment toEntity(Club club, ApplyForm applyForm) {
-        List<RecruitmentNote> recruitmentNoteList = recruitmentNotes.stream().map(n -> n.toEntity()).toList();
+        List<RecruitmentNote> recruitmentNoteList = recruitmentNotes.stream().map(RecruitmentNoteSaveReq::toEntity).toList();
 
         Recruitment recruitment = new Recruitment(
                 title,
                 body,
                 procedureType,
                 limits,
+                startDateTime,
                 endDateTime,
                 club,
                 applyForm,

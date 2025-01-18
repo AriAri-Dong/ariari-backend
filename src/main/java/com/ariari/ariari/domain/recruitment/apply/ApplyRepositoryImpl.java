@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchType;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,6 @@ import java.util.List;
 import static com.ariari.ariari.domain.recruitment.apply.QApply.*;
 import static com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType.*;
 
-
 @RequiredArgsConstructor
 public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
 
@@ -30,6 +30,8 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                 .where(apply.recruitment.club.eq(club),
                         isPendent(condition.getIsPendent()),
                         nicknameContains(condition.getQuery()),
+                        applyNameContains(condition.getQuery()),
+                        recruitmentTitleContains(condition.getQuery()),
                         betweenDateTime(condition.getStartDateTime(), condition.getEndDateTime()))
                 .orderBy(apply.createdDateTime.desc())
                 .offset(pageable.getOffset())
@@ -41,6 +43,8 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                 .where(apply.recruitment.club.eq(club),
                         isPendent(condition.getIsPendent()),
                         nicknameContains(condition.getQuery()),
+                        applyNameContains(condition.getQuery()),
+                        recruitmentTitleContains(condition.getQuery()),
                         betweenDateTime(condition.getStartDateTime(), condition.getEndDateTime()))
                 .fetchOne();
 
@@ -77,6 +81,14 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
         return query != null ? apply.member.nickName.contains(query) : null;
     }
 
+    private Predicate applyNameContains(String query) {
+        return query != null ? apply.name.contains(query) : null;
+    }
+
+    private Predicate recruitmentTitleContains(String query) {
+        return query != null ? apply.recruitment.title.contains(query) : null;
+    }
+
     private BooleanExpression betweenDateTime(LocalDateTime start, LocalDateTime end) {
         if (start == null) {
             return null;
@@ -89,12 +101,14 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     }
 
     private BooleanExpression searchMyCond(MyAppliesSearchType searchType) {
+        if (searchType == null) {
+            return null;
+        }
+
         if (searchType.equals(MyAppliesSearchType.IN_PROGRESS)) {
             return apply.applyStatusType.in(PENDENCY, INTERVIEW);
-        } else if (searchType.equals(MyAppliesSearchType.FINALIZED)) {
-            return apply.applyStatusType.in(APPROVE, REFUSAL);
         } else {
-            return null;
+            return apply.applyStatusType.in(APPROVE, REFUSAL);
         }
     }
 

@@ -8,10 +8,12 @@ import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.club.clubmember.exception.NoAdminException;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,51 +39,47 @@ public class ClubMemberService {
             throw new NoClubAuthException();
         }
 
-        List<ClubMember> clubMembers = clubMemberRepository.findByClub(club, statusType, pageable);
-        return ClubMemberListRes.fromEntities(clubMembers);
+        Page<ClubMember> page = clubMemberRepository.findByClub(club, statusType, pageable);
+        return ClubMemberListRes.createRes(page);
     }
 
     @Transactional
-    public void modifyRoleType(Long reqMemberId, Long clubId, Long clubMemberId, ClubMemberRoleType roleType) {
+    public void modifyRoleType(Long reqMemberId, Long clubMemberId, ClubMemberRoleType roleType) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
             throw new NoClubAuthException();
         }
 
-        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
         clubMember.setClubMemberRoleType(roleType);
     }
 
     @Transactional
-    public void entrustAdmin(Long reqMemberId, Long clubId, Long clubMemberId) {
+    public void entrustAdmin(Long reqMemberId, Long clubMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
 
         if (!reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
             throw new NoAdminException();
         }
-
-        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
 
         clubMember.setClubMemberRoleType(ClubMemberRoleType.ADMIN);
         reqClubMember.setClubMemberRoleType(ClubMemberRoleType.GENERAL);
     }
 
     @Transactional
-    public void modifyStatusType(Long reqMemberId, Long clubId, Long clubMemberId, ClubMemberStatusType statusType) {
+    public void modifyStatusType(Long reqMemberId, Long clubMemberId, ClubMemberStatusType statusType) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
 
         if (!reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
             throw new NoAdminException();
         }
 
-        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
         clubMember.setClubMemberStatusType(statusType);
     }
 
@@ -97,12 +95,28 @@ public class ClubMemberService {
 
         List<ClubMember> clubMembers = clubMemberRepository.findAllById(clubMemberIds);
         for (ClubMember clubMember : clubMembers) {
+            if (!clubMember.getClub().equals(club)) {
+                throw new NotBelongInClubException();
+            }
+
             clubMember.setClubMemberStatusType(statusType);
         }
     }
 
     @Transactional
-    public void removeClubMember(Long reqMemberId, Long clubId, Long clubMemberId) {
+    public void removeClubMember(Long reqMemberId, Long clubMemberId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+
+        if (!reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
+            throw new NoClubAuthException();
+        }
+
+        entityDeleteManager.deleteEntity(clubMember);
+    }
+
+    public ClubMemberListRes searchClubMembers(Long reqMemberId, Long clubId, String query, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
@@ -111,8 +125,8 @@ public class ClubMemberService {
             throw new NoClubAuthException();
         }
 
-        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
-        entityDeleteManager.deleteEntity(clubMember);
+        Page<ClubMember> page = clubMemberRepository.findByClubAndNameContains(club, query, pageable);
+        return ClubMemberListRes.createRes(page);
     }
 
 }

@@ -5,6 +5,8 @@ import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.member.dto.MemberData;
 import com.ariari.ariari.domain.member.enums.ProfileType;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ClubMemberData {
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     private String name;
     private ClubMemberRoleType clubMemberRoleType;

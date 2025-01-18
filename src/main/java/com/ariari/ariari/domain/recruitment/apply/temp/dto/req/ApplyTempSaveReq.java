@@ -7,6 +7,7 @@ import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.answer.dto.req.ApplyAnswerTempSaveReq;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class ApplyTempSaveReq {
 
         ApplyTemp applyTemp = new ApplyTemp(
                 this.name,
-                portfolioUrl,
+                this.portfolioUrl,
                 member,
                 recruitment,
                 applyAnswerTemps

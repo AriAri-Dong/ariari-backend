@@ -5,28 +5,41 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.dto.RecruitmentData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class RecruitmentListRes {
 
-    private List<RecruitmentData> contents;
+    private List<RecruitmentData> recruitmentDataList;
     private PageInfo pageInfo;
 
     public static RecruitmentListRes fromList(List<Recruitment> recruitments, Member reqMember) {
-        RecruitmentListRes recruitmentListRes = new RecruitmentListRes();
-        recruitmentListRes.setContents(RecruitmentData.fromEntities(recruitments, reqMember));
-        return recruitmentListRes;
+        return new RecruitmentListRes(
+                RecruitmentData.fromEntities(recruitments, reqMember),
+                null
+        );
     }
 
     public static RecruitmentListRes fromPage(Page<Recruitment> page, Member reqMember) {
-        RecruitmentListRes recruitmentListRes = new RecruitmentListRes();
-        recruitmentListRes.setContents(RecruitmentData.fromEntities(page.getContent(), reqMember));
-        recruitmentListRes.setPageInfo(PageInfo.fromPage(page));
-        return recruitmentListRes;
+        return new RecruitmentListRes(
+                RecruitmentData.fromEntities(page.getContent(), reqMember),
+                PageInfo.fromPage(page)
+        );
+    }
+
+    public static RecruitmentListRes fromBookmarkPage(Page<RecruitmentBookmark> page, Member reqMember) {
+        List<RecruitmentBookmark> recruitmentBookmarks = page.getContent();
+        List<Recruitment> recruitments = recruitmentBookmarks.stream().map(RecruitmentBookmark::getRecruitment).toList();
+
+        return new RecruitmentListRes(
+                RecruitmentData.fromEntities(recruitments, reqMember),
+                PageInfo.fromPage(page)
+        );
     }
 
 }

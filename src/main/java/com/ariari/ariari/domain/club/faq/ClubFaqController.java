@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "club-faq", description = "동아리 FAQ 기능")
 @RestController
-@RequestMapping("/clubs/{clubId}/faqs")
+@RequestMapping
 @RequiredArgsConstructor
 public class ClubFaqController {
 
     private final ClubFaqService clubFaqService;
 
     @Operation(summary = "동아리 FAQ 리스트 조회", description = "동아리의 FAQ 리스트를 조회합니다. (페이지네이션)")
-    @GetMapping
+    @GetMapping("/clubs/{clubId}/club-faqs")
     public ClubFaqListRes findClubFaqs(@PathVariable Long clubId,
                                        Pageable pageable) {
         return clubFaqService.findClubFaqs(clubId, pageable);
     }
 
     @Operation(summary = "동아리 FAQ 등록", description = "동아리의 FAQ 를 등록합니다. 동아리 관리자만이 등록할 수 있습니다.")
-    @PostMapping
+    @PostMapping("/clubs/{clubId}/club-faqs")
     public void saveClubFaq(@AuthenticationPrincipal CustomUserDetails userDetails,
                             @PathVariable Long clubId,
                             @RequestBody ClubFaqSaveReq saveReq) {
@@ -35,7 +35,7 @@ public class ClubFaqController {
     }
 
     @Operation(summary = "동아리 FAQ 삭제", description = "동아리의 FAQ 를 삭제합니다. 동아리 관리자만이 삭제할 수 있습니다.")
-    @DeleteMapping("/{clubFaqId}")
+    @DeleteMapping("/club-faqs/{clubFaqId}")
     public void removeClubFaq(@AuthenticationPrincipal CustomUserDetails userDetails,
                               @PathVariable Long clubFaqId) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);

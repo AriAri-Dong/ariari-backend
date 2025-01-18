@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.bookmark;
 
+import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -24,6 +25,12 @@ public class RecruitmentBookmarkService {
     public void saveBookmark(Long reqMemberId, Long recruitmentId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
+
+        if (recruitment.getClub().getSchool() != null) {
+            if (!reqMember.getSchool().equals(recruitment.getClub().getSchool())) {
+                throw new NoSchoolAuthException();
+            }
+        }
 
         Boolean exists = recruitmentBookmarkRepository.existsByMemberAndRecruitment(reqMember, recruitment);
         if (exists) {

@@ -37,7 +37,10 @@ public class ClubService {
 
     @Transactional
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElse(null);
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = null;
         if (reqMember != null) {

@@ -8,7 +8,6 @@ public class ClubModifyReq {
 
     private String body;
 
-
     public void modifyEntity(Club club) {
         club.setBody(body);
     }

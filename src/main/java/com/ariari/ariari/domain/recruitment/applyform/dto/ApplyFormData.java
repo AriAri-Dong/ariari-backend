@@ -11,12 +11,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplyFormData {
 
-    private Long id;
     private List<ApplyQuestionData> applyQuestionDataList;
 
     public static ApplyFormData fromEntity(ApplyForm applyForm) {
         return new ApplyFormData(
-                applyForm.getId(),
                 ApplyQuestionData.fromEntities(applyForm.getApplyQuestions())
         );
     }
