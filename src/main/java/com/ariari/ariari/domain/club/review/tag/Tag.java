@@ -1,14 +1,19 @@
 package com.ariari.ariari.domain.club.review.tag;
 
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.ariari.ariari.domain.club.review.enums.Icon;
+import com.ariari.ariari.domain.club.review.enums.IconType;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@SQLRestriction("deleted_date_time is null")
 @Getter
 public class Tag {
 
@@ -19,6 +24,14 @@ public class Tag {
     @Column(length = 30)
     private String body;
 
-    private String icon;
+    @Enumerated(EnumType.STRING)
+    private IconType iconType;
 
+    @Enumerated(EnumType.STRING)
+    private Icon icon;
+
+    @CreationTimestamp
+    private LocalDateTime createdDateTime;
+
+    private LocalDateTime deletedDateTime;
 }

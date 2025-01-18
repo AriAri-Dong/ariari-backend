@@ -7,9 +7,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLRestriction;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
+@SQLRestriction("deleted_date_time is null")
 @Getter
 public class PassReviewNote {
 
@@ -30,6 +35,11 @@ public class PassReviewNote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pass_review_id")
     private PassReview passReview;
+
+    @CreationTimestamp
+    private LocalDateTime createdDateTime;
+
+    private LocalDateTime deletedDateTime;
 
     public PassReviewNote(NoteType noteType, String title, String body){
         this.noteType = noteType;

@@ -4,14 +4,11 @@ import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewData;
 import com.ariari.ariari.domain.club.passreview.dto.req.PassReviewSaveReq;
 import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewListRes;
-import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewRes;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
 
@@ -20,9 +17,6 @@ import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.ge
 @RequiredArgsConstructor
 public class PassReviewController {
     private final PassReviewService passReviewService;
-
-    // 패스리뷰 리스트
-    // 필요한 요소 : 페이지네이션으로 id, 제목, 작성일자, 서류 관련 답변 개수, 면접관련 답변개수, 유저의 열람 여부
 
     // 패스 디테일
     // 필요한 요소 : 제목, 서류 or 서류면접 , 서류문항들(제목,답변), 면접방식, 면접인원, 면접분위기, 면접문항들(제목,답변)
