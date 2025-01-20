@@ -2,13 +2,14 @@ package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
-import com.ariari.ariari.domain.club.passreview.access.PassReviewAccess;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
-import com.ariari.ariari.domain.recruitment.apply.Apply;
-import com.ariari.ariari.domain.member.block.Block;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.passreview.access.PassReviewAccess;
+import com.ariari.ariari.domain.club.review.access.ClubReviewAccess;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.domain.member.block.Block;
 import com.ariari.ariari.domain.member.enums.ProfileType;
+import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
@@ -83,15 +84,23 @@ public class Member implements LogicalDeleteEntity {
     @OneToMany(mappedBy = "member")
     private List<PassReviewAccess> passReviewAccessList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<ClubReviewAccess> clubReviewAccessList = new ArrayList<>();
 
-    public static Member createMember(Long kakaoId) {
-        Member member = new Member(kakaoId);
+
+    public static Member createMember(Long kakaoId, String nickname) {
+        Member member = new Member(kakaoId, nickname);
         member.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
         return member;
     }
 
     public Member(Long kakaoId) {
         this.kakaoId = kakaoId;
+    }
+
+    public Member(Long kakaoId, String nickName) {
+        this.kakaoId = kakaoId;
+        this.nickName = nickName;
     }
 
     public void addAuthority(GrantedAuthority authority) {

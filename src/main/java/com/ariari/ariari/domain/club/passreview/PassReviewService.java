@@ -57,12 +57,18 @@ public class PassReviewService {
     public void accessPassReivew(Long reqMemberId, Long passReviewId){
         PassReview passReview = passReviewRepository.findById(passReviewId).orElseThrow(NotFoundEntityException::new);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        if (passReviewAccessRepository.existsByPassReviewAndMember(passReview, member)){
+            throw new RuntimeException(); // 이미 접근 권한 존재 예외처리
+        }
         PassReviewAccess passReviewAccess = new PassReviewAccess(passReview, member);
         passReviewAccessRepository.save(passReviewAccess);
     }
 
     public void savePassReview(Long reqMemberId, PassReviewSaveReq passReviewSaveReq, Long clubId){
         ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, reqMemberId).orElseThrow(NotFoundEntityException::new);
+        if (passReviewRepository.existsByClubMember(clubMember)){
+            throw new RuntimeException(); // 중복 작성 예외처리
+        }
         PassReview passReview = passReviewSaveReq.toEntity(clubMember);
         passReviewRepository.save(passReview);
     }

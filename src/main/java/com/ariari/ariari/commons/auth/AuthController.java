@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.auth;
 
-import com.ariari.ariari.commons.auth.dto.JwtTokenReq;
+import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,9 +22,9 @@ public class AuthController {
      * kakao login callback
      */
     @GetMapping("/login/kakao")
-    @Operation(summary = "로그인", description = "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenReq.class)))
-    public JwtTokenReq login(@RequestParam(name = "code") String code) {
+    @Operation(summary = "로그인", description = "카카오 로그인")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
+    public JwtTokenRes login(@RequestParam(name = "code") String code) {
 
         String token = kakaoAuthManager.getKakaoToken(code);
         Long kakaoId = kakaoAuthManager.getKakaoId(token);
@@ -36,8 +36,8 @@ public class AuthController {
      * kakao logout 연동 x
      */
     @PostMapping("/logout")
-    public void logout(@RequestBody JwtTokenReq jwtTokenReq) {
-        authService.logout(jwtTokenReq);
+    public void logout(@RequestBody JwtTokenRes jwtTokenRes) {
+        authService.logout(jwtTokenRes);
     }
 
 }
