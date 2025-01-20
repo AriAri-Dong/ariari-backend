@@ -97,6 +97,11 @@ jobs:
             expiration-date:
               view-duplicate: ${VIEW_DUPLICATE_DUE}
               view: ${VIEW_DUE}
+
+          school-auth:
+            key-name: ${SCHOOL_AUTH_KEY_NAME}
+            expiration-time: ${SCHOOL_AUTH_EXPRIATION_TIME}
+            code-length: ${SCHOOL_AUTH_CODE_LENGTH}
               
           EOT
         env:
@@ -115,6 +120,9 @@ jobs:
           EMAIL_CODE_EXPIRATION: ${{ secrets.MAIL_CODE_EXPIRATION }}
           VIEW_DUPLICATE_DUE: ${{ secrets.VIEW_DUPLICATE_DUE }}
           VIEW_DUE: ${{ secrets.VIEW_DUE }}
+          SCHOOL_AUTH_KEY_NAME: ${{ secrets.SCHOOL_AUTH_KEY_NAME }}
+          SCHOOL_AUTH_EXPRIATION_TIME: ${{ secrets.SCHOOL_AUTH_EXPIRATION_TIME }}
+          SCHOOL_AUTH_CODE_LENGTH: ${{ secrets.SCHOOL_AUTH_CODE_LENGTH }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
