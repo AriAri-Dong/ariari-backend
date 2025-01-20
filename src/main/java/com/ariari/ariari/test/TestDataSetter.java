@@ -62,38 +62,31 @@ public class TestDataSetter {
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
         // school
-        School school1 = new School("세종대학교");
+        School school1 = new School("세종대학교", "sejong.ac.kr");
         School school2 = new School("두종대학교");
         School school3 = new School("네종대학교");
-        schoolRepository.saveAll(List.of(school1, school2, school3));
+        School school4 = new School("네이버대학교", "naver.com");
+        schoolRepository.saveAll(List.of(school1, school2, school3, school4));
 
         // member
-        Member admin = Member.createMember(null);
+        Member admin = Member.createMember(null, "admin");
         admin.addAuthority(new SimpleGrantedAuthority("ROLE_MANAGER"));
         admin.addAuthority(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Member m1 = Member.createMember(null);
-        m1.setNickName("m1");
+        Member m1 = Member.createMember(null, "m1");
         m1.setSchool(school1);
-        Member m2 = Member.createMember(null);
-        m2.setNickName("m2");
+        Member m2 = Member.createMember(null, "m2");
         m2.setSchool(school1);
-        Member m3 = Member.createMember(null);
-        m3.setNickName("m3");
+        Member m3 = Member.createMember(null, "m3");
         m3.setSchool(school1);
-        Member m4 = Member.createMember(null);
-        m4.setNickName("m4");
+        Member m4 = Member.createMember(null, "m4");
         m4.setSchool(school1);
-        Member m5 = Member.createMember(null);
-        m5.setNickName("m5");
+        Member m5 = Member.createMember(null, "m5");
         m5.setSchool(school1);
-        Member m6 = Member.createMember(null);
-        m6.setNickName("m6");
+        Member m6 = Member.createMember(null, "m6");
         m6.setSchool(school1);
-        Member m7 = Member.createMember(null);
-        m7.setNickName("m7");
+        Member m7 = Member.createMember(null, "m7");
         m7.setSchool(school2);
-        Member m8 = Member.createMember(null);
-        m8.setNickName("m8");
+        Member m8 = Member.createMember(null, "m8");
         memberRepository.saveAll(List.of(admin, m1, m2, m3, m4, m5, m6, m7, m8));
 
         // club
@@ -277,7 +270,6 @@ public class TestDataSetter {
         FinancialRecord fr7 = new FinancialRecord(50000L, "body7", LocalDateTime.now().minusMinutes(2), c1);
         FinancialRecord fr8 = new FinancialRecord(50000L, "body8", LocalDateTime.now().minusMinutes(1), c1);
         financialRecordRepository.saveAll(List.of(fr1, fr2, fr3, fr4, fr5, fr6, fr7, fr8));
-
     }
 
 }

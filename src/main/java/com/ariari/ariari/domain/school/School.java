@@ -25,4 +25,8 @@ public class School {
         this.name = name;
     }
 
+    public School(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
 }
