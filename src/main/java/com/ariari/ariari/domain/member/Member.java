@@ -88,14 +88,19 @@ public class Member implements LogicalDeleteEntity {
     private List<ClubReviewAccess> clubReviewAccessList = new ArrayList<>();
 
 
-    public static Member createMember(Long kakaoId) {
-        Member member = new Member(kakaoId);
+    public static Member createMember(Long kakaoId, String nickname) {
+        Member member = new Member(kakaoId, nickname);
         member.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
         return member;
     }
 
     public Member(Long kakaoId) {
         this.kakaoId = kakaoId;
+    }
+
+    public Member(Long kakaoId, String nickName) {
+        this.kakaoId = kakaoId;
+        this.nickName = nickName;
     }
 
     public void addAuthority(GrantedAuthority authority) {
