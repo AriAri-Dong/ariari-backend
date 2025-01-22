@@ -7,7 +7,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
+import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
@@ -80,10 +80,10 @@ public class RecruitmentListService {
     public RecruitmentListRes findRecruitmentListInClub(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NoSchoolAuthException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         List<Recruitment> recruitments = recruitmentRepository.findByClub(club);

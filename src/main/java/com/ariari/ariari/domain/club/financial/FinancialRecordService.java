@@ -6,7 +6,7 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
+import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.club.financial.dto.FinancialRecordListRes;
 import com.ariari.ariari.domain.club.financial.dto.FinancialRecordSaveReq;
 import com.ariari.ariari.domain.club.financial.exception.NegativeBalanceException;
@@ -37,7 +37,7 @@ public class FinancialRecordService {
         Optional<ClubMember> reqClubMemberOptional = clubMemberRepository.findByClubAndMember(club, reqMember);
 
         if (reqClubMemberOptional.isEmpty()) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         return financialRecordRepository.findTotalByClub(club);
@@ -47,10 +47,10 @@ public class FinancialRecordService {
     public void saveFinancialRecord(Long reqMemberId, Long clubId, FinancialRecordSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         // 잔액 음수 검증 -> 일단 비활성화 (잘못된 검증)
@@ -70,7 +70,7 @@ public class FinancialRecordService {
         Optional<ClubMember> reqClubMemberOptional = clubMemberRepository.findByClubAndMember(club, reqMember);
 
         if (reqClubMemberOptional.isEmpty()) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         Page<FinancialRecord> page = financialRecordRepository.findByClubOrderByRecordDateTimeDesc(club, pageable);
@@ -88,11 +88,11 @@ public class FinancialRecordService {
     public void modifyFinancialRecord(Long reqMemberId, Long clubId, Long financialRecordId, FinancialRecordSaveReq modifyReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
         FinancialRecord financialRecord = financialRecordRepository.findById(financialRecordId).orElseThrow(NotFoundEntityException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         Long before = financialRecordRepository.findTotalByClub(club);
@@ -108,11 +108,11 @@ public class FinancialRecordService {
     public void removeFinancialRecord(Long reqMemberId, Long clubId, Long financialRecordId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
         FinancialRecord financialRecord = financialRecordRepository.findById(financialRecordId).orElseThrow(NotFoundEntityException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         Long before = financialRecordRepository.findTotalByClub(club);

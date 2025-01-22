@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.dto.res.ClubListRes;
@@ -57,9 +58,7 @@ public class ClubListService {
 
     public ClubListRes searchInternalPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        if (reqMember.getSchool() == null) {
-            throw new NoSchoolAuthException();
-        }
+        GlobalValidator.hasSchoolAuth(reqMember);
 
         Page<Club> page = clubRepository.searchInternalPage(reqMember.getSchool(), condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
@@ -103,10 +102,7 @@ public class ClubListService {
 
     public ClubListRes findInternalClubRankingList(Long reqMemberId, ClubCategoryType categoryType) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
-
-        if (reqMember.getSchool() == null) {
-            throw new NoSchoolAuthException();
-        }
+        GlobalValidator.hasSchoolAuth(reqMember);
 
         List<Club> clubs = clubRepository.findInternalClubRankingList(reqMember.getSchool(), categoryType);
         return ClubListRes.fromList(clubs, reqMember);

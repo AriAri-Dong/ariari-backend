@@ -6,7 +6,7 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
+import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.club.faq.dto.req.ClubFaqSaveReq;
 import com.ariari.ariari.domain.club.faq.dto.res.ClubFaqListRes;
 import com.ariari.ariari.domain.member.Member;
@@ -38,10 +38,10 @@ public class ClubFaqService {
     public void saveClubFaq(Long reqMemberId, Long clubId, ClubFaqSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         ClubFaq clubFaq = saveReq.toEntity(club, reqClubMember);
@@ -52,10 +52,10 @@ public class ClubFaqService {
     public void removeClubFaq(Long reqMemberId, Long clubFaqId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubFaq clubFaq = clubFaqRepository.findById(clubFaqId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubFaq.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubFaq.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         clubFaqRepository.delete(clubFaq);

@@ -4,7 +4,7 @@ import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
+import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
 import com.ariari.ariari.domain.club.question.answer.dto.req.ClubAnswerSaveReq;
@@ -31,10 +31,10 @@ public class ClubAnswerService {
     public void saveClubAnswer(Long reqMemberId, Long clubQuestionId, ClubAnswerSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubQuestion clubQuestion = clubQuestionRepository.findById(clubQuestionId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubQuestion.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubQuestion.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         if (clubAnswerRepository.findByClubQuestion(clubQuestion).isPresent()) {
@@ -49,10 +49,10 @@ public class ClubAnswerService {
     public void modifyClubAnswer(Long reqMemberId, Long clubQuestionId, ClubAnswerSaveReq modifyReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubQuestion clubQuestion = clubQuestionRepository.findById(clubQuestionId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubQuestion.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubQuestion.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NoClubMemberException();
         }
 
         Optional<ClubAnswer> clubAnswerOptional = clubAnswerRepository.findByClubQuestion(clubQuestion);

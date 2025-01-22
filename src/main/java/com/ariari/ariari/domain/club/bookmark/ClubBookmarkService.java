@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.bookmark;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.bookmark.exception.AlreadyExistsClubBookmarkException;
@@ -26,8 +27,9 @@ public class ClubBookmarkService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
-        Boolean exists = clubBookmarkRepository.existsByMemberAndClub(reqMember, club);
-        if (exists) {
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
+
+        if (clubBookmarkRepository.existsByMemberAndClub(reqMember, club)) {
             throw new AlreadyExistsClubBookmarkException();
         }
 

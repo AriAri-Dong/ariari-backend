@@ -1,14 +1,14 @@
 package com.ariari.ariari.domain.club;
 
-import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
 import com.ariari.ariari.domain.club.dto.req.ClubSaveReq;
 import com.ariari.ariari.domain.club.enums.ClubAffiliationType;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
+import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
@@ -37,16 +37,18 @@ public class ClubService {
         if (reqMemberId != null) {
             reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         }
-        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = null;
-        if (reqMember != null) {
-             reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
-        }
 
-        // views 처리
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
+
         if (!viewsManager.checkForDuplicateView(club, clientIp)) {
             viewsManager.addViews(club);
             viewsManager.addClientIp(club, clientIp);
+        }
+
+        ClubMember reqClubMember = null;
+        if (reqMember != null) {
+            reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
         }
 
         return ClubDetailRes.fromEntity(club, reqClubMember, reqMember);
@@ -58,29 +60,20 @@ public class ClubService {
 
         School school = null;
         if (saveReq.getAffiliationType().equals(ClubAffiliationType.INTERNAL)) {
-            if (reqMember.getSchool() == null) {
-                throw new NoSchoolAuthException();
-            } else {
-                school = reqMember.getSchool();
-            }
+            GlobalValidator.hasSchoolAuth(reqMember);
+            school = reqMember.getSchool();
         }
 
         Club club = saveReq.toEntity(school);
         clubRepository.save(club);
 
-        // 요청 Member 를 admin ClubMember 로 저장
-        ClubMember clubMember = new ClubMember("동아리짱", // 수정 예정
-                ClubMemberRoleType.ADMIN,
-                reqMember,
-                club);
+        ClubMember clubMember = ClubMember.createAdmin(reqMember, club);
         clubMemberRepository.save(clubMember);
 
-        // 이미지 파일 처리
         if (file != null) {
             String uri = fileManager.saveFile(file, "club");
             club.setProfileUri(uri);
         }
-
     }
 
     // 디자인 x
@@ -90,38 +83,30 @@ public class ClubService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotFoundEntityException::new);
 
-        // ClubMember 권한 검증
-        if (clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
-        }
+        GlobalValidator.isClubManagerOrHigher(clubMember);
 
         modifyReq.modifyEntity(club);
 
-        // 이미지 처리
         if (profileFile != null) {
             String profileUri = fileManager.saveFile(profileFile, "club");
-            // file 삭제 처리 필요
+            fileManager.deleteFile(club.getProfileUri());
             club.setProfileUri(profileUri);
         }
 
         if (bannerFile != null) {
             String bannerUri = fileManager.saveFile(bannerFile, "club");
-            // file 삭제 처리 필요
+            fileManager.deleteFile(club.getBannerUri());
             club.setBannerUri(bannerUri);
         }
-
     }
 
     @Transactional
     public void removeClub(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
 
-        // ClubMember 권한 검증
-        if (!clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
-            throw new NoClubAuthException();
-        }
+        GlobalValidator.isClubAdmin(reqClubMember);
 
         clubRepository.delete(club);
     }
