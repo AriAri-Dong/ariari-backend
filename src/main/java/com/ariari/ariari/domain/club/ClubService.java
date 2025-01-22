@@ -3,8 +3,7 @@ package com.ariari.ariari.domain.club;
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.image.DeletedImageService;
-import com.ariari.ariari.commons.image.FileManager;
+import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
@@ -33,7 +32,6 @@ public class ClubService {
     private final ViewsManager viewsManager;
     private final EntityDeleteManager entityDeleteManager;
     private final FileManager fileManager;
-    private final DeletedImageService deletedImageService;
 
     @Transactional
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
@@ -104,13 +102,13 @@ public class ClubService {
         // 이미지 처리
         if (profileFile != null) {
             String profileUri = fileManager.saveFile(profileFile, "club");
-            deletedImageService.deleteImageLogically(profileUri);
+            // file 삭제 처리 필요
             club.setProfileUri(profileUri);
         }
 
         if (bannerFile != null) {
             String bannerUri = fileManager.saveFile(bannerFile, "club");
-            deletedImageService.deleteImageLogically(bannerUri);
+            // file 삭제 처리 필요
             club.setBannerUri(bannerUri);
         }
 

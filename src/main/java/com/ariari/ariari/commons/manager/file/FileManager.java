@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.image;
+package com.ariari.ariari.commons.manager.file;
 
 import org.springframework.web.multipart.MultipartFile;
 

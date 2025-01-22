@@ -1,22 +1,23 @@
 package com.ariari.ariari.commons.image;
 
+import com.ariari.ariari.commons.manager.file.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+/**
+ * 삭제 예정
+ */
 @Slf4j
-@Service
+//@Service
 @Transactional
 @RequiredArgsConstructor
 public class DeletedImageScheduler {
 
     private final FileManager fileManager;
-    private final DeletedImageRepository deletedImageRepository;
 
     private static final int SAVE_PERIOD = 15;
 
@@ -28,13 +29,11 @@ public class DeletedImageScheduler {
     @Scheduled(cron = "0 0 4 * * *")
     public void deleteImagesPhysically() {
         log.info("delete image scheduler start : {}", LocalDateTime.now());
-        LocalDateTime localDateTime = LocalDateTime.now().minusDays(SAVE_PERIOD);
-        List<DeletedImage> deletedImages = deletedImageRepository.findByCreatedDateTimeBefore(localDateTime);
-
-        for (DeletedImage deletedImage : deletedImages) {
-            fileManager.deleteFile(deletedImage.getImagePath());
-            deletedImageRepository.delete(deletedImage);
-        }
+//        LocalDateTime localDateTime = LocalDateTime.now().minusDays(SAVE_PERIOD);
+//
+//        for (DeletedImage deletedImage : deletedImages) {
+//            fileManager.deleteFile(deletedImage.getImagePath());
+//        }
 
         log.info("delete image scheduler end : {}", LocalDateTime.now());
     }

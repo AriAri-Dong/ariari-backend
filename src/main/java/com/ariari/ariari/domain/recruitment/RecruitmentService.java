@@ -3,7 +3,7 @@ package com.ariari.ariari.domain.recruitment;
 import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.image.FileManager;
+import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
