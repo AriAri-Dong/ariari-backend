@@ -39,7 +39,7 @@ public class ClubQuestion extends LogicalDeleteEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(mappedBy = "clubQuestion")
+    @OneToOne(mappedBy = "clubQuestion", cascade = CascadeType.ALL)
     public ClubAnswer clubAnswer;
 
     public ClubQuestion(String title, String body, Club club, Member member) {

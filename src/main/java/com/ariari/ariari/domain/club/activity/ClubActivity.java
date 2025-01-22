@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-@SQLDelete(sql = "UPDATE club_activity SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_activity.club_activity_id= ?")
+@SQLDelete(sql = "UPDATE club_activity SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_activity_id= ?")
 @SQLRestriction("deleted_date_time is null")
 public class ClubActivity extends LogicalDeleteEntity {
 

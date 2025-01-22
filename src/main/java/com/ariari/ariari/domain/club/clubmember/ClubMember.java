@@ -41,12 +41,10 @@ public class ClubMember extends LogicalDeleteEntity {
 
     @Setter
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
     private ClubMemberRoleType clubMemberRoleType;
 
     @Setter
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
     private ClubMemberStatusType clubMemberStatusType = ClubMemberStatusType.ACTIVE;
 
     @ManyToOne(fetch = FetchType.LAZY)
