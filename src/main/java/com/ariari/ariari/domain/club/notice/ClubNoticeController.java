@@ -52,12 +52,12 @@ public class ClubNoticeController {
         clubNoticeService.removeClubNotice(reqMemberId, clubNoticeId);
     }
 
-    @Operation(summary = "동아리 공지사항 상단 고정 (해제)", description = "동아리 관리자만이 상단 고정할 수 있습니다. 이미 고정된 공지사항의 경우 고정이 해제됩니다.(온/오프 방식) 상단 고정 내에서 순서 조정은 불가능합니다.")
+    @Operation(summary = "동아리 공지사항 상단 고정 (해제)", description = "동아리 관리자만이 상단 고정할 수 있습니다. 이미 고정된 공지사항의 경우 고정이 해제됩니다.(온/오프 토글 방식) 상단 고정 내에서 순서 조정은 불가능합니다. 최대 3개의 공지사항을 고정할 수 있습니다.")
     @PostMapping("/club-notices/{clubNoticeId}/fix")
-    public void fixClubNotice(@AuthenticationPrincipal CustomUserDetails userDetails,
-                              @PathVariable Long clubNoticeId) {
+    public void toggleClubNoticeFix(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                    @PathVariable Long clubNoticeId) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
-        clubNoticeService.fixClubNotice(reqMemberId, clubNoticeId);
+        clubNoticeService.toggleClubNoticeFix(reqMemberId, clubNoticeId);
     }
 
     @Operation(summary = "동아리 공지사항 상세 조회", description = "동아리 회원만이 조회할 수 있습니다.")

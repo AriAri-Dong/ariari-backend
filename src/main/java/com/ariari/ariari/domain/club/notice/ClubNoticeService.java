@@ -13,6 +13,7 @@ import com.ariari.ariari.domain.club.notice.dto.ClubNoticeDetailRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeListRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeModifyReq;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeSaveReq;
+import com.ariari.ariari.domain.club.notice.exceptions.TooManyFixedClubNoticeException;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImageRepository;
 import com.ariari.ariari.domain.club.notice.image.exception.NotBelongInClubNoticeException;
@@ -113,7 +114,7 @@ public class ClubNoticeService {
     }
 
     @Transactional
-    public void fixClubNotice(Long reqMemberId, Long clubNoticeId) {
+    public void toggleClubNoticeFix(Long reqMemberId, Long clubNoticeId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubNotice clubNotice = clubNoticeRepository.findById(clubNoticeId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
@@ -122,7 +123,9 @@ public class ClubNoticeService {
             throw new NoClubAuthException();
         }
 
-        // 3개 이상인지 검증 체크
+        if (clubNotice.getIsFixed().equals(Boolean.FALSE) && clubNoticeRepository.findFixedByClub(clubNotice.getClub()).size() >= 3) {
+            throw new TooManyFixedClubNoticeException();
+        }
 
         clubNotice.controlIsFixed();
     }
