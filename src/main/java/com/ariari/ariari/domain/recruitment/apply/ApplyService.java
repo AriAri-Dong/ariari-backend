@@ -52,7 +52,7 @@ public class ApplyService {
         return ApplyDetailRes.fromEntity(apply);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void saveApply(Long reqMemberId, Long recruitmentId, ApplySaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
@@ -88,7 +88,7 @@ public class ApplyService {
         applyRepository.save(apply);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void approveApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
@@ -118,7 +118,7 @@ public class ApplyService {
         clubMemberRepository.save(clubMember);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void refuseApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
@@ -136,7 +136,7 @@ public class ApplyService {
         apply.setApplyStatusType(ApplyStatusType.REFUSAL);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void processApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
@@ -153,7 +153,7 @@ public class ApplyService {
         apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void removeApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);

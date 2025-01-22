@@ -34,7 +34,7 @@ public class ClubQuestionService {
         return ClubQnaListRes.fromEntities(page);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void saveClubQuestion(Long reqMemberId, Long clubId, ClubQuestionSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -43,7 +43,7 @@ public class ClubQuestionService {
         clubQuestionRepository.save(clubQuestion);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void removeClubQuestion(Long reqMemberId, Long questionId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubQuestion clubQuestion = clubQuestionRepository.findById(questionId).orElseThrow(NotFoundEntityException::new);
