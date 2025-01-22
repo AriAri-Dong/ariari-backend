@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
@@ -36,7 +35,6 @@ public class ApplyService {
     private final ClubMemberRepository clubMemberRepository;
     private final ApplyRepository applyRepository;
     private final FileManager fileManager;
-    private final EntityDeleteManager entityDeleteManager;
 
     public ApplyDetailRes findApplyDetail(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -171,7 +169,7 @@ public class ApplyService {
             throw new RemovingApplyException();
         }
 
-        entityDeleteManager.deleteEntity(apply);
+        applyRepository.delete(apply);
     }
 
 }

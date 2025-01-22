@@ -1,5 +1,6 @@
-package com.ariari.ariari.commons.image;
+package com.ariari.ariari.commons.entity.image;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,19 +17,13 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE image SET deleted_date_time= CURRENT_TIMESTAMP WHERE image_id= ?")
 @SQLRestriction("deleted_dt IS NULL")
 @Getter
-public abstract class Image {
+public abstract class Image extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "image_id")
     private Long id;
 
     private String imageUri;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-
-    private LocalDateTime deletedDateTime;
 
     public Image(String imageUri) {
         this.imageUri = imageUri;

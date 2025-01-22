@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.club;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
@@ -30,7 +29,6 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ViewsManager viewsManager;
-    private final EntityDeleteManager entityDeleteManager;
     private final FileManager fileManager;
 
     @Transactional
@@ -125,7 +123,7 @@ public class ClubService {
             throw new NoClubAuthException();
         }
 
-        entityDeleteManager.deleteEntity(club);
+        clubRepository.delete(club);
     }
 
 }

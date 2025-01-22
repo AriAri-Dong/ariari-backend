@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.club.event.attendance;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -11,7 +10,6 @@ import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.event.ClubEventRepository;
 import com.ariari.ariari.domain.club.event.attendance.exception.ExistingAttendanceException;
-import com.ariari.ariari.domain.club.event.attendance.exception.InvalidAttendanceKeyException;
 import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.club.exception.NotMatchedClubException;
 import com.ariari.ariari.domain.member.Member;
@@ -37,7 +35,6 @@ public class AttendanceService {
     private final ClubEventRepository clubEventRepository;
     private final AttendanceRepository attendanceRepository;
     private final AttendanceTokenManager attendanceTokenManager;
-    private final EntityDeleteManager entityDeleteManager;
 
     @Transactional
     public void saveAttendancesByManager(Long reqMemberId, Long clubEventId, List<Long> clubMemberIds) {
@@ -86,7 +83,7 @@ public class AttendanceService {
             }
 
             Attendance attendance = attendanceRepository.findByClubEventAndClubMember(clubEvent, clubMember).orElseThrow(NotFoundEntityException::new);
-            entityDeleteManager.deleteEntity(attendance);
+            attendanceRepository.delete(attendance);
         }
     }
 

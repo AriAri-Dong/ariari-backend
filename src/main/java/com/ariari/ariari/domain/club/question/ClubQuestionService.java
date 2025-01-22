@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.club.question;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
@@ -27,7 +26,6 @@ public class ClubQuestionService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
-    private final EntityDeleteManager entityDeleteManager;
 
     public ClubQnaListRes findClubQuestions(Long clubId, Pageable pageable) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -58,7 +56,7 @@ public class ClubQuestionService {
             }
         }
 
-        entityDeleteManager.deleteEntity(clubQuestion);
+        clubQuestionRepository.delete(clubQuestion);
     }
 
 }

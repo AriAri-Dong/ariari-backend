@@ -1,14 +1,10 @@
 package com.ariari.ariari.domain.club.notice.image;
 
-import com.ariari.ariari.commons.image.Image;
-import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
+import com.ariari.ariari.commons.entity.image.Image;
 import com.ariari.ariari.domain.club.notice.ClubNotice;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor

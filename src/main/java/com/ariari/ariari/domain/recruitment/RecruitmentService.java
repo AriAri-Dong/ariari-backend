@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.recruitment;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
@@ -44,7 +43,6 @@ public class RecruitmentService {
     private final ApplyRepository applyRepository;
     private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
-    private final EntityDeleteManager entityDeleteManager;
     private final FileManager fileManager;
 
     @Transactional
@@ -136,9 +134,7 @@ public class RecruitmentService {
             throw new NoClubAuthException();
         }
 
-        // 이미지 삭제 처리 필요
-
-        entityDeleteManager.deleteEntity(recruitment);
+        recruitmentRepository.delete(recruitment);
     }
 
 

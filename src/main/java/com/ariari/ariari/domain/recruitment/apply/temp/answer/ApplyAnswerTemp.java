@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.temp.answer;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
@@ -8,13 +9,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class ApplyAnswerTemp {
+@SQLDelete(sql = "UPDATE apply_answer_temp SET deleted_date_time= CURRENT_TIMESTAMP WHERE apply_answer_temp_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class ApplyAnswerTemp extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "apply_answer_temp_id")
@@ -23,9 +28,6 @@ public class ApplyAnswerTemp {
     @Setter
     @Column(length = 200)
     private String body;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)

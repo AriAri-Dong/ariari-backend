@@ -6,12 +6,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE point_history SET deleted_date_time= CURRENT_TIMESTAMP WHERE point_history_id= ?")
+@SQLRestriction("deleted_date_time is null")
 public class PointHistory {
 
     @Id @CustomPkGenerate
@@ -22,9 +26,6 @@ public class PointHistory {
 
     @Column(length = 100)
     private String body;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

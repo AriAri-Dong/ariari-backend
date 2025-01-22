@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.club.financial;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
@@ -31,7 +30,6 @@ public class FinancialRecordService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final FinancialRecordRepository financialRecordRepository;
-    private final EntityDeleteManager entityDeleteManager;
 
     public Long findBalance(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -123,7 +121,7 @@ public class FinancialRecordService {
             throw new NegativeBalanceException();
         }
 
-        entityDeleteManager.deleteEntity(financialRecord);
+        financialRecordRepository.delete(financialRecord);
     }
 
 }

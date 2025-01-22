@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.review.tag;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.review.enums.Icon;
 import com.ariari.ariari.domain.club.review.enums.IconType;
@@ -7,15 +8,17 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@SQLRestriction("deleted_date_time is null")
 @Getter
-public class Tag {
+@SQLDelete(sql = "UPDATE tag SET deleted_date_time= CURRENT_TIMESTAMP WHERE tag_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class Tag extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "tag_id")
@@ -30,8 +33,4 @@ public class Tag {
     @Enumerated(EnumType.STRING)
     private Icon icon;
 
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
-
-    private LocalDateTime deletedDateTime;
 }

@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.passreview;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
@@ -10,6 +11,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
@@ -18,9 +20,10 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@SQLRestriction("deleted_date_time is null")
 @Getter
-public class PassReview {
+@SQLDelete(sql = "UPDATE pass_review SET deleted_date_time= CURRENT_TIMESTAMP WHERE pass_review_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class PassReview extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "pass_review_id")
@@ -40,16 +43,11 @@ public class PassReview {
 
     private Integer interviewMood;
 
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
-
-    private LocalDateTime deletedDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_member_id")
     private ClubMember clubMember;
 
-    @OneToMany(mappedBy = "passReview", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
     private List<PassReviewNote> passReviewNotes = new ArrayList<>();
 
     public PassReview(String title, ProcedureType procedureType, InterviewType interviewType, InterviewRatioType interviewRatioType,

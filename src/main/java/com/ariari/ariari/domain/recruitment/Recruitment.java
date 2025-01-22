@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment;
 
 
-import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
@@ -9,7 +9,6 @@ import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
-import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
@@ -19,18 +18,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE recruitment SET deleted_date_time= CURRENT_TIMESTAMP WHERE recruitment_id= ?")
 @SQLRestriction("deleted_date_time is null")
-public class Recruitment implements ViewsContent, LogicalDeleteEntity {
+public class Recruitment extends LogicalDeleteEntity implements ViewsContent {
 
     @Id @CustomPkGenerate
     @Column(name = "recruitment_id")
@@ -58,11 +58,6 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-    private LocalDateTime deletedDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
@@ -71,19 +66,19 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
     @JoinColumn(name = "apply_form_id")
     private ApplyForm applyForm;
 
-    @OneToMany(mappedBy = "recruitment")
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
     private List<Apply> applys = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recruitment")
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
     private List<ApplyTemp> applyTemps = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recruitment")
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.REMOVE)
     private List<RecruitmentImage> recruitmentImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.ALL)
     private List<RecruitmentNote> recruitmentNotes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "recruitment", cascade = CascadeType.ALL)
     private List<RecruitmentBookmark> recruitmentBookmarks = new ArrayList<>();
 
     @Override
@@ -115,11 +110,6 @@ public class Recruitment implements ViewsContent, LogicalDeleteEntity {
         this.club = club;
         this.applyForm = applyForm;
         this.recruitmentNotes = recruitmentNotes;
-    }
-
-    @Override
-    public void deleteLogically() {
-        this.deletedDateTime = LocalDateTime.now();
     }
 
 }

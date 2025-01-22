@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.image;
+package com.ariari.ariari.commons.entity.image;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.question;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.question.answer.ClubAnswer;
@@ -8,13 +9,17 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class ClubQuestion {
+@SQLDelete(sql = "UPDATE club_question SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_question_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class ClubQuestion extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "club_question_id")
@@ -25,11 +30,6 @@ public class ClubQuestion {
 
     @Column(length = 500)
     private String body;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-    private LocalDateTime deletedDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

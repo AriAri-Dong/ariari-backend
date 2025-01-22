@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.notice;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
+import com.ariari.ariari.commons.entity.image.ImageRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.domain.club.Club;
@@ -39,8 +39,8 @@ public class ClubNoticeService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubNoticeRepository clubNoticeRepository;
     private final ClubNoticeImageRepository clubNoticeImageRepository;
+    private final ImageRepository imageRepository;
     private final FileManager fileManager;
-    private final EntityDeleteManager entityDeleteManager;
 
     @Transactional
     public void saveClubNotice(Long reqMemberId, Long clubId, ClubNoticeSaveReq saveReq, List<MultipartFile> files) {
@@ -85,7 +85,7 @@ public class ClubNoticeService {
                 if (!deletedImage.getClubNotice().equals(clubNotice)) {
                     throw new NotBelongInClubNoticeException();
                 }
-                entityDeleteManager.deleteEntity(deletedImage);
+                imageRepository.delete(deletedImage);
             }
         }
 
@@ -110,7 +110,7 @@ public class ClubNoticeService {
             throw new NoClubAuthException();
         }
 
-        entityDeleteManager.deleteEntity(clubNotice);
+        clubNoticeRepository.delete(clubNotice);
     }
 
     @Transactional

@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club;
 
-import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
@@ -21,6 +21,7 @@ import com.ariari.ariari.domain.school.School;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
@@ -30,8 +31,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE club SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_id= ?")
 @SQLRestriction("deleted_date_time is null")
-public class Club implements ViewsContent, LogicalDeleteEntity {
+public class Club extends LogicalDeleteEntity implements ViewsContent {
 
     @Id @CustomPkGenerate
     @Column(name = "club_id")
@@ -64,43 +66,38 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
 
     private Long views = 0L;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-    private LocalDateTime deletedDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubMember> clubMembers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<Recruitment> recruitments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ApplyForm> applyForms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubNotice> clubNotices = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubEvent> clubEvents = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<FinancialRecord> financialRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubActivity> clubActivitys = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubFaq> clubFaqs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club")
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubQuestion> clubQuestions = new ArrayList<>();
 
     @Override
@@ -122,8 +119,4 @@ public class Club implements ViewsContent, LogicalDeleteEntity {
         this.school = school;
     }
 
-    @Override
-    public void deleteLogically() {
-        this.deletedDateTime = LocalDateTime.now();
-    }
 }

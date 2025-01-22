@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
@@ -33,7 +32,6 @@ public class ApplyTempService {
     private final MemberRepository memberRepository;
     private final RecruitmentRepository recruitmentRepository;
     private final ApplyTempRepository applyTempRepository;
-    private final EntityDeleteManager entityDeleteManager;
     private final FileManager fileManager;
 
     public ApplyTempDetailRes findApplyTempDetail(Long reqMemberId, Long applyTempId) {
@@ -116,7 +114,7 @@ public class ApplyTempService {
             fileManager.deleteFile(applyTemp.getFileUri());
         }
 
-        entityDeleteManager.deleteEntity(applyTemp);
+        applyTempRepository.delete(applyTemp);
     }
 
     public ApplyTempListRes findMyApplyTemps(Long reqMemberId, Pageable pageable) {
