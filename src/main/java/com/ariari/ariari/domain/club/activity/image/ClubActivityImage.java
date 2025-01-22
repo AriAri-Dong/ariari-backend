@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.activity.image;
 
+import com.ariari.ariari.commons.image.Image;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import jakarta.persistence.*;
@@ -12,19 +13,15 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @Getter
-public class ClubActivityImage {
-
-    @Id @CustomPkGenerate
-    @Column(name = "club_activity_image_id")
-    private Long id;
-
-    private String imageUri;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
+public class ClubActivityImage extends Image {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_activity_id")
     private ClubActivity clubActivity;
+
+    public ClubActivityImage(String imageUri, ClubActivity clubActivity) {
+        super(imageUri);
+        this.clubActivity = clubActivity;
+    }
 
 }
