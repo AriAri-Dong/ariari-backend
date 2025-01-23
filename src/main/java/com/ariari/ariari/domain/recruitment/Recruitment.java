@@ -7,6 +7,7 @@ import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.recruitment.apply.exception.ClosedRecruitmentException;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
@@ -109,6 +110,10 @@ public class Recruitment extends LogicalDeleteEntity implements ViewsContent {
         this.club = club;
         this.applyForm = applyForm;
         this.recruitmentNotes = recruitmentNotes;
+    }
+
+    public boolean isRecruiting() {
+        return isActivated && startDateTime.isBefore(LocalDateTime.now()) && LocalDateTime.now().isBefore(endDateTime);
     }
 
 }

@@ -14,6 +14,7 @@ import com.ariari.ariari.domain.club.passreview.PassReview;
 import com.ariari.ariari.domain.club.question.answer.ClubAnswer;
 import com.ariari.ariari.domain.club.review.ClubReview;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.recruitment.apply.Apply;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -83,6 +84,15 @@ public class ClubMember extends LogicalDeleteEntity {
                 ClubMemberRoleType.ADMIN,
                 member,
                 club
+        );
+    }
+
+    public static ClubMember createGeneral(Apply apply) {
+        return new ClubMember(
+                apply.getName(),
+                ClubMemberRoleType.GENERAL,
+                apply.getMember(),
+                apply.getRecruitment().getClub()
         );
     }
 

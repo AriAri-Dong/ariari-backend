@@ -7,12 +7,9 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.bookmark.exception.AlreadyExistsClubBookmarkException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.bookmark.exception.AlreadyExistsRecruitmentBookmarkException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional

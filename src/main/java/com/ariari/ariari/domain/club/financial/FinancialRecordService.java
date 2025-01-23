@@ -1,15 +1,15 @@
 package com.ariari.ariari.domain.club.financial;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.exception.NoClubMemberException;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.financial.dto.FinancialRecordListRes;
 import com.ariari.ariari.domain.club.financial.dto.FinancialRecordSaveReq;
-import com.ariari.ariari.domain.club.financial.exception.NegativeBalanceException;
+import com.ariari.ariari.domain.club.notice.image.exception.NotBelongInClubNoticeException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,10 +33,9 @@ public class FinancialRecordService {
     public Long findBalance(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        Optional<ClubMember> reqClubMemberOptional = clubMemberRepository.findByClubAndMember(club, reqMember);
 
-        if (reqClubMemberOptional.isEmpty()) {
-            throw new NoClubMemberException();
+        if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
+            throw new NotBelongInClubException();
         }
 
         return financialRecordRepository.findTotalByClub(club);
@@ -47,18 +45,9 @@ public class FinancialRecordService {
     public void saveFinancialRecord(Long reqMemberId, Long clubId, FinancialRecordSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubNoticeException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
-
-        // 잔액 음수 검증 -> 일단 비활성화 (잘못된 검증)
-//        Long before = financialRecordRepository.findTotalByClub(club);
-//        Long after = before + saveReq.getAmount();
-//        if (after < 0) {
-//            throw new NegativeBalanceException();
-//        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         FinancialRecord financialRecord = saveReq.toEntity(club);
         financialRecordRepository.save(financialRecord);
@@ -67,10 +56,9 @@ public class FinancialRecordService {
     public FinancialRecordListRes findFinancialRecords(Long reqMemberId, Long clubId, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        Optional<ClubMember> reqClubMemberOptional = clubMemberRepository.findByClubAndMember(club, reqMember);
 
-        if (reqClubMemberOptional.isEmpty()) {
-            throw new NoClubMemberException();
+        if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
+            throw new NotBelongInClubException();
         }
 
         Page<FinancialRecord> page = financialRecordRepository.findByClubOrderByRecordDateTimeDesc(club, pageable);
@@ -88,18 +76,10 @@ public class FinancialRecordService {
     public void modifyFinancialRecord(Long reqMemberId, Long clubId, Long financialRecordId, FinancialRecordSaveReq modifyReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubNoticeException::new);
         FinancialRecord financialRecord = financialRecordRepository.findById(financialRecordId).orElseThrow(NotFoundEntityException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
-
-        Long before = financialRecordRepository.findTotalByClub(club);
-        Long after = before - financialRecord.getAmount() + modifyReq.getAmount();
-        if (after < 0) {
-            throw new NegativeBalanceException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         modifyReq.modifyEntity(financialRecord);
     }
@@ -108,18 +88,11 @@ public class FinancialRecordService {
     public void removeFinancialRecord(Long reqMemberId, Long clubId, Long financialRecordId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubNoticeException::new);
         FinancialRecord financialRecord = financialRecordRepository.findById(financialRecordId).orElseThrow(NotFoundEntityException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        Long before = financialRecordRepository.findTotalByClub(club);
-        Long after = before - financialRecord.getAmount();
-        if (after < 0) {
-            throw new NegativeBalanceException();
-        }
 
         financialRecordRepository.delete(financialRecord);
     }

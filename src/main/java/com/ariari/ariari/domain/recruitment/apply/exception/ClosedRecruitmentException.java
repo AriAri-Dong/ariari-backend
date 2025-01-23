@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 
 public class ClosedRecruitmentException extends CustomException {
 
-    private static final String MESSAGE = "마감된 모집입니다. 지원서 제출이 불가능합니다.";
+    private static final String MESSAGE = "모집 기간이 아닙니다.";
     private static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
     @Override

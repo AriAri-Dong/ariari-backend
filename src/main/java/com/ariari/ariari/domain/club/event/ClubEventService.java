@@ -1,16 +1,16 @@
 package com.ariari.ariari.domain.club.event;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.event.attendance.Attendance;
 import com.ariari.ariari.domain.club.event.attendance.AttendanceRepository;
 import com.ariari.ariari.domain.club.event.dto.ClubEventListRes;
 import com.ariari.ariari.domain.club.event.dto.ClubEventSaveReq;
-import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +38,9 @@ public class ClubEventService {
     public void saveClubEvent(Long reqMemberId, Long clubId, ClubEventSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         ClubEvent clubEvent = saveReq.toEntity(club);
 
@@ -53,11 +51,9 @@ public class ClubEventService {
     public void modifyClubEvent(Long reqMemberId, Long clubEventId, ClubEventSaveReq modifyReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubEvent.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubEvent.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         modifyReq.modifyEntity(clubEvent);
     }
@@ -66,11 +62,9 @@ public class ClubEventService {
     public void removeClubEvent(Long reqMemberId, Long clubEventId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubEvent.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubEvent.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         clubEventRepository.delete(clubEvent);
     }
@@ -78,7 +72,11 @@ public class ClubEventService {
     public ClubEventListRes findClubEvents(Long reqMemberId, Long clubId, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+
+        if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
+            throw new NotBelongInClubException();
+        }
+
 
         Page<ClubEvent> page = clubEventRepository.findByClubOrderByEventDateTimeDesc(club, pageable);
 

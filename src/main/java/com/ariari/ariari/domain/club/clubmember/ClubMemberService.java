@@ -7,7 +7,7 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
-import com.ariari.ariari.domain.club.exception.NoClubMemberException;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class ClubMemberService {
     public ClubMemberListRes findClubMemberList(Long reqMemberId, Long clubId, ClubMemberStatusType statusType, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
@@ -42,7 +42,7 @@ public class ClubMemberService {
     public void modifyRoleType(Long reqMemberId, Long clubMemberId, ClubMemberRoleType roleType) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
@@ -53,7 +53,7 @@ public class ClubMemberService {
     public void entrustAdmin(Long reqMemberId, Long clubMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubAdmin(reqClubMember);
 
@@ -65,7 +65,7 @@ public class ClubMemberService {
     public void modifyStatusType(Long reqMemberId, Long clubMemberId, ClubMemberStatusType statusType) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
@@ -76,7 +76,7 @@ public class ClubMemberService {
     public void modifyStatusTypes(Long reqMemberId, Long clubId, List<Long> clubMemberIds, ClubMemberStatusType statusType) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
@@ -91,7 +91,7 @@ public class ClubMemberService {
     public void removeClubMember(Long reqMemberId, Long clubMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
@@ -101,7 +101,7 @@ public class ClubMemberService {
     public ClubMemberListRes searchClubMembers(Long reqMemberId, Long clubId, String query, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 

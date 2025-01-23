@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.question;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -27,8 +28,10 @@ public class ClubQuestionService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
 
-    public ClubQnaListRes findClubQuestions(Long clubId, Pageable pageable) {
+    public ClubQnaListRes findClubQuestions(Long reqMemberId, Long clubId, Pageable pageable) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         Page<ClubQuestion> page = clubQuestionRepository.findByClub(club, pageable);
         return ClubQnaListRes.fromEntities(page);
@@ -38,6 +41,7 @@ public class ClubQuestionService {
     public void saveClubQuestion(Long reqMemberId, Long clubId, ClubQuestionSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         ClubQuestion clubQuestion = saveReq.toEntity(club, reqMember);
         clubQuestionRepository.save(clubQuestion);

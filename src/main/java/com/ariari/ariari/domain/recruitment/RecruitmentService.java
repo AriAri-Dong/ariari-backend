@@ -1,15 +1,14 @@
 package com.ariari.ariari.domain.recruitment;
 
-import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.exception.NoClubMemberException;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
@@ -53,11 +52,8 @@ public class RecruitmentService {
         }
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
 
-        School recruitmentSchool = recruitment.getClub().getSchool();
-        if (recruitmentSchool != null &&
-                (reqMember == null || reqMember.getSchool() == null || !recruitmentSchool.equals(reqMember.getSchool()))) {
-            throw new NoSchoolAuthException();
-        }
+        School school = recruitment.getClub().getSchool();
+        GlobalValidator.eqSchoolAuth(reqMember, school);
 
         if (!viewsManager.checkForDuplicateView(recruitment, clientIp)) {
             viewsManager.addViews(recruitment);
@@ -80,22 +76,19 @@ public class RecruitmentService {
     public void saveRecruitment(Long reqMemberId, Long clubId, RecruitmentSaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
-
-        ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElseThrow(NoApplyFormException::new);
-
-        if (recruitmentRepository.existsDuplicatePeriodRecruitment(club, saveReq.getStartDateTime(), saveReq.getEndDateTime())) {
-            throw new ExistsDuplicatePeriodRecruitment();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         if (saveReq.getStartDateTime().isAfter(saveReq.getEndDateTime())) {
             throw new StartAfterEndException();
         }
 
+        if (recruitmentRepository.existsDuplicatePeriodRecruitment(club, saveReq.getStartDateTime(), saveReq.getEndDateTime())) {
+            throw new ExistsDuplicatePeriodRecruitment();
+        }
+
+        ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElseThrow(NoApplyFormException::new);
         Recruitment recruitment = saveReq.toEntity(club, applyForm);
         for (RecruitmentNote recruitmentNote : recruitment.getRecruitmentNotes()) {
             recruitmentNote.setRecruitment(recruitment);
@@ -114,11 +107,9 @@ public class RecruitmentService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
-        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         recruitment.setIsActivated(Boolean.FALSE);
     }
@@ -128,14 +119,11 @@ public class RecruitmentService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
-        ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubMemberException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubMemberException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         recruitmentRepository.delete(recruitment);
     }
-
 
 }

@@ -7,8 +7,9 @@ import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.exception.NoClubAdminException;
 import com.ariari.ariari.domain.club.exception.NoClubManagerException;
-import com.ariari.ariari.domain.club.exception.NoClubMemberException;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.exception.ClosedRecruitmentException;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.exceptions.NoProperSchoolAuthException;
 
@@ -42,15 +43,15 @@ public class GlobalValidator {
         }
     }
 
-    public static void isClubMember(ClubMember reqClubMember) {
-        if (reqClubMember == null) {
-            throw new NoClubMemberException();
-        }
-    }
-
     public static void belongsToClub(ClubMember clubMember, Club club) {
         if (!clubMember.getClub().equals(club)) {
             throw new NotBelongInClubException();
+        }
+    }
+
+    public static void isOpenRecruitment(Recruitment recruitment) {
+        if (!recruitment.isRecruiting()) {
+            throw new ClosedRecruitmentException();
         }
     }
 

@@ -28,7 +28,7 @@ public class ClubMemberController {
     @GetMapping("/clubs/{clubId}/club-members")
     public ClubMemberListRes findClubMemberList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                 @PathVariable Long clubId,
-                                                @RequestParam ClubMemberStatusType statusType,
+                                                @RequestParam(required = false) ClubMemberStatusType statusType,
                                                 Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
         return clubMemberService.findClubMemberList(reqMemberId, clubId, statusType, pageable);

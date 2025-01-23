@@ -19,11 +19,11 @@ public class ApplyFormController {
 
     private final ApplyFormService applyFormService;
 
-    @Operation(summary = "지원 형식 조회", description = "지원 형식을 조회합니다. (가장 최신 형식을 조회합니다. 등록된 지원 형식이 없을 경우 null 반환합니다.) ")
+    @Operation(summary = "지원 형식 조회", description = "지원 형식을 조회합니다. (가장 최신 형식을 조회합니다. 등록된 지원 형식이 없을 경우 null 반환합니다.) 관리자만이 지원 형식을 조회할 수 있습니다.")
     @GetMapping
     public ApplyFormRes findApplyForm(@AuthenticationPrincipal CustomUserDetails userDetails,
                                       @PathVariable Long clubId) {
-        Long memberId = getMemberId(userDetails, false);
+        Long memberId = getMemberId(userDetails, true);
         return applyFormService.findApplyForm(memberId, clubId);
     }
 
