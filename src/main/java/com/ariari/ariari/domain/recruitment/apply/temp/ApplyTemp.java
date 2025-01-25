@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
 import com.ariari.ariari.domain.member.Member;
@@ -8,16 +9,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class ApplyTemp {
+@SQLDelete(sql = "UPDATE apply_temp SET deleted_date_time= CURRENT_TIMESTAMP WHERE apply_temp_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class ApplyTemp extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "apply_temp_id")
@@ -31,10 +34,6 @@ public class ApplyTemp {
 
     private String portfolioUrl;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -43,7 +42,7 @@ public class ApplyTemp {
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
 
-    @OneToMany(mappedBy = "applyTemp", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "applyTemp", cascade = CascadeType.ALL)
     private List<ApplyAnswerTemp> applyAnswerTemps = new ArrayList<>();
 
     public ApplyTemp(String name, String portfolioUrl, Member member, Recruitment recruitment, List<ApplyAnswerTemp> applyAnswerTemps) {

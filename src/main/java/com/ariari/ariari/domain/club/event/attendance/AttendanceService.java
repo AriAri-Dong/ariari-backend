@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.club.event.attendance;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -8,11 +7,10 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.event.ClubEventRepository;
 import com.ariari.ariari.domain.club.event.attendance.exception.ExistingAttendanceException;
-import com.ariari.ariari.domain.club.event.attendance.exception.InvalidAttendanceKeyException;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.club.exception.NotMatchedClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -37,17 +35,16 @@ public class AttendanceService {
     private final ClubEventRepository clubEventRepository;
     private final AttendanceRepository attendanceRepository;
     private final AttendanceTokenManager attendanceTokenManager;
-    private final EntityDeleteManager entityDeleteManager;
 
     @Transactional
     public void saveAttendancesByManager(Long reqMemberId, Long clubEventId, List<Long> clubMemberIds) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
         Club club = clubEvent.getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         List<Attendance> attendances = new ArrayList<>();
@@ -73,10 +70,10 @@ public class AttendanceService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
         Club club = clubEvent.getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         List<ClubMember> clubMembers = clubMemberRepository.findAllById(clubMemberIds);
@@ -86,7 +83,7 @@ public class AttendanceService {
             }
 
             Attendance attendance = attendanceRepository.findByClubEventAndClubMember(clubEvent, clubMember).orElseThrow(NotFoundEntityException::new);
-            entityDeleteManager.deleteEntity(attendance);
+            attendanceRepository.delete(attendance);
         }
     }
 
@@ -95,10 +92,10 @@ public class AttendanceService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
         Club club = clubEvent.getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         return attendanceTokenManager.createAttendanceKey(clubEvent);
@@ -111,10 +108,10 @@ public class AttendanceService {
 
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
         Club club = clubEvent.getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         if (!reqClubMember.getClubMemberStatusType().equals(ClubMemberStatusType.ACTIVE)) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         if (attendanceRepository.findByClubEventAndClubMember(clubEvent, reqClubMember).isPresent()) {
@@ -129,10 +126,10 @@ public class AttendanceService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
         Club club = clubEvent.getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         Page<Attendance> page = attendanceRepository.findByClubEvent(clubEvent, pageable);

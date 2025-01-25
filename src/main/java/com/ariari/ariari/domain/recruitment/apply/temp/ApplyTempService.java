@@ -1,22 +1,20 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
-import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.image.FileManager;
+import com.ariari.ariari.commons.manager.file.FileManager;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
-import com.ariari.ariari.domain.recruitment.apply.exception.ClosedRecruitmentException;
-import com.ariari.ariari.domain.recruitment.apply.exception.SavingApplyException;
+import com.ariari.ariari.domain.recruitment.apply.exception.AlreadyBelongToClubException;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempModifyReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempSaveReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempListRes;
 import com.ariari.ariari.domain.recruitment.apply.temp.exception.NoApplyTempAuthException;
-import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,17 +22,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ApplyTempService {
 
     private final MemberRepository memberRepository;
+    private final ClubMemberRepository clubMemberRepository;
     private final RecruitmentRepository recruitmentRepository;
     private final ApplyTempRepository applyTempRepository;
-    private final EntityDeleteManager entityDeleteManager;
     private final FileManager fileManager;
 
     public ApplyTempDetailRes findApplyTempDetail(Long reqMemberId, Long applyTempId) {
@@ -54,21 +50,16 @@ public class ApplyTempService {
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
 
-        if (club.getSchool() != null) {
-            School reqSchool = reqMember.getSchool();
-            if (reqSchool == null || !reqSchool.equals(club.getSchool())) {
-                throw new NoSchoolAuthException();
-            }
-        }
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
+        GlobalValidator.isOpenRecruitment(recruitment);
 
-        if (recruitment.getIsActivated().equals(false) || recruitment.getEndDateTime().isBefore(LocalDateTime.now())) {
-            throw new ClosedRecruitmentException();
+        if (clubMemberRepository.findByClubAndMember(recruitment.getClub(), reqMember).isPresent()) {
+            throw new AlreadyBelongToClubException();
         }
 
         ApplyTemp applyTemp = saveReq.toEntity(reqMember, recruitment);
 
-        // 파일 처리
-        if (applyTemp.getPortfolioUrl() == null && file != null) {
+        if (file != null) {
             String fileUri = fileManager.saveFile(file, "applyTemp");
             applyTemp.setFileUri(fileUri);
         }
@@ -87,7 +78,6 @@ public class ApplyTempService {
 
         modifyReq.modifyEntity(applyTemp);
 
-        // 파일 처리
         if (applyTemp.getPortfolioUrl() != null && applyTemp.getFileUri() != null) {
             fileManager.deleteFile(applyTemp.getFileUri());
         }
@@ -112,12 +102,11 @@ public class ApplyTempService {
             throw new NoApplyTempAuthException();
         }
 
-        // 파일 삭제
         if (applyTemp.getFileUri() != null) {
             fileManager.deleteFile(applyTemp.getFileUri());
         }
 
-        entityDeleteManager.deleteEntity(applyTemp);
+        applyTempRepository.delete(applyTemp);
     }
 
     public ApplyTempListRes findMyApplyTemps(Long reqMemberId, Pageable pageable) {

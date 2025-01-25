@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.question;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -27,25 +27,27 @@ public class ClubQuestionService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
-    private final EntityDeleteManager entityDeleteManager;
 
-    public ClubQnaListRes findClubQuestions(Long clubId, Pageable pageable) {
+    public ClubQnaListRes findClubQuestions(Long reqMemberId, Long clubId, Pageable pageable) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         Page<ClubQuestion> page = clubQuestionRepository.findByClub(club, pageable);
         return ClubQnaListRes.fromEntities(page);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void saveClubQuestion(Long reqMemberId, Long clubId, ClubQuestionSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         ClubQuestion clubQuestion = saveReq.toEntity(club, reqMember);
         clubQuestionRepository.save(clubQuestion);
     }
 
-    @Transactional(readOnly = false)
+    @Transactional
     public void removeClubQuestion(Long reqMemberId, Long questionId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubQuestion clubQuestion = clubQuestionRepository.findById(questionId).orElseThrow(NotFoundEntityException::new);
@@ -58,7 +60,7 @@ public class ClubQuestionService {
             }
         }
 
-        entityDeleteManager.deleteEntity(clubQuestion);
+        clubQuestionRepository.delete(clubQuestion);
     }
 
 }

@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
-import com.ariari.ariari.commons.entitydelete.LogicalDeleteEntity;
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
@@ -10,18 +10,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@SQLDelete(sql = "UPDATE apply SET deleted_date_time= CURRENT_TIMESTAMP WHERE apply_id= ?")
 @SQLRestriction("deleted_date_time is null")
-public class Apply implements LogicalDeleteEntity {
+public class Apply extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "apply_id")
@@ -40,11 +40,6 @@ public class Apply implements LogicalDeleteEntity {
 
     private String portfolioUrl;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-    private LocalDateTime deletedDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -53,7 +48,7 @@ public class Apply implements LogicalDeleteEntity {
     @JoinColumn(name = "recruitment_id")
     private Recruitment recruitment;
 
-    @OneToMany(mappedBy = "apply", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "apply", cascade = CascadeType.ALL)
     private List<ApplyAnswer> applyAnswers = new ArrayList<>();
 
     public Apply(String name, String portfolioUrl, Member member, Recruitment recruitment, List<ApplyAnswer> applyAnswers) {
@@ -62,11 +57,6 @@ public class Apply implements LogicalDeleteEntity {
         this.member = member;
         this.recruitment = recruitment;
         this.applyAnswers = applyAnswers;
-    }
-
-    @Override
-    public void deleteLogically() {
-        this.deletedDateTime = LocalDateTime.now();
     }
 
 }

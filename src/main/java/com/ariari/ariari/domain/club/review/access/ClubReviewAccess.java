@@ -1,21 +1,21 @@
 package com.ariari.ariari.domain.club.review.access;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.review.ClubReview;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
-@SQLRestriction("deleted_date_time is null")
 @Getter
-public class ClubReviewAccess {
+@SQLDelete(sql = "UPDATE club_review_access SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_review_access_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class ClubReviewAccess extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "club_review_access_id")
@@ -28,11 +28,6 @@ public class ClubReviewAccess {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_review_id")
     private ClubReview clubReview;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
-
-    private LocalDateTime deletedDateTime;
 
     public ClubReviewAccess(Member member, ClubReview clubReview) {
         this.member = member;

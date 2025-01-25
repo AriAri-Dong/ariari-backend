@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 public class NoSchoolAuthException extends CustomException {
 
-    private static final String MESSAGE = "학교 인증이 필요합니다.";
+    private static final String MESSAGE = "해당 학교의 인증이 필요합니다.";
     private static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
     @Override

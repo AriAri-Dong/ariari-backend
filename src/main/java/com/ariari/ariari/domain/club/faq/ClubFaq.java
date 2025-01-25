@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.faq;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -7,14 +8,15 @@ import com.ariari.ariari.domain.club.faq.enums.ClubFaqColorType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class ClubFaq {
+@SQLDelete(sql = "UPDATE club_faq SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_faq_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class ClubFaq extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "club_faq_id")
@@ -30,10 +32,6 @@ public class ClubFaq {
 
     @Enumerated(EnumType.STRING)
     private ClubFaqColorType clubFaqColorType;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

@@ -20,9 +20,11 @@ public class ClubQuestionController {
 
     @Operation(summary = "동아리 질문 리스트 조회", description = "동아리 질문 리스트를 조회합니다. 각 동아리 질문 데이터는 내부에 답변 (Answer) 데이터를 포함합니다.")
     @GetMapping("/clubs/{clubId}/club-questions")
-    public ClubQnaListRes findClubQuestions(@PathVariable Long clubId,
+    public ClubQnaListRes findClubQuestions(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                            @PathVariable Long clubId,
                                             Pageable pageable) {
-        return clubQuestionService.findClubQuestions(clubId, pageable);
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
+        return clubQuestionService.findClubQuestions(reqMemberId, clubId, pageable);
     }
 
     @Operation(summary = "동아리 질문 등록", description = "동아리 질문을 등록합니다.")

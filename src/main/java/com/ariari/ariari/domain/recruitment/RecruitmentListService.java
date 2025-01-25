@@ -1,13 +1,10 @@
 package com.ariari.ariari.domain.recruitment;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
-import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
@@ -30,7 +27,6 @@ public class RecruitmentListService {
 
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
-    private final ClubMemberRepository clubMemberRepository;
     private final RecruitmentRepository recruitmentRepository;
     private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
 
@@ -62,9 +58,7 @@ public class RecruitmentListService {
     public RecruitmentListRes searchInternalPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NoSchoolAuthException::new);
 
-        if (reqMember.getSchool() == null) {
-            throw new NoSchoolAuthException();
-        }
+        GlobalValidator.hasSchoolAuth(reqMember);
 
         Page<Recruitment> page = recruitmentRepository.searchInternalPage(reqMember.getSchool(), condition, pageable);
         return RecruitmentListRes.fromPage(page, reqMember);
@@ -80,11 +74,8 @@ public class RecruitmentListService {
     public RecruitmentListRes findRecruitmentListInClub(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NoSchoolAuthException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
-        }
+        GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         List<Recruitment> recruitments = recruitmentRepository.findByClub(club);
         return RecruitmentListRes.fromList(recruitments, reqMember);
@@ -103,9 +94,7 @@ public class RecruitmentListService {
     public RecruitmentListRes findInternalRankingList(Long reqMemberId) {
         Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NoSchoolAuthException::new);
 
-        if (reqMember.getSchool() == null) {
-            throw new NoSchoolAuthException();
-        }
+        GlobalValidator.hasSchoolAuth(reqMember);
 
         List<Recruitment> recruitments = recruitmentRepository.findInternalRankingList(reqMember.getSchool());
         return RecruitmentListRes.fromList(recruitments, reqMember);

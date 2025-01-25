@@ -1,6 +1,6 @@
 package com.ariari.ariari.test;
 
-import com.ariari.ariari.commons.image.FileManager;
+import com.ariari.ariari.commons.manager.file.FileManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

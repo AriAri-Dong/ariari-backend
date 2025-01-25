@@ -1,18 +1,19 @@
 package com.ariari.ariari.domain.club.notice;
 
-import com.ariari.ariari.commons.entitydelete.EntityDeleteManager;
+import com.ariari.ariari.commons.entity.image.ImageRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.image.FileManager;
+import com.ariari.ariari.commons.manager.file.FileManager;
+import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.exception.NoClubAuthException;
+import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeDetailRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeListRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeModifyReq;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeSaveReq;
+import com.ariari.ariari.domain.club.notice.exceptions.TooManyFixedClubNoticeException;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImageRepository;
 import com.ariari.ariari.domain.club.notice.image.exception.NotBelongInClubNoticeException;
@@ -38,18 +39,16 @@ public class ClubNoticeService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubNoticeRepository clubNoticeRepository;
     private final ClubNoticeImageRepository clubNoticeImageRepository;
+    private final ImageRepository imageRepository;
     private final FileManager fileManager;
-    private final EntityDeleteManager entityDeleteManager;
 
     @Transactional
     public void saveClubNotice(Long reqMemberId, Long clubId, ClubNoticeSaveReq saveReq, List<MultipartFile> files) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         ClubNotice clubNotice = saveReq.toEntity(club, reqClubMember);
         clubNoticeRepository.save(clubNotice);
@@ -69,11 +68,9 @@ public class ClubNoticeService {
     public void modifyClubNotice(Long reqMemberId, Long clubNoticeId, ClubNoticeModifyReq modifyReq, List<MultipartFile> files) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubNotice clubNotice = clubNoticeRepository.findById(clubNoticeId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         modifyReq.modifyEntity(clubNotice);
 
@@ -84,7 +81,7 @@ public class ClubNoticeService {
                 if (!deletedImage.getClubNotice().equals(clubNotice)) {
                     throw new NotBelongInClubNoticeException();
                 }
-                entityDeleteManager.deleteEntity(deletedImage);
+                imageRepository.delete(deletedImage);
             }
         }
 
@@ -103,26 +100,24 @@ public class ClubNoticeService {
     public void removeClubNotice(Long reqMemberId, Long clubNoticeId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubNotice clubNotice = clubNoticeRepository.findById(clubNoticeId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
-        }
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        entityDeleteManager.deleteEntity(clubNotice);
+        clubNoticeRepository.delete(clubNotice);
     }
 
     @Transactional
-    public void fixClubNotice(Long reqMemberId, Long clubNoticeId) {
+    public void toggleClubNoticeFix(Long reqMemberId, Long clubNoticeId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubNotice clubNotice = clubNoticeRepository.findById(clubNoticeId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NoClubAuthException::new);
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-            throw new NoClubAuthException();
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+
+        if (clubNotice.getIsFixed().equals(Boolean.FALSE) && clubNoticeRepository.findFixedByClub(clubNotice.getClub()).size() >= 3) {
+            throw new TooManyFixedClubNoticeException();
         }
-
-        // 3개 이상인지 검증 체크
 
         clubNotice.controlIsFixed();
     }
@@ -132,7 +127,7 @@ public class ClubNoticeService {
         ClubNotice clubNotice = clubNoticeRepository.findById(clubNoticeId).orElseThrow(NotFoundEntityException::new);
 
         if (clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).isEmpty()) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         return ClubNoticeDetailRes.createRes(clubNotice);
@@ -143,7 +138,7 @@ public class ClubNoticeService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
         if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         List<ClubNotice> clubNotices = clubNoticeRepository.findFixedByClub(club);
@@ -155,7 +150,7 @@ public class ClubNoticeService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
         if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
-            throw new NoClubAuthException();
+            throw new NotBelongInClubException();
         }
 
         Page<ClubNotice> page = clubNoticeRepository.findUnfixedByClub(club, pageable);

@@ -83,6 +83,7 @@ public class ApplyController {
                                             @ModelAttribute AppliesInClubSearchCondition condition,
                                             Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
+        condition.validateCondition();
         return applyListService.searchAppliesInClub(reqMemberId, clubId, condition, pageable);
     }
 

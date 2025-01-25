@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.notice;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -8,16 +9,18 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class ClubNotice {
+@SQLDelete(sql = "UPDATE club_notice SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_notice_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class ClubNotice extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "club_notice_id")
@@ -31,10 +34,6 @@ public class ClubNotice {
 
     private Boolean isFixed = Boolean.FALSE;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
@@ -44,7 +43,7 @@ public class ClubNotice {
     private ClubMember clubMember;
 
     @Setter
-    @OneToMany(mappedBy = "clubNotice", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "clubNotice", cascade = CascadeType.ALL)
     private List<ClubNoticeImage> clubNoticeImages = new ArrayList<>();
 
     public ClubNotice(String title, String body, Club club, ClubMember clubMember) {

@@ -1,18 +1,22 @@
 package com.ariari.ariari.domain.club.financial;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class FinancialRecord {
+@SQLDelete(sql = "UPDATE financial_record SET deleted_date_time= CURRENT_TIMESTAMP WHERE financial_record_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class FinancialRecord extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "financial_record_id")
@@ -24,10 +28,6 @@ public class FinancialRecord {
     private String body;
 
     private LocalDateTime recordDateTime;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

@@ -1,19 +1,21 @@
 package com.ariari.ariari.domain.member.alarm;
 
+import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class MemberAlarm {
+@SQLDelete(sql = "UPDATE member_alarm SET deleted_date_time= CURRENT_TIMESTAMP WHERE member_alarm_id= ?")
+@SQLRestriction("deleted_date_time is null")
+public class MemberAlarm extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
     @Column(name = "member_alarm_id")
@@ -35,9 +37,6 @@ public class MemberAlarm {
     private String uri;
 
     private Boolean isChecked = Boolean.FALSE;
-
-    @CreationTimestamp
-    private LocalDateTime createdDateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
