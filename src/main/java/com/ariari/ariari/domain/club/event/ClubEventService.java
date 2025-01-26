@@ -77,7 +77,6 @@ public class ClubEventService {
             throw new NotBelongInClubException();
         }
 
-
         Page<ClubEvent> page = clubEventRepository.findByClubOrderByEventDateTimeDesc(club, pageable);
 
         Map<ClubEvent, List<ClubMember>> clubMemberListMap = new HashMap<>();

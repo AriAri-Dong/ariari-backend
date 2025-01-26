@@ -1,11 +1,11 @@
-package com.ariari.ariari.domain.club.exception;
+package com.ariari.ariari.domain.club.exceptions;
 
 import com.ariari.ariari.commons.exception.CustomException;
 import org.springframework.http.HttpStatus;
 
-public class NoClubManagerException extends CustomException {
+public class RemovingClubException extends CustomException {
 
-    private static final String MESSAGE = "해당 동아리의 관리자 권한이 없습니다.";
+    private static final String MESSAGE = "동아리를 삭제할 수 없습니다. 모든 동아리 회원을 삭제한 뒤 동아리 삭제가 가능합니다.";
     private static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
     @Override

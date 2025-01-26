@@ -11,4 +11,6 @@ public interface ClubMemberRepositoryCustom {
 
     Page<ClubMember> findByClub(Club club, ClubMemberStatusType statusType, Pageable pageable);
 
+    Page<ClubMember> findByClubAndNameContains(Club club, String query, Pageable pageable);
+
 }

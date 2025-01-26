@@ -11,6 +11,7 @@ import com.ariari.ariari.domain.club.dto.req.ClubSaveReq;
 import com.ariari.ariari.domain.club.enums.ClubAffiliationType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
+import com.ariari.ariari.domain.club.exceptions.RemovingClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.school.School;
@@ -75,7 +76,6 @@ public class ClubService {
         }
     }
 
-    // 디자인 x
     @Transactional
     public void modifyClub(Long reqMemberId, Long clubId, ClubModifyReq modifyReq, MultipartFile profileFile, MultipartFile bannerFile) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -106,6 +106,11 @@ public class ClubService {
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubAdmin(reqClubMember);
+
+        Long remainingCount = clubMemberRepository.countByClub(club);
+        if (remainingCount > 1) {
+            throw new RemovingClubException();
+        }
 
         clubRepository.delete(club);
     }

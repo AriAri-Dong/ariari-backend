@@ -57,7 +57,7 @@ public class ClubMemberController {
     }
 
     @Operation(summary = "동아리 회원 상태 수정", description = "1명의 동아리 회원 상태를 수정합니다.")
-    @PutMapping("/club-members/{clubMemberId}/status")
+//    @PutMapping("/club-members/{clubMemberId}/status")
     public void modifyStatusType(@AuthenticationPrincipal CustomUserDetails userDetails,
                                  @PathVariable Long clubMemberId,
                                  @RequestBody ClubMemberStatusType statusType) {
@@ -87,7 +87,7 @@ public class ClubMemberController {
     @GetMapping("/clubs/{clubId}/club-members/search")
     public ClubMemberListRes searchClubMembers(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                @PathVariable Long clubId,
-                                               @RequestParam String query,
+                                               @RequestParam(required = false) String query,
                                                Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
         return clubMemberService.searchClubMembers(reqMemberId, clubId, query, pageable);

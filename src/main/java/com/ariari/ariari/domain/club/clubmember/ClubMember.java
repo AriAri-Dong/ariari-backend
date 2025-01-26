@@ -24,6 +24,8 @@ import org.hibernate.annotations.SQLRestriction;
 
 import java.util.List;
 
+import static com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType.*;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -81,7 +83,7 @@ public class ClubMember extends LogicalDeleteEntity {
     public static ClubMember createAdmin(Member member, Club club) {
         return new ClubMember(
                 "동아리 대표",
-                ClubMemberRoleType.ADMIN,
+                ADMIN,
                 member,
                 club
         );
@@ -90,7 +92,7 @@ public class ClubMember extends LogicalDeleteEntity {
     public static ClubMember createGeneral(Apply apply) {
         return new ClubMember(
                 apply.getName(),
-                ClubMemberRoleType.GENERAL,
+                GENERAL,
                 apply.getMember(),
                 apply.getRecruitment().getClub()
         );
@@ -101,6 +103,14 @@ public class ClubMember extends LogicalDeleteEntity {
         this.clubMemberRoleType = clubMemberRoleType;
         this.member = member;
         this.club = club;
+    }
+
+    public boolean isHigherRoleTypeThan(ClubMember clubMember) {
+        ClubMemberRoleType myRole = this.clubMemberRoleType;
+        ClubMemberRoleType hisRole = clubMember.getClubMemberRoleType();
+        if (myRole.equals(ADMIN)) {
+            return true;
+        } else return myRole.equals(MANAGER) && hisRole.equals(GENERAL);
     }
 
 }

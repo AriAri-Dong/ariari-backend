@@ -20,6 +20,6 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
 
-    Page<ClubMember> findByClubAndNameContains(Club club, String query, Pageable pageable);
+    Long countByClub(Club club);
 
 }

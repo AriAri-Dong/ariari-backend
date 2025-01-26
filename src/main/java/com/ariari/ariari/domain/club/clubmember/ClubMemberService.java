@@ -7,6 +7,7 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
+import com.ariari.ariari.domain.club.clubmember.exception.ModifyingClubMemberRoleTypeException;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -27,6 +28,9 @@ public class ClubMemberService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
 
+    /**
+     * 비활성화
+     */
     public ClubMemberListRes findClubMemberList(Long reqMemberId, Long clubId, ClubMemberStatusType statusType, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
@@ -43,8 +47,10 @@ public class ClubMemberService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
+        Club club = reqClubMember.getClub();
 
-        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+        GlobalValidator.isClubAdmin(reqClubMember);
+        GlobalValidator.belongsToClub(clubMember, club);
 
         clubMember.setClubMemberRoleType(roleType);
     }
@@ -54,13 +60,18 @@ public class ClubMemberService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
+        Club club = reqClubMember.getClub();
 
         GlobalValidator.isClubAdmin(reqClubMember);
+        GlobalValidator.belongsToClub(clubMember, club);
 
         clubMember.setClubMemberRoleType(ClubMemberRoleType.ADMIN);
         reqClubMember.setClubMemberRoleType(ClubMemberRoleType.GENERAL);
     }
 
+    /**
+     * 비활성화
+     */
     @Transactional
     public void modifyStatusType(Long reqMemberId, Long clubMemberId, ClubMemberStatusType statusType) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -83,6 +94,7 @@ public class ClubMemberService {
         List<ClubMember> clubMembers = clubMemberRepository.findAllById(clubMemberIds);
         for (ClubMember clubMember : clubMembers) {
             GlobalValidator.belongsToClub(clubMember, club);
+            GlobalValidator.isHigherRoleTypeThan(reqClubMember, clubMember);
             clubMember.setClubMemberStatusType(statusType);
         }
     }
@@ -92,8 +104,11 @@ public class ClubMemberService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubMember.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
+        Club club = reqClubMember.getClub();
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
+        GlobalValidator.belongsToClub(clubMember, club);
+        GlobalValidator.isHigherRoleTypeThan(reqClubMember, clubMember);
 
         clubMemberRepository.delete(clubMember);
     }

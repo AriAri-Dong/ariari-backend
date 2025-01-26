@@ -4,9 +4,10 @@ import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.club.clubmember.exception.LowerRoleTypeException;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
-import com.ariari.ariari.domain.club.exception.NoClubAdminException;
-import com.ariari.ariari.domain.club.exception.NoClubManagerException;
+import com.ariari.ariari.domain.club.exceptions.NoClubAdminException;
+import com.ariari.ariari.domain.club.exceptions.NoClubManagerException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.exception.ClosedRecruitmentException;
@@ -40,6 +41,12 @@ public class GlobalValidator {
     public static void isClubAdmin(ClubMember reqClubMember) {
         if (!reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
             throw new NoClubAdminException();
+        }
+    }
+
+    public static void isHigherRoleTypeThan(ClubMember my, ClubMember he) {
+        if (!my.isHigherRoleTypeThan(he)) {
+            throw new LowerRoleTypeException();
         }
     }
 
