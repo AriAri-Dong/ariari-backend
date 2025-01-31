@@ -19,7 +19,7 @@ public class ApplyQuestionData {
     @JsonSerialize(using = ToStringSerializer.class)
     @Schema(description = "지원 질문 id", example = "673012345142938986")
     private Long id;
-    @Schema(description = "지원 질문 내용", example = "673012345142938986")
+    @Schema(description = "지원 질문 내용", example = "프로젝트 경험이 있나요?")
     private String body;
 
     public static ApplyQuestionData fromEntity(ApplyQuestion applyQuestion) {
