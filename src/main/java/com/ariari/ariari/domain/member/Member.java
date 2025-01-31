@@ -44,6 +44,7 @@ public class Member extends LogicalDeleteEntity {
     @Column(length = 20, unique = true)
     private String nickName;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private ProfileType profileType;
