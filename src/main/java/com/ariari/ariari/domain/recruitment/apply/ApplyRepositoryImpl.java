@@ -3,7 +3,7 @@ package com.ariari.ariari.domain.recruitment.apply;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
-import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchType;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchCondition;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -52,7 +52,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     }
 
     @Override
-    public Page<Apply> searchByMember(Member member, MyAppliesSearchType searchType, Pageable pageable) {
+    public Page<Apply> searchByMember(Member member, MyAppliesSearchCondition searchType, Pageable pageable) {
         List<Apply> content = queryFactory.selectFrom(apply)
                 .where(memberEq(member),
                         searchMyCond(searchType))
@@ -100,12 +100,12 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
         return apply.member.eq(member);
     }
 
-    private BooleanExpression searchMyCond(MyAppliesSearchType searchType) {
+    private BooleanExpression searchMyCond(MyAppliesSearchCondition searchType) {
         if (searchType == null) {
             return null;
         }
 
-        if (searchType.equals(MyAppliesSearchType.IN_PROGRESS)) {
+        if (searchType.equals(MyAppliesSearchCondition.IN_PROGRESS)) {
             return apply.applyStatusType.in(PENDENCY, INTERVIEW);
         } else {
             return apply.applyStatusType.in(APPROVE, REFUSAL);

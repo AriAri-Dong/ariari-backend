@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.club.financial.dto;
 
 import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
@@ -11,8 +12,10 @@ import java.util.ListIterator;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "동아리 회계 리스트 응답")
 public class FinancialRecordListRes {
 
+    @Schema(description = "동아리 회계 데이터 리스트")
     private List<FinancialRecordData> financialRecordDataList;
     private PageInfo pageInfo;
 

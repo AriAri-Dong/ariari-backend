@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.domain.club.clubmember.dto.req.ClubMemberStatusModifyReq;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
@@ -24,14 +25,15 @@ public class ClubMemberController {
 
     private final ClubMemberService clubMemberService;
 
-    @Operation(summary = "동아리 회원 리스트 조회", description = "동아리 내 전체 회원 리스트를 조회합니다. (페이지네이션)")
+    @Operation(summary = "동아리 회원 리스트 조회", description = "동아리 내 전체 회원 리스트를 조회합니다. 검색 조건으로 StatusType 과 query(contains 검색) 를 받습니다. (페이지네이션)")
     @GetMapping("/clubs/{clubId}/club-members")
     public ClubMemberListRes findClubMemberList(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                 @PathVariable Long clubId,
                                                 @RequestParam(required = false) ClubMemberStatusType statusType,
+                                                @RequestParam(required = false) String query,
                                                 Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
-        return clubMemberService.findClubMemberList(reqMemberId, clubId, statusType, pageable);
+        return clubMemberService.findClubMemberList(reqMemberId, clubId, statusType, query, pageable);
     }
 
     @Operation(summary = "동아리 회원 권한 수정", description = "동아리 회원 권한을 수정합니다. 최고 관리자 권한은 [최고 관리자 권한 위임] API를 사용해야 합니다. '스텝' 권한 이상의 동아리 회원이 타 동아리 회원의 권한을 수정할 수 있습니다.")
@@ -70,8 +72,9 @@ public class ClubMemberController {
     public void modifyStatusTypes(@AuthenticationPrincipal CustomUserDetails userDetails,
                                   @PathVariable Long clubId,
                                   @RequestParam List<Long> clubMemberIds,
-                                  @RequestBody ClubMemberStatusType statusType) {
+                                  @RequestBody ClubMemberStatusModifyReq modifyReq) {
         Long reqMemberId = getMemberId(userDetails, true);
+        ClubMemberStatusType statusType = modifyReq.getClubMemberStatusType();
         clubMemberService.modifyStatusTypes(reqMemberId, clubId, clubMemberIds, statusType);
     }
 
@@ -84,7 +87,7 @@ public class ClubMemberController {
     }
 
     @Operation(summary = "동아리 회원 검색", description = "query 로 동아리 내 회원을 검색합니다. (contains 방식)")
-    @GetMapping("/clubs/{clubId}/club-members/search")
+//    @GetMapping("/clubs/{clubId}/club-members/search")
     public ClubMemberListRes searchClubMembers(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                @PathVariable Long clubId,
                                                @RequestParam(required = false) String query,

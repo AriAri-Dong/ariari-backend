@@ -18,7 +18,7 @@ public class MemberData {
     private Long id;
     @Schema(description = "회원 닉네임", example = "힘센호랑이112")
     private String nickname;
-    @Schema(description = "회원 프로필", example = "ARIARI_TIGER", allowableValues = {"ARIARI_MOUSE", "ARIARI_COW", "ARIARI_TIGER", "ARIARI_RABBIT", "ARIARI_DRAGON", "ARIARI_SNAKE", "ARIARI_HORSE", "ARIARI_SHEEP", "ARIARI_MONKEY", "ARIARI_CHICKEN", "ARIARI_DOG", "ARIARI_PIG"})
+    @Schema(description = "회원 프로필", example = "ARIARI_TIGER")
     private ProfileType profileType;
 
     public static MemberData fromEntity(Member member) {

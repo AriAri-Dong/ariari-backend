@@ -7,7 +7,6 @@ import com.ariari.ariari.domain.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
-import com.ariari.ariari.domain.club.clubmember.exception.ModifyingClubMemberRoleTypeException;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
@@ -28,17 +27,14 @@ public class ClubMemberService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
 
-    /**
-     * 비활성화
-     */
-    public ClubMemberListRes findClubMemberList(Long reqMemberId, Long clubId, ClubMemberStatusType statusType, Pageable pageable) {
+    public ClubMemberListRes findClubMemberList(Long reqMemberId, Long clubId, ClubMemberStatusType statusType, String query, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        Page<ClubMember> page = clubMemberRepository.findByClub(club, statusType, pageable);
+        Page<ClubMember> page = clubMemberRepository.searchClubMember(club, statusType, query, pageable);
         return ClubMemberListRes.createRes(page);
     }
 
@@ -113,6 +109,9 @@ public class ClubMemberService {
         clubMemberRepository.delete(clubMember);
     }
 
+    /**
+     * 비활성화
+     */
     public ClubMemberListRes searchClubMembers(Long reqMemberId, Long clubId, String query, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);

@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.recruitment.dto;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,8 +12,10 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Schema(description = "동아리의 모집 리스트 조회 전용 모집 데이터")
 public class RecruitmentInClubData extends RecruitmentData {
 
+    @Schema(description = "모집 추가 항목 데이터 리스트")
     private List<RecruitmentNoteData> recruitmentNoteDataList;
 
     public static List<RecruitmentInClubData> fromEntities(List<Recruitment> recruitments) {

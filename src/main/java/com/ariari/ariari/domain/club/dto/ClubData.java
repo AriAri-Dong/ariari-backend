@@ -10,6 +10,7 @@ import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.dto.SchoolData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,18 +23,28 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "동아리 데이터")
 public class ClubData {
 
     @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "동아리 id", example = "673012345142938986")
     private Long id;
+    @Schema(description = "동아리 이름", example = "아리아리")
     private String name;
+    @Schema(description = "동아리 프로필 이미지 URI", example = "")
     private String profileUri;
+    @Schema(description = "동아리 한 줄 소개", example = "아리아리는 동아리 커뮤니티 서비스를 개발하는 동아리입니다.")
     private String body;
+    @Schema(description = "동아리 배너 이미지 URI", example = "")
     private String bannerUri;
+    @Schema(description = "동아리 카테고리 타입", example = "STARTUP")
     private ClubCategoryType clubCategoryType;
+    @Schema(description = "동아리 지역 타입", example = "SEOUL_GYEONGGI")
     private ClubRegionType clubRegionType;
+    @Schema(description = "동아리 참여 대상 타입", example = "OFFICE_WORKER")
     private ParticipantType participantType;
 
+    @Schema(description = "내가 북마크한 동아리인지 여부")
     private Boolean isMyBookmark = false;
 
     private SchoolData schoolData;

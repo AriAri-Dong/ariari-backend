@@ -1,5 +1,8 @@
 package com.ariari.ariari.domain.club.faq.enums;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "동아리 FAQ 색상 타입")
 public enum ClubFaqColorType {
 
     C_TOKEN_1,

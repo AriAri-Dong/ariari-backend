@@ -35,7 +35,7 @@ public class ClubNoticeController {
     }
 
     @Operation(summary = "동아리 공지사항 수정", description = "동아리 관리자만이 수정할 수 있습니다.")
-    @PostMapping(value = "/club-notices/{clubNoticeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/club-notices/{clubNoticeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void modifyClubNotice(@AuthenticationPrincipal CustomUserDetails userDetails,
                                  @PathVariable Long clubNoticeId,
                                  @RequestPart ClubNoticeModifyReq modifyReq,

@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.recruitment.applyform;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
-import com.ariari.ariari.domain.recruitment.applyform.dto.ApplyFormModifyReq;
-import com.ariari.ariari.domain.recruitment.applyform.dto.ApplyFormRes;
+import com.ariari.ariari.domain.recruitment.applyform.dto.req.ApplyFormModifyReq;
+import com.ariari.ariari.domain.recruitment.applyform.dto.res.ApplyFormRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -5,11 +5,9 @@ import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface ClubMemberRepositoryCustom {
 
-    Page<ClubMember> findByClub(Club club, ClubMemberStatusType statusType, Pageable pageable);
+    Page<ClubMember> searchClubMember(Club club, ClubMemberStatusType statusType, String query, Pageable pageable);
 
     Page<ClubMember> findByClubAndNameContains(Club club, String query, Pageable pageable);
 

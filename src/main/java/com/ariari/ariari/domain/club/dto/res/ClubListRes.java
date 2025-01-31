@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.dto.ClubData;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.member.Member;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClubListRes {
 
+    @Schema(description = "동아리 데이터 리스트")
     private List<ClubData> clubDataList;
     private PageInfo pageInfo;
 

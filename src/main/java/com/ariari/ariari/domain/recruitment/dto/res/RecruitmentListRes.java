@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.dto.RecruitmentData;
 import com.ariari.ariari.domain.recruitment.dto.RecruitmentInClubData;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,10 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "모집 리스트 응답")
 public class RecruitmentListRes {
 
+    @Schema(description = "모집 데이터 리스트")
     private List<? extends RecruitmentData> recruitmentDataList;
     private PageInfo pageInfo;
 

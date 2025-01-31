@@ -25,11 +25,12 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<ClubMember> findByClub(Club club, ClubMemberStatusType statusType, Pageable pageable) {
+    public Page<ClubMember> searchClubMember(Club club, ClubMemberStatusType statusType, String queryString, Pageable pageable) {
         JPAQuery<ClubMember> query = queryFactory
                 .selectFrom(clubMember)
                 .where(clubEq(club),
-                        statusTypeEq(statusType))
+                        statusTypeEq(statusType),
+                        nameEq(queryString))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -43,7 +44,8 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
                 .select(clubMember.count())
                 .from(clubMember)
                 .where(clubEq(club),
-                        statusTypeEq(statusType))
+                        statusTypeEq(statusType),
+                        nameEq(queryString))
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);
