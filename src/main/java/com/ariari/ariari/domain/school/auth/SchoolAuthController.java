@@ -4,10 +4,12 @@ import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthCodeReq;
 import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthReq;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "school-auth", description = "학교 인증 기능")
 @RestController
 @RequestMapping("/schools/auth")
 @RequiredArgsConstructor

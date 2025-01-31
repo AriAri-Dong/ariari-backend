@@ -6,10 +6,12 @@ import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.school.School;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Schema(description = "동아리 등록 형식")
 public class ClubSaveReq {
 
     private String name;

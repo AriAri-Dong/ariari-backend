@@ -1,10 +1,12 @@
 package com.ariari.ariari.domain.club.clubmember.enums;
 
-public enum
-ClubMemberRoleType {
+import io.swagger.v3.oas.annotations.media.Schema;
 
-    GENERAL, // 일반 멤버
-    MANAGER, // 스텝
-    ADMIN // 관리자
+@Schema(description = "동아리 회원 권한 타입 (GENERAL : 일반 동아리 회원, MANAGER : 동아리 관리자, ADMIN : 동아리 최고 관리자")
+public enum ClubMemberRoleType {
+
+    GENERAL,
+    MANAGER,
+    ADMIN
 
 }

@@ -4,9 +4,9 @@ import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.member.dto.MemberData;
-import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,14 +15,18 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
+@Schema(description = "동아리 회원 데이터")
 public class ClubMemberData {
 
     @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "동아리 회원 id", example = "673012345142938986")
     private Long id;
+    @Schema(description = "동아리 회원 활동명", example = "아리아리 원순재")
     private String name;
+    @Schema(description = "동아리 회원 권한", example = "GENERAL")
     private ClubMemberRoleType clubMemberRoleType;
+    @Schema(description = "동아리 회원 상태", example = "ACTIVE")
     private ClubMemberStatusType clubMemberStatusType;
-    private ProfileType profileType;
 
     private MemberData memberData;
 
@@ -36,7 +40,6 @@ public class ClubMemberData {
                 clubMember.getName(),
                 clubMember.getClubMemberRoleType(),
                 clubMember.getClubMemberStatusType(),
-                clubMember.getMember().getProfileType(),
                 MemberData.fromEntity(clubMember.getMember())
         );
     }
