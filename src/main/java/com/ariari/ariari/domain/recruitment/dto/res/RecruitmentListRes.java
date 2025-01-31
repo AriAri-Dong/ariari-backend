@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.dto.RecruitmentData;
+import com.ariari.ariari.domain.recruitment.dto.RecruitmentInClubData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
@@ -15,12 +16,19 @@ import java.util.List;
 @AllArgsConstructor
 public class RecruitmentListRes {
 
-    private List<RecruitmentData> recruitmentDataList;
+    private List<? extends RecruitmentData> recruitmentDataList;
     private PageInfo pageInfo;
 
     public static RecruitmentListRes fromList(List<Recruitment> recruitments, Member reqMember) {
         return new RecruitmentListRes(
                 RecruitmentData.fromEntities(recruitments, reqMember),
+                null
+        );
+    }
+
+    public static RecruitmentListRes createInClubRes(List<Recruitment> recruitments) {
+        return new RecruitmentListRes(
+                RecruitmentInClubData.fromEntities(recruitments),
                 null
         );
     }

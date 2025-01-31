@@ -78,7 +78,7 @@ public class RecruitmentListService {
         GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         List<Recruitment> recruitments = recruitmentRepository.findByClub(club);
-        return RecruitmentListRes.fromList(recruitments, reqMember);
+        return RecruitmentListRes.createInClubRes(recruitments);
     }
 
     public RecruitmentListRes findExternalRankingList(Long reqMemberId) {
