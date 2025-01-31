@@ -6,6 +6,8 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.MemberRepository;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.SchoolRepository;
+import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthCodeReq;
+import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +22,10 @@ public class SchoolAuthService {
     private final SchoolAuthManager schoolAuthManager;
     private final MailManager mailManager;
 
-    public void sendSchoolAuthCode(Long reqMemberId, String email) {
+    public void sendSchoolAuthCode(Long reqMemberId, SchoolAuthReq schoolAuthReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        String email = schoolAuthReq.getEmail();
 
         String emailSuffix = email.split("@")[1];
         School school = schoolRepository.findByEmail(emailSuffix).orElseThrow(NotFoundEntityException::new);
@@ -34,8 +38,10 @@ public class SchoolAuthService {
                 authCode);
     }
 
-    public void validateSchoolAuthCode(Long reqMemberId, String schoolAuthCode) {
+    public void validateSchoolAuthCode(Long reqMemberId, SchoolAuthCodeReq schoolAuthCodeReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        String schoolAuthCode = schoolAuthCodeReq.getSchoolAuthCode();
 
         Long schoolId = schoolAuthManager.validateAuthCode(reqMember, schoolAuthCode);
         School school = schoolRepository.findById(schoolId).orElseThrow(NotFoundEntityException::new);

@@ -1,6 +1,8 @@
 package com.ariari.ariari.domain.school.auth;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthCodeReq;
+import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthReq;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,17 +18,17 @@ public class SchoolAuthController {
     @Operation(summary = "학교 인증 이메일 발송 요청", description = "요청 body 로 받은 email 로 학교 인증 코드 발송을 요청합니다. 5분 내로 인증번호를 입력해야 합니다.")
     @PostMapping("/send")
     public void sendSchoolAuthCode(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                   @RequestBody String email) {
+                                   @RequestBody SchoolAuthReq schoolAuthReq) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
-        schoolAuthService.sendSchoolAuthCode(reqMemberId, email);
+        schoolAuthService.sendSchoolAuthCode(reqMemberId, schoolAuthReq);
     }
 
     @Operation(summary = "학교 인증 코드 검증", description = "요청 body 로 받은 학교 인증 코드를 검증합니다.")
     @PostMapping("/validate")
     public void validateSchoolAuthCode(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                       @RequestBody String schoolAuthCode) {
+                                       @RequestBody SchoolAuthCodeReq schoolAuthCodeReq) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
-        schoolAuthService.validateSchoolAuthCode(reqMemberId, schoolAuthCode);
+        schoolAuthService.validateSchoolAuthCode(reqMemberId, schoolAuthCodeReq);
     }
 
 }
