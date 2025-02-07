@@ -17,7 +17,8 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins("*")  // 모든 출처 허용 , 나중에 수정 예정
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*");  // 모든 헤더 허용
+                        .allowedHeaders("*")
+                        .allowCredentials(true);  // 모든 헤더 허용
             }
         };
     }
