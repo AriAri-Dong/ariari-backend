@@ -1,6 +1,8 @@
 package com.ariari.ariari.commons.auth;
 
+import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
+import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,6 +40,12 @@ public class AuthController {
     @PostMapping("/logout")
     public void logout(@RequestBody JwtTokenRes jwtTokenRes) {
         authService.logout(jwtTokenRes);
+    }
+
+    @PostMapping("/reissue/token")
+    public AccessTokenRes reissueAccessToken(@RequestBody RefreshTokenReq refreshTokenReq) {
+        String refreshToken = refreshTokenReq.getRefreshToken();
+        return authService.reissueAccessToken(refreshToken);
     }
 
 }

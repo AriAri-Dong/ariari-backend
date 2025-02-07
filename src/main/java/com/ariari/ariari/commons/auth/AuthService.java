@@ -1,7 +1,10 @@
 package com.ariari.ariari.commons.auth;
 
+import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
+import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
 import com.ariari.ariari.commons.auth.nickname.NicknameCreator;
+import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.Member;
@@ -66,6 +69,16 @@ public class AuthService {
 
         jwtControlManager.banToken(accessToken, accessExpiration);
         jwtControlManager.banToken(refreshToken, refreshExpiration);
+    }
+
+    public AccessTokenRes reissueAccessToken(String refreshToken) {
+        jwtManager.validateRefresh(refreshToken);
+
+        Long reqMemberId = jwtManager.getMemberId(refreshToken);
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        String accessToken = jwtManager.generateToken(reqMember.getAuthorities(), reqMemberId, ACCESS_TOKEN);
+        return AccessTokenRes.createRes(accessToken);
     }
 
 }
