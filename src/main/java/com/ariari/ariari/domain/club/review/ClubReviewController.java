@@ -31,12 +31,10 @@ public class ClubReviewController {
         return clubReviewService.searchClubReviewPage(reqMemberId, clubId, pageable);
     }
 
-    @GetMapping("/{clubId}/{clubReviewId}")
+    @GetMapping("/{clubReviewId}")
     @Operation(summary = "활동 후기 상세 조회", description = "활동 후기 상세 조회")
     public ClubReviewData find_club_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                  @PathVariable(name = "clubId") Long clubId,
                                                   @PathVariable(name = "clubReviewId") Long clubReviewId){
-        // club과 clubReview매칭되는지도 검사?에 대한 고민 그냥 경로를 바꾸는게 맞나
         Long reqMemberId = getMemberId(userDetails, false);
         return clubReviewService.findClubReviewDetail(reqMemberId, clubReviewId);
     }
