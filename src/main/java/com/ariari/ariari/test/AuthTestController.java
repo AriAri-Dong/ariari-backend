@@ -1,10 +1,9 @@
 package com.ariari.ariari.test;
 
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
-import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.test.dto.TokenInfoRes;
 import com.ariari.ariari.test.dto.TokenReq;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

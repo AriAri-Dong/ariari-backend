@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.club.review;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.ClubRepository;
+import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.review.access.ClubReviewAccess;
@@ -17,7 +17,7 @@ import com.ariari.ariari.domain.club.review.repository.TagRepository;
 import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
 import com.ariari.ariari.domain.club.review.tag.Tag;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

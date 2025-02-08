@@ -1,5 +1,6 @@
-package com.ariari.ariari.domain.member;
+package com.ariari.ariari.domain.member.member;
 
+import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

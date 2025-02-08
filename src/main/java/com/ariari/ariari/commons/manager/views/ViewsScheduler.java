@@ -1,9 +1,9 @@
 package com.ariari.ariari.commons.manager.views;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.ClubRepository;
+import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
+import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

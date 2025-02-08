@@ -1,7 +1,7 @@
 package com.ariari.ariari.test;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.ClubRepository;
+import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
@@ -13,9 +13,9 @@ import com.ariari.ariari.domain.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.RecruitmentRepository;
+import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
@@ -27,7 +27,7 @@ import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkReposito
 import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
-import com.ariari.ariari.domain.school.SchoolRepository;
+import com.ariari.ariari.domain.school.school.SchoolRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

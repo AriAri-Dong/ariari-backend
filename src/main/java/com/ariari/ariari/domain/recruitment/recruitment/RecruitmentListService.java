@@ -1,13 +1,14 @@
-package com.ariari.ariari.domain.recruitment;
+package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.ClubRepository;
+import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
+import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
 import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentListRes;
