@@ -1,5 +1,6 @@
-package com.ariari.ariari.domain.club;
+package com.ariari.ariari.domain.club.club;
 
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.enums.ClubRegionType;

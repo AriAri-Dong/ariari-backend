@@ -1,6 +1,7 @@
-package com.ariari.ariari.domain.member;
+package com.ariari.ariari.domain.member.member;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.dto.req.NicknameModifyReq;
 import com.ariari.ariari.domain.member.dto.req.ProfileModifyReq;
 import com.ariari.ariari.domain.member.dto.res.MemberDetailRes;
@@ -8,8 +9,6 @@ import com.ariari.ariari.domain.member.exceptions.ExistingNicknameException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

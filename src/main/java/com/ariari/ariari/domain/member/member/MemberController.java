@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.member;
+package com.ariari.ariari.domain.member.member;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.member.dto.req.NicknameModifyReq;

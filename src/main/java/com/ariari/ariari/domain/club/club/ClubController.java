@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.club;
+package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.views.ViewsManager;

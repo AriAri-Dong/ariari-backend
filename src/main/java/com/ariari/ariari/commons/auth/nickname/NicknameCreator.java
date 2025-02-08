@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.auth.nickname;
 
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

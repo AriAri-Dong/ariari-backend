@@ -1,9 +1,10 @@
-package com.ariari.ariari.domain.club;
+package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
@@ -13,7 +14,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.exceptions.RemovingClubException;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

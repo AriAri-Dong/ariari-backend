@@ -16,7 +16,7 @@ import com.ariari.ariari.domain.club.passreview.repository.PassReviewAccessRepos
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewNoteRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

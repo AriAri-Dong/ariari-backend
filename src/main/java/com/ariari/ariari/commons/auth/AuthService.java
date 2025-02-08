@@ -2,13 +2,12 @@ package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
-import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
 import com.ariari.ariari.commons.auth.nickname.NicknameCreator;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.recruitment;
+package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.views.ViewsManager;

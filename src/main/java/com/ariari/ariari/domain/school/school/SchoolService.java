@@ -1,8 +1,9 @@
-package com.ariari.ariari.domain.school;
+package com.ariari.ariari.domain.school.school;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
+import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.dto.SchoolListRes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

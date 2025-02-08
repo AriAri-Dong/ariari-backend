@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.school;
+package com.ariari.ariari.domain.school.school;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.school.dto.SchoolListRes;

@@ -3,7 +3,7 @@ package com.ariari.ariari.commons.auth.springsecurity;
 import com.ariari.ariari.commons.exception.CustomException;
 import com.ariari.ariari.commons.exception.dto.ExceptionRes;
 import com.ariari.ariari.commons.manager.JwtManager;
-import com.ariari.ariari.domain.member.MemberRepository;
+import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
