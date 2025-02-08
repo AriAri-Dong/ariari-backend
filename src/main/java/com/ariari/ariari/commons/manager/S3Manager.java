@@ -3,22 +3,25 @@ package com.ariari.ariari.commons.manager;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-
 import com.ariari.ariari.commons.manager.file.FileManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
-//@Component
+@Component
 public class S3Manager implements FileManager {
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+
+    @Value("${cloud.aws.s3.cloudfrontdomain}")
+    private String cloudFrontDomain;
 
     public S3Manager(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
@@ -60,21 +63,25 @@ public class S3Manager implements FileManager {
 
     // s3에서 이미지 제거하기(경로)
     @Override
-    public void deleteFile(String filePath){
-        String bucketUrlPrefix = String.format("https://%s.s3.%s.amazonaws.com/", bucket, amazonS3.getRegionName());
-        checkValidFilePath(filePath, bucketUrlPrefix); // 형식검사
-        String fileKey = filePath.substring(bucketUrlPrefix.length()); // 형식에 맞게 문자열 파싱
-        deleteImageByFileName(fileKey);
+    public void deleteFile(String filePath) {
+        // CloudFront URL prefix 사용
+        String cloudFrontUrlPrefix = String.format("https://%s/", cloudFrontDomain);
+        checkValidFilePath(filePath, cloudFrontUrlPrefix); // URL 형식 검사
+        // CloudFront URL에서 파일 키(파일명) 추출
+        String fileKey = filePath.substring(cloudFrontUrlPrefix.length());
+        deleteImageByFileName(fileKey); // 실제 S3에 저장된 파일 삭제
     }
 
-    // 경로가 형식에 맞는지 확인
-    public void checkValidFilePath(String filePath, String bucketUrlPrefix){
-        if (!filePath.startsWith(bucketUrlPrefix)) {throw new IllegalArgumentException("Invalid S3 public URL");}
+    // URL 형식 검증 (CloudFront URL 기준)
+    public void checkValidFilePath(String filePath, String urlPrefix) {
+        if (!filePath.startsWith(urlPrefix)) {
+            throw new IllegalArgumentException("Invalid CloudFront URL");
+        }
     }
 
-    //실제 이미지의 절대경로 Url
+    // 파일의 Public URL 생성 (CloudFront URL 사용)
     private String getPublicUrl(String fileName) {
-        return String.format("https://%s.s3.%s.amazonaws.com/%s", bucket, amazonS3.getRegionName(), fileName);
+        return String.format("https://%s/%s", cloudFrontDomain, fileName);
     }
 
 
