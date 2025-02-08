@@ -1,9 +1,9 @@
-package com.ariari.ariari.domain.club.dto.res;
+package com.ariari.ariari.domain.club.club.dto.res;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
-import com.ariari.ariari.domain.club.dto.ClubData;
+import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

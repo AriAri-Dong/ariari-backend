@@ -1,10 +1,10 @@
-package com.ariari.ariari.domain.recruitment.dto.res;
+package com.ariari.ariari.domain.recruitment.recruitment.dto.res;
 
-import com.ariari.ariari.domain.club.dto.ClubData;
+import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.applyform.dto.ApplyFormData;
-import com.ariari.ariari.domain.recruitment.dto.RecruitmentData;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

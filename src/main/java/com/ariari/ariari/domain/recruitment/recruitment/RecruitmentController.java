@@ -2,10 +2,10 @@ package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
-import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
-import com.ariari.ariari.domain.recruitment.dto.req.RecruitmentSaveReq;
-import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentDetailRes;
-import com.ariari.ariari.domain.recruitment.dto.res.RecruitmentListRes;
+import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentDetailRes;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentListRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.club.dto.req;
+package com.ariari.ariari.domain.club.club.dto.req;
 
 import com.ariari.ariari.domain.club.Club;
 import io.swagger.v3.oas.annotations.media.Schema;
