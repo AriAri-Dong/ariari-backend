@@ -39,12 +39,16 @@ public class RecruitmentData {
     private ProcedureType procedureType;
     @Schema(description = "모집 인원", example = "30")
     private Integer limits;
+    @Schema(description = "모집 생성 날짜/시간", example = "2025-03-15T09:08:18.467Z")
+    private LocalDateTime createdDateTime;
     @Schema(description = "모집 시작 날짜/시간", example = "2025-01-15T09:08:18.467Z")
     private LocalDateTime startDateTime;
     @Schema(description = "모집 종료 날짜/시간", example = "2025-03-15T09:08:18.467Z")
     private LocalDateTime endDateTime;
-    @Schema(description = "모집 생성 날짜/시간", example = "2025-03-15T09:08:18.467Z")
-    private LocalDateTime createdDateTime;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "모집이 속한 동아리 id", example = "673012345142938986")
+    private Long clubId;
 
     @Schema(description = "모집 조기종료 여부", example = "false")
     private Boolean isActivated;
@@ -62,6 +66,7 @@ public class RecruitmentData {
                 recruitment.getCreatedDateTime(),
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
+                recruitment.getClub().getId(),
                 recruitment.getIsActivated(),
                 getMyBookmarkRecruitments(reqMember).contains(recruitment)
         );
