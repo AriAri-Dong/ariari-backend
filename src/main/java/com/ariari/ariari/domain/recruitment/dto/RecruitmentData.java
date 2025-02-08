@@ -93,6 +93,7 @@ public class RecruitmentData {
                 recruitment.getCreatedDateTime(),
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
+                recruitment.getClub().getId(),
                 recruitment.getIsActivated(),
                 myBookmarkRecruitments.contains(recruitment)
         );
