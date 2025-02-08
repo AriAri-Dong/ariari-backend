@@ -83,6 +83,7 @@ jobs:
                 secretKey: ${AWS_SECRET_KEY}
               s3:
                 bucket: ${AWS_S3_BUCKET}
+                cloudfrontdomain: ${AWS_S3_CLOUDFRONTDOMAIN}
               region:
                 static: ap-northeast-2
               stack:
@@ -115,6 +116,7 @@ jobs:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_S3_CLOUDFRONTDOMAIN : ${{ secrets.AWS_S3_CLOUDFRONTDOMAIN }}
           EMAIL_CODE_CHARACTERS: ${{ secrets.MAIL_CODE_CHARACTERS }}
           EMAIL_CODE_LENGTH: ${{ secrets.MAIL_CODE_LENGTH }}
           EMAIL_CODE_EXPIRATION: ${{ secrets.MAIL_CODE_EXPIRATION }}
