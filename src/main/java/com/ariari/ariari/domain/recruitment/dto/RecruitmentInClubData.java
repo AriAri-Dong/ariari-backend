@@ -33,14 +33,15 @@ public class RecruitmentInClubData extends RecruitmentData {
                 recruitment.getCreatedDateTime(),
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
+                recruitment.getClub().getId(),
                 recruitment.getIsActivated(),
                 null,
                 RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes())
         );
     }
 
-    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Boolean isActivated, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
-        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, isActivated, isMyBookmark);
+    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, Boolean isActivated, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
+        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, isActivated, isMyBookmark);
         this.recruitmentNoteDataList = recruitmentNoteDataList;
     }
 
