@@ -1,7 +1,7 @@
-package com.ariari.ariari.domain.recruitment.dto;
+package com.ariari.ariari.domain.recruitment.recruitment.dto;
 
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

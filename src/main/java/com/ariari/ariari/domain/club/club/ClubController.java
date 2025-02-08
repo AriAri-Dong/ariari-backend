@@ -2,12 +2,12 @@ package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
-import com.ariari.ariari.domain.club.dto.req.ClubModifyReq;
-import com.ariari.ariari.domain.club.dto.req.ClubSaveReq;
-import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
-import com.ariari.ariari.domain.club.dto.res.ClubDetailRes;
-import com.ariari.ariari.domain.club.dto.res.ClubListRes;
-import com.ariari.ariari.domain.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.dto.req.ClubModifyReq;
+import com.ariari.ariari.domain.club.club.dto.req.ClubSaveReq;
+import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
+import com.ariari.ariari.domain.club.club.dto.res.ClubDetailRes;
+import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
+import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

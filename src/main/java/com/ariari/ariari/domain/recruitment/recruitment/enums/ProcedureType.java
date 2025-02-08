@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.recruitment.enums;
+package com.ariari.ariari.domain.recruitment.recruitment.enums;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

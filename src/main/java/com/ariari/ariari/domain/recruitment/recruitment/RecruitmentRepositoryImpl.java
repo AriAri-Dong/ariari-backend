@@ -1,10 +1,10 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
-import com.ariari.ariari.domain.club.enums.ClubCategoryType;
-import com.ariari.ariari.domain.club.enums.ClubRegionType;
-import com.ariari.ariari.domain.club.enums.ParticipantType;
+import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
+import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import com.querydsl.core.types.Order;

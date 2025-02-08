@@ -6,7 +6,7 @@ import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
 import com.ariari.ariari.domain.club.passreview.note.dto.req.PassReviewNoteReq;
-import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

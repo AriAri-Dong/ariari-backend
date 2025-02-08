@@ -6,7 +6,7 @@ import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
-import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

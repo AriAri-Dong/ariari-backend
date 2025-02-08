@@ -1,17 +1,15 @@
-package com.ariari.ariari.domain.recruitment.dto;
+package com.ariari.ariari.domain.recruitment.recruitment.dto;
 
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
-import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.keyvalue.repository.query.PredicateQueryCreator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
