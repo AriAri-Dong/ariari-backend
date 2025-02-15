@@ -57,7 +57,7 @@ jobs:
             data:
               redis:
                 host: redis
-                port: 6379
+                port: 6380
             servlet:
               multipart:
                 maxFileSize: 10MB
