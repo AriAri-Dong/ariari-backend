@@ -151,7 +151,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: iuholic83/ariari:latest
+          tags: iuholic83/ariaritest:latest
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
