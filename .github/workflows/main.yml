@@ -72,6 +72,7 @@ jobs:
             client:
               id: ${KAKAO_CLIENT_ID}
               secret: ${KAKAO_CLIENT_SECRET}
+              admin: ${KAKAO_CLIENT_ADMIN}
             redirect-uri: http://localhost:3000/auth/kakao
             login-uri: https://kauth.kakao.com/oauth/authorize
             auth-uri: https://kauth.kakao.com/oauth/token
