@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.domain.club.clubmember.dto.req.ClubMemberRoleTypeModifyReq;
 import com.ariari.ariari.domain.club.clubmember.dto.req.ClubMemberStatusModifyReq;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
@@ -40,8 +41,9 @@ public class ClubMemberController {
     @PutMapping("/club-members/{clubMemberId}/role")
     public void modifyRoleType(@AuthenticationPrincipal CustomUserDetails userDetails,
                                @PathVariable Long clubMemberId,
-                               @RequestBody ClubMemberRoleType roleType) {
+                               @RequestBody ClubMemberRoleTypeModifyReq modifyReq) {
         Long reqMemberId = getMemberId(userDetails, true);
+        ClubMemberRoleType roleType = modifyReq.getClubMemberRoleType();
 
         if (roleType.equals(ClubMemberRoleType.ADMIN)) {
             throw new ModifyingClubMemberRoleTypeException();
