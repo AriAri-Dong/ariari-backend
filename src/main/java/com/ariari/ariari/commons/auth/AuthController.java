@@ -4,12 +4,14 @@ import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
 import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
+import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "auth", description = "인증 관련 어노테이션")
@@ -32,6 +34,13 @@ public class AuthController {
         Long kakaoId = kakaoAuthManager.getKakaoId(token);
 
         return authService.login(kakaoId);
+    }
+
+    @PostMapping("/unregister")
+    @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 (+ 카카오 회원 탈퇴 처리)")
+    public void unregister(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        authService.unregister(reqMemberId);
     }
 
     /**

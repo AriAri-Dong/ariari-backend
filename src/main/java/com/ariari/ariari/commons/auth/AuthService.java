@@ -3,6 +3,7 @@ package com.ariari.ariari.commons.auth;
 import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
 import com.ariari.ariari.commons.auth.nickname.NicknameCreator;
+import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
@@ -27,6 +28,7 @@ public class AuthService {
     private final JwtManager jwtManager;
     private final JwtControlManager jwtControlManager;
     private final NicknameCreator nicknameCreator;
+    private final KakaoAuthManager kakaoAuthManager;
 
     public JwtTokenRes login(Long kakaoId) {
         Optional<Member> memberOptional = memberRepository.findByKakaoId(kakaoId);
@@ -57,6 +59,13 @@ public class AuthService {
         newMember.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
         memberRepository.save(newMember);
         return newMember;
+    }
+
+    public void unregister(Long reqMemberId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        kakaoAuthManager.unregister(reqMember);
+        memberRepository.delete(reqMember);
     }
 
     public void logout(JwtTokenRes jwtTokenRes) {
