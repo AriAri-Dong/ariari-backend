@@ -73,7 +73,7 @@ public class S3Manager implements FileManager {
     }
 
     // URL 형식 검증 (CloudFront URL 기준)
-    public void checkValidFilePath(String filePath, String urlPrefix) {
+    private void checkValidFilePath(String filePath, String urlPrefix) {
         if (!filePath.startsWith(urlPrefix)) {
             throw new IllegalArgumentException("Invalid CloudFront URL");
         }

@@ -7,7 +7,7 @@ import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.passreview.enums.NoteType;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

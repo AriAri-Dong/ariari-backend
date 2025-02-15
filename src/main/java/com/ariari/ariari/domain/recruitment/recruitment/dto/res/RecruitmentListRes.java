@@ -1,11 +1,11 @@
-package com.ariari.ariari.domain.recruitment.dto.res;
+package com.ariari.ariari.domain.recruitment.recruitment.dto.res;
 
 import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
-import com.ariari.ariari.domain.recruitment.dto.RecruitmentData;
-import com.ariari.ariari.domain.recruitment.dto.RecruitmentInClubData;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentInClubData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

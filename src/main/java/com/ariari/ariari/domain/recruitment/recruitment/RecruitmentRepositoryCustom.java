@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.dto.req.ClubSearchCondition;
+import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.school.School;
 import org.springframework.data.domain.Page;

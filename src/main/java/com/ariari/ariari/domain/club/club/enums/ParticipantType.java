@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.club.enums;
+package com.ariari.ariari.domain.club.club.enums;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

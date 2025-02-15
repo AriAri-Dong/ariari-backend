@@ -1,8 +1,8 @@
-package com.ariari.ariari.domain.club.dto.req;
+package com.ariari.ariari.domain.club.club.dto.req;
 
-import com.ariari.ariari.domain.club.enums.ClubCategoryType;
-import com.ariari.ariari.domain.club.enums.ClubRegionType;
-import com.ariari.ariari.domain.club.enums.ParticipantType;
+import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

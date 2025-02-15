@@ -1,18 +1,16 @@
-package com.ariari.ariari.domain.club.dto;
+package com.ariari.ariari.domain.club.club.dto;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
-import com.ariari.ariari.domain.club.enums.ClubCategoryType;
-import com.ariari.ariari.domain.club.enums.ClubRegionType;
-import com.ariari.ariari.domain.club.enums.ParticipantType;
+import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.dto.SchoolData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
