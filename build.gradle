@@ -47,6 +47,8 @@ dependencies {
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+
 	// JSONParser
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 

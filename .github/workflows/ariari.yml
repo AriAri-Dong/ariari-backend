@@ -3,10 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - ariari
   pull_request:
     branches:
-      - main
+      - ariari
 
 jobs:
   build-and-deploy:
@@ -28,10 +28,10 @@ jobs:
             application:
               name: ariari
             datasource:
-              driver-class-name: com.mysql.cj.jdbc.Driver
-              url: jdbc:mysql://mysql:3306/ariari?serverTimezone=Asia/Seoul
-              username: ${DB_USERNAME}
-              password: ${DB_PASSWORD}
+              driver-class-name: org.mariadb.jdbc.Driver
+              url: ${MARIADB_URL}
+              username: ${MARIADB_USERNAME}
+              password: ${MARIADB_PASSWORD}
             mail:
               host: smtp.naver.com
               port: 465
@@ -46,11 +46,11 @@ jobs:
                       trust: smtp.naver.com
                   debug: true
             jpa:
-              database: mysql
-              database-platform: org.hibernate.dialect.MySQLDialect
+              database: mariadb
+              database-platform: org.hibernate.dialect.MariaDBDialect
               show-sql: true
               hibernate:
-                ddl-auto: create-drop
+                ddl-auto: update
               properties:
                 hibernate:
                   format_sql: true
@@ -62,13 +62,8 @@ jobs:
               multipart:
                 maxFileSize: 10MB
                 maxRequestSize: 10MB
-          springdoc:
-            swagger-ui:
-              disable-swagger-default-url: true
-              servers:
-              - url: ${TEST_SERVER_URL}
           server:
-            port: 8080
+            port: 8282
           jwt:
             secret-key: ${JWT_SECRET_KEY}
             access-expiration-time: 36000000
@@ -77,12 +72,10 @@ jobs:
             client:
               id: ${KAKAO_CLIENT_ID}
               secret: ${KAKAO_CLIENT_SECRET}
-              admin: ${KAKAO_CLIENT_ADMIN}
             redirect-uri: http://localhost:3000/auth/kakao
             login-uri: https://kauth.kakao.com/oauth/authorize
             auth-uri: https://kauth.kakao.com/oauth/token
             kapi-uri: https://kapi.kakao.com/v2/user/me
-            unlink-uri: https://kapi.kakao.com/v1/user/unlink
           cloud:
             aws:
               credentials:
@@ -114,14 +107,14 @@ jobs:
           server-secret:
             host: ${SERVER_ADDRESS}
             port: ${SERVER_PORT}
-              
+          
           EOT
         env:
-          TEST_SERVER_URL: ${{secrets.TEST_SERVER_URL}}
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           SERVER_PORT: ${{secrets.SERVER_PORT}}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MARIADB_URL: ${{ secrets.MARIADB_URL }}
+          MARIADB_USERNAME: ${{ secrets.MARIADB_USERNAME }}
+          MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
@@ -163,7 +156,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: iuholic83/ariaritest:latest
+          tags: iuholic83/ariari:latest
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
@@ -172,7 +165,6 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /home/ubuntu/ariari
+            cd /home/ubuntu/ariari.kr
             sudo docker compose pull
             sudo docker compose up -d --build
-
