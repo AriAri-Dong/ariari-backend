@@ -32,12 +32,8 @@ public class SwaggerConfig {
                                 .name("Authorization")
                         )
                 )
+                .addServersItem(new Server().url(getServerUrl()))
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
-    }
-
-    @Bean
-    public OpenApiCustomiser serverOpenApiCustomiser() {
-        return openApi -> openApi.setServers(List.of(new Server().url(getServerUrl()).description("Swagger Server")));
     }
 
     private String getServerUrl() {
