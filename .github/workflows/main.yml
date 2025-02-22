@@ -64,7 +64,7 @@ jobs:
                 maxRequestSize: 10MB
           springdoc:
             swagger-ui:
-            disable-swagger-default-url: true
+            # disable-swagger-default-url: true
           server:
             port: 8080
           jwt:
