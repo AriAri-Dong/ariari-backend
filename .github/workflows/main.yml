@@ -108,10 +108,12 @@ jobs:
           
           server-secret:
             host: ${SERVER_ADDRESS}
+            port: ${SERVER_PORT}
               
           EOT
         env:
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
+          SERVER_PORT: ${{secrets.SERVER_PORT}}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}

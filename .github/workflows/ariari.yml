@@ -106,10 +106,12 @@ jobs:
           
           server-secret:
             host: ${SERVER_ADDRESS}
+            port: ${SERVER_PORT}
           
           EOT
         env:
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
+          SERVER_PORT: ${{secrets.SERVER_PORT}}
           MARIADB_URL: ${{ secrets.MARIADB_URL }}
           MARIADB_USERNAME: ${{ secrets.MARIADB_USERNAME }}
           MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}

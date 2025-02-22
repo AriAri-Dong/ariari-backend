@@ -14,7 +14,10 @@ public class CorsConfig {
     @Value("${server-secret.host}")
     private String host;
 
-    private String serverSwaggerOrigin = host + "/swagger-ui/index.html";
+    @Value("${server-secret.port}")
+    private String port;
+
+    private String testServerSwaggerOrigin = host + ":" + port;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -25,7 +28,7 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:3000", "https://main.d2ux83pqp6klo1.amplifyapp.com/",
                                 "https://release.d2ux83pqp6klo1.amplifyapp.com", "https://www.ariari.kr",
                                 "https://ariari.kr", "http://localhost:3000", "http://localhost:3001",
-                                serverSwaggerOrigin)  // 3000번 허용
+                                testServerSwaggerOrigin)  // 3000번 허용
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);  // 모든 헤더 허용
