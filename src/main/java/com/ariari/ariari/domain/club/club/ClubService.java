@@ -15,11 +15,15 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.exceptions.RemovingClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 
 @Service
 @Transactional(readOnly = true)
@@ -29,6 +33,7 @@ public class ClubService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
     private final FileManager fileManager;
 
@@ -75,6 +80,9 @@ public class ClubService {
             String uri = fileManager.saveFile(file, "club");
             club.setProfileUri(uri);
         }
+
+        ApplyForm applyForm = new ApplyForm(club, new ArrayList<>());
+        applyFormRepository.save(applyForm);
     }
 
     @Transactional
