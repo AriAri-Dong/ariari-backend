@@ -1,9 +1,12 @@
 package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
+import com.ariari.ariari.domain.member.Member;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -76,6 +79,18 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
+    @Override
+    public boolean existsMyManagerOrHigher(Member member) {
+        Long count = queryFactory
+                .select(clubMember.count())
+                .from(clubMember)
+                .where(memberEq(member),
+                        roleTypeManagerOrHigher())
+                .fetchOne();
+
+        return count != null && count.intValue() > 0;
+    }
+
     private BooleanExpression clubEq(Club club) {
         return clubMember.club.eq(club);
     }
@@ -86,6 +101,14 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
 
     private BooleanExpression nameEq(String name) {
         return name == null ? null : clubMember.name.contains(name);
+    }
+
+    private BooleanExpression roleTypeManagerOrHigher() {
+        return clubMember.clubMemberRoleType.in(ClubMemberRoleType.MANAGER, ClubMemberRoleType.ADMIN);
+    }
+
+    private BooleanExpression memberEq(Member member) {
+        return clubMember.member.eq(member);
     }
 
 }
