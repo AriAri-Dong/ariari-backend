@@ -100,7 +100,7 @@ public class RecruitmentController {
     @GetMapping("/clubs/{clubId}/recruitments")
     public RecruitmentListRes findRecruitmentListInClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                         @PathVariable Long clubId) {
-        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
         return recruitmentListService.findRecruitmentListInClub(reqMemberId, clubId);
     }
 
