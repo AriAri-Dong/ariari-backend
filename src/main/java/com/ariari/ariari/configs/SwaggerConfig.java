@@ -21,6 +21,9 @@ public class SwaggerConfig {
     @Value("${server-secret.port}")
     private String SERVER_PORT;
 
+    @Value("${spring.springdoc.swagger-ui.servers[0].url}")
+    private String TEST_HOST;
+
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -31,6 +34,7 @@ public class SwaggerConfig {
                                 .name("Authorization")
                         )
                 )
+                .addServersItem(new Server().url(TEST_HOST))
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
     }
 
