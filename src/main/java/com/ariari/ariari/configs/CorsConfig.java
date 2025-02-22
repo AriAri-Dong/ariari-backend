@@ -17,7 +17,7 @@ public class CorsConfig {
     @Value("${server-secret.port}")
     private String port;
 
-    private String testServerSwaggerOrigin = host + ":" + port;
+    private String testServerSwaggerOrigin = "http://" + host + ":" + port + "/";
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
