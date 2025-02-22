@@ -62,6 +62,9 @@ jobs:
               multipart:
                 maxFileSize: 10MB
                 maxRequestSize: 10MB
+          springdoc:
+            swagger-ui:
+            disable-swagger-default-url: true
           server:
             port: 8080
           jwt:
