@@ -104,8 +104,12 @@ jobs:
             expiration-time: ${SCHOOL_AUTH_EXPRIATION_TIME}
             code-length: ${SCHOOL_AUTH_CODE_LENGTH}
           
+          server-secret:
+            host: ${SERVER_ADDRESS}
+          
           EOT
         env:
+          SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           MARIADB_URL: ${{ secrets.MARIADB_URL }}
           MARIADB_USERNAME: ${{ secrets.MARIADB_USERNAME }}
           MARIADB_PASSWORD: ${{ secrets.MARIADB_PASSWORD }}

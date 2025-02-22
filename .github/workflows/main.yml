@@ -103,9 +103,13 @@ jobs:
             key-name: ${SCHOOL_AUTH_KEY_NAME}
             expiration-time: ${SCHOOL_AUTH_EXPRIATION_TIME}
             code-length: ${SCHOOL_AUTH_CODE_LENGTH}
+          
+          server-secret:
+            host: ${SERVER_ADDRESS}
               
           EOT
         env:
+          SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
