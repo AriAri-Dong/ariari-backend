@@ -65,6 +65,8 @@ jobs:
           springdoc:
             swagger-ui:
               disable-swagger-default-url: true
+              servers:
+              - url: ${TEST_SERVER_URL}
           server:
             port: 8080
           jwt:
@@ -115,6 +117,7 @@ jobs:
               
           EOT
         env:
+          TEST_SERVER_URL: ${{secrets.TEST_SERVER_URL}}
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           SERVER_PORT: ${{secrets.SERVER_PORT}}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
