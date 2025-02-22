@@ -72,10 +72,12 @@ jobs:
             client:
               id: ${KAKAO_CLIENT_ID}
               secret: ${KAKAO_CLIENT_SECRET}
+              admin: ${KAKAO_CLIENT_ADMIN}
             redirect-uri: http://localhost:3000/auth/kakao
             login-uri: https://kauth.kakao.com/oauth/authorize
             auth-uri: https://kauth.kakao.com/oauth/token
             kapi-uri: https://kapi.kakao.com/v2/user/me
+            unlink-uri: https://kapi.kakao.com/v1/user/unlink
           cloud:
             aws:
               credentials:
@@ -153,7 +155,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: iuholic83/ariari:latest
+          tags: iuholic83/ariaritest:latest
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6

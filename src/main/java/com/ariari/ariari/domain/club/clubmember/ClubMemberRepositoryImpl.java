@@ -85,7 +85,7 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
     }
 
     private BooleanExpression nameEq(String name) {
-        return name == null ? null : clubMember.name.eq(name);
+        return name == null ? null : clubMember.name.contains(name);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ariari.ariari.test;
 
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
+import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
@@ -32,7 +33,7 @@ public class AuthTestController {
     @Operation(summary = "테스트용 토큰 획득 기능", description = "parameter(nickname) -> m1, m2, m3, ..., m6")
     @GetMapping("/token")
     public JwtTokenRes getTokenForTest(@RequestParam String nickname) {
-        Member member = memberRepository.findByNickName(nickname).orElseThrow(NoSuchElementException::new);
+        Member member = memberRepository.findByNickName(nickname).orElseThrow(NotFoundEntityException::new);
         String accessToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), JwtManager.TokenType.ACCESS_TOKEN);
         String refreshToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), JwtManager.TokenType.REFRESH_TOKEN);
 

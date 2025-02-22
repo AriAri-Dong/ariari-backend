@@ -1,5 +1,7 @@
 package com.ariari.ariari.commons.auth.oauth;
 
+import com.ariari.ariari.domain.member.Member;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @Component
 public class KakaoAuthManager {
 
@@ -29,6 +32,12 @@ public class KakaoAuthManager {
 
     @Value("${kakao.kapi-uri}")
     private String KAKAO_KAPI_URI;
+
+    @Value("${kakao.client.admin}")
+    private String KAKAO_ADMIN_KEY;
+
+    @Value("${kakao.unlink-uri}")
+    private String KAKAO_UNLINK_URI;
 
     public String getKakaoToken(String code) {
         if (code == null) {
@@ -97,6 +106,37 @@ public class KakaoAuthManager {
 
         String kakaoId = String.valueOf(jsonObject.get("id"));
         return Long.valueOf(kakaoId);
+    }
+
+    public void unregister(Member reqMember) {
+        HttpHeaders requestHeader = new HttpHeaders();
+        requestHeader.add("Authorization", "KakaoAK " + KAKAO_ADMIN_KEY);
+        requestHeader.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
+        requestBody.add("target_id_type" , "user_id");
+        requestBody.add("target_id"      , reqMember.getKakaoId().toString());
+
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(requestBody, requestHeader);
+        ResponseEntity<String> response = new RestTemplate().exchange(
+                KAKAO_UNLINK_URI,
+                HttpMethod.POST,
+                httpEntity,
+                String.class
+        );
+
+        String responseBody = response.getBody();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject;
+        try {
+            jsonObject = (JSONObject) jsonParser.parse(responseBody);
+        } catch (Exception e) {
+            throw new RuntimeException("파싱하다가 에러남 ㅠ");
+        }
+
+        String kakaoId = String.valueOf(jsonObject.get("id"));
+        log.info("unregister : {}", kakaoId);
     }
 
 }
