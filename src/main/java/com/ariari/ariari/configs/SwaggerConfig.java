@@ -1,15 +1,25 @@
 package com.ariari.ariari.configs;
 
+import io.swagger.v3.oas.models.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class SwaggerConfig {
+
+    @Value("${server-secret.host}")
+    private String SERVER_HOST;
+
+    @Value("${server-secret.port}")
+    private String SERVER_PORT;
 
     @Bean
     public OpenAPI openAPI() {
@@ -22,6 +32,10 @@ public class SwaggerConfig {
                         )
                 )
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
+    }
+
+    private String getServerUrl() {
+        return SERVER_HOST + ":" + SERVER_PORT;
     }
 
     @Bean

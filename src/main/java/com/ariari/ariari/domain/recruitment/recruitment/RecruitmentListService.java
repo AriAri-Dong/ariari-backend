@@ -73,7 +73,11 @@ public class RecruitmentListService {
     }
 
     public RecruitmentListRes findRecruitmentListInClub(Long reqMemberId, Long clubId) {
-        Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NoSchoolAuthException::new);
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
+
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
         GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
