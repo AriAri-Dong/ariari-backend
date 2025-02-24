@@ -68,7 +68,8 @@ jobs:
               servers:
               - url: ${TEST_SERVER_URL}
           server:
-            port: 9797
+            port: 8080
+            forward-headers-strategy: native
           jwt:
             secret-key: ${JWT_SECRET_KEY}
             access-expiration-time: 36000000
