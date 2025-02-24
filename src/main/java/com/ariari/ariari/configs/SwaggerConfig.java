@@ -19,8 +19,7 @@ public class SwaggerConfig {
     @Value("${server-secret.port}")
     private String SERVER_PORT;
 
-    @Value("${spring.springdoc.server-url}")
-    private String TEST_SERVER_URL;
+    private final String TEST_SERVER_URL = "http://" + SERVER_HOST + ":" + SERVER_PORT + "/";
 
     @Bean
     public OpenAPI openAPI() {
