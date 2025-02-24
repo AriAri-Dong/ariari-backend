@@ -31,7 +31,7 @@ public class SwaggerConfig {
                                 .name("Authorization")
                         )
                 )
-                .addServersItem(new Server().url(TEST_SERVER_URL).description("API Server"))
+                .addServersItem(new Server().url(TEST_SERVER_URL))
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
     }
 
