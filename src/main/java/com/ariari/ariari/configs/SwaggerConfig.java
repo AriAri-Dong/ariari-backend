@@ -1,6 +1,8 @@
 package com.ariari.ariari.configs;
 
-import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -10,9 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
 @Configuration
+@OpenAPIDefinition(
+        info = @Info(title = "My API", version = "v1"),
+        servers = {
+                @Server(url = "${springdoc.server-url}", description = "API Server")
+        }
+)
 public class SwaggerConfig {
 
     @Value("${server-secret.host}")
