@@ -62,22 +62,7 @@ jobs:
               multipart:
                 maxFileSize: 10MB
                 maxRequestSize: 10MB
-          springdoc:
-            api-docs:
-              path: /v3/api-docs
-            swagger-ui:
-              path: /swagger-ui.html
-              tryItOutEnabled: true
-              configUrl: /v3/api-docs/swagger-config
-              urlsPrimaryName: "default"
-              operationsSorter: method
-              disable-swagger-default-url: false
-              use-root-path: true
-    
-            show-actuator: true
-            default-consumes-media-type: application/json
-            default-produces-media-type: application/json
-            server-url: ${SERVER_TEST_URL}
+          
           server:
             port: 8080
             forward-headers-strategy: native
