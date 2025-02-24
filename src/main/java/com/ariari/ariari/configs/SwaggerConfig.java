@@ -4,7 +4,6 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +30,6 @@ public class SwaggerConfig {
                                 .name("Authorization")
                         )
                 )
-                .addServersItem(new Server().url(TEST_SERVER_URL))
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
     }
 
