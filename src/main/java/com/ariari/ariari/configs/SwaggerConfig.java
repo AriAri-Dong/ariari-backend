@@ -1,24 +1,16 @@
 package com.ariari.ariari.configs;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(
-        info = @Info(title = "My API", version = "v1"),
-        servers = {
-                @Server(url = "${springdoc.server-url}", description = "API Server")
-        }
-)
 public class SwaggerConfig {
 
     @Value("${server-secret.host}")
@@ -26,6 +18,9 @@ public class SwaggerConfig {
 
     @Value("${server-secret.port}")
     private String SERVER_PORT;
+
+    @Value("${spring.springdoc.server-url}")
+    private String TEST_SERVER_URL;
 
     @Bean
     public OpenAPI openAPI() {
@@ -37,6 +32,7 @@ public class SwaggerConfig {
                                 .name("Authorization")
                         )
                 )
+                .addServersItem(new Server().url(TEST_SERVER_URL).description("API Server"))
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
     }
 
