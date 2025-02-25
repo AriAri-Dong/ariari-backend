@@ -198,4 +198,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi memberReport() {
+        return GroupedOpenApi.builder()
+                .group("21. 회원 신고 API")
+                .packagesToScan("com.ariari.ariari.domain.member.report")
+                .build();
+    }
+
 }
