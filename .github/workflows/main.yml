@@ -64,8 +64,8 @@ jobs:
                 maxRequestSize: 10MB
           
           server:
-            port: 8080
-            forward-headers-strategy: native
+            port: 9797
+
           jwt:
             secret-key: ${JWT_SECRET_KEY}
             access-expiration-time: 36000000
