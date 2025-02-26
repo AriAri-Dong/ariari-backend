@@ -169,8 +169,9 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
         return recruitment.club.school.isNull();
     }
 
-    private BooleanExpression isActivated() {
-        return recruitment.isActivated.eq(true)
+    private BooleanExpression isActivated() { // is recruiting
+        return recruitment.isEarlyClosed.eq(false)
+                .and(recruitment.startDateTime.before(LocalDateTime.now()))
                 .and(recruitment.endDateTime.after(LocalDateTime.now()));
     }
 

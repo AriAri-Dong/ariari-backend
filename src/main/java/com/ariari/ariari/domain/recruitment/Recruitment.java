@@ -13,6 +13,7 @@ import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.image.RecruitmentImage;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.RecruitmentStatusType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,7 +50,7 @@ public class Recruitment extends LogicalDeleteEntity implements ViewsContent {
     private ProcedureType procedureType;
 
     @Setter
-    private Boolean isActivated = Boolean.TRUE;
+    private Boolean isEarlyClosed = Boolean.TRUE; // 조기 종료 여부
 
     private Integer limits;
     private Long views = 0L;
@@ -112,7 +113,17 @@ public class Recruitment extends LogicalDeleteEntity implements ViewsContent {
     }
 
     public boolean isRecruiting() {
-        return isActivated && startDateTime.isBefore(LocalDateTime.now()) && LocalDateTime.now().isBefore(endDateTime);
+        return isEarlyClosed && startDateTime.isBefore(LocalDateTime.now()) && LocalDateTime.now().isBefore(endDateTime);
+    }
+
+    public RecruitmentStatusType getRecruitmentStatusType() {
+        if (isRecruiting()) {
+            return RecruitmentStatusType.OPEN;
+        } else if (isEarlyClosed.equals(Boolean.FALSE) && LocalDateTime.now().isBefore(startDateTime)) {
+            return RecruitmentStatusType.SCHEDULED;
+        } else {
+            return RecruitmentStatusType.CLOSED;
+        }
     }
 
 }
