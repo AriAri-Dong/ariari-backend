@@ -62,13 +62,10 @@ jobs:
               multipart:
                 maxFileSize: 10MB
                 maxRequestSize: 10MB
-          springdoc:
-            swagger-ui:
-              disable-swagger-default-url: true
-              servers:
-              - url: ${TEST_SERVER_URL}
+          
           server:
-            port: 8080
+            port: 9797
+
           jwt:
             secret-key: ${JWT_SECRET_KEY}
             access-expiration-time: 36000000
@@ -117,6 +114,7 @@ jobs:
               
           EOT
         env:
+          SERVER_TEST_URL: ${{secrets.SERVER_TEST_URL}}
           TEST_SERVER_URL: ${{secrets.TEST_SERVER_URL}}
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           SERVER_PORT: ${{secrets.SERVER_PORT}}

@@ -112,7 +112,7 @@ public class RecruitmentService {
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        recruitment.setIsActivated(Boolean.FALSE);
+        recruitment.setIsEarlyClosed(Boolean.FALSE);
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.RecruitmentStatusType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -48,8 +49,8 @@ public class RecruitmentData {
     @Schema(description = "모집이 속한 동아리 id", example = "673012345142938986")
     private Long clubId;
 
-    @Schema(description = "모집 조기종료 여부", example = "false")
-    private Boolean isActivated;
+    @Schema(description = "모집 상태 (예정, 모집중, 모집 마감)", example = "OPEN")
+    private RecruitmentStatusType recruitmentStatusType;
     @Schema(description = "내가 북마크한 모집인지 여부", example = "true")
     private Boolean isMyBookmark;
 
@@ -65,7 +66,7 @@ public class RecruitmentData {
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
                 recruitment.getClub().getId(),
-                recruitment.getIsActivated(),
+                recruitment.getRecruitmentStatusType(),
                 getMyBookmarkRecruitments(reqMember).contains(recruitment)
         );
     }
@@ -92,7 +93,7 @@ public class RecruitmentData {
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
                 recruitment.getClub().getId(),
-                recruitment.getIsActivated(),
+                recruitment.getRecruitmentStatusType(),
                 myBookmarkRecruitments.contains(recruitment)
         );
     }
