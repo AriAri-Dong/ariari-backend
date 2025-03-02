@@ -201,8 +201,16 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi memberReport() {
         return GroupedOpenApi.builder()
-                .group("21. 회원 신고 API")
-                .packagesToScan("com.ariari.ariari.domain.member.report")
+                .group("21. 신고 API")
+                .packagesToScan("com.ariari.ariari.domain.member.report"
+                ,"com.ariari.ariari.domain.club.activity.report"
+                ,"com.ariari.ariari.domain.club.passreview.report"
+                ,"com.ariari.ariari.domain.club.report"
+                ,"com.ariari.ariari.domain.club.activity.comment.report"
+                ,"com.ariari.ariari.domain.club.review.report"
+                ,"com.ariari.ariari.domain.club.question.report"
+                ,"com.ariari.ariari.domain.recruitment.apply.report"
+                ,"com.ariari.ariari.domain.recruitment.report")
                 .build();
     }
 

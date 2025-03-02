@@ -14,9 +14,15 @@ import lombok.experimental.SuperBuilder;
 @Setter
 public class MemberReport extends Report {
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reported_member_id")
+    private Member reportedMember;
+
+
     @Builder
     public MemberReport(ReportType reportType, String body, Member reporter, Member reportedMember){
-        super(reportType, body, reporter, reportedMember);
+        super(reportType, body, reporter);
+        this.reportedMember = reportedMember;
     }
 
 }
