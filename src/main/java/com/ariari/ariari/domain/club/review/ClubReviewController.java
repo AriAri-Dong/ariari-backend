@@ -55,14 +55,6 @@ public class ClubReviewController {
         return clubReviewService.searchClubReviewTag();
     }
 
-    @PostMapping("/access/{clubReviewId}")
-    @Operation(summary = "활동후기 접근 권한 생성", description = "활동후기 접근 권한 생성")
-    public void access_club_review(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                 @PathVariable(name = "clubReviewId") Long clubReviewId){
-        Long reqMemberId = getMemberId(userDetails, false);
-        clubReviewService.accessClubReview(reqMemberId, clubReviewId);
-    }
-
     @PostMapping("/{clubId}")
     @Operation(summary = "활동후기 작성하기", description = "활동후기 작성하기")
     public void save_club_review(@AuthenticationPrincipal CustomUserDetails userDetails,

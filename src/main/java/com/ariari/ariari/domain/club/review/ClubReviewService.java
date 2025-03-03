@@ -5,12 +5,10 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.review.access.ClubReviewAccess;
 import com.ariari.ariari.domain.club.review.dto.ClubReviewData;
 import com.ariari.ariari.domain.club.review.dto.TagData;
 import com.ariari.ariari.domain.club.review.dto.req.ClubReviewSaveReq;
 import com.ariari.ariari.domain.club.review.enums.IconType;
-import com.ariari.ariari.domain.club.review.repository.ClubReviewAccessRepository;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewTagRepository;
 import com.ariari.ariari.domain.club.review.repository.TagRepository;
@@ -34,7 +32,6 @@ import java.util.stream.Collectors;
 public class ClubReviewService {
     private final ClubReviewRepository clubReviewRepository;
     private final MemberRepository memberRepository;
-    private final ClubReviewAccessRepository clubReviewAccessRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final TagRepository tagRepository;
     private final ClubReviewTagRepository clubReviewTagRepository;
@@ -43,17 +40,15 @@ public class ClubReviewService {
     // 활동후기 목록 조회
     public List<ClubReviewData> searchClubReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        Page<ClubReview> clubReviews = clubReviewRepository.findByClubMember_Club(club, pageable);
+        Page<ClubReview> clubReviews = clubReviewRepository.findByClub(club, pageable);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        return ClubReviewData.fromEntities(clubReviews, member);
+        return ClubReviewData.fromEntities(clubReviews);
     }
 
     // 활동후기 상세 조회
     public ClubReviewData findClubReviewDetail(Long reqMemberId, Long clubReviewId){
         ClubReview clubReview = clubReviewRepository.findById(clubReviewId).orElseThrow(NotFoundEntityException::new);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        ClubReviewAccess clubReviewAccess = clubReviewAccessRepository.findByClubReviewAndMember(clubReview, member)
-                .orElseThrow(NotFoundEntityException::new); // 권한 없음
         List<ClubReviewTag> clubReviewTags = clubReviewTagRepository.findByClubReview(clubReview);
         List<Tag> tags = clubReviewTags.stream().map(ClubReviewTag::getTag).toList();
         List<TagData> tagDataList = TagData.toTagDataList(tags);
@@ -88,25 +83,15 @@ public class ClubReviewService {
         return TagData.toTagDataList(tags);
     }
 
-    // 활동후기 접근 권한 생성
-    public void accessClubReview(Long reqMemberId, Long clubReviewId){
-        ClubReview clubReview = clubReviewRepository.findById(clubReviewId).orElseThrow(NotFoundEntityException::new);
-        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        if (clubReviewAccessRepository.existsByClubReviewAndMember(clubReview, member)){
-            throw new RuntimeException(); // 이미 권한 있는 경우 exception추가해야함
-        }
-        ClubReviewAccess clubReviewAccess = new ClubReviewAccess(member, clubReview);
-        clubReviewAccessRepository.save(clubReviewAccess);
-    }
-
     // 활동후기 생성
     public void saveClubReview(Long reqMemberId, ClubReviewSaveReq clubReviewSaveReq, Long clubId){
-        ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, reqMemberId).orElseThrow(NotFoundEntityException::new);
-        if(clubReviewRepository.existsByClubMember(clubMember)){
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        if(clubReviewRepository.existsByClubAndMember(club, member)){
             throw new RuntimeException(); // 중복 작성 exception 추가해야함
         }
         List<Tag> tags = tagRepository.findByIconIn(clubReviewSaveReq.getIcons()).orElseThrow(NotFoundEntityException::new);
-        ClubReview clubReview = clubReviewSaveReq.toEntity(clubMember, tags);
+        ClubReview clubReview = clubReviewSaveReq.toEntity(clubReviewSaveReq, member, club, tags);
         clubReviewRepository.save(clubReview);
     }
 }

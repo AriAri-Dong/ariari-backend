@@ -4,8 +4,6 @@ import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
-import com.ariari.ariari.domain.club.passreview.access.PassReviewAccess;
-import com.ariari.ariari.domain.club.review.access.ClubReviewAccess;
 import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.member.block.Block;
 import com.ariari.ariari.domain.member.enums.ProfileType;
@@ -49,8 +47,6 @@ public class Member extends LogicalDeleteEntity {
     @Column(length = 20)
     private ProfileType profileType;
 
-    private Integer point;
-
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
@@ -79,13 +75,6 @@ public class Member extends LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Apply> applys = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<PassReviewAccess> passReviewAccessList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubReviewAccess> clubReviewAccessList = new ArrayList<>();
-
 
     public static Member createMember(Long kakaoId, String nickname) {
         Member member = new Member(kakaoId, nickname);
