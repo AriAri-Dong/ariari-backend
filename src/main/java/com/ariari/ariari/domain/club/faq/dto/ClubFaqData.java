@@ -28,16 +28,13 @@ public class ClubFaqData {
     @Schema(description = "동아리 FAQ 색상 타입", example = "C_TOKEN_1")
     private ClubFaqColorType clubFaqColorType;
 
-    private ClubMemberData clubMemberData;
-
     public static ClubFaqData fromEntity(ClubFaq clubFaq) {
         return new ClubFaqData(
                 clubFaq.getId(),
                 clubFaq.getTitle(),
                 clubFaq.getBody(),
                 clubFaq.getClubFaqClassification(),
-                clubFaq.getClubFaqColorType(),
-                ClubMemberData.fromEntity(clubFaq.getClubMember())
+                clubFaq.getClubFaqColorType()
         );
     }
 

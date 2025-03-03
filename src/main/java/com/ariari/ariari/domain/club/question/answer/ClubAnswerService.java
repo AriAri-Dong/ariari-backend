@@ -37,7 +37,7 @@ public class ClubAnswerService {
             throw new ExistingClubAnswerException();
         }
 
-        ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion, reqClubMember);
+        ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion);
         clubAnswerRepository.save(clubAnswer);
     }
 

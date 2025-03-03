@@ -7,6 +7,7 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.review.ClubReview;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class ClubReviewReport extends Report {
 

@@ -30,14 +30,11 @@ public class ClubAnswer extends LogicalDeleteEntity {
     @JoinColumn(name = "club_question_id")
     private ClubQuestion clubQuestion;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_member_id")
-    private ClubMember clubMember;
 
-    public ClubAnswer(String body, ClubQuestion clubQuestion, ClubMember clubMember) {
+
+    public ClubAnswer(String body, ClubQuestion clubQuestion ) {
         this.body = body;
         this.clubQuestion = clubQuestion;
-        this.clubMember = clubMember;
     }
 
 }

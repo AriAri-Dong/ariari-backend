@@ -18,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -62,5 +64,17 @@ public class ClubQuestionService {
 
         clubQuestionRepository.delete(clubQuestion);
     }
+
+    @Transactional
+    public void changeStateByMember(Long reqMemberId){
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        List<ClubQuestion> clubQuestions = clubQuestionRepository.findByMember(reqMember);
+
+        clubQuestions.stream().forEach( question  -> {
+            question.setMember(null);
+        });
+
+    }
+
 
 }

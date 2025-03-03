@@ -36,12 +36,17 @@ public class ClubQuestionData {
             clubAnswerData = ClubAnswerData.fromEntity(clubQuestion.getClubAnswer());
         }
 
+        MemberData memberData = null;
+        if( clubQuestion.getMember() != null){
+            memberData= MemberData.fromEntity(clubQuestion.getMember());
+        }
+
         return new ClubQuestionData(
                 clubQuestion.getId(),
                 clubQuestion.getTitle(),
                 clubQuestion.getBody(),
                 clubQuestion.getCreatedDateTime(),
-                MemberData.fromEntity(clubQuestion.getMember()),
+                memberData,
                 clubAnswerData
         );
     }

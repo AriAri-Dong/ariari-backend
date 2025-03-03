@@ -20,14 +20,14 @@ public class ClubFaqSaveReq {
     @Schema(description = "동아리 FAQ 색상 타입", example = "C_TOKEN_1")
     private ClubFaqColorType clubFaqColorType;
 
-    public ClubFaq toEntity(Club club, ClubMember clubMember) {
+    public ClubFaq toEntity(Club club) {
         return new ClubFaq(
                 title,
                 body,
                 clubFaqClassification,
                 clubFaqColorType,
-                club,
-                clubMember
+                club
+
         );
     }
 

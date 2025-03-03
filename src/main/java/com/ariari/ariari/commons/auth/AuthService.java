@@ -7,6 +7,8 @@ import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
+import com.ariari.ariari.domain.club.question.ClubQuestion;
+import com.ariari.ariari.domain.club.question.ClubQuestionService;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class AuthService {
     private final JwtControlManager jwtControlManager;
     private final NicknameCreator nicknameCreator;
     private final KakaoAuthManager kakaoAuthManager;
+    private final ClubQuestionService clubQuestionService;
 
     public JwtTokenRes login(Long kakaoId) {
         Optional<Member> memberOptional = memberRepository.findByKakaoId(kakaoId);
@@ -63,7 +66,7 @@ public class AuthService {
 
     public void unregister(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-
+        clubQuestionService.changeStateByMember(reqMemberId);
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);
     }

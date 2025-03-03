@@ -13,11 +13,10 @@ public class ClubAnswerSaveReq {
     @Schema(description = "동아리 응답 내용", example = "아리아리에 제출해야 하는 서류는 포트폴리오와 Github URI입니다.")
     private String body;
 
-    public ClubAnswer toEntity(ClubQuestion clubQuestion, ClubMember clubMember) {
+    public ClubAnswer toEntity(ClubQuestion clubQuestion ) {
         return new ClubAnswer(
                 body,
-                clubQuestion,
-                clubMember
+                clubQuestion
         );
     }
 
