@@ -31,7 +31,6 @@ public class ClubAnswer extends LogicalDeleteEntity {
     private ClubQuestion clubQuestion;
 
 
-
     public ClubAnswer(String body, ClubQuestion clubQuestion ) {
         this.body = body;
         this.clubQuestion = clubQuestion;

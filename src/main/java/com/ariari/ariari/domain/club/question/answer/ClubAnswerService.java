@@ -11,8 +11,13 @@ import com.ariari.ariari.domain.club.question.answer.dto.req.ClubAnswerSaveReq;
 import com.ariari.ariari.domain.club.question.answer.exception.ExistingClubAnswerException;
 import com.ariari.ariari.domain.club.question.answer.exception.NoClubAnswerException;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
+import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
+import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClubAnswerService {
 
     private final MemberRepository memberRepository;
+    private final ApplicationEventPublisher eventPublisher;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
     private final ClubAnswerRepository clubAnswerRepository;
@@ -37,8 +43,18 @@ public class ClubAnswerService {
             throw new ExistingClubAnswerException();
         }
 
+//        MemberAlarmEvent memberAlarmEvent  = MemberAlarmEvent.builder()
+//                .title()
+//                .body()
+//                .extraBody()
+//                .uri()
+//                .memberAlarmType()
+//                .member()
+//                .build();
+
         ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion);
         clubAnswerRepository.save(clubAnswer);
+//        eventPublisher.publishEvent(memberAlarmEvent);
     }
 
 

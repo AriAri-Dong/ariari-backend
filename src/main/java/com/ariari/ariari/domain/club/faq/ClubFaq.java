@@ -37,7 +37,6 @@ public class ClubFaq extends LogicalDeleteEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
-
     public ClubFaq(String title, String body, String clubFaqClassification, ClubFaqColorType clubFaqColorType, Club club ) {
         this.title = title;
         this.body = body;

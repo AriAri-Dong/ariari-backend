@@ -5,8 +5,10 @@ import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -41,5 +43,20 @@ public class MemberAlarm extends LogicalDeleteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+    @Builder
+    private MemberAlarm(Long id, String title, String body, String extraBody, MemberAlarmType memberAlarmType, String uri, Member member, Boolean isChecked) {
+        this.id = id;
+        this.title = title;
+        this.body = body;
+        this.extraBody = extraBody;
+        this.memberAlarmType = memberAlarmType;
+        this.uri = uri;
+        this.member = member;
+        this.isChecked = isChecked;  // 기본값 설정
+    }
+
+    public void MarkRead(){
+        this.isChecked = true;
+    }
 
 }
