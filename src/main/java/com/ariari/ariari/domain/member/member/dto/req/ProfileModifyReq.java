@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.member.dto.req;
+package com.ariari.ariari.domain.member.member.dto.req;
 
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.enums.ProfileType;

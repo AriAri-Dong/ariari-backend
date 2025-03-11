@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.club.question.dto;
 
 import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.answer.dto.ClubAnswerData;
-import com.ariari.ariari.domain.member.dto.MemberData;
+import com.ariari.ariari.domain.member.member.dto.MemberData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
