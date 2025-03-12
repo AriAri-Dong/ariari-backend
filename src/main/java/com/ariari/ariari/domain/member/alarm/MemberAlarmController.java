@@ -27,10 +27,10 @@ public class MemberAlarmController {
     }
 
     @Operation(summary = "회원 알림 읽음 표시", description = "회원이 알림을 읽으면 isChecked true 변경")
-    @PatchMapping("/alarm/{alarmId}/read")
-    public void readAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long alarmId){
+    @PatchMapping("/alarm/{memberAlarmId}/read")
+    public void readAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long memberAlarmId){
         Long memberId = CustomUserDetails.getMemberId(userDetails, false);
-        memberAlarmService.readAlarm(memberId, alarmId);
+        memberAlarmService.readAlarm(memberId, memberAlarmId);
     }
 
     @Operation(summary = "회원 알림 삭제")

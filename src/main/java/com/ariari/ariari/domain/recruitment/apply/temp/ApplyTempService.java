@@ -1,11 +1,15 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
+import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
@@ -32,6 +36,8 @@ public class ApplyTempService {
     private final RecruitmentRepository recruitmentRepository;
     private final ApplyTempRepository applyTempRepository;
     private final FileManager fileManager;
+    private final MemberAlarmManger memberAlarmManger;
+
 
     public ApplyTempDetailRes findApplyTempDetail(Long reqMemberId, Long applyTempId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -63,8 +69,8 @@ public class ApplyTempService {
             String fileUri = fileManager.saveFile(file, "applyTemp");
             applyTemp.setFileUri(fileUri);
         }
-
         applyTempRepository.save(applyTemp);
+        memberAlarmManger.sendApplyTempEvent(applyTemp);
     }
 
     @Transactional
@@ -107,6 +113,8 @@ public class ApplyTempService {
         }
 
         applyTempRepository.delete(applyTemp);
+        memberAlarmManger.deleteApplyTemp(applyTemp);
+
     }
 
     public ApplyTempListRes findMyApplyTemps(Long reqMemberId, Pageable pageable) {

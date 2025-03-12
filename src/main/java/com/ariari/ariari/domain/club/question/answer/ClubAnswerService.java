@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.question.answer;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
@@ -11,9 +12,6 @@ import com.ariari.ariari.domain.club.question.answer.dto.req.ClubAnswerSaveReq;
 import com.ariari.ariari.domain.club.question.answer.exception.ExistingClubAnswerException;
 import com.ariari.ariari.domain.club.question.answer.exception.NoClubAnswerException;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
-import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
-import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClubAnswerService {
 
     private final MemberRepository memberRepository;
-    private final ApplicationEventPublisher eventPublisher;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
     private final ClubAnswerRepository clubAnswerRepository;
+    private final MemberAlarmManger memberAlarmManger;
 
     public void saveClubAnswer(Long reqMemberId, Long clubQuestionId, ClubAnswerSaveReq saveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -43,18 +41,11 @@ public class ClubAnswerService {
             throw new ExistingClubAnswerException();
         }
 
-//        MemberAlarmEvent memberAlarmEvent  = MemberAlarmEvent.builder()
-//                .title()
-//                .body()
-//                .extraBody()
-//                .uri()
-//                .memberAlarmType()
-//                .member()
-//                .build();
-
         ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion);
         clubAnswerRepository.save(clubAnswer);
-//        eventPublisher.publishEvent(memberAlarmEvent);
+
+        //  MemberAlarmEvent 통해 알림 생성
+        memberAlarmManger.sendClubAnswerAlarm(clubQuestion);
     }
 
 

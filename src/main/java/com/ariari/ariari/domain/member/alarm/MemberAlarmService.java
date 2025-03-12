@@ -9,6 +9,7 @@ import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -43,6 +44,7 @@ public class MemberAlarmService {
         return MemberAlarmListRes.from(memberAlarmDataList);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void saveAlarms(MemberAlarmEvent memberAlarmEvent){
         // Q&A 답변 알람 생성
@@ -52,6 +54,7 @@ public class MemberAlarmService {
                 .extraBody(memberAlarmEvent.getExtraBody())
                 .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
+                .uri(memberAlarmEvent.getUri())
                 .isChecked(false)
                 .build();
         // 알람 저장
