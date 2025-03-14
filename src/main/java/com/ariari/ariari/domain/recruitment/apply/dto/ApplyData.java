@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.dto;
 
-import com.ariari.ariari.domain.member.dto.MemberData;
+import com.ariari.ariari.domain.member.member.dto.MemberData;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
