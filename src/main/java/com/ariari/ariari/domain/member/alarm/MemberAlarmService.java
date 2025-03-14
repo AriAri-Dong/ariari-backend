@@ -2,21 +2,19 @@ package com.ariari.ariari.domain.member.alarm;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.alarm.dto.MemberAlarmData;
 import com.ariari.ariari.domain.member.alarm.dto.res.MemberAlarmListRes;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEventList;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
-import org.springframework.data.domain.Page;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +33,7 @@ public class MemberAlarmService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void saveAlarms(MemberAlarmEvent memberAlarmEvent){
+
         // 단일 이벤트 처리
         MemberAlarm memberAlarm = MemberAlarm.builder()
                 .title(memberAlarmEvent.getTitle())

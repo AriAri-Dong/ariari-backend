@@ -144,34 +144,12 @@ public class MemberAlarmManger {
     // 동아리 질문 답변시
     public void sendClubAnswerAlarm(Member member, Long clubId) {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
-                "test",
+                "작성하신 질문에 대한 답변이 등록되었습니다! 알림을 클릭해 확인해 보세요.",
                 "/clubs/" + clubId + "/club-questions/",
                 MemberAlarmType.CLUB,
                 member
         );
         sendSingle(memberAlarmEvent);
-    }
-
-    // 임시 지원서
-    public void sendApplyTempEvent(ApplyTemp applyTemp){
-        MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
-                "임시저장된 지원서 모집마감임박(D-1) 알림",
-                "/apply-temps/" + applyTemp.getId(),
-                MemberAlarmType.APPLY,
-                applyTemp.getMember()
-        );
-        sendSingle(memberAlarmEvent);
-    }
-
-    // 임시 지원서 삭제시
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void deleteApplyTemp(ApplyTemp applyTemp){
-        try {
-            MemberAlarm memberAlarm = memberAlarmRepository.findByUri("/apply-temps/" + applyTemp.getId()).orElseThrow(NotFoundEntityException::new);
-            memberAlarmRepository.delete(memberAlarm);
-        }catch (Exception e){
-            log.error("임시 지원서 알림 삭제 실패 : {}",e);
-        }
     }
 
     private void sendSingle(MemberAlarmEvent memberAlarmEvent){

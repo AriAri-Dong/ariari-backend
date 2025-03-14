@@ -77,7 +77,6 @@ public class ApplyTempService {
             applyTemp.setFileUri(fileUri);
         }
         applyTempRepository.save(applyTemp);
-        memberAlarmManger.sendApplyTempEvent(applyTemp);
     }
 
     @Transactional
@@ -120,8 +119,6 @@ public class ApplyTempService {
         }
 
         applyTempRepository.delete(applyTemp);
-        memberAlarmManger.deleteApplyTemp(applyTemp);
-
     }
 
     public ApplyTempListRes findMyApplyTemps(Long reqMemberId, Pageable pageable) {

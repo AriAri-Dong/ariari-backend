@@ -30,23 +30,23 @@ public class ClubAnswerService {
     private final ClubAnswerRepository clubAnswerRepository;
     private final MemberAlarmManger memberAlarmManger;
 
-    public void saveClubAnswer(Long reqMemberId, Long clubQuestionId, ClubAnswerSaveReq saveReq) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        ClubQuestion clubQuestion = clubQuestionRepository.findById(clubQuestionId).orElseThrow(NotFoundEntityException::new);
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubQuestion.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
+        public void saveClubAnswer(Long reqMemberId, Long clubQuestionId, ClubAnswerSaveReq saveReq) {
+            Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+            ClubQuestion clubQuestion = clubQuestionRepository.findById(clubQuestionId).orElseThrow(NotFoundEntityException::new);
+            ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(clubQuestion.getClub(), reqMember).orElseThrow(NotBelongInClubException::new);
 
-        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+            GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        if (clubAnswerRepository.findByClubQuestion(clubQuestion).isPresent()) {
-            throw new ExistingClubAnswerException();
+            if (clubAnswerRepository.findByClubQuestion(clubQuestion).isPresent()) {
+                throw new ExistingClubAnswerException();
+            }
+
+            ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion);
+            clubAnswerRepository.save(clubAnswer);
+
+            //  MemberAlarmEvent 통해 알림 생성
+            memberAlarmManger.sendClubAnswerAlarm(clubQuestion.getMember(), clubQuestion.getClub().getId());
         }
-
-        ClubAnswer clubAnswer = saveReq.toEntity(clubQuestion);
-        clubAnswerRepository.save(clubAnswer);
-
-        //  MemberAlarmEvent 통해 알림 생성
-        memberAlarmManger.sendClubAnswerAlarm(clubQuestion.getMember(), clubQuestion.getClub().getId());
-    }
 
 
     public void modifyClubAnswer(Long reqMemberId, Long clubQuestionId, ClubAnswerSaveReq modifyReq) {

@@ -23,7 +23,7 @@ public class MemberAlarm extends LogicalDeleteEntity {
     @Column(name = "member_alarm_id")
     private Long id;
 
-    @Column(length = 30)
+    @Column(length = 100)
     private String title;
 
     @Enumerated(EnumType.STRING)
