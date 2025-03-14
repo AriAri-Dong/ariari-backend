@@ -45,7 +45,7 @@ public class ClubAnswerService {
         clubAnswerRepository.save(clubAnswer);
 
         //  MemberAlarmEvent 통해 알림 생성
-        memberAlarmManger.sendClubAnswerAlarm(clubQuestion);
+        memberAlarmManger.sendClubAnswerAlarm(clubQuestion.getMember(), clubQuestion.getClub().getId());
     }
 
 

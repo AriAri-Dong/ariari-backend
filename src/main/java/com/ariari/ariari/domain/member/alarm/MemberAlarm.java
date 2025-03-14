@@ -26,12 +26,6 @@ public class MemberAlarm extends LogicalDeleteEntity {
     @Column(length = 30)
     private String title;
 
-    @Column(length = 200)
-    private String body;
-
-    @Column(length = 200)
-    private String extraBody;
-
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private MemberAlarmType memberAlarmType;
@@ -43,12 +37,11 @@ public class MemberAlarm extends LogicalDeleteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
     @Builder
-    private MemberAlarm(Long id, String title, String body, String extraBody, MemberAlarmType memberAlarmType, String uri, Member member, Boolean isChecked) {
+    private MemberAlarm(Long id, String title, MemberAlarmType memberAlarmType, String uri, Member member, Boolean isChecked) {
         this.id = id;
         this.title = title;
-        this.body = body;
-        this.extraBody = extraBody;
         this.memberAlarmType = memberAlarmType;
         this.uri = uri;
         this.member = member;

@@ -22,9 +22,16 @@ import com.ariari.ariari.domain.recruitment.apply.temp.exception.NoApplyTempAuth
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -122,6 +129,27 @@ public class ApplyTempService {
 
         Page<ApplyTemp> page = applyTempRepository.searchByMember(reqMember, pageable);
         return ApplyTempListRes.fromPage(page);
+    }
+
+    // 관심모집 마감임박(D-1) 알림
+    @Scheduled(cron ="0 0 0 * * ?")
+    @Transactional(readOnly = true)
+    public void sendApplyTempReminder(){
+        LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
+
+        List<ApplyTemp> applyTempList = applyTempRepository.findAllByWithinRecruitment(LocalDateTime.now(), endTime);
+        Map<Long, List<ApplyTemp>> groupByRecruitmentId = applyTempList.stream()
+                .collect(Collectors.groupingBy( applyTemp -> applyTemp.getRecruitment().getId()));
+
+        groupByRecruitmentId.forEach((id, applyTemps) ->{
+
+            if(applyTemps.isEmpty()){
+                return;
+            }
+
+            List<Member> memberList = applyTemps.stream().map(ApplyTemp::getMember).toList();
+            memberAlarmManger.sendApplyTempReminder(memberList);
+        });
     }
 
 }

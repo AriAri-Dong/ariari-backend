@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ClubBookmarkRepository extends JpaRepository<ClubBookmark, Long> {
@@ -17,5 +18,7 @@ public interface ClubBookmarkRepository extends JpaRepository<ClubBookmark, Long
     Boolean existsByMemberAndClub(Member member, Club club);
 
     Optional<ClubBookmark> findByMemberAndClub(Member member, Club club);
+
+    List<ClubBookmark> findAllByClub(Club club);
 
 }

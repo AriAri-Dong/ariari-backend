@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.member.alarm.dto.res.MemberAlarmListRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +22,10 @@ public class MemberAlarmController {
 
     @Operation(summary = "회원 알림 조회")
     @GetMapping("/alarm")
-    public MemberAlarmListRes getAlarms(@AuthenticationPrincipal CustomUserDetails userDetails){
+    public MemberAlarmListRes getAlarms(@AuthenticationPrincipal CustomUserDetails userDetails
+    , Pageable pageable){
         Long memberId = CustomUserDetails.getMemberId(userDetails, false);
-        return memberAlarmService.getAlarms(memberId);
+        return memberAlarmService.getAlarms(memberId, pageable);
     }
 
     @Operation(summary = "회원 알림 읽음 표시", description = "회원이 알림을 읽으면 isChecked true 변경")

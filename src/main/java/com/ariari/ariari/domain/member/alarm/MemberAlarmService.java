@@ -1,18 +1,20 @@
 package com.ariari.ariari.domain.member.alarm;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.alarm.dto.MemberAlarmData;
 import com.ariari.ariari.domain.member.alarm.dto.res.MemberAlarmListRes;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
+import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEventList;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
-
+import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,34 +26,18 @@ public class MemberAlarmService {
     private final MemberAlarmRepository memberAlarmRepository;
 
     @Transactional(readOnly = true)
-    public MemberAlarmListRes getAlarms(Long memberId) {
+    public MemberAlarmListRes getAlarms(Long memberId, Pageable pageable) {
         Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
-        List<MemberAlarm> memberAlarms = memberAlarmRepository.findAllByMember(reqMember);
-
-        List<MemberAlarmData> memberAlarmDataList = memberAlarms.stream()
-                .map( memberAlarm -> MemberAlarmData.builder()
-                        .id(memberAlarm.getId())
-                        .title(memberAlarm.getTitle())
-                        .body(memberAlarm.getBody())
-                        .extraBody(memberAlarm.getExtraBody())
-                        .memberAlarmType(memberAlarm.getMemberAlarmType())
-                        .uri(memberAlarm.getUri())
-                        .isChecked(memberAlarm.getIsChecked())
-                        .createdDateTime(memberAlarm.getCreatedDateTime())
-                        .build())
-                .collect(Collectors.toList());
-
-        return MemberAlarmListRes.from(memberAlarmDataList);
+        Page<MemberAlarm> memberAlarmsPage = memberAlarmRepository.findAllByMember(reqMember, pageable);
+        return MemberAlarmListRes.fromPage(memberAlarmsPage);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void saveAlarms(MemberAlarmEvent memberAlarmEvent){
-        // Q&A 답변 알람 생성
+        // 단일 이벤트 처리
         MemberAlarm memberAlarm = MemberAlarm.builder()
                 .title(memberAlarmEvent.getTitle())
-                .body(memberAlarmEvent.getBody())
-                .extraBody(memberAlarmEvent.getExtraBody())
                 .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
                 .uri(memberAlarmEvent.getUri())
@@ -59,6 +45,23 @@ public class MemberAlarmService {
                 .build();
         // 알람 저장
         memberAlarmRepository.save(memberAlarm);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @TransactionalEventListener
+    public void saveAlarms(MemberAlarmEventList memberAlarmListEvent){
+        // 다중 이벤트 처리
+        List<MemberAlarm> memberAlarms = memberAlarmListEvent.getMemberAlarmEventList().stream()
+                .map( memberAlarmEvent -> MemberAlarm.builder()
+                .title(memberAlarmEvent.getTitle())
+                .uri(memberAlarmEvent.getUri())
+                .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
+                .member(memberAlarmEvent.getMember())
+                        .build())
+                        .toList();
+        // 알림 저장
+        // 배치 처리 해야할까?
+        memberAlarmRepository.saveAll(memberAlarms);
     }
 
     @Transactional

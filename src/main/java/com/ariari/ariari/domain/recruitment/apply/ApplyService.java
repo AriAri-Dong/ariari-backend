@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
@@ -12,17 +13,22 @@ import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubExcepti
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import com.ariari.ariari.domain.recruitment.apply.exception.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,6 +40,8 @@ public class ApplyService {
     private final ClubMemberRepository clubMemberRepository;
     private final ApplyRepository applyRepository;
     private final FileManager fileManager;
+    private final MemberAlarmManger memberAlarmManger;
+    private final ApplyTempRepository applyTempRepository;
 
     public ApplyDetailRes findApplyDetail(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -99,6 +107,7 @@ public class ApplyService {
 
         ClubMember clubMember = ClubMember.createGeneral(apply);
         clubMemberRepository.save(clubMember);
+        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.APPROVE, apply.getMember(), club.getName());
     }
 
     @Transactional
@@ -115,6 +124,7 @@ public class ApplyService {
         }
 
         apply.setApplyStatusType(ApplyStatusType.REFUSAL);
+        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.REFUSAL, apply.getMember(), club.getName());
     }
 
     @Transactional
@@ -131,6 +141,7 @@ public class ApplyService {
         }
 
         apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
+        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName());
     }
 
     @Transactional
@@ -152,5 +163,7 @@ public class ApplyService {
 
         applyRepository.delete(apply);
     }
+
+
 
 }

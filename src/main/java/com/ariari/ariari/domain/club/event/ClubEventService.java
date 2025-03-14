@@ -1,8 +1,10 @@
 package com.ariari.ariari.domain.club.event;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
@@ -12,6 +14,7 @@ import com.ariari.ariari.domain.club.event.attendance.AttendanceRepository;
 import com.ariari.ariari.domain.club.event.dto.ClubEventListRes;
 import com.ariari.ariari.domain.club.event.dto.ClubEventSaveReq;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,6 +36,7 @@ public class ClubEventService {
     private final ClubMemberRepository clubMemberRepository;
     private final ClubEventRepository clubEventRepository;
     private final AttendanceRepository attendanceRepository;
+    private final MemberAlarmManger memberAlarmManger;
 
     @Transactional
     public void saveClubEvent(Long reqMemberId, Long clubId, ClubEventSaveReq saveReq) {
@@ -40,11 +44,16 @@ public class ClubEventService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
+
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         ClubEvent clubEvent = saveReq.toEntity(club);
 
         clubEventRepository.save(clubEvent);
+        List<Member> memberList = clubMemberRepository.findAllByClub(club).stream()
+                .map(ClubMember::getMember)
+                .toList();
+        memberAlarmManger.sendClubEventAlarm(memberList, clubId);
     }
 
     @Transactional

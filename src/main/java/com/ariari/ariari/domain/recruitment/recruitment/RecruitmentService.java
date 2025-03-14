@@ -1,10 +1,13 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
@@ -16,6 +19,7 @@ import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.applyform.exception.NoApplyFormException;
+import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentDetailRes;
@@ -28,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -44,6 +50,9 @@ public class RecruitmentService {
     private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
     private final FileManager fileManager;
+    private final MemberAlarmManger memberAlarmManger;
+    private final ClubBookmarkRepository clubBookmarkRepository;
+
 
     @Transactional
     public RecruitmentDetailRes findRecruitmentDetail(Long reqMemberId, Long recruitmentId, String clientIp) {
@@ -101,6 +110,12 @@ public class RecruitmentService {
         }
 
         recruitmentRepository.save(recruitment);
+        // 북마크 동아리 모집 시작시
+        List<Member> memberList = clubBookmarkRepository.findAllByClub(club).stream()
+                        .map(ClubBookmark::getMember)
+                        .toList();
+        memberAlarmManger.sendClubBookmarkRecruitmentAlarm(memberList, club.getName());
+
     }
 
     @Transactional
@@ -113,6 +128,14 @@ public class RecruitmentService {
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         recruitment.setIsEarlyClosed(Boolean.FALSE);
+        // 북마크 모집 마감시
+        List<RecruitmentBookmark> recruitmentBookmarkList = recruitmentBookmarkRepository.findAllByRecruitment(recruitment);
+        if(!recruitmentBookmarkList.isEmpty()) {
+            List<Member> memberList = recruitmentBookmarkList.stream()
+                    .map(RecruitmentBookmark::getMember)
+                    .toList();
+            memberAlarmManger.sendRecruitmentClosed(memberList, recruitment.getTitle());
+        }
     }
 
     @Transactional
