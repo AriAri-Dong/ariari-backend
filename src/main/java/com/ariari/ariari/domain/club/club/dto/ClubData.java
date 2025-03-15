@@ -9,6 +9,8 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.school.dto.SchoolData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.querydsl.core.types.ConstructorExpression;
+import com.querydsl.core.types.Projections;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +21,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.ariari.ariari.domain.club.QClub.club;
+
 @Data
-@AllArgsConstructor
 @Schema(description = "동아리 데이터")
 public class ClubData {
 
@@ -42,10 +45,12 @@ public class ClubData {
     @Schema(description = "동아리 참여 대상 타입", example = "OFFICE_WORKER")
     private ParticipantType participantType;
 
-    @Schema(description = "내가 북마크한 동아리인지 여부")
-    private Boolean isMyBookmark = false;
+    private SchoolData schoolData; // from School
+    @Schema(description = "동아리의 북마크 수")
+    private Integer bookmarkCount;
 
-    private SchoolData schoolData;
+    @Schema(description = "내가 북마크한 동아리인지 여부")
+    private Boolean isMyBookmark = false; // res 에서 직접 세팅
 
     public static ClubData fromEntity(Club club, Member reqMember) {
         Set<Club> myBookmarkClubs = getMyBookmarkClubs(reqMember);
@@ -77,8 +82,8 @@ public class ClubData {
                 club.getClubCategoryType(),
                 club.getClubRegionType(),
                 club.getParticipantType(),
-                myBookmarkClubs.contains(club),
-                schoolData
+                schoolData,
+                myBookmarkClubs.contains(club)
         );
     }
 
@@ -93,4 +98,54 @@ public class ClubData {
             return clubBookmarks.stream().map(ClubBookmark::getClub).collect(Collectors.toSet());
         }
     }
+
+    public ClubData(Long id, String name, String profileUri, String body, String bannerUri, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, SchoolData schoolData, Boolean isMyBookmark) {
+        this.id = id;
+        this.name = name;
+        this.profileUri = profileUri;
+        this.body = body;
+        this.bannerUri = bannerUri;
+        this.clubCategoryType = clubCategoryType;
+        this.clubRegionType = clubRegionType;
+        this.participantType = participantType;
+        this.schoolData = schoolData;
+        this.isMyBookmark = isMyBookmark;
+    }
+
+    /* for DTO Projection */
+
+    public ClubData(Long id, String name, String profileUri, String body, String bannerUri, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, SchoolData schoolData, Integer bookmarkCount) {
+        this.id = id;
+        this.name = name;
+        this.profileUri = profileUri;
+        this.body = body;
+        this.bannerUri = bannerUri;
+        this.clubCategoryType = clubCategoryType;
+        this.clubRegionType = clubRegionType;
+        this.participantType = participantType;
+        this.schoolData = schoolData;
+        this.bookmarkCount = bookmarkCount;
+
+        if (schoolData.getName() == null) {
+            this.schoolData = null;
+        }
+    }
+
+    public static ConstructorExpression<ClubData> projection() {
+        return Projections.constructor(
+                ClubData.class,
+                club.id,
+                club.name,
+                club.profileUri,
+                club.body,
+                club.bannerUri,
+                club.clubCategoryType,
+                club.clubRegionType,
+                club.participantType,
+                SchoolData.projection(),
+                club.clubBookmarks.size()
+        );
+    }
+
+
 }

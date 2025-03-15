@@ -1,10 +1,15 @@
 package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.bookmark.QClubBookmark;
+import com.ariari.ariari.domain.club.club.dto.ClubData;
+import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
+import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.school.QSchool;
 import com.ariari.ariari.domain.school.School;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -21,6 +26,9 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 import static com.ariari.ariari.domain.club.QClub.*;
+import static com.ariari.ariari.domain.club.bookmark.QClubBookmark.*;
+import static com.ariari.ariari.domain.school.QSchool.*;
+import static com.ariari.ariari.domain.school.QSchool.school;
 
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom {
@@ -30,11 +38,13 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
     private final int SIZE_OF_CLUB_RANKING_LIST = 9;
 
     @Override
-    public Page<Club> searchClubPage(School school, ClubSearchCondition condition, Pageable pageable) {
-        JPAQuery<Club> query = queryFactory
-                .selectFrom(club)
+    public Page<ClubData> searchClubPage(School schoolParam, ClubSearchCondition condition, Pageable pageable) {
+        JPAQuery<ClubData> query = queryFactory
+                .select(ClubData.projection())
+                .from(club)
+                .leftJoin(club.school, school).on(school.id.eq(club.school.id).or(club.school.isNull()))
                 .where(schoolIsNull()
-                                .or(schoolEq(school)),
+                                .or(schoolEq(schoolParam)),
                         categoryIn(condition.getClubCategoryTypes()),
                         regionIn(condition.getClubRegionTypes()),
                         participantIn(condition.getParticipantTypes()))
@@ -45,13 +55,14 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
             PathBuilder pathBuilder = new PathBuilder(club.getType(), club.getMetadata());
             query.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
-        List<Club> content = query.fetch();
+
+        List<ClubData> content = query.fetch();
 
         Long total = queryFactory
                 .select(club.count())
                 .from(club)
                 .where(schoolIsNull()
-                                .or(schoolEq(school)),
+                                .or(schoolEq(schoolParam)),
                         categoryIn(condition.getClubCategoryTypes()),
                         regionIn(condition.getClubRegionTypes()),
                         participantIn(condition.getParticipantTypes()))
@@ -61,9 +72,11 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
     }
 
     @Override
-    public Page<Club> searchExternalPage(ClubSearchCondition condition, Pageable pageable) {
-        JPAQuery<Club> query = queryFactory
-                .selectFrom(club)
+    public Page<ClubData> searchExternalPage(ClubSearchCondition condition, Pageable pageable) {
+        JPAQuery<ClubData> query = queryFactory
+                .select(ClubData.projection())
+                .from(club)
+                .leftJoin(club.school, school).on(school.isNull())
                 .where(schoolIsNull(),
                         categoryIn(condition.getClubCategoryTypes()),
                         regionIn(condition.getClubRegionTypes()),
@@ -75,7 +88,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
             PathBuilder pathBuilder = new PathBuilder(club.getType(), club.getMetadata());
             query.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
-        List<Club> content = query.fetch();
+        List<ClubData> content = query.fetch();
 
         Long total = queryFactory
                 .select(club.count())
@@ -90,9 +103,11 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
     }
 
     @Override
-    public Page<Club> searchInternalPage(School school, ClubSearchCondition condition, Pageable pageable) {
-        JPAQuery<Club> query = queryFactory
-                .selectFrom(club)
+    public Page<ClubData> searchInternalPage(School school, ClubSearchCondition condition, Pageable pageable) {
+        JPAQuery<ClubData> query = queryFactory
+                .select(ClubData.projection())
+                .from(club)
+                .join(club.school)
                 .where((schoolEq(school)),
                         categoryIn(condition.getClubCategoryTypes()),
                         regionIn(condition.getClubRegionTypes()),
@@ -104,7 +119,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
             PathBuilder pathBuilder = new PathBuilder(club.getType(), club.getMetadata());
             query.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
-        List<Club> content = query.fetch();
+        List<ClubData> content = query.fetch();
 
         Long total = queryFactory
                 .select(club.count())
@@ -119,12 +134,13 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
     }
 
     @Override
-    public Page<Club> findByNameContains(String query, School school, Pageable pageable) {
-
-        JPAQuery<Club> jpaQuery = queryFactory
-                .selectFrom(club)
+    public Page<ClubData> findByNameContains(String query, School schoolParam, Pageable pageable) {
+        JPAQuery<ClubData> jpaQuery = queryFactory
+                .select(ClubData.projection())
+                .from(club)
+                .leftJoin(club.school, school).on(school.id.eq(club.school.id).or(club.school.isNull()))
                 .where(schoolIsNull()
-                                .or(schoolEq(school)),
+                                .or(schoolEq(schoolParam)),
                         club.name.contains(query))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
@@ -133,14 +149,40 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
             PathBuilder pathBuilder = new PathBuilder(club.getType(), club.getMetadata());
             jpaQuery.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
         }
-        List<Club> content = jpaQuery.fetch();
+        List<ClubData> content = jpaQuery.fetch();
 
         Long total = queryFactory
                 .select(club.count())
                 .from(club)
                 .where(schoolIsNull()
-                                .or(schoolEq(school)),
+                                .or(schoolEq(schoolParam)),
                         club.name.contains(query))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public Page<ClubData> findMyBookmarkClubs(Member member, Pageable pageable) {
+        JPAQuery<ClubData> jpaQuery = queryFactory
+                .select(ClubData.projection())
+                .from(club)
+                .leftJoin(club.school, school).on(club.school.eq(school))
+                .join(club.clubBookmarks, clubBookmark).on(clubBookmark.member.eq(member))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        for (Sort.Order o : pageable.getSort()) {
+            PathBuilder pathBuilder = new PathBuilder(club.getType(), club.getMetadata());
+            jpaQuery.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+        }
+        List<ClubData> content = jpaQuery.fetch();
+
+        Long total = queryFactory
+                .select(club.count())
+                .from(club)
+                .leftJoin(club.school, school).on(club.school.eq(school))
+                .join(club.clubBookmarks, clubBookmark).on(clubBookmark.club.id.eq(club.id).and(clubBookmark.member.id.eq(member.getId())))
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);

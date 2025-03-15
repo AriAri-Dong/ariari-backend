@@ -5,6 +5,7 @@ import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
+import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
@@ -42,7 +43,7 @@ public class ClubListService {
             school = reqMember.getSchool();
         }
 
-        Page<Club> page = clubRepository.searchClubPage(school, condition, pageable);
+        Page<ClubData> page = clubRepository.searchClubPage(school, condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
@@ -52,7 +53,7 @@ public class ClubListService {
             reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         }
 
-        Page<Club> page = clubRepository.searchExternalPage(condition, pageable);
+        Page<ClubData> page = clubRepository.searchExternalPage(condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
@@ -60,7 +61,7 @@ public class ClubListService {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
         GlobalValidator.hasSchoolAuth(reqMember);
 
-        Page<Club> page = clubRepository.searchInternalPage(reqMember.getSchool(), condition, pageable);
+        Page<ClubData> page = clubRepository.searchInternalPage(reqMember.getSchool(), condition, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 
@@ -72,8 +73,9 @@ public class ClubListService {
 
     public ClubListRes findMyBookmarkClubsList(Long reqMemberId, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Page<ClubBookmark> page = clubBookmarkRepository.findByMember(reqMember, pageable);
-        return ClubListRes.fromClubBookmarkPage(page, reqMember);
+
+        Page<ClubData> page = clubRepository.findMyBookmarkClubs(reqMember, pageable);
+        return ClubListRes.fromPage(page, reqMember);
     }
 
     public ClubListRes findClubListByWord(Long reqMemberId, String query, Pageable pageable) {
@@ -86,7 +88,7 @@ public class ClubListService {
             school = reqMember.getSchool();
         }
 
-        Page<Club> page = clubRepository.findByNameContains(query, school, pageable);
+        Page<ClubData> page = clubRepository.findByNameContains(query, school, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 

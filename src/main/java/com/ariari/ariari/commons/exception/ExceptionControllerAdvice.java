@@ -51,6 +51,7 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DataAccessException.class)
     public ExceptionRes handleDataAccessException(HttpServletRequest request, DataAccessException e) {
+        log.error("db 에러 : ", e);
         return ExceptionRes.builder()
                 .code(400)
                 .message("DB 접근 중 에러가 발생했습니다.")
