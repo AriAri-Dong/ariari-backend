@@ -26,7 +26,7 @@ public class ExceptionControllerAdvice {
         log.error("exception !!", e);
         return ExceptionRes.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .message("알 수 없는 에러가 발생했습니다.")
+                .message(e.getMessage()) // 배포 후 수정 예정
                 .build();
     }
 
