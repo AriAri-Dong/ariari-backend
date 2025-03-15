@@ -57,7 +57,7 @@ public class ClubReviewService {
 
     // 클럽의 태그 통계 리스트
     public List<TagData> findTagStatisticsAtClub(Long clubId){
-        List<ClubReviewTag> clubReviewTags = clubReviewTagRepository.findByClubId(clubId);
+        List<ClubReviewTag> clubReviewTags = clubReviewTagRepository.findByClubReview_Club_Id(clubId);
         List<Tag> tags = tagRepository.findByIconType(IconType.CLUBREVIEW);
 
         // 갯수 해시맵
@@ -72,7 +72,7 @@ public class ClubReviewService {
         Map<Tag, Double> tagUsagePercentage = tags.stream()
                 .collect(Collectors.toMap(
                         tag -> tag,
-                        tag -> tagUsageCount.getOrDefault(tag, 0L) * 100.0 / totalTags
+                        tag -> Math.round((tagUsageCount.getOrDefault(tag, 0L) * 100.0 / totalTags) * 100) / 100.0
                 ));
         return TagData.toTagDataList(tags, tagUsagePercentage);
     }

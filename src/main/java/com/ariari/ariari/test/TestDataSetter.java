@@ -12,6 +12,13 @@ import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
+import com.ariari.ariari.domain.club.review.ClubReview;
+import com.ariari.ariari.domain.club.review.enums.Icon;
+import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
+import com.ariari.ariari.domain.club.review.repository.ClubReviewTagRepository;
+import com.ariari.ariari.domain.club.review.repository.TagRepository;
+import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
+import com.ariari.ariari.domain.club.review.tag.Tag;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
@@ -58,6 +65,9 @@ public class TestDataSetter {
     private final FinancialRecordRepository financialRecordRepository;
 
     private final EntityManager em;
+    private final ClubReviewRepository clubReviewRepository;
+    private final TagRepository tagRepository;
+    private final ClubReviewTagRepository clubReviewTagRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -270,6 +280,35 @@ public class TestDataSetter {
         FinancialRecord fr7 = new FinancialRecord(50000L, "body7", LocalDateTime.now().minusMinutes(2), c1);
         FinancialRecord fr8 = new FinancialRecord(50000L, "body8", LocalDateTime.now().minusMinutes(1), c1);
         financialRecordRepository.saveAll(List.of(fr1, fr2, fr3, fr4, fr5, fr6, fr7, fr8));
+
+        ClubReview cr1 = new ClubReview("아리아리 1기 후기", "아리아리 1기는 정말 즐거웠습니다.", c1, m1);
+        ClubReview cr2 = new ClubReview("아리아리 1기 후기2", "아리아리 1기는 정말 즐거웠습니다2.", c1, m2);
+        ClubReview cr3 = new ClubReview("아리아리 1기 후기3", "아리아리 1기는 정말 즐거웠습니다3.", c1, m3);
+        clubReviewRepository.saveAll(List.of(cr1, cr2, cr3));
+
+        Tag t1 = new Tag("취업준비에 도움이 돼요", Icon.CAREER_PREPARATION);
+        Tag t2 = new Tag("인간관계를 넓힐 수 있어요", Icon.NETWORKING);
+        Tag t3 = new Tag("관심분야를 탐구할 수 있어요", Icon.INTEREST_EXPLORATION);
+        Tag t4 = new Tag("자기 계발에 도움이 돼요", Icon.SELF_DEVELOPMENT);
+        Tag t5 = new Tag("전공 실력이나 성적을 높일 수 있어요", Icon.ACADEMIC_IMPROVEMENT);
+        Tag t6 = new Tag("건강증진에 도움이 돼요", Icon.HEALTH_ENHANCEMENT);
+        Tag t7 = new Tag("다양한 경험을 할 수 있어요", Icon.DIVERSE_EXPERIENCE);
+        tagRepository.saveAll(List.of(t1, t2, t3, t4, t5, t6, t7));
+
+        ClubReviewTag crt1 = new ClubReviewTag(t1, cr1);
+        ClubReviewTag crt2 = new ClubReviewTag(t2, cr1);
+        ClubReviewTag crt3 = new ClubReviewTag(t3, cr1);
+        ClubReviewTag crt4 = new ClubReviewTag(t4, cr1);
+        ClubReviewTag crt5 = new ClubReviewTag(t5, cr1);
+        ClubReviewTag crt6 = new ClubReviewTag(t6, cr1);
+        ClubReviewTag crt7 = new ClubReviewTag(t7, cr1);
+        ClubReviewTag crt8 = new ClubReviewTag(t1, cr2);
+        ClubReviewTag crt9 = new ClubReviewTag(t2, cr2);
+        ClubReviewTag crt10 = new ClubReviewTag(t7, cr2);
+        ClubReviewTag crt11 = new ClubReviewTag(t5, cr3);
+        clubReviewTagRepository.saveAll(List.of(crt1, crt2, crt3, crt4, crt5, crt6, crt7, crt8, crt9, crt10, crt11));
+
+
     }
 
 }

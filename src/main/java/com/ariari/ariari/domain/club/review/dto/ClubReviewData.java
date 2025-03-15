@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 public class ClubReviewData {
     @Schema(description = "활동후기 id", example = "id값")
-    private Long id;
+    private String id;
     @Schema(description = "활동후기 제목", example = "제목")
     private String title;
     @Schema(description = "활동후기 내용", example = "내용")
@@ -30,7 +30,7 @@ public class ClubReviewData {
     // 상세 조회용
     public static ClubReviewData toClubReviewData(ClubReview clubReview, List<TagData> tagDataList){
         return ClubReviewData.builder()
-                .id(clubReview.getId())
+                .id(Long.toString(clubReview.getId()))
                 .title(clubReview.getTitle())
                 .body(clubReview.getBody())
                 .createdDateTime(clubReview.getCreatedDateTime())
@@ -50,7 +50,7 @@ public class ClubReviewData {
     // 목록 조회용
     public static ClubReviewData fromEntity(ClubReview clubReview){
         return ClubReviewData.builder()
-                .id(clubReview.getId())
+                .id(Long.toString(clubReview.getId()))
                 .title(clubReview.getTitle())
                 .createdDateTime(clubReview.getCreatedDateTime())
                 .build();

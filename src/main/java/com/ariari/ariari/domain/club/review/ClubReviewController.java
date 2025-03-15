@@ -31,7 +31,7 @@ public class ClubReviewController {
         return clubReviewService.searchClubReviewPage(reqMemberId, clubId, pageable);
     }
 
-    @GetMapping("/{clubReviewId}")
+    @GetMapping("/detail/{clubReviewId}")
     @Operation(summary = "활동 후기 상세 조회", description = "활동 후기 상세 조회")
     public ClubReviewData find_club_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                   @PathVariable(name = "clubReviewId") Long clubReviewId){
