@@ -35,7 +35,7 @@ public class PassReviewController {
         return passReviewService.searchPassReviewPage(reqMemberId, clubId, pageable);
     }
 
-    @GetMapping("/{passReviewId}")
+    @GetMapping("/detail/{passReviewId}")
     @Operation(summary = "합격 후기 상세 조회", description = "합격 후기 상세 내용을 조회합니다.")
     public PassReviewData find_pass_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                 @PathVariable(name = "passReviewId") Long passReviewId){

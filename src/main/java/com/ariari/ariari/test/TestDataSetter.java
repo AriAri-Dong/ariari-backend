@@ -12,6 +12,13 @@ import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
+import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
+import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
+import com.ariari.ariari.domain.club.passreview.enums.NoteType;
+import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.domain.club.passreview.repository.PassReviewNoteRepository;
+import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.club.review.ClubReview;
 import com.ariari.ariari.domain.club.review.enums.Icon;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
@@ -68,6 +75,8 @@ public class TestDataSetter {
     private final ClubReviewRepository clubReviewRepository;
     private final TagRepository tagRepository;
     private final ClubReviewTagRepository clubReviewTagRepository;
+    private final PassReviewRepository passReviewRepository;
+    private final PassReviewNoteRepository passReviewNoteRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -308,7 +317,35 @@ public class TestDataSetter {
         ClubReviewTag crt11 = new ClubReviewTag(t5, cr3);
         clubReviewTagRepository.saveAll(List.of(crt1, crt2, crt3, crt4, crt5, crt6, crt7, crt8, crt9, crt10, crt11));
 
+        PassReview pr1 = new PassReview("아리아리 1기 합격후기입니다.", ProcedureType.INTERVIEW, InterviewType.OFFLINE, InterviewRatioType.MANY_VS_MANY,
+                1, c1, m1);
+        PassReview pr2 = new PassReview("아리아리 1기 합격후기입니다.2", ProcedureType.DOCUMENT, null, null,
+                null, c1, m2);
+        PassReview pr3 = new PassReview("아리아리 1기 합격후기입니다.3", ProcedureType.DOCUMENT, null, null,
+                null, c1, m3);
+        PassReview pr4 = new PassReview("아리아리 1기 합격후기입니다.4", ProcedureType.INTERVIEW, InterviewType.OFFLINE, InterviewRatioType.ONE_VS_MANY,
+                4, c2, m3);
+        PassReview pr5 = new PassReview("아리아리 1기 합격후기입니다.5", ProcedureType.INTERVIEW, InterviewType.CALL, InterviewRatioType.ONE_VS_ONE,
+                3, c3, m1);
+        passReviewRepository.saveAll(List.of(pr1, pr2, pr3, pr4, pr5));
 
+        PassReviewNote prn1 = new PassReviewNote(NoteType.DOCUMENT, "개발자로서의 목표는 무엇인가요?", "저는..");
+        prn1.setPassReview(pr1);
+        PassReviewNote prn2 = new PassReviewNote(NoteType.DOCUMENT, "개발자로서의 목표는 무엇인가요?2", "저는..2");
+        prn2.setPassReview(pr1);
+        PassReviewNote prn3 = new PassReviewNote(NoteType.DOCUMENT, "개발자로서의 목표는 무엇인가요?3", "저는..3");
+        prn3.setPassReview(pr1);
+        PassReviewNote prn4 = new PassReviewNote(NoteType.INTERVIEW, "개발자로서의 목표는 무엇인가요?4", "저는..4");
+        prn4.setPassReview(pr1);
+        PassReviewNote prn5 = new PassReviewNote(NoteType.DOCUMENT, "제목", "저는.......");
+        prn5.setPassReview(pr2);
+        PassReviewNote prn6 = new PassReviewNote(NoteType.DOCUMENT, "제목", "저는.......");
+        prn6.setPassReview(pr3);
+        PassReviewNote prn7 = new PassReviewNote(NoteType.DOCUMENT, "제목", "저는.......");
+        prn7.setPassReview(pr4);
+        PassReviewNote prn8 = new PassReviewNote(NoteType.DOCUMENT, "제목", "저는.......");
+        prn8.setPassReview(pr5);
+        passReviewNoteRepository.saveAll(List.of(prn1, prn2, prn3, prn4, prn5, prn6, prn7, prn8));
     }
 
 }
