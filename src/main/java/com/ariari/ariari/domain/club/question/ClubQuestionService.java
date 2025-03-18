@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.question;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
@@ -29,6 +30,7 @@ public class ClubQuestionService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
+    private final ClubAlarmManger clubAlarmManger;
 
     public ClubQnaListRes findClubQuestions(Long reqMemberId, Long clubId, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -47,6 +49,7 @@ public class ClubQuestionService {
 
         ClubQuestion clubQuestion = saveReq.toEntity(club, reqMember);
         clubQuestionRepository.save(clubQuestion);
+        clubAlarmManger.sendClubQA(club);
     }
 
     @Transactional

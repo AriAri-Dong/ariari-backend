@@ -134,7 +134,9 @@ public class ApplyTempService {
     public void sendApplyTempReminder(){
         LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
 
+        // D-1 임시지원서 찾기
         List<ApplyTemp> applyTempList = applyTempRepository.findAllByWithinRecruitment(LocalDateTime.now(), endTime);
+        // 모집별로 임시지원서 불류
         Map<Long, List<ApplyTemp>> groupByRecruitmentId = applyTempList.stream()
                 .collect(Collectors.groupingBy( applyTemp -> applyTemp.getRecruitment().getId()));
 

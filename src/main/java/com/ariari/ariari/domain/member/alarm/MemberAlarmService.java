@@ -56,6 +56,7 @@ public class MemberAlarmService {
                 .uri(memberAlarmEvent.getUri())
                 .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
+                .isChecked(false)
                         .build())
                         .toList();
         // 알림 저장

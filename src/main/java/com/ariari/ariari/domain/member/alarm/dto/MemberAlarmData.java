@@ -12,7 +12,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@Schema(description = "회원 알림 데이터 (memberData 는 작성한 회원 데이터입니다. clubAnswerData 는 질문에 대한 답변 데이터입니다.")
+@Schema(description = "회원 알림 데이터")
 public class MemberAlarmData {
 
     @JsonSerialize(using = ToStringSerializer.class)

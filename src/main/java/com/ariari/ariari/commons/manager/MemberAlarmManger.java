@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.manager;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.club.question.ClubQuestion;
@@ -27,8 +28,16 @@ import java.util.List;
 public class MemberAlarmManger {
 
     private final ApplicationEventPublisher eventPublisher;
-    private final MemberAlarmRepository memberAlarmRepository;
 
+    // 동아리 공지사항 추가
+    public void sendClubNotification(List<Member> memberList, String clubName, Long clubId) {
+        String title = String.format("%s에 공지사항이 추가 되었습니다.", clubName);
+        MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
+                ,"/clubs/"+clubId, MemberAlarmType.APPLY, memberList);
+        sendList(memberAlarmEventList);
+    }
+
+    // 북마크 모집마감임박
     public void sendRecruitmentBookMarkReminder(List<Member> memberList, String recruitmentName, Long recruitmentId) {
         String title = String.format("관심 등록하신 %s의 마감이 하루 남았습니다! 놓치지 말고 지금 확인해 보세요.", recruitmentName);
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
@@ -87,7 +96,7 @@ public class MemberAlarmManger {
         String title = String.format("안타깝게도 %s에서 더 이상 활동할 수 없게 되었습니다. 자세한 사항은 동아리 운영진에게 문의해 주세요.", clubName);
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 title,
-                "/clubs/"+clubId+"/lub-questions",
+                "/clubs/"+clubId+"/club-questions",
                 MemberAlarmType.CLUB,
                 member
         );
@@ -190,7 +199,7 @@ public class MemberAlarmManger {
             title = "관리자에 의해 동아리 활동 상태가 활동 중으로 변경되었습니다.";
         }else if(clubMemberStatusType == ClubMemberStatusType.WITHDRAWN) {
             title ="관리자에 의해 동아리 활동 상태가 종료로 변경되었습니다.";
-        }else{
+        }else if(clubMemberStatusType == ClubMemberStatusType.INACTIVE){
             title ="관리자에 의해 동아리 활동 상태가 휴식 중으로 변경되었습니다.";
         }
         return title;

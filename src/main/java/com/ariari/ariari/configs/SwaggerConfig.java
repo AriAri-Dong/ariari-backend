@@ -213,4 +213,21 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi memberAlarm() {
+        return GroupedOpenApi.builder()
+                .group("22. 멤버 알림 API")
+                .packagesToScan("com.ariari.ariari.domain.member.alarm")
+                .build();
+    }
+
+
+    @Bean
+    public GroupedOpenApi clubAlarm() {
+        return GroupedOpenApi.builder()
+                .group("23. 동아리 알림 API")
+                .packagesToScan("com.ariari.ariari.domain.club.alarm")
+                .build();
+    }
+
 }

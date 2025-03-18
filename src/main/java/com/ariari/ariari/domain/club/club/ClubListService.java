@@ -30,7 +30,7 @@ public class ClubListService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
-    private final ClubBookmarkRepository clubBookmarkRepository;
+
 
     public ClubListRes searchClubPage(Long reqMemberId, ClubSearchCondition condition, Pageable pageable) {
         Member reqMember = null;

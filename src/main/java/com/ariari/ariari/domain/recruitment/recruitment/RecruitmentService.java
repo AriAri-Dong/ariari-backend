@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
@@ -16,6 +17,7 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.applyform.exception.NoApplyFormException;
@@ -29,11 +31,16 @@ import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -51,6 +58,7 @@ public class RecruitmentService {
     private final ViewsManager viewsManager;
     private final FileManager fileManager;
     private final MemberAlarmManger memberAlarmManger;
+    private final ClubAlarmManger clubAlarmManger;
     private final ClubBookmarkRepository clubBookmarkRepository;
 
 
@@ -149,5 +157,47 @@ public class RecruitmentService {
 
         recruitmentRepository.delete(recruitment);
     }
+
+    // 관심모집 마감임박 (D-1) && (D-7) 알림
+    @Scheduled(cron ="0 0 0 * * ?")
+    @Transactional(readOnly = true)
+    public void sendApplyTempReminderD1(){
+
+        LocalDateTime d1StartTime = LocalDate.now().plusDays(1).atStartOfDay();
+        LocalDateTime d1EndTime = LocalDate.now().plusDays(2).atStartOfDay();  // D-1 범위 (현재+1일 ~ 현재+2일)
+
+        LocalDateTime d7StartTime = LocalDate.now().plusDays(7).atStartOfDay();
+        LocalDateTime d7EndTime = LocalDate.now().plusDays(8).atStartOfDay();  // D-7 범위 (현재+7일 ~ 현재+8일)
+
+
+        List<Recruitment> recruitmentList = recruitmentRepository.findAllByWithinRecruitment(LocalDateTime.now(), d1EndTime, d7EndTime);
+
+        // 모집별로 임시지원서 불류
+        Map<Integer, List<Recruitment>> groupByEndDateTime = recruitmentList.stream()
+                .collect(Collectors.groupingBy(r -> {
+                    // d-1 범위 체크
+                    if (r.getEndDateTime().isAfter(d1StartTime) && r.getEndDateTime().isBefore(d1EndTime)) {
+                        return 1;
+                    } else if (r.getEndDateTime().isAfter(d7StartTime) && r.getEndDateTime().isBefore(d7EndTime)) {
+                        return 7;
+                    } else {
+                        return -1;  // 이 외의 범위는 "Other"로 분류
+                    }
+                }));
+
+        groupByEndDateTime.forEach((endTime, recruitments ) -> {
+
+            if (endTime == 1 || endTime == 7) {
+                List<Club> clubList = recruitments.stream()
+                        .map(Recruitment::getClub)
+                        .collect(Collectors.toList());
+
+                clubAlarmManger.sendRecruitmentReminderD1AndD7(clubList, endTime);
+            }
+        });
+    }
+
+
+
 
 }

@@ -5,6 +5,7 @@ import com.ariari.ariari.commons.enums.ViewsContentType;
 import com.ariari.ariari.commons.manager.views.ViewsContent;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.domain.club.alarm.ClubAlarm;
 import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.faq.ClubFaq;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
@@ -67,6 +68,10 @@ public class Club extends LogicalDeleteEntity implements ViewsContent {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "school_id")
     private School school;
+
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    private List<ClubAlarm> clubAlarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
     private List<ClubMember> clubMembers = new ArrayList<>();

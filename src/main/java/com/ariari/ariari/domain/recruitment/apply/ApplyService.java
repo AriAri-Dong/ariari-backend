@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
@@ -29,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -41,7 +44,7 @@ public class ApplyService {
     private final ApplyRepository applyRepository;
     private final FileManager fileManager;
     private final MemberAlarmManger memberAlarmManger;
-    private final ApplyTempRepository applyTempRepository;
+    private final ClubAlarmManger clubAlarmManger;
 
     public ApplyDetailRes findApplyDetail(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -84,6 +87,7 @@ public class ApplyService {
         }
 
         applyRepository.save(apply);
+        clubAlarmManger.sendRecruitmentMember(reqMember, club, recruitment.getTitle());
     }
 
     @Transactional
@@ -163,6 +167,30 @@ public class ApplyService {
 
         applyRepository.delete(apply);
     }
+
+    // 매주 월요일 미처리된 지원서가 있을 시
+    @Scheduled(cron = "0 0 0 * * MON")
+    public void sendUncheckMember(){
+        List<Apply> applyList = applyRepository.findApplyByApplyStatusType_Pendency(ApplyStatusType.PENDENCY);
+
+        if(applyList.isEmpty()){
+            return;
+        }
+        // 모집별로 불류
+        Map<Long, List<Apply>> groupByRecruitmentId = applyList.stream()
+                .collect(Collectors.groupingBy(a -> a.getRecruitment().getId()));
+
+        groupByRecruitmentId.forEach((id, applys) -> {
+
+            String recruitmentTitle = applys.get(0).getRecruitment().getTitle();
+            List<Club> clubList = applys.stream().map( apply -> apply.getRecruitment().getClub()).toList();
+            clubAlarmManger.sendUncheckMember(clubList, recruitmentTitle);
+        });
+
+    }
+
+
+
 
 
 
