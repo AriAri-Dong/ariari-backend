@@ -57,7 +57,7 @@ public class SwaggerConfig {
     public GroupedOpenApi auth() {
         return GroupedOpenApi.builder()
                 .group("03. 인증(로그인) API")
-                .packagesToScan("com.ariari.ariari.commons.auth")
+                .packagesToScan("com.ariari.ariari.commons.auth", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -65,7 +65,7 @@ public class SwaggerConfig {
     public GroupedOpenApi member() {
         return GroupedOpenApi.builder()
                 .group("04. 회원 API")
-                .packagesToScan("com.ariari.ariari.domain.member.member")
+                .packagesToScan("com.ariari.ariari.domain.member.member", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -73,7 +73,7 @@ public class SwaggerConfig {
     public GroupedOpenApi school() {
         return GroupedOpenApi.builder()
                 .group("05. 학교 API")
-                .packagesToScan("com.ariari.ariari.domain.school")
+                .packagesToScan("com.ariari.ariari.domain.school", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -81,7 +81,7 @@ public class SwaggerConfig {
     public GroupedOpenApi schoolAuth() {
         return GroupedOpenApi.builder()
                 .group("06. 학교 인증 API")
-                .packagesToScan("com.ariari.ariari.domain.school.auth")
+                .packagesToScan("com.ariari.ariari.domain.school.auth", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -89,7 +89,7 @@ public class SwaggerConfig {
     public GroupedOpenApi club() {
         return GroupedOpenApi.builder()
                 .group("07. 동아리 API")
-                .packagesToScan("com.ariari.ariari.domain.club.club")
+                .packagesToScan("com.ariari.ariari.domain.club.club", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -97,7 +97,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubBookmark() {
         return GroupedOpenApi.builder()
                 .group("08. 동아리 북마크 API")
-                .packagesToScan("com.ariari.ariari.domain.club.bookmark")
+                .packagesToScan("com.ariari.ariari.domain.club.bookmark", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -105,7 +105,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubMember() {
         return GroupedOpenApi.builder()
                 .group("09. 동아리 회원 API")
-                .packagesToScan("com.ariari.ariari.domain.club.clubmember")
+                .packagesToScan("com.ariari.ariari.domain.club.clubmember", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -113,7 +113,7 @@ public class SwaggerConfig {
     public GroupedOpenApi recruitment() {
         return GroupedOpenApi.builder()
                 .group("10. 모집 API")
-                .packagesToScan("com.ariari.ariari.domain.recruitment.recruitment")
+                .packagesToScan("com.ariari.ariari.domain.recruitment.recruitment", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -121,7 +121,7 @@ public class SwaggerConfig {
     public GroupedOpenApi recruitmentBookmark() {
         return GroupedOpenApi.builder()
                 .group("11. 모집 북마크 API")
-                .packagesToScan("com.ariari.ariari.domain.recruitment.bookmark")
+                .packagesToScan("com.ariari.ariari.domain.recruitment.bookmark", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -129,7 +129,7 @@ public class SwaggerConfig {
     public GroupedOpenApi apply() {
         return GroupedOpenApi.builder()
                 .group("12. 지원서 API")
-                .packagesToScan("com.ariari.ariari.domain.recruitment.apply")
+                .packagesToScan("com.ariari.ariari.domain.recruitment.apply", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -137,7 +137,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubActivity() {
         return GroupedOpenApi.builder()
                 .group("13. 동아리 활동내역 API")
-                .packagesToScan("com.ariari.ariari.domain.club.activity")
+                .packagesToScan("com.ariari.ariari.domain.club.activity", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -145,7 +145,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubEvent() {
         return GroupedOpenApi.builder()
                 .group("14. 동아리 일정 API")
-                .packagesToScan("com.ariari.ariari.domain.club.event")
+                .packagesToScan("com.ariari.ariari.domain.club.event", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -153,7 +153,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubFinancial() {
         return GroupedOpenApi.builder()
                 .group("15. 동아리 회계내역 API")
-                .packagesToScan("com.ariari.ariari.domain.club.financial")
+                .packagesToScan("com.ariari.ariari.domain.club.financial", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -161,7 +161,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubQnA() {
         return GroupedOpenApi.builder()
                 .group("16. 동아리 Q&A API")
-                .packagesToScan("com.ariari.ariari.domain.club.question")
+                .packagesToScan("com.ariari.ariari.domain.club.question", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -169,7 +169,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubFaq() {
         return GroupedOpenApi.builder()
                 .group("17. 동아리 FAQ API")
-                .packagesToScan("com.ariari.ariari.domain.club.faq")
+                .packagesToScan("com.ariari.ariari.domain.club.faq", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -177,7 +177,7 @@ public class SwaggerConfig {
     public GroupedOpenApi passReview() {
         return GroupedOpenApi.builder()
                 .group("18. 동아리 합격 후기 API")
-                .packagesToScan("com.ariari.ariari.domain.club.passreview")
+                .packagesToScan("com.ariari.ariari.domain.club.passreview", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -185,7 +185,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubReview() {
         return GroupedOpenApi.builder()
                 .group("19. 동아리 후기 API")
-                .packagesToScan("com.ariari.ariari.domain.club.review")
+                .packagesToScan("com.ariari.ariari.domain.club.review", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -193,7 +193,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubNotice() {
         return GroupedOpenApi.builder()
                 .group("20. 동아리 알림 API")
-                .packagesToScan("com.ariari.ariari.domain.club.notice")
+                .packagesToScan("com.ariari.ariari.domain.club.notice", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -209,7 +209,8 @@ public class SwaggerConfig {
                 ,"com.ariari.ariari.domain.club.review.report"
                 ,"com.ariari.ariari.domain.club.question.report"
                 ,"com.ariari.ariari.domain.recruitment.apply.report"
-                ,"com.ariari.ariari.domain.recruitment.report")
+                ,"com.ariari.ariari.domain.recruitment.report"
+                , "com.ariari.ariari.test")
                 .build();
     }
 
@@ -217,7 +218,7 @@ public class SwaggerConfig {
     public GroupedOpenApi memberAlarm() {
         return GroupedOpenApi.builder()
                 .group("22. 멤버 알림 API")
-                .packagesToScan("com.ariari.ariari.domain.member.alarm")
+                .packagesToScan("com.ariari.ariari.domain.member.alarm", "com.ariari.ariari.test")
                 .build();
     }
 
@@ -226,7 +227,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubAlarm() {
         return GroupedOpenApi.builder()
                 .group("23. 동아리 알림 API")
-                .packagesToScan("com.ariari.ariari.domain.club.alarm")
+                .packagesToScan("com.ariari.ariari.domain.club.alarm", "com.ariari.ariari.test")
                 .build();
     }
 

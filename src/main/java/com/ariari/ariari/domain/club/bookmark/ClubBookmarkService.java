@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -42,6 +44,12 @@ public class ClubBookmarkService {
 
         ClubBookmark clubBookmark = clubBookmarkRepository.findByMemberAndClub(reqMember, club).orElseThrow(NotFoundEntityException::new);
         clubBookmarkRepository.delete(clubBookmark);
+    }
+
+    public void removeAllBookmarks(Long reqMemberId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        clubBookmarkRepository.deleteByMember(reqMember);
     }
 
 }
