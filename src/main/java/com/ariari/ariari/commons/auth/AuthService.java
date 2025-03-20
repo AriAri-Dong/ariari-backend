@@ -2,12 +2,12 @@ package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
+import com.ariari.ariari.commons.auth.dto.LogoutReq;
 import com.ariari.ariari.commons.auth.nickname.NicknameCreator;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
-import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.ClubQuestionService;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
@@ -71,9 +71,9 @@ public class AuthService {
         memberRepository.delete(reqMember);
     }
 
-    public void logout(JwtTokenRes jwtTokenRes) {
-        String accessToken = jwtTokenRes.getAccessToken();
-        String refreshToken = jwtTokenRes.getRefreshToken();
+    public void logout(LogoutReq logoutReq) {
+        String accessToken = logoutReq.getAccessToken();
+        String refreshToken = logoutReq.getRefreshToken();
 
         Date accessExpiration = jwtManager.getExpiration(accessToken);
         Date refreshExpiration = jwtManager.getExpiration(refreshToken);

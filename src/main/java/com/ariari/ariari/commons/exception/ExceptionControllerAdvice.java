@@ -33,6 +33,7 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public ExceptionRes handleCustomException(HttpServletRequest request, CustomException e) {
+        log.info("exception", e);
         return ExceptionRes.builder()
                 .code(e.getHttpStatus().value())
                 .message(e.getMessage())
@@ -42,6 +43,7 @@ public class ExceptionControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoResourceFoundException.class)
     public ExceptionRes handleNoResourceFoundException(HttpServletRequest request, NoResourceFoundException e) {
+        log.info("exception", e);
         return ExceptionRes.builder()
                 .code(404)
                 .message("존재하지 않는 경로입니다.")
@@ -54,7 +56,7 @@ public class ExceptionControllerAdvice {
         log.error("db 에러 : ", e);
         return ExceptionRes.builder()
                 .code(400)
-                .message("DB 접근 중 에러가 발생했습니다.")
+                .message("DB 접근 중 에러가 발생했습니다." + e.getMessage())
                 .build();
     }
     @ResponseStatus(HttpStatus.BAD_REQUEST)
