@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,5 +22,9 @@ public interface ClubBookmarkRepository extends JpaRepository<ClubBookmark, Long
     Optional<ClubBookmark> findByMemberAndClub(Member member, Club club);
 
     List<ClubBookmark> findAllByClub(Club club);
+
+    @Modifying
+    @Query("delete From ClubBookmark cb where cb.member= :member")
+    void deleteByMember(Member member);
 
 }

@@ -27,11 +27,11 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     public Page<Apply> searchApplyByClub(Club club, AppliesInClubSearchCondition condition, Pageable pageable) {
         List<Apply> content = queryFactory.select(apply)
                 .from(apply)
+                .leftJoin(apply.member).fetchJoin()
+                .leftJoin(apply.recruitment).fetchJoin()
                 .where(apply.recruitment.club.eq(club),
                         isPendent(condition.getIsPendent()),
-                        nicknameContains(condition.getQuery()),
-                        applyNameContains(condition.getQuery()),
-                        recruitmentTitleContains(condition.getQuery()),
+                        queryContains(condition.getQuery()),
                         betweenDateTime(condition.getStartDateTime(), condition.getEndDateTime()))
                 .orderBy(apply.createdDateTime.desc())
                 .offset(pageable.getOffset())
@@ -40,11 +40,11 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
 
         Long total = queryFactory.select(apply.count())
                 .from(apply)
+                .leftJoin(apply.member)
+                .leftJoin(apply.recruitment)
                 .where(apply.recruitment.club.eq(club),
                         isPendent(condition.getIsPendent()),
-                        nicknameContains(condition.getQuery()),
-                        applyNameContains(condition.getQuery()),
-                        recruitmentTitleContains(condition.getQuery()),
+                        queryContains(condition.getQuery()),
                         betweenDateTime(condition.getStartDateTime(), condition.getEndDateTime()))
                 .fetchOne();
 
@@ -77,16 +77,8 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
         return apply.applyStatusType.eq(PENDENCY);
     }
 
-    private BooleanExpression nicknameContains(String query) {
-        return query != null ? apply.member.nickName.contains(query) : null;
-    }
-
-    private Predicate applyNameContains(String query) {
-        return query != null ? apply.name.contains(query) : null;
-    }
-
-    private Predicate recruitmentTitleContains(String query) {
-        return query != null ? apply.recruitment.title.contains(query) : null;
+    private BooleanExpression queryContains(String query) {
+        return query == null ? null : apply.member.nickName.contains(query).or(apply.name.contains(query)).or(apply.recruitment.title.contains(query));
     }
 
     private BooleanExpression betweenDateTime(LocalDateTime start, LocalDateTime end) {

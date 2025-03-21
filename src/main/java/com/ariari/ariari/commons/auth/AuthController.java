@@ -2,6 +2,7 @@ package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
+import com.ariari.ariari.commons.auth.dto.LogoutReq;
 import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
@@ -46,9 +47,9 @@ public class AuthController {
     /**
      * kakao logout 연동 x
      */
-    @PostMapping("/logout")
-    public void logout(@RequestBody JwtTokenRes jwtTokenRes) {
-        authService.logout(jwtTokenRes);
+    @PostMapping("/auth/logout")
+    public void logout(@RequestBody LogoutReq logoutReq) {
+        authService.logout(logoutReq);
     }
 
     @PostMapping("/reissue/token")

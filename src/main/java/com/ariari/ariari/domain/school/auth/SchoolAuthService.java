@@ -49,4 +49,10 @@ public class SchoolAuthService {
         reqMember.setSchool(school);
     }
 
+    public void removeMySchoolAuth(Long reqMemberId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        reqMember.setSchool(null);
+    }
+
 }
