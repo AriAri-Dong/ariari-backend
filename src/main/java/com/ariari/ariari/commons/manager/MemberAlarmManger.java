@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
+import com.ariari.ariari.domain.member.alarm.dto.res.MemberAlarmListRes;
 import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEventList;
@@ -28,6 +29,14 @@ import java.util.List;
 public class MemberAlarmManger {
 
     private final ApplicationEventPublisher eventPublisher;
+
+    // 시스템 공지사항 추가
+    public void sendSystemNotification(List<Member> memberList){
+        String title = "새로운 아리아리 플랫폼 공지사항이 등록되었습니다. 서비스 관련 중요한 내용을 확인해 보세요.";
+        MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
+        ,"/service-notices", MemberAlarmType.SYSTEM, memberList);
+        sendList(memberAlarmEventList);
+    }
 
     // 동아리 공지사항 추가
     public void sendClubNotification(List<Member> memberList, String clubName, Long clubId) {

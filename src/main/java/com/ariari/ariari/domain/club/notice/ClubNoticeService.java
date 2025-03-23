@@ -43,7 +43,6 @@ public class ClubNoticeService {
     private final ClubNoticeImageRepository clubNoticeImageRepository;
     private final ImageRepository imageRepository;
     private final MemberAlarmManger memberAlarmManger;
-    private final ClubAlarmManger clubAlarmManger;
     private final FileManager fileManager;
 
     @Transactional
