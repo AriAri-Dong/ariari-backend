@@ -4,6 +4,7 @@ import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.system.image.SystemNoticeImage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,15 +33,13 @@ public class SystemNotice extends LogicalDeleteEntity {
     @Column(length = 1000)
     private String body;
 
-    private Boolean isFixed = Boolean.FALSE;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
     @Setter
-    @OneToMany(mappedBy = "clubNotice", cascade = CascadeType.ALL)
-    private List<ClubNoticeImage> clubNoticeImages = new ArrayList<>();
+    @OneToMany(mappedBy = "systemNotice", cascade = CascadeType.ALL)
+    private List<SystemNoticeImage> systemNoticeImages = new ArrayList<>();
 
     private SystemNotice(String title, String body, Member member) {
         this.title = title;
@@ -56,14 +55,6 @@ public class SystemNotice extends LogicalDeleteEntity {
     public void modify(String title, String body) {
         this.title = title;
         this.body = body;
-    }
-
-    public void controlIsFixed() {
-        if (isFixed) {
-            isFixed = Boolean.FALSE;
-        } else {
-            isFixed = Boolean.TRUE;
-        }
     }
 
 

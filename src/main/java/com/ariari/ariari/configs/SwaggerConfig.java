@@ -231,4 +231,12 @@ public class SwaggerConfig {
                 .build();
     }
 
+    @Bean
+    public GroupedOpenApi System() {
+        return GroupedOpenApi.builder()
+                .group("24. 시스템 공지사항 API")
+                .packagesToScan("com.ariari.ariari.domain.system", "com.ariari.ariari.test")
+                .build();
+    }
+
 }
