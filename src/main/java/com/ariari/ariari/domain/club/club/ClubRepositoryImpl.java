@@ -1,18 +1,17 @@
 package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.bookmark.QClubBookmark;
-import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.school.QSchool;
+import com.ariari.ariari.domain.recruitment.QRecruitment;
 import com.ariari.ariari.domain.school.School;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -23,11 +22,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.ariari.ariari.domain.club.QClub.*;
 import static com.ariari.ariari.domain.club.bookmark.QClubBookmark.*;
-import static com.ariari.ariari.domain.school.QSchool.*;
+import static com.ariari.ariari.domain.recruitment.QRecruitment.recruitment;
 import static com.ariari.ariari.domain.school.QSchool.school;
 
 @RequiredArgsConstructor
@@ -162,27 +162,43 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
         return new PageImpl<>(content, pageable, total);
     }
 
+    /**
+     * 수정 예정
+     *  ClubData views 필드 추가 (정렬을 위해)
+     */
     @Override
-    public Page<ClubData> findMyBookmarkClubs(Member member, Pageable pageable) {
+    public Page<ClubData> findMyBookmarkClubs(Member member, Boolean hasActiveRecruitment, Pageable pageable) {
         JPAQuery<ClubData> jpaQuery = queryFactory
                 .select(ClubData.projection())
                 .from(club)
                 .leftJoin(club.school, school).on(club.school.eq(school))
                 .join(club.clubBookmarks, clubBookmark).on(clubBookmark.member.eq(member))
+                .leftJoin(club.recruitments, recruitment).on(recruitment.isEarlyClosed.eq(false)
+                        .and(recruitment.startDateTime.before(LocalDateTime.now()))
+                        .and(recruitment.endDateTime.after(LocalDateTime.now())))
+                .where(hasActiveRecruitment ? recruitment.isNotNull() : null)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
         for (Sort.Order o : pageable.getSort()) {
             PathBuilder pathBuilder = new PathBuilder(club.getType(), club.getMetadata());
-            jpaQuery.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+            if (o.getProperty().equals("clubBookmarkCount")) {
+                jpaQuery.orderBy(new OrderSpecifier<>(Order.DESC, club.clubBookmarks.size()));
+            } else {
+                jpaQuery.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+            }
         }
-        List<ClubData> content = jpaQuery.fetch();
+        List<ClubData> content = jpaQuery.distinct().fetch();
 
         Long total = queryFactory
                 .select(club.count())
                 .from(club)
                 .leftJoin(club.school, school).on(club.school.eq(school))
                 .join(club.clubBookmarks, clubBookmark).on(clubBookmark.club.id.eq(club.id).and(clubBookmark.member.id.eq(member.getId())))
+                .leftJoin(club.recruitments, recruitment).on(recruitment.isEarlyClosed.eq(false)
+                        .and(recruitment.startDateTime.before(LocalDateTime.now()))
+                        .and(recruitment.endDateTime.after(LocalDateTime.now())))
+                .where(hasActiveRecruitment ? recruitment.isNotNull() : null)
                 .fetchOne();
 
         return new PageImpl<>(content, pageable, total);

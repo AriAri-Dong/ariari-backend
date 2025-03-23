@@ -3,8 +3,6 @@ package com.ariari.ariari.domain.club.club;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
-import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
@@ -71,10 +69,10 @@ public class ClubListService {
         return ClubListRes.fromClubMemberPage(page, reqMember);
     }
 
-    public ClubListRes findMyBookmarkClubsList(Long reqMemberId, Pageable pageable) {
+    public ClubListRes findMyBookmarkClubsList(Long reqMemberId, Boolean hasActiveRecruitment, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
-        Page<ClubData> page = clubRepository.findMyBookmarkClubs(reqMember, pageable);
+        Page<ClubData> page = clubRepository.findMyBookmarkClubs(reqMember, hasActiveRecruitment, pageable);
         return ClubListRes.fromPage(page, reqMember);
     }
 

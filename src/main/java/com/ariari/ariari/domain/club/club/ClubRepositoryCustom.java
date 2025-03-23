@@ -21,7 +21,7 @@ public interface ClubRepositoryCustom {
 
     Page<ClubData> findByNameContains(String query, School school, Pageable pageable);
 
-    Page<ClubData> findMyBookmarkClubs(Member member, Pageable pageable);
+    Page<ClubData> findMyBookmarkClubs(Member member, Boolean hasActiveRecruitment, Pageable pageable);
 
     List<Club> findExternalClubRankingList(ClubCategoryType categoryType);
 

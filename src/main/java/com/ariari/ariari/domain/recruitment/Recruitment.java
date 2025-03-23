@@ -50,7 +50,7 @@ public class Recruitment extends LogicalDeleteEntity implements ViewsContent {
     private ProcedureType procedureType;
 
     @Setter
-    private Boolean isEarlyClosed = Boolean.TRUE; // 조기 종료 여부
+    private Boolean isEarlyClosed = Boolean.FALSE; // 조기 종료 여부
 
     private Integer limits;
     private Long views = 0L;
@@ -113,7 +113,7 @@ public class Recruitment extends LogicalDeleteEntity implements ViewsContent {
     }
 
     public boolean isRecruiting() {
-        return isEarlyClosed && startDateTime.isBefore(LocalDateTime.now()) && LocalDateTime.now().isBefore(endDateTime);
+        return !isEarlyClosed && startDateTime.isBefore(LocalDateTime.now()) && LocalDateTime.now().isBefore(endDateTime);
     }
 
     public RecruitmentStatusType getRecruitmentStatusType() {

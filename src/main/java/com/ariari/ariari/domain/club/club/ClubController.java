@@ -67,9 +67,10 @@ public class ClubController {
     @Operation(summary = "내 북마크 동아리 조회", description = "내가 북마크 등록한 동아리 리스트를 조회합니다. (페이지네이션)")
     @GetMapping("/my-bookmarks")
     public ClubListRes findMyBookmarkClubList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                              @RequestParam Boolean hasActiveRecruitment,
                                               Pageable pageable) {
         Long reqMemberId = getMemberId(userDetails, true);
-        return clubListService.findMyBookmarkClubsList(reqMemberId, pageable);
+        return clubListService.findMyBookmarkClubsList(reqMemberId, hasActiveRecruitment, pageable);
     }
 
     @Operation(summary = "동아리 검색어 조회", description = "이름에 검색어가 포함되어 있는 동아리 리스트를 조회합니다. (페이지네이션)")
