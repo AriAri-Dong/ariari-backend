@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.club.passreview.dto;
 
 import com.ariari.ariari.domain.club.passreview.PassReview;
-import com.ariari.ariari.domain.club.passreview.access.PassReviewAccess;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.passreview.enums.NoteType;
@@ -36,10 +35,6 @@ public class PassReviewData {
     private InterviewRatioType interviewRatioType;
     @Schema(description = "면접 분위기", example = "1(편안한) ~ 5(엄숙한)")
     private Integer interviewMood;
-    @Schema(description = "접근 가능 여부", example = "과거에 포인트를 사용하여 열람한 적이 있다면 편하게 열람 가능")
-    private boolean wasAccessed;
-    @Schema(description = "작성자 본인인지 여부", example = "작성자는 본인이 열람 가능해야함")
-    private boolean isCreator;
     @Schema(description = "서류 전형 관련 문항들", example = "질문과 문항만 담겨 있음")
     private List<PassReviewNoteData> documentNotes;
     @Schema(description = "면접 전형 관련 문항들", example = "질문과 문항만 담겨 있음")
@@ -78,25 +73,11 @@ public class PassReviewData {
         return PassReviewData.builder()
                 .id(passReview.getId())
                 .title(passReview.getTitle())
-                .wasAccessed(getAccessPassReviews(reqMember).contains(passReview))
-                .isCreator(reqMember.equals(passReview.getClubMember().getMember()))
                 .documentNoteCount(getPassReviewNoteCount(passReview, NoteType.DOCUMENT))
                 .interviewNoteCount(getPassReviewNoteCount(passReview, NoteType.INTERVIEW))
                 .build();
     }
 
-    public static Set<PassReview> getAccessPassReviews(Member reqMember) {
-        if (reqMember == null) {
-            return new HashSet<>();
-        } else{
-            return reqMember.getPassReviewAccessList()
-                    .stream()
-                    .map(PassReviewAccess::getPassReview)
-                    .collect(Collectors.toSet());
-        }
-    }
-
-    // 이거 LAZY로 계속 검색되는 코드인가...?
     public static int getPassReviewNoteCount(PassReview passReview, NoteType noteType) {
         int count = 0;
         List<PassReviewNote> passReviewNotes = passReview.getPassReviewNotes();

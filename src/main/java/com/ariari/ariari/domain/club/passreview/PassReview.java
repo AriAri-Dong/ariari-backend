@@ -2,10 +2,12 @@ package com.ariari.ariari.domain.club.passreview;
 
 import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -42,20 +44,25 @@ public class PassReview extends LogicalDeleteEntity {
     private Integer interviewMood;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_member_id")
-    private ClubMember clubMember;
+    @JoinColumn(name = "club_id")
+    private Club club;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
     private List<PassReviewNote> passReviewNotes = new ArrayList<>();
 
     public PassReview(String title, ProcedureType procedureType, InterviewType interviewType, InterviewRatioType interviewRatioType,
-                      Integer interviewMood, ClubMember clubMember){
+                      Integer interviewMood, Club club, Member member) {
         this.title = title;
         this.procedureType = procedureType;
         this.interviewType = interviewType;
         this.interviewRatioType = interviewRatioType;
         this.interviewMood = interviewMood;
-        this.clubMember = clubMember;
+        this.club = club;
+        this.member = member;
     }
 
 

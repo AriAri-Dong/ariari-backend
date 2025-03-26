@@ -1,9 +1,10 @@
 package com.ariari.ariari.domain.club.passreview;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
-import com.ariari.ariari.domain.club.passreview.access.PassReviewAccess;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewData;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewNoteData;
 import com.ariari.ariari.domain.club.passreview.dto.req.PassReviewSaveReq;
@@ -12,7 +13,6 @@ import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewRes;
 import com.ariari.ariari.domain.club.passreview.enums.NoteType;
 import com.ariari.ariari.domain.club.passreview.mapper.PassReviewMapper;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
-import com.ariari.ariari.domain.club.passreview.repository.PassReviewAccessRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewNoteRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.member.Member;
@@ -33,9 +33,8 @@ public class PassReviewService {
     private final PassReviewNoteRepository passReviewNoteRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final MemberRepository memberRepository;
-    private final PassReviewAccessRepository passReviewAccessRepository;
+    private final ClubRepository clubRepository;
 
-    // search목록 find디테일 save저장 modify수정 remove제거
     public PassReviewListRes searchPassReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
         //page : 현재 page? size : 페이지당 항목개수
         List<PassReviewRes> passReviewResList = passReviewMapper.findByClubAndReqMember(clubId, reqMemberId,
@@ -54,24 +53,16 @@ public class PassReviewService {
                 PassReviewNoteData.fromEntities(interviewPassReviewNoteList));
     }
 
-    public void accessPassReivew(Long reqMemberId, Long passReviewId){
-        PassReview passReview = passReviewRepository.findById(passReviewId).orElseThrow(NotFoundEntityException::new);
-        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        if (passReviewAccessRepository.existsByPassReviewAndMember(passReview, member)){
-            throw new RuntimeException(); // 이미 접근 권한 존재 예외처리
-        }
-        PassReviewAccess passReviewAccess = new PassReviewAccess(passReview, member);
-        passReviewAccessRepository.save(passReviewAccess);
-    }
-
     public void savePassReview(Long reqMemberId, PassReviewSaveReq passReviewSaveReq, Long clubId){
-        ClubMember clubMember = clubMemberRepository.findByClubIdAndMemberId(clubId, reqMemberId).orElseThrow(NotFoundEntityException::new);
-        if (passReviewRepository.existsByClubMember(clubMember)){
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+
+        if (passReviewRepository.existsByClubAndMember(club, member)){
             throw new RuntimeException(); // 중복 작성 예외처리
         }
-        PassReview passReview = passReviewSaveReq.toEntity(clubMember);
+
+        PassReview passReview = passReviewSaveReq.toEntity(passReviewSaveReq, club, member);
         passReviewRepository.save(passReview);
     }
 
-    //@Transactional(readOnly = false)
 }
