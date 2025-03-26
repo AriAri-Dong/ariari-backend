@@ -14,12 +14,9 @@ public class ClubAnswerData {
     @Schema(description = "동아리 응답 내용", example = "아리아리에 제출해야 하는 서류는 포트폴리오와 Github URI입니다.")
     private String body;
 
-    private ClubMemberData clubMemberData;
-
     public static ClubAnswerData fromEntity(ClubAnswer clubAnswer) {
         return new ClubAnswerData(
-                clubAnswer.getBody(),
-                ClubMemberData.fromEntity(clubAnswer.getClubMember())
+                clubAnswer.getBody()
         );
     }
 

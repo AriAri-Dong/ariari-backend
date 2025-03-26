@@ -290,6 +290,7 @@ public class TestDataSetter {
         FinancialRecord fr8 = new FinancialRecord(50000L, "body8", LocalDateTime.now().minusMinutes(1), c1);
         financialRecordRepository.saveAll(List.of(fr1, fr2, fr3, fr4, fr5, fr6, fr7, fr8));
 
+<<<<<<< HEAD
         ClubReview cr1 = new ClubReview("아리아리 1기 후기", "아리아리 1기는 정말 즐거웠습니다.", c1, m1);
         ClubReview cr2 = new ClubReview("아리아리 1기 후기2", "아리아리 1기는 정말 즐거웠습니다2.", c1, m2);
         ClubReview cr3 = new ClubReview("아리아리 1기 후기3", "아리아리 1기는 정말 즐거웠습니다3.", c1, m3);

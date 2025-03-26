@@ -96,4 +96,6 @@ public class ApplyController {
         return applyListService.findMyApplies(reqMemberId, pageable, searchType);
     }
 
+
+
 }

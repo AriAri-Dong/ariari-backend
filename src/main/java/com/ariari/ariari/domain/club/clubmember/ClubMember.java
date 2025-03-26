@@ -56,8 +56,8 @@ public class ClubMember extends LogicalDeleteEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
-    private List<ClubAnswer> clubAnswers;
+//    @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
+//    private List<ClubAnswer> clubAnswers;
 
     @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
     private List<Attendance> attendances;
@@ -67,9 +67,6 @@ public class ClubMember extends LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
     private List<ClubNotice> clubNotices;
-
-    @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
-    private List<ClubFaq> clubFaqs;
 
     @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
     private List<ClubActivity> clubActivitys;

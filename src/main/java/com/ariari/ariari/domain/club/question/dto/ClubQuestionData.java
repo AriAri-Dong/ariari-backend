@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.club.question.dto;
 
 import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.answer.dto.ClubAnswerData;
-import com.ariari.ariari.domain.member.dto.MemberData;
+import com.ariari.ariari.domain.member.member.dto.MemberData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,12 +36,17 @@ public class ClubQuestionData {
             clubAnswerData = ClubAnswerData.fromEntity(clubQuestion.getClubAnswer());
         }
 
+        MemberData memberData = null;
+        if( clubQuestion.getMember() != null){
+            memberData= MemberData.fromEntity(clubQuestion.getMember());
+        }
+
         return new ClubQuestionData(
                 clubQuestion.getId(),
                 clubQuestion.getTitle(),
                 clubQuestion.getBody(),
                 clubQuestion.getCreatedDateTime(),
-                MemberData.fromEntity(clubQuestion.getMember()),
+                memberData,
                 clubAnswerData
         );
     }

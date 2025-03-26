@@ -33,4 +33,11 @@ public class ClubBookmarkController {
         clubBookmarkService.removeBookmark(reqMemberId, clubId);
     }
 
+    @Operation(summary = "동아리 북마크 삭제", description = "")
+    @DeleteMapping("/all")
+    public void removeAllBookmarks(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = getMemberId(userDetails, true);
+        clubBookmarkService.removeAllBookmarks(reqMemberId);
+    }
+
 }

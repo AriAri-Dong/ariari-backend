@@ -2,11 +2,13 @@ package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
+import com.ariari.ariari.commons.auth.dto.LogoutReq;
 import com.ariari.ariari.commons.auth.nickname.NicknameCreator;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
+import com.ariari.ariari.domain.club.question.ClubQuestionService;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class AuthService {
     private final JwtControlManager jwtControlManager;
     private final NicknameCreator nicknameCreator;
     private final KakaoAuthManager kakaoAuthManager;
+    private final ClubQuestionService clubQuestionService;
 
     public JwtTokenRes login(Long kakaoId) {
         Optional<Member> memberOptional = memberRepository.findByKakaoId(kakaoId);
@@ -63,14 +66,14 @@ public class AuthService {
 
     public void unregister(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-
+        clubQuestionService.changeStateByMember(reqMemberId);
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);
     }
 
-    public void logout(JwtTokenRes jwtTokenRes) {
-        String accessToken = jwtTokenRes.getAccessToken();
-        String refreshToken = jwtTokenRes.getRefreshToken();
+    public void logout(LogoutReq logoutReq) {
+        String accessToken = logoutReq.getAccessToken();
+        String refreshToken = logoutReq.getRefreshToken();
 
         Date accessExpiration = jwtManager.getExpiration(accessToken);
         Date refreshExpiration = jwtManager.getExpiration(refreshToken);

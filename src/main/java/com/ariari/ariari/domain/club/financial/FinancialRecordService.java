@@ -63,6 +63,10 @@ public class FinancialRecordService {
 
         Page<FinancialRecord> page = financialRecordRepository.findByClubOrderByRecordDateTimeDesc(club, pageable);
         List<FinancialRecord> financialRecords = page.getContent();
+
+        if (page.isEmpty()) {
+            return FinancialRecordListRes.fromPage(page, 0L);
+        }
         FinancialRecord lastRecord = financialRecords.get(financialRecords.size() - 1);
 
         Long totalBeforeLast = financialRecordRepository.findTotalByClubBefore(club, lastRecord.getRecordDateTime());

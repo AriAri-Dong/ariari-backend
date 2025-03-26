@@ -1,11 +1,15 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
+import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
@@ -18,9 +22,16 @@ import com.ariari.ariari.domain.recruitment.apply.temp.exception.NoApplyTempAuth
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -32,6 +43,8 @@ public class ApplyTempService {
     private final RecruitmentRepository recruitmentRepository;
     private final ApplyTempRepository applyTempRepository;
     private final FileManager fileManager;
+    private final MemberAlarmManger memberAlarmManger;
+
 
     public ApplyTempDetailRes findApplyTempDetail(Long reqMemberId, Long applyTempId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -63,7 +76,6 @@ public class ApplyTempService {
             String fileUri = fileManager.saveFile(file, "applyTemp");
             applyTemp.setFileUri(fileUri);
         }
-
         applyTempRepository.save(applyTemp);
     }
 
@@ -114,6 +126,29 @@ public class ApplyTempService {
 
         Page<ApplyTemp> page = applyTempRepository.searchByMember(reqMember, pageable);
         return ApplyTempListRes.fromPage(page);
+    }
+
+    // 관심모집 마감임박(D-1) 알림
+    @Scheduled(cron ="0 0 0 * * ?")
+    @Transactional(readOnly = true)
+    public void sendApplyTempReminder(){
+        LocalDateTime endTime = LocalDate.now().plusDays(1).atStartOfDay();
+
+        // D-1 임시지원서 찾기
+        List<ApplyTemp> applyTempList = applyTempRepository.findAllByWithinRecruitment(LocalDateTime.now(), endTime);
+        // 모집별로 임시지원서 불류
+        Map<Long, List<ApplyTemp>> groupByRecruitmentId = applyTempList.stream()
+                .collect(Collectors.groupingBy( applyTemp -> applyTemp.getRecruitment().getId()));
+
+        groupByRecruitmentId.forEach((id, applyTemps) ->{
+
+            if(applyTemps.isEmpty()){
+                return;
+            }
+
+            List<Member> memberList = applyTemps.stream().map(ApplyTemp::getMember).toList();
+            memberAlarmManger.sendApplyTempReminder(memberList);
+        });
     }
 
 }

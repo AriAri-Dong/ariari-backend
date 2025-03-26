@@ -2,6 +2,8 @@ package com.ariari.ariari.domain.club.notice;
 
 import com.ariari.ariari.commons.entity.image.ImageRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
@@ -40,6 +42,7 @@ public class ClubNoticeService {
     private final ClubNoticeRepository clubNoticeRepository;
     private final ClubNoticeImageRepository clubNoticeImageRepository;
     private final ImageRepository imageRepository;
+    private final MemberAlarmManger memberAlarmManger;
     private final FileManager fileManager;
 
     @Transactional
@@ -61,7 +64,11 @@ public class ClubNoticeService {
             }
 
             clubNotice.setClubNoticeImages(images);
+
         }
+        List<ClubMember> clubMemberList = clubMemberRepository.findAllByClub(club);
+        List<Member> memberList = clubMemberList.stream().map(ClubMember::getMember).toList();
+        memberAlarmManger.sendClubNotification(memberList, club.getName(), club.getId());
     }
 
     @Transactional
