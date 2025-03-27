@@ -2,8 +2,10 @@ package com.ariari.ariari.domain.club.review;
 
 import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
+import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,15 +33,18 @@ public class ClubReview extends LogicalDeleteEntity {
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_member_id")
-    private ClubMember clubMember;
+    @JoinColumn(name = "club_id")
+    private Club club;
 
-    @OneToMany(mappedBy = "clubReview", cascade = CascadeType.ALL)
-    private List<ClubReviewTag> clubReviewTags = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    public ClubReview(String title, String body, ClubMember clubMember) {
+    public ClubReview(String title, String body, Club club, Member member) {
         this.title = title;
         this.body = body;
-        this.clubMember = clubMember;
+        this.club = club;
+        this.member = member;
     }
+
 }

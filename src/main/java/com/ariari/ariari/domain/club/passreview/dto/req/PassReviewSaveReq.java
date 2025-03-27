@@ -1,11 +1,13 @@
 package com.ariari.ariari.domain.club.passreview.dto.req;
 
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.passreview.PassReview;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
 import com.ariari.ariari.domain.club.passreview.note.dto.req.PassReviewNoteReq;
+import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -27,16 +29,17 @@ public class PassReviewSaveReq {
     @Schema(description = "면접문항 및 서류문항들", example = "문항,답변,타입으로 구성된 면접 문항 및 서류 문항들")
     private List<PassReviewNoteReq> passReviewNotes;
 
-    public PassReview toEntity(ClubMember clubMember){
-        List<PassReviewNote> passReviewNotes = this.passReviewNotes.stream().map(PassReviewNoteReq::toEntity).toList();
+    public PassReview toEntity(PassReviewSaveReq passReviewSaveReq, Club club, Member member){
+        List<PassReviewNote> passReviewNotes = passReviewSaveReq.getPassReviewNotes().stream().map(PassReviewNoteReq::toEntity).toList();
 
         PassReview passReview = new PassReview(
-                title,
-                procedureType,
-                interviewType,
-                interviewRatioType,
-                interviewMood,
-                clubMember
+                passReviewSaveReq.getTitle(),
+                passReviewSaveReq.getProcedureType(),
+                passReviewSaveReq.getInterviewType(),
+                passReviewSaveReq.getInterviewRatioType(),
+                passReviewSaveReq.getInterviewMood(),
+                club,
+                member
         );
 
         for (PassReviewNote passReviewNote : passReviewNotes) {

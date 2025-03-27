@@ -18,7 +18,7 @@ import java.util.Map;
 @Builder
 public class TagData {
     @Schema(description = "Tag id", example = "id값")
-    private Long id;
+    private String id;
     @Schema(description = "body", example = "태그 내용")
     private String body;
     @Schema(description = "태그명", example = "CAREER_PREPARATION, //취업준비에 도움이 돼요\n" +
@@ -42,7 +42,7 @@ public class TagData {
 
     public static TagData toTagData(Tag tag){
         return TagData.builder()
-                .id(tag.getId())
+                .id(Long.toString(tag.getId()))
                 .body(tag.getBody())
                 .icon(tag.getIcon())
                 .build();
@@ -58,7 +58,7 @@ public class TagData {
 
     public static TagData toTagData(Tag tag, Double rate){
         return TagData.builder()
-                .id(tag.getId())
+                .id(Long.toString(tag.getId()))
                 .body(tag.getBody())
                 .icon(tag.getIcon())
                 .rate(rate)

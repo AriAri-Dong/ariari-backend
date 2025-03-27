@@ -1,10 +1,12 @@
 package com.ariari.ariari.domain.club.review.dto.req;
 
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.review.ClubReview;
 import com.ariari.ariari.domain.club.review.enums.Icon;
 import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
 import com.ariari.ariari.domain.club.review.tag.Tag;
+import com.ariari.ariari.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -16,14 +18,15 @@ public class ClubReviewSaveReq {
     private String title;
     @Schema(description = "활동후기 내용", example = "내용")
     private String body;
-    @Schema(description = "태그 리스트", example = "다양한 경험을 할 수 있어요, 전공 실력이나 성적을 높일 수 있어요...")
+    @Schema(description = "태그 리스트")
     private List<Icon> icons;
 
-    public ClubReview toEntity(ClubMember clubMember, List<Tag> tags) {
+    public ClubReview toEntity(ClubReviewSaveReq clubReviewSaveReq, Member member, Club club, List<Tag> tags) {
         ClubReview clubReview = new ClubReview(
-                title,
-                body,
-                clubMember);
+                clubReviewSaveReq.getTitle(),
+                clubReviewSaveReq.getBody(),
+                club,
+                member);
 
         for (Tag tag : tags) {
             ClubReviewTag clubReviewTag = new ClubReviewTag();

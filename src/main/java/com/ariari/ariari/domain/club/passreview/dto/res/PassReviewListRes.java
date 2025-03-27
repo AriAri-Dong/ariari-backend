@@ -4,11 +4,13 @@ import com.ariari.ariari.commons.manager.PageInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class PassReviewListRes {
     @Schema(description = "데이터", example = "합격후기 목록 관련 데이터")
     private List<PassReviewRes> contents;

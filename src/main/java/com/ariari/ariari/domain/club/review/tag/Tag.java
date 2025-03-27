@@ -30,4 +30,9 @@ public class Tag extends LogicalDeleteEntity {
     @Enumerated(EnumType.STRING)
     private Icon icon;
 
+    public Tag(String body, Icon icon) {
+        this.body = body;
+        this.iconType = IconType.CLUBREVIEW;
+        this.icon = icon;
+    }
 }
