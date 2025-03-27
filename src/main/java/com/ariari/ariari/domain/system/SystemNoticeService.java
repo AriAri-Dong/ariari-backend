@@ -7,7 +7,6 @@ import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.domain.club.notice.image.exception.NotBelongInClubNoticeException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.system.dto.SystemNoticeData;
 import com.ariari.ariari.domain.system.dto.req.SystemNoticeModifyReq;
 import com.ariari.ariari.domain.system.dto.req.SystemNoticeSaveReq;
 import com.ariari.ariari.domain.system.dto.res.SystemNoticeDetailRes;

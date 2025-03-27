@@ -232,10 +232,18 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi System() {
+    public GroupedOpenApi SystemNotice() {
         return GroupedOpenApi.builder()
                 .group("24. 시스템 공지사항 API")
                 .packagesToScan("com.ariari.ariari.domain.system", "com.ariari.ariari.test")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi SystemFaq() {
+        return GroupedOpenApi.builder()
+                .group("25. 시스템 FAQ API")
+                .packagesToScan("com.ariari.ariari.domain.system.faq", "com.ariari.ariari.test")
                 .build();
     }
 
