@@ -5,10 +5,12 @@ import com.ariari.ariari.domain.system.faq.dto.req.SystemFaqModifyReq;
 import com.ariari.ariari.domain.system.faq.dto.req.SystemFaqSaveReq;
 import com.ariari.ariari.domain.system.faq.dto.res.SystemFaqListRes;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "system_faq", description = "서비스 FAQ 기능")
 @RestController
 @RequiredArgsConstructor
 public class SystemFaqController {
