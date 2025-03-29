@@ -1,9 +1,9 @@
 package com.ariari.ariari.domain.club.passreview;
 
+import com.ariari.ariari.commons.exception.exceptions.DuplicateDataCreateException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewData;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewNoteData;
@@ -37,9 +37,9 @@ public class PassReviewService {
 
     public PassReviewListRes searchPassReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
         //page : 현재 page? size : 페이지당 항목개수
-        List<PassReviewRes> passReviewResList = passReviewMapper.findByClubAndReqMember(clubId, reqMemberId,
+        List<PassReviewRes> passReviewResList = passReviewMapper.findPassReviewOfClub(clubId,
                 pageable.getPageSize(), pageable.getPageNumber() * pageable.getPageSize());
-        Integer totalSize = passReviewMapper.countByClubAndReqMember(reqMemberId, clubId);
+        int totalSize = passReviewMapper.findPassReviewOfClubCount(clubId);
         return PassReviewListRes.fromPassReviewResList(passReviewResList, totalSize, pageable.getPageSize());
     }
 
@@ -58,7 +58,7 @@ public class PassReviewService {
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
         if (passReviewRepository.existsByClubAndMember(club, member)){
-            throw new RuntimeException(); // 중복 작성 예외처리
+            throw new DuplicateDataCreateException(); // 중복 작성 예외처리
         }
 
         PassReview passReview = passReviewSaveReq.toEntity(passReviewSaveReq, club, member);

@@ -38,7 +38,7 @@ public class ClubQuestionData {
 
         MemberData memberData = null;
         if( clubQuestion.getMember() != null){
-            memberData= MemberData.fromEntity(clubQuestion.getMember());
+            memberData = MemberData.fromEntity(clubQuestion.getMember());
         }
 
         return new ClubQuestionData(

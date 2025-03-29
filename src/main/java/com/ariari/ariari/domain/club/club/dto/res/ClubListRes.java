@@ -62,6 +62,15 @@ public class ClubListRes {
         );
     }
 
+    public static ClubListRes fromClubMemberList(List<ClubMember> clubMembers) {
+        List<Club> clubs = clubMembers.stream().map(ClubMember::getClub).toList();
+
+        return new ClubListRes(
+                ClubData.fromEntities(clubs, null),
+                null
+        );
+    }
+
 //    public static ClubListRes fromClubBookmarkPage(Page<ClubBookmark> page, Member reqMember) {
 //        List<Club> clubs = page.getContent().stream().map(ClubBookmark::getClub).toList();
 //

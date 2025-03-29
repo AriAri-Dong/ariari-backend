@@ -9,6 +9,7 @@ import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.school.School;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -67,6 +69,14 @@ public class ClubListService {
         Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Page<ClubMember> page = clubMemberRepository.findByMember(reqMember, pageable);
         return ClubListRes.fromClubMemberPage(page, reqMember);
+    }
+
+    public ClubListRes findMyAdminClubList(Long reqMemberId) {
+        Member reqMember = memberRepository.findByIdWithClubBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        List<ClubMember> clubMembers = clubMemberRepository.findByMember(reqMember);
+
+        clubMembers = clubMembers.stream().filter(cm -> cm.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)).toList();
+        return ClubListRes.fromClubMemberList(clubMembers);
     }
 
     public ClubListRes findMyBookmarkClubsList(Long reqMemberId, Boolean hasActiveRecruitment, Pageable pageable) {

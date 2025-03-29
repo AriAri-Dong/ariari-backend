@@ -12,7 +12,11 @@ public class PassReviewNoteReq {
     private String title;
     @Schema(description = "내용", example = "내용")
     private String body;
+<<<<<<< HEAD
+    @Schema(description = "타입 : 서류문항이라면 DOCUMENT, 면접문항이라면 INTERVIEW", example = "INTERVIEW")
+=======
     @Schema(description = "타입 서류문항이라면 DOCUMENT, 면접문항이라면 INTERVIEW ", example = "INTERVIEW")
+>>>>>>> f9bdeffc3e32d91e0472497eb6fda80c8c94a94e
     private NoteType noteType;
 
     public PassReviewNote toEntity() {
