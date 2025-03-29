@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.review.dto.ClubReviewData;
 import com.ariari.ariari.domain.club.review.dto.TagData;
 import com.ariari.ariari.domain.club.review.dto.req.ClubReviewSaveReq;
+import com.ariari.ariari.domain.club.review.dto.res.ClubReviewListRes;
 import com.ariari.ariari.domain.club.review.enums.IconType;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewTagRepository;
@@ -38,11 +39,12 @@ public class ClubReviewService {
     private final ClubRepository clubRepository;
 
     // 활동후기 목록 조회
-    public List<ClubReviewData> searchClubReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
+    public ClubReviewListRes searchClubReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        Page<ClubReview> clubReviews = clubReviewRepository.findByClub(club, pageable);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        return ClubReviewData.fromEntities(clubReviews);
+        Page<ClubReview> clubReviews = clubReviewRepository.findByClub(club, pageable);
+        List<ClubReviewData> clubReviewDataList = ClubReviewData.fromEntities(clubReviews);
+        return ClubReviewListRes.toClubReviewResList(clubReviewDataList, clubReviews);
     }
 
     // 활동후기 상세 조회
