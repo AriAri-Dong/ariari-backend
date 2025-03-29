@@ -227,10 +227,18 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi SystemFaq() {
+    public GroupedOpenApi systemFaq() {
         return GroupedOpenApi.builder()
                 .group("25. 시스템 FAQ API")
                 .packagesToScan("com.ariari.ariari.domain.system.faq", "com.ariari.ariari.test")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi applyForm() {
+        return GroupedOpenApi.builder()
+                .group("26. 동아리 지원 형식 API")
+                .packagesToScan("com.ariari.ariari.domain.recruitment.applyform", "com.ariari.ariari.test")
                 .build();
     }
 
