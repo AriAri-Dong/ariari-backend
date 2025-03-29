@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class MemberData {
+public class MemberDataA {
 
     @JsonSerialize(using = ToStringSerializer.class)
     @Schema(description = "회원 id", example = "673012345142938986")
@@ -20,15 +20,15 @@ public class MemberData {
     @Schema(description = "회원 닉네임", example = "귀여운대머리")
     private String nickname;
 
-    public static MemberData fromEntity(Member member) {
-        return new MemberData(
+    public static MemberDataA fromEntity(Member member) {
+        return new MemberDataA(
                 member.getId(),
                 member.getNickName()
         );
     }
 
-    public static List<MemberData> fromEntities(List<Member> members) {
-        return members.stream().map(MemberData::fromEntity).toList();
+    public static List<MemberDataA> fromEntities(List<Member> members) {
+        return members.stream().map(MemberDataA::fromEntity).toList();
     }
 
 }

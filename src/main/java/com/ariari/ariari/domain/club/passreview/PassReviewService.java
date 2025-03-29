@@ -3,7 +3,6 @@ package com.ariari.ariari.domain.club.passreview;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewData;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewNoteData;
