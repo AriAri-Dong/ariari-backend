@@ -8,12 +8,14 @@ import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 @SQLDelete(sql = "UPDATE club_question SET deleted_date_time= CURRENT_TIMESTAMP WHERE club_question_id= ?")
 @SQLRestriction("deleted_date_time is null")
 public class ClubQuestion extends LogicalDeleteEntity {

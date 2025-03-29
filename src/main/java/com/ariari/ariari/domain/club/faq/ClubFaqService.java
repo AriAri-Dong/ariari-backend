@@ -9,6 +9,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.faq.dto.req.ClubFaqSaveReq;
 import com.ariari.ariari.domain.club.faq.dto.res.ClubFaqListRes;
+import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +43,7 @@ public class ClubFaqService {
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        ClubFaq clubFaq = saveReq.toEntity(club, reqClubMember);
+        ClubFaq clubFaq = saveReq.toEntity(club);
         clubFaqRepository.save(clubFaq);
     }
 

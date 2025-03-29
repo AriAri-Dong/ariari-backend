@@ -33,4 +33,11 @@ public class SchoolAuthController {
         schoolAuthService.validateSchoolAuthCode(reqMemberId, schoolAuthCodeReq);
     }
 
+    @Operation(summary = "학교 인증 취소", description = "등록된 내 학교 인증을 취소합니다.")
+    @PutMapping("/cancel")
+    public void removeMySchoolAuth(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        schoolAuthService.removeMySchoolAuth(reqMemberId);
+    }
+
 }

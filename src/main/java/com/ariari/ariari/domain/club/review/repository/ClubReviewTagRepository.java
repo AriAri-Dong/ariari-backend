@@ -10,10 +10,6 @@ import java.util.List;
 
 public interface ClubReviewTagRepository extends JpaRepository<ClubReviewTag, Long> {
     List<ClubReviewTag> findByClubReview(ClubReview clubReview);
-    @Query("SELECT crt FROM ClubReviewTag crt " +
-            "JOIN crt.clubReview cr " +
-            "JOIN cr.clubMember cm " +
-            "JOIN cm.club c " +
-            "WHERE c.id = :clubId")
-    List<ClubReviewTag> findByClubId(@Param("clubId") Long clubId);
+
+    List<ClubReviewTag> findByClubReview_Club_Id(Long clubId);
 }

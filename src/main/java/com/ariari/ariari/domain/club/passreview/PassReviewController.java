@@ -35,21 +35,12 @@ public class PassReviewController {
         return passReviewService.searchPassReviewPage(reqMemberId, clubId, pageable);
     }
 
-    @GetMapping("/{passReviewId}")
+    @GetMapping("/detail/{passReviewId}")
     @Operation(summary = "합격 후기 상세 조회", description = "합격 후기 상세 내용을 조회합니다.")
     public PassReviewData find_pass_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                 @PathVariable(name = "passReviewId") Long passReviewId){
         //Long reqMemberId = getMemberId(userDetails, false);
         return passReviewService.findPassReviewDetail(passReviewId);
-    }
-
-    @PostMapping("/access/{passReviewId}")
-    @Operation(summary = "합격 후기 접근 권한 생성", description = "포인트를 사용하여 해당 합격후기를 열람할 시" +
-            "합격후기를 열람할 수 있는 권한 데이터를 생성합니다.")
-    public void access_pass_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                          @PathVariable(name = "passReviewId") Long passReviewId){
-        Long reqMemberId = getMemberId(userDetails, false);
-        passReviewService.accessPassReivew(reqMemberId, passReviewId);
     }
 
     @PostMapping("/{clubId}")

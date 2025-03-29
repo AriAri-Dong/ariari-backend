@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.recruitment.recruitment.dto;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.RecruitmentStatusType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,14 +35,14 @@ public class RecruitmentInClubData extends RecruitmentData {
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
                 recruitment.getClub().getId(),
-                recruitment.getIsActivated(),
+                recruitment.getRecruitmentStatusType(),
                 null,
                 RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes())
         );
     }
 
-    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, Boolean isActivated, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
-        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, isActivated, isMyBookmark);
+    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, RecruitmentStatusType recruitmentStatusType, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
+        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, recruitmentStatusType, isMyBookmark);
         this.recruitmentNoteDataList = recruitmentNoteDataList;
     }
 

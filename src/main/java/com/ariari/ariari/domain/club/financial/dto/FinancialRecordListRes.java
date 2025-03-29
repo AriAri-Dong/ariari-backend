@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.Page;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -21,7 +22,12 @@ public class FinancialRecordListRes {
 
     public static FinancialRecordListRes fromPage(Page<FinancialRecord> page, Long totalBeforeLast) {
         List<FinancialRecordData> list = page.getContent().stream().map(FinancialRecordData::fromEntity).toList();
-
+        if(list.isEmpty()){
+            return new FinancialRecordListRes(
+                    Collections.emptyList(),
+                    PageInfo.fromPage(page)
+            );
+        }
         // setBalance
         ListIterator<FinancialRecordData> iterator = list.listIterator(list.size());
         while (iterator.hasPrevious()) {

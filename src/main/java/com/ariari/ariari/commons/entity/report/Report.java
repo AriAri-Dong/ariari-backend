@@ -4,6 +4,7 @@ import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.enums.ReportType;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.commons.exception.exceptions.InvalidReportException;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,11 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @SQLDelete(sql = "UPDATE report SET deleted_date_time= CURRENT_TIMESTAMP WHERE report_id= ?")
-@SQLRestriction("deleted_dt IS NULL")
+//@Table(
+//        indexes = @Index(name = "idx_dtype", columnList = "dtype")  // dtype 컬럼에 인덱스를 추가
+//)
+@SQLRestriction("deleted_date_time  IS NULL")
+@DiscriminatorColumn(name = "dtype")
 @Getter
 public abstract class Report extends LogicalDeleteEntity {
 
@@ -31,5 +36,14 @@ public abstract class Report extends LogicalDeleteEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporter_id")
     private Member reporter;
+
+    protected Report(ReportType reportType, String body, Member reporter) {
+        if (reporter == null || reportType == null){
+            throw new InvalidReportException();
+        }
+        this.reportType = reportType;
+        this.body = body;
+        this.reporter = reporter;
+    }
 
 }

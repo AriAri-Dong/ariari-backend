@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -22,5 +23,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByNickName(String nickname);
 
     boolean existsByNickName(String nickname);
+
+    @Query("select m from Member m where m.nickName like %:nickname% order by m.nickName asc limit 20")
+    List<Member> find20ByNickNameContains(String nickname);
 
 }

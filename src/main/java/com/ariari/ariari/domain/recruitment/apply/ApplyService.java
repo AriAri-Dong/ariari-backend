@@ -1,6 +1,8 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
@@ -12,17 +14,24 @@ import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubExcepti
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import com.ariari.ariari.domain.recruitment.apply.exception.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,6 +43,8 @@ public class ApplyService {
     private final ClubMemberRepository clubMemberRepository;
     private final ApplyRepository applyRepository;
     private final FileManager fileManager;
+    private final MemberAlarmManger memberAlarmManger;
+    private final ClubAlarmManger clubAlarmManger;
 
     public ApplyDetailRes findApplyDetail(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -76,6 +87,7 @@ public class ApplyService {
         }
 
         applyRepository.save(apply);
+        clubAlarmManger.sendRecruitmentMember(reqMember, club, recruitment.getTitle());
     }
 
     @Transactional
@@ -99,6 +111,7 @@ public class ApplyService {
 
         ClubMember clubMember = ClubMember.createGeneral(apply);
         clubMemberRepository.save(clubMember);
+        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.APPROVE, apply.getMember(), club.getName());
     }
 
     @Transactional
@@ -115,6 +128,7 @@ public class ApplyService {
         }
 
         apply.setApplyStatusType(ApplyStatusType.REFUSAL);
+        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.REFUSAL, apply.getMember(), club.getName());
     }
 
     @Transactional
@@ -131,6 +145,7 @@ public class ApplyService {
         }
 
         apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
+        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName());
     }
 
     @Transactional
@@ -152,5 +167,31 @@ public class ApplyService {
 
         applyRepository.delete(apply);
     }
+
+    // 매주 월요일 미처리된 지원서가 있을 시
+    @Scheduled(cron = "0 0 0 * * MON")
+    public void sendUncheckMember(){
+        List<Apply> applyList = applyRepository.findApplyByApplyStatusType_Pendency(ApplyStatusType.PENDENCY);
+
+        if(applyList.isEmpty()){
+            return;
+        }
+        // 모집별로 불류
+        Map<Long, List<Apply>> groupByRecruitmentId = applyList.stream()
+                .collect(Collectors.groupingBy(a -> a.getRecruitment().getId()));
+
+        groupByRecruitmentId.forEach((id, applys) -> {
+
+            String recruitmentTitle = applys.get(0).getRecruitment().getTitle();
+            List<Club> clubList = applys.stream().map( apply -> apply.getRecruitment().getClub()).toList();
+            clubAlarmManger.sendUncheckMember(clubList, recruitmentTitle);
+        });
+
+    }
+
+
+
+
+
 
 }

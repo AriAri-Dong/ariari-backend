@@ -1,10 +1,13 @@
 package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
+import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.club.dto.req.ClubModifyReq;
@@ -24,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -36,6 +40,8 @@ public class ClubService {
     private final ApplyFormRepository applyFormRepository;
     private final ViewsManager viewsManager;
     private final FileManager fileManager;
+    private final MemberAlarmManger memberAlarmManger;
+    private final ClubBookmarkRepository clubBookmarkRepository;
 
     @Transactional
     public ClubDetailRes findClubDetail(Long reqMemberId, Long clubId, String clientIp) {
@@ -122,6 +128,10 @@ public class ClubService {
         }
 
         clubRepository.delete(club);
+        List<Member> memberList = clubBookmarkRepository.findAllByClub(club).stream()
+                .map(ClubBookmark::getMember)
+                .toList();
+        memberAlarmManger.sendClubBookmarkClosedAlarm(memberList, club.getName());
     }
 
 }

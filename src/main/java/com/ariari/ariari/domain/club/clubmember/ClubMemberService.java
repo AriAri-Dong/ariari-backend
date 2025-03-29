@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
@@ -26,6 +27,7 @@ public class ClubMemberService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final MemberAlarmManger memberAlarmManger;
 
     public ClubMemberListRes findClubMemberList(Long reqMemberId, Long clubId, ClubMemberStatusType statusType, String query, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -49,6 +51,7 @@ public class ClubMemberService {
         GlobalValidator.belongsToClub(clubMember, club);
 
         clubMember.setClubMemberRoleType(roleType);
+        memberAlarmManger.sendClubRoleStateAlarm(clubMember.getMember(), roleType, club.getId());
     }
 
     @Transactional
@@ -77,6 +80,7 @@ public class ClubMemberService {
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         clubMember.setClubMemberStatusType(statusType);
+        memberAlarmManger.sendClubMemberStatusType(statusType, clubMember.getMember());
     }
 
     @Transactional
@@ -93,6 +97,10 @@ public class ClubMemberService {
             GlobalValidator.isHigherRoleTypeThan(reqClubMember, clubMember);
             clubMember.setClubMemberStatusType(statusType);
         }
+        List<Member> memberList = clubMembers.stream()
+                .map(ClubMember::getMember)
+                .toList();
+        memberAlarmManger.sendClubMembersStatusType(statusType, memberList);
     }
 
     @Transactional
@@ -107,6 +115,7 @@ public class ClubMemberService {
         GlobalValidator.isHigherRoleTypeThan(reqClubMember, clubMember);
 
         clubMemberRepository.delete(clubMember);
+        memberAlarmManger.sendClubMemberRemove(clubMember.getMember(), club.getName(), club.getId());
     }
 
     /**

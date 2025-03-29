@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.question;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class ClubQuestionService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubQuestionRepository clubQuestionRepository;
+    private final ClubAlarmManger clubAlarmManger;
 
     public ClubQnaListRes findClubQuestions(Long reqMemberId, Long clubId, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -45,6 +49,7 @@ public class ClubQuestionService {
 
         ClubQuestion clubQuestion = saveReq.toEntity(club, reqMember);
         clubQuestionRepository.save(clubQuestion);
+        clubAlarmManger.sendClubQA(club);
     }
 
     @Transactional
@@ -62,5 +67,17 @@ public class ClubQuestionService {
 
         clubQuestionRepository.delete(clubQuestion);
     }
+
+    @Transactional
+    public void changeStateByMember(Long reqMemberId){
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        List<ClubQuestion> clubQuestions = clubQuestionRepository.findByMember(reqMember);
+
+        clubQuestions.stream().forEach( question  -> {
+            question.setMember(null);
+        });
+
+    }
+
 
 }

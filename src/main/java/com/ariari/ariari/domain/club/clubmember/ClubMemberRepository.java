@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,9 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
     Optional<ClubMember> findByClubAndMember(Club club, Member member);
 
     Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
+
+   //@Query("SELECT cm FROM ClubMember cm JOIN FETCH cm.club WHERE cm.club = :club")
+    List<ClubMember> findAllByClub(Club club);
 
     Long countByClub(Club club);
 
