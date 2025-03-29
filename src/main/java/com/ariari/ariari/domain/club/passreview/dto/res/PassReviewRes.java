@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PassReviewRes {
     @Schema(description = "합격후기 id", example = "id값")
-    private Long id;
+    private String id;
     @Schema(description = "합격후기 제목", example = "제목")
     private String title;
     @Schema(description = "작성일자", example = "localDateTime, ...")

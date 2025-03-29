@@ -17,9 +17,9 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 public class TagData {
-    @Schema(description = "Tag id", example = "id값")
+    @Schema(description = "Tag id", example = "")
     private String id;
-    @Schema(description = "body", example = "태그 내용")
+    @Schema(description = "body", example = "")
     private String body;
     @Schema(description = "태그명", example = "CAREER_PREPARATION, //취업준비에 도움이 돼요\n" +
             "    NETWORKING, //인간관계를 넓힐 수 있어요\n" +
@@ -29,7 +29,7 @@ public class TagData {
             "    HEALTH_ENHANCEMENT, //건강증진에 도움이 돼요\n" +
             "    DIVERSE_EXPERIENCE //다양한 경험을 할 수 있어요")
     private Icon icon;
-    @Schema(description = "rate", example = "태그 비율")
+    @Schema(description = "rate 태그 비율", example = "")
     private Double rate;
 
     public static List<TagData> toTagDataList(List<Tag> tags){
