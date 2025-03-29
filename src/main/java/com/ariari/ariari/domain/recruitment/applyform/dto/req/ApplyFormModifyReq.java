@@ -15,10 +15,10 @@ import java.util.List;
 public class ApplyFormModifyReq {
 
     @Schema(description = "지원 형식 질문 리스트")
-    private List<ApplyQuestionReq> applyQuestionReqList = new ArrayList<>();
+    private List<String> applyQuestionList = new ArrayList<>();
 
     public ApplyForm toEntity(Club club) {
-        List<ApplyQuestion> applyQuestions = this.applyQuestionReqList.stream().map(ApplyQuestionReq::toEntity).toList();
+        List<ApplyQuestion> applyQuestions = applyQuestionList.stream().map(ApplyQuestion::new).toList();
 
         ApplyForm applyForm = new ApplyForm(
                 club,
