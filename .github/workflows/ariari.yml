@@ -64,6 +64,13 @@ jobs:
                 maxRequestSize: 10MB
           server:
             port: 8282
+          
+          mybatis:
+            mapper-locations: mapper/*.xml
+            type-aliases-package: com.ariari.ariari.domain
+            configuration:
+              map-underscore-to-camel-case: true
+          
           jwt:
             secret-key: ${JWT_SECRET_KEY}
             access-expiration-time: 36000000

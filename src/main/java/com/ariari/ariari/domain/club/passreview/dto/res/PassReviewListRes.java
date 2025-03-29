@@ -12,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PassReviewListRes {
-    @Schema(description = "데이터", example = "합격후기 목록 관련 데이터")
+    @Schema(description = "데이터", example = "")
     private List<PassReviewRes> contents;
-    @Schema(description = "페이지 관련 정보", example = "페이지 관련 정보")
+    @Schema(description = "페이지 관련 정보", example = "")
     private PageInfo pageInfo;
 
     public static PassReviewListRes fromPassReviewResList(List<PassReviewRes> contents, Integer totalSize, Integer pageSize) {

@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.dto;
 
-import com.ariari.ariari.domain.member.member.dto.MemberDataA;
+import com.ariari.ariari.domain.member.member.dto.MemberData;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -27,7 +27,7 @@ public class ApplyData {
     @Schema(description = "지원서 생성 날짜/시간", example = "2025-03-15T09:08:18.467Z")
     private LocalDateTime createdDateTime;
 
-    private MemberDataA memberDataA;
+    private MemberData memberData;
     @Schema(description = "지원한 모집의 제목", example = "아리아리 3기 모집")
     private String recruitmentTitle;
     @Schema(description = "지원한 모집이 속한 동아리 이름", example = "아리아리")
@@ -39,7 +39,7 @@ public class ApplyData {
                 apply.getName(),
                 apply.getApplyStatusType(),
                 apply.getCreatedDateTime(),
-                MemberDataA.fromEntity(apply.getMember()),
+                MemberData.fromEntity(apply.getMember()),
                 apply.getRecruitment().getTitle(),
                 apply.getRecruitment().getClub().getName()
         );
