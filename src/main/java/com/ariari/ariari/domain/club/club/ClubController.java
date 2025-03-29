@@ -64,6 +64,13 @@ public class ClubController {
         return clubListService.findMyClubList(reqMemberId, pageable);
     }
 
+    @Operation(summary = "내 동아리 조회 (내가 최고관리자인)", description = "내가 속한 전체 동아리 중 내가 최고관리자인 동아리 리스트를 조회합니다.")
+    @GetMapping("/my/admin")
+    public ClubListRes findMyAdminClubList(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long reqMemberId = getMemberId(userDetails, true);
+        return clubListService.findMyAdminClubList(reqMemberId);
+    }
+
     @Operation(summary = "내 북마크 동아리 조회", description = "내가 북마크 등록한 동아리 리스트를 조회합니다. (페이지네이션)")
     @GetMapping("/my-bookmarks")
     public ClubListRes findMyBookmarkClubList(@AuthenticationPrincipal CustomUserDetails userDetails,
