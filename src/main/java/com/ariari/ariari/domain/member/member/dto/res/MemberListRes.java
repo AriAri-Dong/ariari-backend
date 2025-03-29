@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.member.member.dto.res;
 
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.member.dto.MemberData;
+import com.ariari.ariari.domain.member.member.dto.MemberDataA;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,11 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 public class MemberListRes {
 
-    List<MemberData> memberDataList;
+    List<MemberDataA> memberDataAList;
 
     public static MemberListRes createRes(List<Member> members) {
         return new MemberListRes(
-                MemberData.fromEntities(members)
+                MemberDataA.fromEntities(members)
         );
     }
 

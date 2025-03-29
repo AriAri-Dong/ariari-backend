@@ -38,8 +38,7 @@ public class PassReviewController {
     @GetMapping("/detail/{passReviewId}")
     @Operation(summary = "합격 후기 상세 조회", description = "합격 후기 상세 내용을 조회합니다.")
     public PassReviewData find_pass_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                @PathVariable(name = "passReviewId") Long passReviewId){
-        //Long reqMemberId = getMemberId(userDetails, false);
+                                                  @PathVariable(name = "passReviewId") Long passReviewId){
         return passReviewService.findPassReviewDetail(passReviewId);
     }
 

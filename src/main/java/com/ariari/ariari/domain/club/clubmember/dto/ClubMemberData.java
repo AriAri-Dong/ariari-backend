@@ -3,7 +3,7 @@ package com.ariari.ariari.domain.club.clubmember.dto;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
-import com.ariari.ariari.domain.member.member.dto.MemberData;
+import com.ariari.ariari.domain.member.member.dto.MemberDataA;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +28,7 @@ public class ClubMemberData {
     @Schema(description = "동아리 회원 상태", example = "ACTIVE")
     private ClubMemberStatusType clubMemberStatusType;
 
-    private MemberData memberData;
+    private MemberDataA memberDataA;
 
     public static ClubMemberData fromEntity(ClubMember clubMember) {
         if (clubMember == null) {
@@ -40,7 +40,7 @@ public class ClubMemberData {
                 clubMember.getName(),
                 clubMember.getClubMemberRoleType(),
                 clubMember.getClubMemberStatusType(),
-                MemberData.fromEntity(clubMember.getMember())
+                MemberDataA.fromEntity(clubMember.getMember())
         );
     }
 

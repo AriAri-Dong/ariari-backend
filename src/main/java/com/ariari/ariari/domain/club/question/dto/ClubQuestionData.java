@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.club.question.dto;
 
 import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.club.question.answer.dto.ClubAnswerData;
-import com.ariari.ariari.domain.member.member.dto.MemberData;
+import com.ariari.ariari.domain.member.member.dto.MemberDataA;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +27,7 @@ public class ClubQuestionData {
     @Schema(description = "동아리 질문 생성 날짜/시간", example = "2025-01-31T09:08:18.467Z")
     private LocalDateTime createdDateTime;
 
-    private MemberData memberData;
+    private MemberDataA memberDataA;
     private ClubAnswerData clubAnswerData;
 
     public static ClubQuestionData fromEntity(ClubQuestion clubQuestion) {
@@ -36,9 +36,9 @@ public class ClubQuestionData {
             clubAnswerData = ClubAnswerData.fromEntity(clubQuestion.getClubAnswer());
         }
 
-        MemberData memberData = null;
+        MemberDataA memberDataA = null;
         if( clubQuestion.getMember() != null){
-            memberData= MemberData.fromEntity(clubQuestion.getMember());
+            memberDataA = MemberDataA.fromEntity(clubQuestion.getMember());
         }
 
         return new ClubQuestionData(
@@ -46,7 +46,7 @@ public class ClubQuestionData {
                 clubQuestion.getTitle(),
                 clubQuestion.getBody(),
                 clubQuestion.getCreatedDateTime(),
-                memberData,
+                memberDataA,
                 clubAnswerData
         );
     }
