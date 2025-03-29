@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.review;
 
+import com.ariari.ariari.commons.exception.exceptions.DuplicateDataCreateException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
@@ -90,7 +91,7 @@ public class ClubReviewService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         if(clubReviewRepository.existsByClubAndMember(club, member)){
-            throw new RuntimeException(); // 중복 작성 exception 추가해야함
+            throw new DuplicateDataCreateException(); // 중복 작성 exception 추가해야함
         }
         List<Tag> tags = tagRepository.findByIconIn(clubReviewSaveReq.getIcons()).orElseThrow(NotFoundEntityException::new);
         ClubReview clubReview = clubReviewSaveReq.toEntity(clubReviewSaveReq, member, club, tags);
