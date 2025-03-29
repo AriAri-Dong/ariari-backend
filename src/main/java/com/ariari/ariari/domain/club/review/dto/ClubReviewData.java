@@ -16,15 +16,15 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 public class ClubReviewData {
-    @Schema(description = "활동후기 id", example = "id값")
+    @Schema(description = "활동후기 id", example = "")
     private String id;
     @Schema(description = "활동후기 제목", example = "제목")
     private String title;
     @Schema(description = "활동후기 내용", example = "내용")
     private String body;
-    @Schema(description = "작성일", example = "작성일")
+    @Schema(description = "작성일", example = "")
     private LocalDateTime createdDateTime;
-    @Schema(description = "태그 데이터", example = "CAREER_PREPARATION, NETWORKING, INTEREST_EXPLORATION, SELF_DEVELOPMENT, ACADEMIC_IMPROVEMENT, HEALTH_ENHANCEMENT, DIVERSE_EXPERIENCE")
+    @Schema(description = "태그 데이터 CAREER_PREPARATION, NETWORKING, INTEREST_EXPLORATION, SELF_DEVELOPMENT, ACADEMIC_IMPROVEMENT, HEALTH_ENHANCEMENT, DIVERSE_EXPERIENCE", example = "")
     private List<TagData> tagDataList;
 
     // 상세 조회용

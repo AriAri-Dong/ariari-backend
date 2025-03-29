@@ -17,9 +17,11 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
     @EntityGraph(attributePaths = "club")
     Page<ClubMember> findByMember(Member member, Pageable pageable);
 
+    @EntityGraph(attributePaths = "club")
+    List<ClubMember> findByMember(Member member);
+
     Optional<ClubMember> findByClubAndMember(Club club, Member member);
 
-    Optional<ClubMember> findByClubIdAndMemberId(Long clubId, Long memberId);
 
    //@Query("SELECT cm FROM ClubMember cm JOIN FETCH cm.club WHERE cm.club = :club")
     List<ClubMember> findAllByClub(Club club);
