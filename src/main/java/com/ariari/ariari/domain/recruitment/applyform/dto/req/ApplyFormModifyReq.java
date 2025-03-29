@@ -3,7 +3,6 @@ package com.ariari.ariari.domain.recruitment.applyform.dto.req;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
-import com.ariari.ariari.domain.recruitment.applyform.applyquestion.dto.req.ApplyQuestionReq;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
