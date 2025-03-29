@@ -14,17 +14,17 @@ import java.util.List;
 
 @Data
 public class PassReviewSaveReq {
-    @Schema(description = "합격후기 제목", example = "제목")
+    @Schema(description = "합격후기 제목", example = "아리아리 합격 후기입니당")
     private String title;
-    @Schema(description = "동아리 모집 전형", example = "DOCUMENT : 서류 , INTERVIEW : 서류 + 면접")
+    @Schema(description = "동아리 모집 전형, DOCUMENT : 서류 , INTERVIEW : 서류 + 면접", example = "INTERVIEW")
     private ProcedureType procedureType;
-    @Schema(description = "면접 방식", example = "ONLINE : 온라인, OFFLINE : 대면, CALL : 전화")
+    @Schema(description = "면접 방식, ONLINE : 온라인, OFFLINE : 대면, CALL : 전화", example = "OFFLINE")
     private InterviewType interviewType;
-    @Schema(description = "면접 방식(면접관 비율)", example = "ONE_VS_ONE : 지원자1/면접관1, ONE_VS_MANY : 지원자1/면접관 다수, MANY_VS_MANY : 그룹면접")
+    @Schema(description = "면접 방식(면접관 비율) ONE_VS_ONE : 지원자1/면접관1, ONE_VS_MANY : 지원자1/면접관 다수, MANY_VS_MANY : 그룹면접", example = "ONE_VS_MANY")
     private InterviewRatioType interviewRatioType;
-    @Schema(description = "면접 분위기", example = "편안한 1 ~ 엄숙한 5")
+    @Schema(description = "면접 분위기 편안한 1 ~ 엄숙한 5", example = "1")
     private Integer interviewMood;
-    @Schema(description = "면접문항 및 서류문항들", example = "문항,답변,타입으로 구성된 면접 문항 및 서류 문항들")
+    @Schema(description = "면접문항 및 서류문항들 : 문항,답변,타입으로 구성된 면접 문항 및 서류 문항들 ", example = "")
     private List<PassReviewNoteReq> passReviewNotes;
 
     public PassReview toEntity(ClubMember clubMember){
@@ -40,7 +40,7 @@ public class PassReviewSaveReq {
         );
 
         for (PassReviewNote passReviewNote : passReviewNotes) {
-            passReviewNote.setPassReview(passReview);
+            passReview.getPassReviewNotes().add(passReviewNote);
         }
 
         return passReview;
