@@ -10,10 +10,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-<<<<<<< HEAD
-=======
-
->>>>>>> f9bdeffc3e32d91e0472497eb6fda80c8c94a94e
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
