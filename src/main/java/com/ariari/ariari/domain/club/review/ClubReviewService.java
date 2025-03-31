@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -94,7 +95,10 @@ public class ClubReviewService {
             throw new DuplicateDataCreateException(); // 중복 작성 exception 추가해야함
         }
         List<Tag> tags = tagRepository.findByIconIn(clubReviewSaveReq.getIcons()).orElseThrow(NotFoundEntityException::new);
-        ClubReview clubReview = clubReviewSaveReq.toEntity(clubReviewSaveReq, member, club, tags);
+        List<ClubReviewTag> clubReviewTags = tags.stream()
+                .map(ClubReviewTag::new)
+                .collect(Collectors.toList());
+        ClubReview clubReview = clubReviewSaveReq.toEntity(clubReviewSaveReq, member, club, clubReviewTags);
         clubReviewRepository.save(clubReview);
     }
 }
