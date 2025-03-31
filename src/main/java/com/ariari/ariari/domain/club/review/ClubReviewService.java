@@ -41,22 +41,20 @@ public class ClubReviewService {
     private final ClubRepository clubRepository;
 
     // 활동후기 목록 조회
-    public ClubReviewListRes searchClubReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
+    public ClubReviewListRes searchClubReviewPage(Long clubId, Pageable pageable){
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Page<ClubReview> clubReviews = clubReviewRepository.findByClub(club, pageable);
         List<ClubReviewData> clubReviewDataList = ClubReviewData.fromEntities(clubReviews);
         return ClubReviewListRes.toClubReviewResList(clubReviewDataList, clubReviews);
     }
 
     // 활동후기 상세 조회
-    public ClubReviewData findClubReviewDetail(Long reqMemberId, Long clubReviewId){
+    public ClubReviewData findClubReviewDetail(Long clubReviewId){
         ClubReview clubReview = clubReviewRepository.findById(clubReviewId).orElseThrow(NotFoundEntityException::new);
-        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         List<ClubReviewTag> clubReviewTags = clubReviewTagRepository.findByClubReview(clubReview);
         List<Tag> tags = clubReviewTags.stream().map(ClubReviewTag::getTag).toList();
         List<TagData> tagDataList = TagData.toTagDataList(tags);
-        return ClubReviewData.toClubReviewData(member, clubReview, tagDataList);
+        return ClubReviewData.toClubReviewData(clubReview, tagDataList);
     }
 
     // 클럽의 태그 통계 리스트

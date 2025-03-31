@@ -26,22 +26,19 @@ public class ClubReviewData {
     private String nickname;
     @Schema(description = "작성자 id", example = "")
     private String creatorId;
-    @Schema(description = "본인 글이면 Y 아니라면 N", example = "N")
-    private String isCreator;
     @Schema(description = "작성일", example = "")
     private LocalDateTime createdDateTime;
     @Schema(description = "태그 데이터 CAREER_PREPARATION, NETWORKING, INTEREST_EXPLORATION, SELF_DEVELOPMENT, ACADEMIC_IMPROVEMENT, HEALTH_ENHANCEMENT, DIVERSE_EXPERIENCE", example = "")
     private List<TagData> tagDataList;
 
     // 상세 조회용
-    public static ClubReviewData toClubReviewData(Member reqMember, ClubReview clubReview, List<TagData> tagDataList){
+    public static ClubReviewData toClubReviewData(ClubReview clubReview, List<TagData> tagDataList){
         return ClubReviewData.builder()
                 .id(Long.toString(clubReview.getId()))
                 .title(clubReview.getTitle())
                 .body(clubReview.getBody())
                 .nickname(clubReview.getMember().getNickName())
                 .creatorId(Long.toString(clubReview.getMember().getId()))
-                .isCreator(clubReview.getMember().equals(reqMember) ? "Y" : "N")
                 .createdDateTime(clubReview.getCreatedDateTime())
                 .tagDataList(tagDataList)
                 .build();

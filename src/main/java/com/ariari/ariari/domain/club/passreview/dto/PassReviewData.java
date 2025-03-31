@@ -31,6 +31,9 @@ public class PassReviewData {
     private Long id;
     @Schema(description = "합격후기 제목", example = "")
     private String title;
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "작성자 id", example = "")
+    private Long creatorId;
     @Schema(description = "합격전형 DOCUMENT(서류) INTERVIEW(서류+면접)", example = "")
     private ProcedureType procedureType;
     @Schema(description = "면접방식", example = "")
@@ -67,6 +70,7 @@ public class PassReviewData {
         return PassReviewData.builder()
                 .id(passReview.getId())
                 .title(passReview.getTitle())
+                .creatorId(passReview.getMember().getId())
                 .procedureType(passReview.getProcedureType())
                 .interviewType(passReview.getInterviewType())
                 .interviewRatioType(passReview.getInterviewRatioType())

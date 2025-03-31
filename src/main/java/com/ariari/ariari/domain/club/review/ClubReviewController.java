@@ -29,7 +29,7 @@ public class ClubReviewController {
                                                      Pageable pageable,
                                                      @PathVariable(name = "clubId") Long clubId){
         Long reqMemberId = getMemberId(userDetails, false);
-        return clubReviewService.searchClubReviewPage(reqMemberId, clubId, pageable);
+        return clubReviewService.searchClubReviewPage(clubId, pageable);
     }
 
     @GetMapping("/detail/{clubReviewId}")
@@ -37,7 +37,7 @@ public class ClubReviewController {
     public ClubReviewData find_club_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                   @PathVariable(name = "clubReviewId") Long clubReviewId){
         Long reqMemberId = getMemberId(userDetails, false);
-        return clubReviewService.findClubReviewDetail(reqMemberId, clubReviewId);
+        return clubReviewService.findClubReviewDetail(clubReviewId);
     }
 
     @GetMapping("/{clubId}/tag-statistics")
