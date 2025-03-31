@@ -55,7 +55,7 @@ public class ClubReviewService {
         List<ClubReviewTag> clubReviewTags = clubReviewTagRepository.findByClubReview(clubReview);
         List<Tag> tags = clubReviewTags.stream().map(ClubReviewTag::getTag).toList();
         List<TagData> tagDataList = TagData.toTagDataList(tags);
-        return ClubReviewData.toClubReviewData(clubReview, tagDataList);
+        return ClubReviewData.toClubReviewData(member, clubReview, tagDataList);
     }
 
     // 클럽의 태그 통계 리스트
