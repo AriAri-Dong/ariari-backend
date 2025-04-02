@@ -1,6 +1,9 @@
 package com.ariari.ariari.test;
 
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.alarm.ClubAlarm;
+import com.ariari.ariari.domain.club.alarm.ClubAlarmRepository;
+import com.ariari.ariari.domain.club.alarm.enums.ClubAlarmType;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
@@ -42,7 +45,7 @@ import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
-import jakarta.persistence.EntityManager;
+import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -77,6 +80,7 @@ public class TestDataSetter {
     private final ClubReviewTagRepository clubReviewTagRepository;
     private final PassReviewRepository passReviewRepository;
     private final PassReviewNoteRepository passReviewNoteRepository;
+    private final ClubAlarmRepository clubAlarmRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -347,6 +351,26 @@ public class TestDataSetter {
         PassReviewNote prn8 = new PassReviewNote(NoteType.DOCUMENT, "제목", "저는.......");
         prn8.setPassReview(pr5);
         passReviewNoteRepository.saveAll(List.of(prn1, prn2, prn3, prn4, prn5, prn6, prn7, prn8));
+
+
+        //
+        ClubAlarm clubAlarm1 = ClubAlarm.builder()
+                .title("test 제목")
+                .isChecked(false)
+                .uri("clubs/{clubId}/club-questions")
+                .club(c1)
+                .clubAlarmType(ClubAlarmType.QUESTION)
+                .build();
+
+        ClubAlarm clubAlarm2 = ClubAlarm.builder()
+                .title("test 제목")
+                .isChecked(false)
+                .uri("clubs/{clubId}/club-questions")
+                .club(c9)
+                .clubAlarmType(ClubAlarmType.QUESTION)
+                .build();
+        clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2));
+
     }
 
 }

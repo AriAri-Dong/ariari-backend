@@ -48,7 +48,7 @@ public class ClubAlarmManger {
     public void sendClubQA(Club club){
         String title = "Q&A에 새로운 질문이 등록되었습니다! 질문 내용을 확인하고 도움을 제공해 보세요.";
         ClubAlarmEvent clubAlarmEvent = ClubAlarmEvent.from(title,
-                "clubQA", ClubAlarmType.ACTIVITY, club);
+                "clubs/"+club.getId()+"/club-questions", ClubAlarmType.QUESTION, club);
         sendSingle(clubAlarmEvent);
     }
 
