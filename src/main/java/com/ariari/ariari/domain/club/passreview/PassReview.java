@@ -51,7 +51,7 @@ public class PassReview extends LogicalDeleteEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "passReview", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "passReview", cascade = CascadeType.PERSIST)
     private List<PassReviewNote> passReviewNotes = new ArrayList<>();
 
     public PassReview(String title, ProcedureType procedureType, InterviewType interviewType, InterviewRatioType interviewRatioType,

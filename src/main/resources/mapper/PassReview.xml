@@ -2,42 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ariari.ariari.domain.club.passreview.mapper.PassReviewMapper">
-    <select id ="findByClubAndReqMember">
-        SELECT
-            pr.pass_review_id,
-            pr.title,
-            pr.created_date_time,
-            CASE
-                WHEN EXISTS (
-                    SELECT pra.pass_review_access_id
-                    FROM pass_review_access pra
-                    WHERE pra.pass_review_id = pr.pass_review_id
-                    AND pra.member_id = #{reqMemberId}
-                ) THEN true ELSE false END AS wasAccessed,
-            COUNT(
-                    SELECT pass_review_note_id
-                    FROM pass_review_note prn
-                    WHERE prn.pass_review_id = pr.pass_review_id
-                    AND prn.note_type = 'DOCUMENT'
-            ) AS documentNoteCount,
-            COUNT(
-                    SELECT pass_review_note_id
-                    FROM pass_review_note prn
-                    WHERE prn.pass_review_id = pr.pass_review_id
-                        AND prn.note_type = 'DOCUMENT'
-            ) AS interviewNoteCount
+    <select id ="findPassReviewOfClub">
+        SELECT pr.pass_review_id,
+               pr.title,
+               pr.created_date_time,
+               (SELECT COUNT(*)
+                FROM pass_review_note prn
+                WHERE prn.pass_review_id = pr.pass_review_id
+                  AND prn.note_type = 'DOCUMENT'
+                  AND prn.deleted_date_time IS NOT NULL) AS documentNoteCount,
+                (SELECT COUNT(*)
+                 FROM pass_review_note prn2
+                 WHERE prn2.pass_review_id = pr.pass_review_id
+                 AND prn2.note_type = 'INTERVIEW'
+                 AND prn2.deleted_date_time IS NOT NULL) AS interviewNoteCount
         FROM pass_review pr
-        INNER JOIN club_member cm
-            ON pr.club_member_id = cm.club_member_id
-                AND cm.club_id = #{clubId}
+        WHERE pr.club_id = #{clubId}
+        ORDER BY pr.created_date_time DESC
         LIMIT #{size} OFFSET #{offset}
     </select>
 
-    <select id="countByClubAndReqMember">
+    <select id="findPassReviewOfClubCount">
         SELECT COUNT(*)
         FROM pass_review pr
-            INNER JOIN club_member cm
-                ON pr.club_member_id = cm.club_member_id
-                    AND cm.club_id = #{clubId}
+        WHERE pr.club_id = #{clubId}
     </select>
 </mapper>

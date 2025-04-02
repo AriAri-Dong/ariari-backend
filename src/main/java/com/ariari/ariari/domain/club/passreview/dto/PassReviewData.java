@@ -7,7 +7,11 @@ import com.ariari.ariari.domain.club.passreview.enums.NoteType;
 import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Builder;
@@ -20,30 +24,34 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
 public class PassReviewData {
-    @Schema(description = "합격후기 id", example = "id값")
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "합격후기 id", example = "")
     private Long id;
-    @Schema(description = "합격후기 제목", example = "제목")
+    @Schema(description = "합격후기 제목", example = "")
     private String title;
-    @Schema(description = "합격전형", example = "DOCUMENT(서류) INTERVIEW(서류+면접)")
+    @Schema(description = "합격전형 DOCUMENT(서류) INTERVIEW(서류+면접)", example = "")
     private ProcedureType procedureType;
-    @Schema(description = "면접방식", example = "온라인 / 대면")
+    @Schema(description = "면접방식", example = "")
     private InterviewType interviewType;
-    @Schema(description = "면접방식(비율)", example = "1 : 1 / 지원자1 : 면접관N / 지원자M : 면접관N")
+    @Schema(description = "면접방식(비율)", example = "")
     private InterviewRatioType interviewRatioType;
-    @Schema(description = "면접 분위기", example = "1(편안한) ~ 5(엄숙한)")
+    @Schema(description = "면접 분위기", example = "")
     private Integer interviewMood;
-    @Schema(description = "서류 전형 관련 문항들", example = "질문과 문항만 담겨 있음")
+    @Schema(description = "서류 전형 관련 문항들", example = "")
     private List<PassReviewNoteData> documentNotes;
-    @Schema(description = "면접 전형 관련 문항들", example = "질문과 문항만 담겨 있음")
+    @Schema(description = "면접 전형 관련 문항들", example = "")
     private List<PassReviewNoteData> interviewNotes;
+
+    @JsonIgnore
     @Schema(description = "서류 관련 문항 개수", example = "")
     private int documentNoteCount;
-    @Schema(description = "면접 전형 관련 개수", example = "질문과 문항만 담겨 있음")
+
+    @JsonIgnore
+    @Schema(description = "면접 전형 관련 개수", example = "")
     private int interviewNoteCount;
-    @Schema(description = "작성일자", example = "localDateTime, ...")
+    @Schema(description = "작성일자 localDateTime, ...", example = "")
     private LocalDateTime createdDateTime;
 
     public static List<PassReviewData> fromEntities(Member reqMember, List<PassReview> passReviews) {

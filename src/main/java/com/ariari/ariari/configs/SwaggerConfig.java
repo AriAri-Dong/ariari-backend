@@ -5,21 +5,15 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.models.GroupedOpenApi;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+<<<<<<< HEAD
+=======
 
-    @Value("${server-secret.host}")
-    private String SERVER_HOST;
-
-    @Value("${server-secret.port}")
-    private String SERVER_PORT;
-
-    private final String TEST_SERVER_URL = "http://" + SERVER_HOST + ":" + SERVER_PORT + "/";
-
+>>>>>>> f9bdeffc3e32d91e0472497eb6fda80c8c94a94e
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -31,10 +25,6 @@ public class SwaggerConfig {
                         )
                 )
                 .addSecurityItem(new SecurityRequirement().addList("customAuth"));
-    }
-
-    private String getServerUrl() {
-        return SERVER_HOST + ":" + SERVER_PORT;
     }
 
     @Bean
@@ -240,10 +230,18 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi SystemFaq() {
+    public GroupedOpenApi systemFaq() {
         return GroupedOpenApi.builder()
                 .group("25. 시스템 FAQ API")
                 .packagesToScan("com.ariari.ariari.domain.system.faq", "com.ariari.ariari.test")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi applyForm() {
+        return GroupedOpenApi.builder()
+                .group("26. 동아리 지원 형식 API")
+                .packagesToScan("com.ariari.ariari.domain.recruitment.applyform", "com.ariari.ariari.test")
                 .build();
     }
 
