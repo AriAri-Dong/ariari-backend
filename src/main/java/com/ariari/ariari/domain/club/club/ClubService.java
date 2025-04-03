@@ -22,6 +22,7 @@ import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -127,11 +128,13 @@ public class ClubService {
             throw new RemovingClubException();
         }
 
-        clubRepository.delete(club);
+
         List<Member> memberList = clubBookmarkRepository.findAllByClub(club).stream()
                 .map(ClubBookmark::getMember)
                 .toList();
         memberAlarmManger.sendClubBookmarkClosedAlarm(memberList, club.getName());
+        clubRepository.delete(club);
+
     }
 
 }

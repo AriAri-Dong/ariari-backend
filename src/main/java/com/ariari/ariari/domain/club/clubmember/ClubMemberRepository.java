@@ -26,6 +26,7 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
    //@Query("SELECT cm FROM ClubMember cm JOIN FETCH cm.club WHERE cm.club = :club")
     List<ClubMember> findAllByClub(Club club);
 
+    @Query("select count(cm) from ClubMember as cm where cm.club = :club")
     Long countByClub(Club club);
 
 }

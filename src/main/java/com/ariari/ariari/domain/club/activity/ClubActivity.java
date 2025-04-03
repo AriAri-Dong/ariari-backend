@@ -38,4 +38,8 @@ public class ClubActivity extends LogicalDeleteEntity {
     @JoinColumn(name = "club_member_id")
     private ClubMember clubMember;
 
+    public void modifyClubMember() {
+        this.clubMember = null;
+    }
+
 }

@@ -36,4 +36,9 @@ public class ClubActivityComment extends LogicalDeleteEntity {
     @JoinColumn(name = "parent_comment_id")
     private ClubActivityComment parentComment;
 
+
+    public void modifyClubMember(){
+        this.clubMember = null;
+    }
+
 }

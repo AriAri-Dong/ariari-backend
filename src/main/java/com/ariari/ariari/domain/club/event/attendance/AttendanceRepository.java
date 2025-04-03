@@ -19,4 +19,5 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
     Page<Attendance> findByClubEvent(ClubEvent clubEvent, Pageable pageable);
 
+    List<Attendance> findAllByClubMember(ClubMember reqClubMember);
 }

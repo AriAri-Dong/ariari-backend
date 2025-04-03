@@ -10,10 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
-<<<<<<< HEAD
-=======
 
->>>>>>> f9bdeffc3e32d91e0472497eb6fda80c8c94a94e
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
@@ -182,7 +179,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi clubNotice() {
         return GroupedOpenApi.builder()
-                .group("20. 동아리 알림 API")
+                .group("20. 동아리 공지사항 API")
                 .packagesToScan("com.ariari.ariari.domain.club.notice", "com.ariari.ariari.test")
                 .build();
     }
