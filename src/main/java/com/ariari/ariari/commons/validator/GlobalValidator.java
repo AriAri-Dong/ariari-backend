@@ -4,6 +4,7 @@ import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.club.clubmember.exception.DelegateAdminException;
 import com.ariari.ariari.domain.club.clubmember.exception.LowerRoleTypeException;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.exceptions.NoClubAdminException;
@@ -13,6 +14,8 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.exception.ClosedRecruitmentException;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.exceptions.NoProperSchoolAuthException;
+
+import javax.security.auth.DestroyFailedException;
 
 public class GlobalValidator {
 
@@ -59,6 +62,12 @@ public class GlobalValidator {
     public static void isOpenRecruitment(Recruitment recruitment) {
         if (!recruitment.isRecruiting()) {
             throw new ClosedRecruitmentException();
+        }
+    }
+
+    public static void isClubMemberAdmin(ClubMember clubMember) {
+        if(clubMember.getClubMemberRoleType().equals(ClubMemberRoleType.ADMIN)) {
+            throw new DelegateAdminException();
         }
     }
 

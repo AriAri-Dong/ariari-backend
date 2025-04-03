@@ -4,13 +4,22 @@ import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
+import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
+import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentRepository;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
+import com.ariari.ariari.domain.club.event.attendance.Attendance;
+import com.ariari.ariari.domain.club.event.attendance.AttendanceRepository;
+import com.ariari.ariari.domain.club.notice.ClubNotice;
+import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
+import jakarta.persistence.OneToMany;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +36,11 @@ public class ClubMemberService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final ClubActivityCommentRepository clubActivityCommentRepository;
+    private final ClubNoticeRepository clubNoticeRepository;
+    private final ClubActivityRepository clubActivityRepository;
     private final MemberAlarmManger memberAlarmManger;
+    private final AttendanceRepository attendanceRepository;
 
     public ClubMemberListRes findClubMemberList(Long reqMemberId, Long clubId, ClubMemberStatusType statusType, String query, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -132,4 +145,43 @@ public class ClubMemberService {
         return ClubMemberListRes.createRes(page);
     }
 
+    @Transactional
+    public void quitClubMember(Long reqMemberId, Long clubMemberId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        ClubMember reqClubMember = clubMemberRepository.findById(clubMemberId).orElseThrow(NotFoundEntityException::new);
+        Club club = clubRepository.findById(reqClubMember.getClub().getId()).orElseThrow(NotFoundEntityException::new);
+
+
+        GlobalValidator.isClubMemberAdmin(reqClubMember);
+
+        // DB에서는 ON DELETE SET NULL 가능하지만 JPA는 X 그래서 전부 업데이트 처리 아니면 배치 update JPQL 해야함
+        deleteClubMember(reqClubMember);
+        clubMemberRepository.delete(reqClubMember);
+
+    }
+
+
+    public void deleteClubMember(ClubMember reqClubMember) {
+        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
+        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
+        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
+        List<Attendance> attendanceList = attendanceRepository.findAllByClubMember(reqClubMember);
+
+        for (ClubActivityComment clubActivityComment : clubActivityCommentList) {
+            clubActivityComment.modifyClubMember();
+        }
+        for (ClubActivity clubActivity : clubActivityList) {
+            clubActivity.modifyClubMember();
+        }
+        for (ClubNotice clubNotice : clubNoticeList) {
+            clubNotice.modifyClubMember();
+        }
+        for (Attendance attendance : attendanceList) {
+            attendance.modifyClubMember();
+        }
+
+        clubActivityCommentRepository.saveAll(clubActivityCommentList);
+        clubNoticeRepository.saveAll(clubNoticeList);
+        clubActivityRepository.saveAll(clubActivityList);
+    }
 }

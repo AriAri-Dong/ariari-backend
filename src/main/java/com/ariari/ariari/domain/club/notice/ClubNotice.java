@@ -46,9 +46,10 @@ public class ClubNotice extends LogicalDeleteEntity {
     @OneToMany(mappedBy = "clubNotice", cascade = CascadeType.ALL)
     private List<ClubNoticeImage> clubNoticeImages = new ArrayList<>();
 
-    public ClubNotice(String title, String body, Club club, ClubMember clubMember) {
+    public ClubNotice(String title, String body, Boolean isFixed, Club club, ClubMember clubMember) {
         this.title = title;
         this.body = body;
+        this.isFixed = isFixed;
         this.club = club;
         this.clubMember = clubMember;
     }
@@ -64,6 +65,10 @@ public class ClubNotice extends LogicalDeleteEntity {
         } else {
             isFixed = Boolean.TRUE;
         }
+    }
+
+    public void modifyClubMember(){
+        this.clubMember = null;
     }
 
 }

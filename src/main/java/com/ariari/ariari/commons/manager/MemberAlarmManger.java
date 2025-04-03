@@ -170,14 +170,6 @@ public class MemberAlarmManger {
         sendSingle(memberAlarmEvent);
     }
 
-    private void sendSingle(MemberAlarmEvent memberAlarmEvent){
-        eventPublisher.publishEvent(memberAlarmEvent);
-    }
-
-    private void sendList(MemberAlarmEventList memberAlarmListEvent){
-        eventPublisher.publishEvent(memberAlarmListEvent);
-    }
-
     private String roleSelect(ClubMemberRoleType roleType){
         String role = "";
         if(roleType == ClubMemberRoleType.GENERAL) {
@@ -212,6 +204,14 @@ public class MemberAlarmManger {
             title ="관리자에 의해 동아리 활동 상태가 휴식 중으로 변경되었습니다.";
         }
         return title;
+    }
+
+    private void sendSingle(MemberAlarmEvent memberAlarmEvent){
+        eventPublisher.publishEvent(memberAlarmEvent);
+    }
+
+    private void sendList(MemberAlarmEventList memberAlarmListEvent){
+        eventPublisher.publishEvent(memberAlarmListEvent);
     }
 
 

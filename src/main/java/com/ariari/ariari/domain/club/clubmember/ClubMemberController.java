@@ -88,6 +88,13 @@ public class ClubMemberController {
         clubMemberService.removeClubMember(reqMemberId, clubMemberId);
     }
 
+    @Operation(summary = "동아리 탈퇴", description = "해당 동아리에 탈퇴합니다.")
+    @DeleteMapping("/club-members/quit/{clubMemberId}")
+    public void quitClubMember(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long clubMemberId) {
+        Long reqMemberId = getMemberId(userDetails, true);
+        clubMemberService.quitClubMember(reqMemberId, clubMemberId);
+    }
+
     @Operation(summary = "동아리 회원 검색", description = "query 로 동아리 내 회원을 검색합니다. (contains 방식)")
 //    @GetMapping("/clubs/{clubId}/club-members/search")
     public ClubMemberListRes searchClubMembers(@AuthenticationPrincipal CustomUserDetails userDetails,

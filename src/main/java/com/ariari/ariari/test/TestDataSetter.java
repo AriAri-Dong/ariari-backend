@@ -1,6 +1,8 @@
 package com.ariari.ariari.test;
 
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.ariari.ariari.domain.club.alarm.ClubAlarm;
 import com.ariari.ariari.domain.club.alarm.ClubAlarmRepository;
 import com.ariari.ariari.domain.club.alarm.enums.ClubAlarmType;
@@ -15,6 +17,8 @@ import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
+import com.ariari.ariari.domain.club.notice.ClubNotice;
+import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.club.passreview.PassReview;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
@@ -30,6 +34,9 @@ import com.ariari.ariari.domain.club.review.repository.TagRepository;
 import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
 import com.ariari.ariari.domain.club.review.tag.Tag;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
+import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
@@ -81,6 +88,8 @@ public class TestDataSetter {
     private final PassReviewRepository passReviewRepository;
     private final PassReviewNoteRepository passReviewNoteRepository;
     private final ClubAlarmRepository clubAlarmRepository;
+    private final MemberAlarmRepository memberAlarmRepository;
+    private final ClubNoticeRepository clubNoticeRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -352,8 +361,26 @@ public class TestDataSetter {
         prn8.setPassReview(pr5);
         passReviewNoteRepository.saveAll(List.of(prn1, prn2, prn3, prn4, prn5, prn6, prn7, prn8));
 
+        //유저 알림
+        MemberAlarm memberAlarm1 = MemberAlarm.builder()
+                .title("test 제목1")
+                .uri("/clubs/clubId")
+                .member(m1)
+                .isChecked(false)
+                .memberAlarmType(MemberAlarmType.CLUB)
+                .build();
 
-        //
+        MemberAlarm memberAlarm2 = MemberAlarm.builder()
+                .title("test 제목2")
+                .uri("/clubs/clubId")
+                .member(m2)
+                .isChecked(false)
+                .memberAlarmType(MemberAlarmType.APPLY)
+                .build();
+        memberAlarmRepository.saveAll(List.of(memberAlarm1, memberAlarm2));
+
+
+        // 동아리 알림
         ClubAlarm clubAlarm1 = ClubAlarm.builder()
                 .title("test 제목")
                 .isChecked(false)
@@ -370,6 +397,12 @@ public class TestDataSetter {
                 .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
         clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2));
+
+
+        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, cm1_3);
+        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, cm1_3);
+        clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
+
 
     }
 
