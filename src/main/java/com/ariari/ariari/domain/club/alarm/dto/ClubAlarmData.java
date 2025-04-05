@@ -35,6 +35,7 @@ public class ClubAlarmData {
         @Schema(description = "알림 생성 날짜/시간", example = "2025-01-31T09:08:18.467Z")
         private LocalDateTime createdDateTime;
 
+
         @Builder
         private ClubAlarmData(Long id, String title, ClubAlarmType clubAlarmType, String uri, Boolean isChecked, LocalDateTime createdDateTime) {
             this.id = id;

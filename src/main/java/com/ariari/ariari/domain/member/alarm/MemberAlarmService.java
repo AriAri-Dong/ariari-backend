@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.member.alarm;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.domain.club.alarm.ClubAlarm;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.alarm.dto.res.MemberAlarmListRes;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
@@ -27,7 +28,13 @@ public class MemberAlarmService {
     public MemberAlarmListRes getAlarms(Long memberId, Pageable pageable) {
         Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
         Page<MemberAlarm> memberAlarmsPage = memberAlarmRepository.findAllByMember(reqMember, pageable);
-        return MemberAlarmListRes.fromPage(memberAlarmsPage);
+        int unreadCount = 0;
+        for(MemberAlarm memberAlarm : memberAlarmsPage){
+            if(!memberAlarm.getIsChecked()){
+                unreadCount++;
+            }
+        }
+        return MemberAlarmListRes.fromPage(memberAlarmsPage, unreadCount);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
