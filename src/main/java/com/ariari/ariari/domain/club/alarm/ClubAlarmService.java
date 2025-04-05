@@ -41,7 +41,14 @@ public class ClubAlarmService {
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         Page<ClubAlarm> clubAlarmPage = clubAlarmRepository.findAllByClub(club, pageable);
-        return ClubAlarmListRes.fromPage(clubAlarmPage);
+        int unreadCount = 0;
+        for(ClubAlarm clubAlarm : clubAlarmPage){
+            if(!clubAlarm.getIsChecked()){
+                unreadCount++;
+            }
+        }
+
+        return ClubAlarmListRes.fromPage(clubAlarmPage, unreadCount);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

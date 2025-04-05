@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.member.alarm.dto.res;
 
+import com.ariari.ariari.commons.manager.AlarmPageInfo;
 import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.dto.FinancialRecordData;
@@ -21,15 +22,15 @@ public class MemberAlarmListRes {
     @Schema(description = "회원 알림 데이터 리스트")
     private List<MemberAlarmData> memberAlarmDataList;
 
-    private PageInfo pageInfo;
+    private AlarmPageInfo alarmPageInfo;
 
 
-    private MemberAlarmListRes(List<MemberAlarmData> memberAlarmDataList, PageInfo pageInfo) {
+    private MemberAlarmListRes(List<MemberAlarmData> memberAlarmDataList, AlarmPageInfo alarmPageInfo) {
         this.memberAlarmDataList = memberAlarmDataList;
-        this.pageInfo = pageInfo;
+        this.alarmPageInfo = alarmPageInfo;
     }
 
-    public static MemberAlarmListRes fromPage(Page<MemberAlarm> page){
+    public static MemberAlarmListRes fromPage(Page<MemberAlarm> page, Integer unreadCount){
         // dto 변환작업
         List<MemberAlarmData> memberAlarmDataList = page.getContent().stream()
                 .map(MemberAlarmData::fromEntity)
@@ -37,11 +38,11 @@ public class MemberAlarmListRes {
         if(memberAlarmDataList.isEmpty()){
             return new MemberAlarmListRes(
                     Collections.emptyList(),
-                    PageInfo.fromPage(page)
+                    AlarmPageInfo.fromPage(page, 0)
             );
         }
 
-        return new MemberAlarmListRes(memberAlarmDataList, PageInfo.fromPage(page));
+        return new MemberAlarmListRes(memberAlarmDataList, AlarmPageInfo.fromPage(page, unreadCount));
     }
 
 }

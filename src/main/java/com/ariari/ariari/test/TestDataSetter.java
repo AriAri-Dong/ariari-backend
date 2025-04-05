@@ -382,7 +382,7 @@ public class TestDataSetter {
 
         // 동아리 알림
         ClubAlarm clubAlarm1 = ClubAlarm.builder()
-                .title("test 제목")
+                .title("test 제목1")
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c1)
@@ -390,13 +390,38 @@ public class TestDataSetter {
                 .build();
 
         ClubAlarm clubAlarm2 = ClubAlarm.builder()
-                .title("test 제목")
+                .title("test 제목2")
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
                 .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
-        clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2));
+
+        ClubAlarm clubAlarm3 = ClubAlarm.builder()
+                .title("test 제목3")
+                .isChecked(false)
+                .uri("clubs/{clubId}/club-questions")
+                .club(c9)
+                .clubAlarmType(ClubAlarmType.QUESTION)
+                .build();
+
+        ClubAlarm clubAlarm4 = ClubAlarm.builder()
+                .title("test 제목4")
+                .isChecked(true)
+                .uri("clubs/{clubId}/club-questions")
+                .club(c9)
+                .clubAlarmType(ClubAlarmType.QUESTION)
+                .build();
+
+        ClubAlarm clubAlarm5 = ClubAlarm.builder()
+                .title("test 제목5")
+                .isChecked(false)
+                .uri("clubs/{clubId}/club-questions")
+                .club(c9)
+                .clubAlarmType(ClubAlarmType.QUESTION)
+                .build();
+
+        clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2, clubAlarm3, clubAlarm4, clubAlarm5));
 
 
         ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, cm1_3);
