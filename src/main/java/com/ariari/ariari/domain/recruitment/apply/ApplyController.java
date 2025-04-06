@@ -60,7 +60,7 @@ public class ApplyController {
     }
 
     @Operation(summary = "지원 거절 처리", description = "")
-    @PostMapping("/applies/{applyId}/refuse")
+    @PostMapping("/applies/refuse")
     public void refuseApply(@AuthenticationPrincipal CustomUserDetails userDetails,
                             @RequestBody List<Long> applyIds) {
         Long reqMemberId = getMemberId(userDetails, true);
@@ -72,7 +72,7 @@ public class ApplyController {
     }
 
     @Operation(summary = "지원 상태를 INTERVIEW 로 변경", description = "")
-    @PostMapping("/applies/{applyId}/interview")
+    @PostMapping("/applies/interview")
     public void processApply(@AuthenticationPrincipal CustomUserDetails userDetails,
                              @RequestBody List<Long> applyIds) {
         Long reqMemberId = getMemberId(userDetails, true);
