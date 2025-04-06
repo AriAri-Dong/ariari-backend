@@ -28,12 +28,8 @@ public class MemberAlarmService {
     public MemberAlarmListRes getAlarms(Long memberId, Pageable pageable) {
         Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
         Page<MemberAlarm> memberAlarmsPage = memberAlarmRepository.findAllByMember(reqMember, pageable);
-        int unreadCount = 0;
-        for(MemberAlarm memberAlarm : memberAlarmsPage){
-            if(!memberAlarm.getIsChecked()){
-                unreadCount++;
-            }
-        }
+        Integer unreadCount = memberAlarmRepository.countUnreadByMember(reqMember);
+
         return MemberAlarmListRes.fromPage(memberAlarmsPage, unreadCount);
     }
 
