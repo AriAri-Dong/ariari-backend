@@ -46,4 +46,12 @@ public class ApplyForm extends LogicalDeleteEntity {
         return applyQuestionMap;
     }
 
+    public Map<String, Long> getApplyQuestionBodyMap() {
+        HashMap<String, Long> applyQuestionMap = new HashMap<>();
+        for (ApplyQuestion applyQuestion : this.applyQuestions) {
+            applyQuestionMap.put(applyQuestion.getBody(), applyQuestion.getId());
+        }
+        return applyQuestionMap;
+    }
+
 }

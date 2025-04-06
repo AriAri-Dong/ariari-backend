@@ -1,11 +1,11 @@
-package com.ariari.ariari.domain.recruitment.apply.exception;
+package com.ariari.ariari.domain.recruitment.apply.exceptions;
 
 import com.ariari.ariari.commons.exception.CustomException;
 import org.springframework.http.HttpStatus;
 
-public class ExistingApplyException extends CustomException {
+public class SearchAppliesInClubException extends CustomException {
 
-    private static final String MESSAGE = "이미 해당 모집에 지원서를 제출했습니다.";
+    private static final String MESSAGE = "날짜 검색 시 둘 중 하나만 null 일 수 없습니다.";
     private static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
 
     @Override

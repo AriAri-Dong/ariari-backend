@@ -179,10 +179,15 @@ public class TestDataSetter {
         ApplyQuestion aq1_1 = new ApplyQuestion("aq1_1");
         ApplyQuestion aq1_2 = new ApplyQuestion("aq1_2");
         ApplyQuestion aq1_3 = new ApplyQuestion("aq1_3");
-        ApplyForm af1 = new ApplyForm(c1, List.of(aq1_1, aq1_2, aq1_3));
+        ApplyQuestion aq1_4 = new ApplyQuestion("gender");
+        ApplyQuestion aq1_5 = new ApplyQuestion("mbti");
+
+        ApplyForm af1 = new ApplyForm(c1, List.of(aq1_1, aq1_2, aq1_3, aq1_4, aq1_5));
         aq1_1.setApplyForm(af1);
         aq1_2.setApplyForm(af1);
         aq1_3.setApplyForm(af1);
+        aq1_4.setApplyForm(af1);
+        aq1_5.setApplyForm(af1);
         ApplyQuestion aq2_1 = new ApplyQuestion("aq2_1");
         ApplyQuestion aq2_2 = new ApplyQuestion("aq2_2");
         ApplyQuestion aq2_3 = new ApplyQuestion("aq2_3");

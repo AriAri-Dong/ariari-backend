@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.review;
 
+import com.ariari.ariari.commons.exception.exceptions.DuplicateDataCreateException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
@@ -23,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,18 +41,16 @@ public class ClubReviewService {
     private final ClubRepository clubRepository;
 
     // 활동후기 목록 조회
-    public ClubReviewListRes searchClubReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
+    public ClubReviewListRes searchClubReviewPage(Long clubId, Pageable pageable){
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
-        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Page<ClubReview> clubReviews = clubReviewRepository.findByClub(club, pageable);
         List<ClubReviewData> clubReviewDataList = ClubReviewData.fromEntities(clubReviews);
         return ClubReviewListRes.toClubReviewResList(clubReviewDataList, clubReviews);
     }
 
     // 활동후기 상세 조회
-    public ClubReviewData findClubReviewDetail(Long reqMemberId, Long clubReviewId){
+    public ClubReviewData findClubReviewDetail(Long clubReviewId){
         ClubReview clubReview = clubReviewRepository.findById(clubReviewId).orElseThrow(NotFoundEntityException::new);
-        Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         List<ClubReviewTag> clubReviewTags = clubReviewTagRepository.findByClubReview(clubReview);
         List<Tag> tags = clubReviewTags.stream().map(ClubReviewTag::getTag).toList();
         List<TagData> tagDataList = TagData.toTagDataList(tags);
@@ -90,10 +90,13 @@ public class ClubReviewService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         if(clubReviewRepository.existsByClubAndMember(club, member)){
-            throw new RuntimeException(); // 중복 작성 exception 추가해야함
+            throw new DuplicateDataCreateException(); // 중복 작성 exception 추가해야함
         }
         List<Tag> tags = tagRepository.findByIconIn(clubReviewSaveReq.getIcons()).orElseThrow(NotFoundEntityException::new);
-        ClubReview clubReview = clubReviewSaveReq.toEntity(clubReviewSaveReq, member, club, tags);
+        List<ClubReviewTag> clubReviewTags = tags.stream()
+                .map(ClubReviewTag::new)
+                .collect(Collectors.toList());
+        ClubReview clubReview = clubReviewSaveReq.toEntity(clubReviewSaveReq, member, club, clubReviewTags);
         clubReviewRepository.save(clubReview);
     }
 }

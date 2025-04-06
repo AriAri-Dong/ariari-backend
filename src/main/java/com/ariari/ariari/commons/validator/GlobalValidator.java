@@ -11,11 +11,9 @@ import com.ariari.ariari.domain.club.exceptions.NoClubAdminException;
 import com.ariari.ariari.domain.club.exceptions.NoClubManagerException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.apply.exception.ClosedRecruitmentException;
+import com.ariari.ariari.domain.recruitment.apply.exceptions.ClosedRecruitmentException;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.exceptions.NoProperSchoolAuthException;
-
-import javax.security.auth.DestroyFailedException;
 
 public class GlobalValidator {
 

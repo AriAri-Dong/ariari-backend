@@ -35,7 +35,7 @@ public class PassReviewService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
 
-    public PassReviewListRes searchPassReviewPage(Long reqMemberId, Long clubId, Pageable pageable){
+    public PassReviewListRes searchPassReviewPage(Long clubId, Pageable pageable){
         //page : 현재 page? size : 페이지당 항목개수
         List<PassReviewRes> passReviewResList = passReviewMapper.findPassReviewOfClub(clubId,
                 pageable.getPageSize(), pageable.getPageNumber() * pageable.getPageSize());

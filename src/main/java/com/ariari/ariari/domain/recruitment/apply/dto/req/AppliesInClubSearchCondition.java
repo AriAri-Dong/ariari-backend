@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.dto.req;
 
-import com.ariari.ariari.domain.recruitment.apply.exception.SearchAppliesInClubException;
+import com.ariari.ariari.domain.recruitment.apply.exceptions.SearchAppliesInClubException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

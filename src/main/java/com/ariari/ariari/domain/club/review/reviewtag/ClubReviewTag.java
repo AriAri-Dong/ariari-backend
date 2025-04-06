@@ -37,4 +37,8 @@ public class ClubReviewTag extends LogicalDeleteEntity {
         this.tag = tag;
         this.clubReview = clubReview;
     }
+
+    public ClubReviewTag(Tag tag){
+        this.tag = tag;
+    }
 }

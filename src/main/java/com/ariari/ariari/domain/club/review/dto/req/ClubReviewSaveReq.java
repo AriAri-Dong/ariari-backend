@@ -21,17 +21,16 @@ public class ClubReviewSaveReq {
     @Schema(description = "태그 리스트")
     private List<Icon> icons;
 
-    public ClubReview toEntity(ClubReviewSaveReq clubReviewSaveReq, Member member, Club club, List<Tag> tags) {
+    public ClubReview toEntity(ClubReviewSaveReq clubReviewSaveReq, Member member, Club club, List<ClubReviewTag> clubReviewTags) {
         ClubReview clubReview = new ClubReview(
                 clubReviewSaveReq.getTitle(),
                 clubReviewSaveReq.getBody(),
                 club,
                 member);
 
-        for (Tag tag : tags) {
-            ClubReviewTag clubReviewTag = new ClubReviewTag();
-            clubReviewTag.setTag(tag);
+        for(ClubReviewTag clubReviewTag : clubReviewTags) {
             clubReviewTag.setClubReview(clubReview);
+            clubReview.getClubReviewTags().add(clubReviewTag);
         }
 
         return clubReview;

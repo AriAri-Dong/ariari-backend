@@ -25,27 +25,20 @@ public class ClubReviewController {
     @GetMapping("/{clubId}")
     @Operation(summary = "활동 후기 목록 조회", description = "활동 후기 목록을 조회합니다. " +
             "page 는 현재 page, size는 page에 들어가는 page size입니다.")
-    public ClubReviewListRes search_club_review_page(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                     Pageable pageable,
+    public ClubReviewListRes search_club_review_page(Pageable pageable,
                                                      @PathVariable(name = "clubId") Long clubId){
-        Long reqMemberId = getMemberId(userDetails, false);
-        return clubReviewService.searchClubReviewPage(reqMemberId, clubId, pageable);
+        return clubReviewService.searchClubReviewPage(clubId, pageable);
     }
 
     @GetMapping("/detail/{clubReviewId}")
     @Operation(summary = "활동 후기 상세 조회", description = "활동 후기 상세 조회")
-    public ClubReviewData find_club_review_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                  @PathVariable(name = "clubReviewId") Long clubReviewId){
-        Long reqMemberId = getMemberId(userDetails, false);
-        return clubReviewService.findClubReviewDetail(reqMemberId, clubReviewId);
+    public ClubReviewData find_club_review_detail(@PathVariable(name = "clubReviewId") Long clubReviewId){
+        return clubReviewService.findClubReviewDetail(clubReviewId);
     }
 
     @GetMapping("/{clubId}/tag-statistics")
     @Operation(summary = "클럽 별 활동후기 태그 목록 조회", description = "클럽 별 활동후기 태그 목록 조회")
-    public List<TagData> find_tag_statistics_at_club(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                     @PathVariable(name = "clubId") Long clubId){
-        // 이런거 유저 token필요x?
-        Long reqMemberId = getMemberId(userDetails, false);
+    public List<TagData> find_tag_statistics_at_club(@PathVariable(name = "clubId") Long clubId){
         return clubReviewService.findTagStatisticsAtClub(clubId);
     }
 

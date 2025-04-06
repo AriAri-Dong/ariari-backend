@@ -179,7 +179,7 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi clubNotice() {
         return GroupedOpenApi.builder()
-                .group("20. 동아리 공지사항 API")
+                .group("20. 동아리 알림 API")
                 .packagesToScan("com.ariari.ariari.domain.club.notice", "com.ariari.ariari.test")
                 .build();
     }

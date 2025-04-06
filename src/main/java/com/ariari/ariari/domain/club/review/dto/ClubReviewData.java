@@ -22,6 +22,10 @@ public class ClubReviewData {
     private String title;
     @Schema(description = "활동후기 내용", example = "내용")
     private String body;
+    @Schema(description = "작성자 닉네임", example = "테스트유저1")
+    private String nickname;
+    @Schema(description = "작성자 id", example = "")
+    private String creatorId;
     @Schema(description = "작성일", example = "")
     private LocalDateTime createdDateTime;
     @Schema(description = "태그 데이터 CAREER_PREPARATION, NETWORKING, INTEREST_EXPLORATION, SELF_DEVELOPMENT, ACADEMIC_IMPROVEMENT, HEALTH_ENHANCEMENT, DIVERSE_EXPERIENCE", example = "")
@@ -33,6 +37,8 @@ public class ClubReviewData {
                 .id(Long.toString(clubReview.getId()))
                 .title(clubReview.getTitle())
                 .body(clubReview.getBody())
+                .nickname(clubReview.getMember().getNickName())
+                .creatorId(Long.toString(clubReview.getMember().getId()))
                 .createdDateTime(clubReview.getCreatedDateTime())
                 .tagDataList(tagDataList)
                 .build();

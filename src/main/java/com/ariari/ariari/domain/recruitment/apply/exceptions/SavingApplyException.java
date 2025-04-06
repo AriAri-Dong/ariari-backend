@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.recruitment.apply.exception;
+package com.ariari.ariari.domain.recruitment.apply.exceptions;
 
 import com.ariari.ariari.commons.exception.CustomException;
 import org.springframework.http.HttpStatus;
