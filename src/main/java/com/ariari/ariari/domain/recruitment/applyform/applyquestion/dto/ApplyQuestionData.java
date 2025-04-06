@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
+@AllArgsConstructor
 @Schema(description = "지원 형식 질문 데이터")
 public class ApplyQuestionData {
 
