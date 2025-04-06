@@ -46,7 +46,6 @@ jobs:
                       trust: smtp.naver.com
                   debug: true
             jpa:
-              database: mariadb
               database-platform: org.hibernate.dialect.MariaDBDialect
               show-sql: true
               hibernate:
