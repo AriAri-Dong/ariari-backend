@@ -173,13 +173,9 @@ public class ApplyService {
     public void removeApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
-        Club club = apply.getRecruitment().getClub();
 
         if (!reqMember.equals(apply.getMember())) {
-            ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoApplyAuthException::new);
-            if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-                throw new NoApplyAuthException();
-            }
+            throw new NoApplyAuthException();
         }
 
         if (apply.getCreatedDateTime().plusMonths(1).isAfter(LocalDateTime.now())) {

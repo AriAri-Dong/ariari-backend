@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.member.member.dto;
 
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,10 +21,14 @@ public class MemberData {
     @Schema(description = "회원 닉네임", example = "귀여운대머리")
     private String nickname;
 
+    @Schema(description = "회원 프로필 타입", example = "ARIARI_MOUSE")
+    private ProfileType profileType;
+
     public static MemberData fromEntity(Member member) {
         return new MemberData(
                 member.getId(),
-                member.getNickName()
+                member.getNickName(),
+                member.getProfileType()
         );
     }
 
