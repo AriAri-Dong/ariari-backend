@@ -15,7 +15,8 @@ import java.util.Optional;
 @Repository
 public interface ClubAlarmRepository extends JpaRepository<ClubAlarm, Long> {
 
-    Page<ClubAlarm> findAllByClub(Club club, Pageable pageable);
+    @Query("SELECT ca FROM ClubAlarm ca WHERE ca.club = :club")
+    Page<ClubAlarm> findAllByClub(@Param("club") Club club, Pageable pageable);
 
     Optional<ClubAlarm> findByIdAndClub(Long id, Club clubId);
 

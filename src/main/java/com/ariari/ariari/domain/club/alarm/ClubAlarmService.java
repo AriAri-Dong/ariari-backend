@@ -72,6 +72,7 @@ public class ClubAlarmService {
                         .uri(clubAlarmEvent.getUri())
                         .clubAlarmType(clubAlarmEvent.getClubAlarmType())
                         .club(clubAlarmEvent.getClub())
+                        .isChecked(false)
                         .build())
                 .toList();
         // 알림 저장

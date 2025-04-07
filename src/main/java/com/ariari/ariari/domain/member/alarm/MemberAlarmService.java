@@ -61,7 +61,7 @@ public class MemberAlarmService {
                 .member(memberAlarmEvent.getMember())
                 .isChecked(false)
                         .build())
-                        .toList();
+                .toList();
         // 알림 저장
         // 배치 처리 해야할까?
         memberAlarmRepository.saveAll(memberAlarms);
