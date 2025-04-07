@@ -26,6 +26,8 @@ public class ApplyForm extends LogicalDeleteEntity {
     @Column(name = "apply_form_id")
     private Long id;
 
+    private Boolean requiresPortfolio;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
@@ -33,8 +35,9 @@ public class ApplyForm extends LogicalDeleteEntity {
     @OneToMany(mappedBy = "applyForm", cascade = CascadeType.ALL)
     private List<ApplyQuestion> applyQuestions = new ArrayList<>();
 
-    public ApplyForm(Club club, List<ApplyQuestion> applyQuestions) {
+    public ApplyForm(Club club, Boolean requiresPortfolio, List<ApplyQuestion> applyQuestions) {
         this.club = club;
+        this.requiresPortfolio = requiresPortfolio;
         this.applyQuestions = applyQuestions;
     }
 

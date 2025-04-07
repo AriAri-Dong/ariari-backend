@@ -182,7 +182,7 @@ public class TestDataSetter {
         ApplyQuestion aq1_4 = new ApplyQuestion("gender");
         ApplyQuestion aq1_5 = new ApplyQuestion("mbti");
 
-        ApplyForm af1 = new ApplyForm(c1, List.of(aq1_1, aq1_2, aq1_3, aq1_4, aq1_5));
+        ApplyForm af1 = new ApplyForm(c1, false, List.of(aq1_1, aq1_2, aq1_3, aq1_4, aq1_5));
         aq1_1.setApplyForm(af1);
         aq1_2.setApplyForm(af1);
         aq1_3.setApplyForm(af1);
@@ -191,21 +191,21 @@ public class TestDataSetter {
         ApplyQuestion aq2_1 = new ApplyQuestion("aq2_1");
         ApplyQuestion aq2_2 = new ApplyQuestion("aq2_2");
         ApplyQuestion aq2_3 = new ApplyQuestion("aq2_3");
-        ApplyForm af2 = new ApplyForm(c2, List.of(aq2_1, aq2_2, aq2_3));
+        ApplyForm af2 = new ApplyForm(c2, false, List.of(aq2_1, aq2_2, aq2_3));
         aq2_1.setApplyForm(af2);
         aq2_2.setApplyForm(af2);
         aq2_3.setApplyForm(af2);
         ApplyQuestion aq3_1 = new ApplyQuestion("aq3_1");
         ApplyQuestion aq3_2 = new ApplyQuestion("aq3_2");
         ApplyQuestion aq3_3 = new ApplyQuestion("aq3_3");
-        ApplyForm af3 = new ApplyForm(c9, List.of(aq3_1, aq3_2, aq3_3));
+        ApplyForm af3 = new ApplyForm(c9, false, List.of(aq3_1, aq3_2, aq3_3));
         aq3_1.setApplyForm(af3);
         aq3_2.setApplyForm(af3);
         aq3_3.setApplyForm(af3);
         ApplyQuestion aq4_1 = new ApplyQuestion("aq4_1");
         ApplyQuestion aq4_2 = new ApplyQuestion("aq4_2");
         ApplyQuestion aq4_3 = new ApplyQuestion("aq4_3");
-        ApplyForm af4 = new ApplyForm(c10, List.of(aq4_1, aq4_2, aq4_3));
+        ApplyForm af4 = new ApplyForm(c10, false, List.of(aq4_1, aq4_2, aq4_3));
         aq4_1.setApplyForm(af4);
         aq4_2.setApplyForm(af4);
         aq4_3.setApplyForm(af4);
