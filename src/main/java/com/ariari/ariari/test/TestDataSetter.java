@@ -256,10 +256,14 @@ public class TestDataSetter {
         ApplyAnswer aa1_1_1 = new ApplyAnswer("aa1_1_1", aq1_1);
         ApplyAnswer aa1_2_1 = new ApplyAnswer("aa1_2_1", aq1_2);
         ApplyAnswer aa1_3_1 = new ApplyAnswer("aa1_3_1", aq1_3);
-        Apply a1 = new Apply("a1", "portfolioUri1", m5, r1, List.of(aa1_1_1, aa1_2_1, aa1_3_1));
+        ApplyAnswer aa1_4_1 = new ApplyAnswer("남자", aq1_4);
+        ApplyAnswer aa1_5_1 = new ApplyAnswer("ENTJ", aq1_5);
+        Apply a1 = new Apply("a1", "portfolioUri1", m5, r1, List.of(aa1_1_1, aa1_2_1, aa1_3_1, aa1_4_1, aa1_5_1));
         aa1_1_1.setApply(a1);
         aa1_2_1.setApply(a1);
         aa1_3_1.setApply(a1);
+        aa1_4_1.setApply(a1);
+        aa1_5_1.setApply(a1);
         ApplyAnswer aa1_1_2 = new ApplyAnswer("aa1_1_2", aq1_1);
         ApplyAnswer aa1_2_2 = new ApplyAnswer("aa1_2_2", aq1_2);
         ApplyAnswer aa1_3_2 = new ApplyAnswer("aa1_3_2", aq1_3);

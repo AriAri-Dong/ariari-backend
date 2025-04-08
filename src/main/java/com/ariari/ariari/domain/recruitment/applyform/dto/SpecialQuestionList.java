@@ -48,16 +48,4 @@ public class SpecialQuestionList {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long referralSource;
 
-    public static SpecialQuestionList fromRecruitment(Recruitment recruitment) {
-        SpecialQuestionList specialQuestionList = new SpecialQuestionList();
-        for (ApplyQuestion applyQuestion : recruitment.getApplyForm().getApplyQuestions()) {
-            try {
-                Field field = SpecialQuestionList.class.getDeclaredField(applyQuestion.getBody());
-                field.setAccessible(true);
-                field.set(specialQuestionList, applyQuestion.getId());
-            } catch (Exception ignored) {}
-        }
-        return specialQuestionList;
-    }
-
 }
