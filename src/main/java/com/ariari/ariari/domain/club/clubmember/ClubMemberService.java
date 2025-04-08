@@ -161,6 +161,7 @@ public class ClubMemberService {
     }
 
 
+
     public void deleteClubMember(ClubMember reqClubMember) {
         List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
         List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
@@ -183,5 +184,6 @@ public class ClubMemberService {
         clubActivityCommentRepository.saveAll(clubActivityCommentList);
         clubNoticeRepository.saveAll(clubNoticeList);
         clubActivityRepository.saveAll(clubActivityList);
+        attendanceRepository.saveAll(attendanceList);
     }
 }

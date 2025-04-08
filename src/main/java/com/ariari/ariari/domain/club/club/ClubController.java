@@ -140,7 +140,7 @@ public class ClubController {
      * 검증 로직 수정 예정
      */
     @Operation(summary = "동아리 폐쇄", description = "*** 검증 로직 수정 예정 ***")
-    @DeleteMapping("/{clubId}")
+    @DeleteMapping("/close/{clubId}")
     public void removeClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                            @PathVariable Long clubId) {
         Long reqMemberId = getMemberId(userDetails, true);
