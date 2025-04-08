@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.recruitment.apply.dto.res;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.answer.dto.ApplyAnswerData;
 import com.ariari.ariari.domain.recruitment.apply.dto.ApplyData;
+import com.ariari.ariari.domain.recruitment.applyform.dto.SpecialQuestionList;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,12 +24,15 @@ public class ApplyDetailRes {
     @Schema(description = "포트폴리오 URI")
     private String portfolioUrl;
 
+    private SpecialQuestionList specialQuestionList;
+
     public static ApplyDetailRes fromEntity(Apply apply) {
         return new ApplyDetailRes(
                 ApplyData.fromEntity(apply),
                 ApplyAnswerData.fromEntities(apply.getApplyAnswers()),
                 apply.getFileUri(),
-                apply.getPortfolioUrl()
+                apply.getPortfolioUrl(),
+                SpecialQuestionList.fromRecruitment(apply.getRecruitment())
         );
     }
 

@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.answer.dto.ApplyAnswerTempData;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.ApplyTempData;
+import com.ariari.ariari.domain.recruitment.applyform.dto.SpecialQuestionList;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class ApplyTempDetailRes {
     @Schema(description = "포트폴리오 URI")
     private String portfolioUrl;
 
+    private SpecialQuestionList specialQuestionList;
+
     public static ApplyTempDetailRes fromEntity(ApplyTemp applyTemp) {
         Recruitment recruitment = applyTemp.getRecruitment();
         Club club = recruitment.getClub();
@@ -39,7 +42,8 @@ public class ApplyTempDetailRes {
                 RecruitmentData.fromEntity(recruitment, null),
                 ApplyAnswerTempData.fromEntities(applyTemp.getApplyAnswerTemps()),
                 applyTemp.getFileUri(),
-                applyTemp.getPortfolioUrl()
+                applyTemp.getPortfolioUrl(),
+                SpecialQuestionList.fromRecruitment(recruitment)
         );
     }
 

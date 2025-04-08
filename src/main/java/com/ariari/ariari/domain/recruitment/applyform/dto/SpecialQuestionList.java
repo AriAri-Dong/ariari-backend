@@ -1,8 +1,12 @@
 package com.ariari.ariari.domain.recruitment.applyform.dto;
 
+import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+
+import java.lang.reflect.Field;
 
 @Data
 public class SpecialQuestionList {
@@ -43,5 +47,17 @@ public class SpecialQuestionList {
     private Long availableTime;
     @JsonSerialize(using = ToStringSerializer.class)
     private Long referralSource;
+
+    public static SpecialQuestionList fromRecruitment(Recruitment recruitment) {
+        SpecialQuestionList specialQuestionList = new SpecialQuestionList();
+        for (ApplyQuestion applyQuestion : recruitment.getApplyForm().getApplyQuestions()) {
+            try {
+                Field field = SpecialQuestionList.class.getDeclaredField(applyQuestion.getBody());
+                field.setAccessible(true);
+                field.set(specialQuestionList, applyQuestion.getId());
+            } catch (Exception ignored) {}
+        }
+        return specialQuestionList;
+    }
 
 }
