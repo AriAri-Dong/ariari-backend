@@ -40,7 +40,6 @@ public class MemberAlarmService {
         // 단일 이벤트 처리
         MemberAlarm memberAlarm = MemberAlarm.builder()
                 .title(memberAlarmEvent.getTitle())
-                .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
                 .uri(memberAlarmEvent.getUri())
                 .isChecked(false)
@@ -57,7 +56,6 @@ public class MemberAlarmService {
                 .map( memberAlarmEvent -> MemberAlarm.builder()
                 .title(memberAlarmEvent.getTitle())
                 .uri(memberAlarmEvent.getUri())
-                .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
                 .isChecked(false)
                         .build())

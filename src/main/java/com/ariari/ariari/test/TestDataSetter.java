@@ -376,7 +376,6 @@ public class TestDataSetter {
                 .uri("/clubs/clubId")
                 .member(m1)
                 .isChecked(false)
-                .memberAlarmType(MemberAlarmType.CLUB)
                 .build();
 
         MemberAlarm memberAlarm2 = MemberAlarm.builder()
@@ -384,7 +383,6 @@ public class TestDataSetter {
                 .uri("/clubs/clubId")
                 .member(m2)
                 .isChecked(false)
-                .memberAlarmType(MemberAlarmType.APPLY)
                 .build();
         memberAlarmRepository.saveAll(List.of(memberAlarm1, memberAlarm2));
 
@@ -395,7 +393,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c1)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm2 = ClubAlarm.builder()
@@ -403,7 +400,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm3 = ClubAlarm.builder()
@@ -411,7 +407,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm4 = ClubAlarm.builder()
@@ -419,7 +414,6 @@ public class TestDataSetter {
                 .isChecked(true)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm5 = ClubAlarm.builder()
@@ -427,7 +421,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2, clubAlarm3, clubAlarm4, clubAlarm5));

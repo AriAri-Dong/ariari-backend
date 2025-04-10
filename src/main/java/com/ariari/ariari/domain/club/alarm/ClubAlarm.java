@@ -26,10 +26,6 @@ public class ClubAlarm extends LogicalDeleteEntity {
     @Column(length = 100)
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private ClubAlarmType clubAlarmType;
-
     private String uri;
 
     private Boolean isChecked = Boolean.FALSE;
@@ -39,10 +35,9 @@ public class ClubAlarm extends LogicalDeleteEntity {
     private Club club;
 
     @Builder
-    private ClubAlarm(Long id, String title, ClubAlarmType clubAlarmType, String uri, Club club, Boolean isChecked) {
+    private ClubAlarm(Long id, String title, String uri, Club club, Boolean isChecked) {
         this.id = id;
         this.title = title;
-        this.clubAlarmType = clubAlarmType;
         this.uri = uri;
         this.club = club;
         this.isChecked = isChecked;  // 기본값 설정

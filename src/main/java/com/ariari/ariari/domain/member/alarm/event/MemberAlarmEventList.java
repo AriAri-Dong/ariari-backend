@@ -15,9 +15,9 @@ public class MemberAlarmEventList {
         this.memberAlarmEventList = memberAlarmEventList;
     }
 
-    public static MemberAlarmEventList from(String title, String uri, MemberAlarmType memberAlarmType, List<Member> members){
+    public static MemberAlarmEventList from(String title, String uri, List<Member> members){
         List<MemberAlarmEvent> memberAlarmEvents = members.stream()
-                .map( member -> MemberAlarmEvent.from(title, uri, memberAlarmType, member))
+                .map( member -> MemberAlarmEvent.from(title, uri, member))
                 .toList();
         return new MemberAlarmEventList(memberAlarmEvents);
     }

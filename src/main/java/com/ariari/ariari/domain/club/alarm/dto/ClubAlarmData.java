@@ -29,18 +29,15 @@ public class ClubAlarmData {
         @Schema(description = "알림 내용", example = "true")
         private Boolean isChecked;
 
-        @Schema(description = "알림 종류", example = "club or apply...")
-        private ClubAlarmType clubAlarmType ;
 
         @Schema(description = "알림 생성 날짜/시간", example = "2025-01-31T09:08:18.467Z")
         private LocalDateTime createdDateTime;
 
 
         @Builder
-        private ClubAlarmData(Long id, String title, ClubAlarmType clubAlarmType, String uri, Boolean isChecked, LocalDateTime createdDateTime) {
+        private ClubAlarmData(Long id, String title, String uri, Boolean isChecked, LocalDateTime createdDateTime) {
             this.id = id;
             this.title = title;
-            this.clubAlarmType = clubAlarmType;
             this.uri = uri;
             this.isChecked = isChecked != null ? isChecked : Boolean.FALSE; // 기본값 처리
             this.createdDateTime = createdDateTime;
@@ -52,7 +49,6 @@ public class ClubAlarmData {
                     .title(clubAlarm.getTitle())
                     .uri(clubAlarm.getUri())
                     .isChecked(clubAlarm.getIsChecked())
-                    .clubAlarmType(clubAlarm.getClubAlarmType())
                     .createdDateTime(clubAlarm.getCreatedDateTime())
                     .build();
         }

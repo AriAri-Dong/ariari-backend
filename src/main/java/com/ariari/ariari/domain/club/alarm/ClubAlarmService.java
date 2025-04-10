@@ -53,7 +53,6 @@ public class ClubAlarmService {
         // 단일 이벤트 처리
         ClubAlarm clubAlarm = ClubAlarm.builder()
                 .title(clubAlarmEvent.getTitle())
-                .clubAlarmType(clubAlarmEvent.getClubAlarmType())
                 .club(clubAlarmEvent.getClub())
                 .uri(clubAlarmEvent.getUri())
                 .isChecked(false)
@@ -70,7 +69,6 @@ public class ClubAlarmService {
                 .map( clubAlarmEvent -> ClubAlarm.builder()
                         .title(clubAlarmEvent.getTitle())
                         .uri(clubAlarmEvent.getUri())
-                        .clubAlarmType(clubAlarmEvent.getClubAlarmType())
                         .club(clubAlarmEvent.getClub())
                         .isChecked(false)
                         .build())

@@ -34,7 +34,7 @@ public class MemberAlarmManger {
     public void sendSystemNotification(List<Member> memberList){
         String title = "새로운 아리아리 플랫폼 공지사항이 등록되었습니다. 서비스 관련 중요한 내용을 확인해 보세요.";
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
-        ,"/service-notices", MemberAlarmType.SYSTEM, memberList);
+        ,"/service-notices", memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -42,7 +42,7 @@ public class MemberAlarmManger {
     public void sendClubNotification(List<Member> memberList, String clubName, Long clubId) {
         String title = String.format("%s에 공지사항이 추가 되었습니다.", clubName);
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
-                ,"/clubs/"+clubId, MemberAlarmType.APPLY, memberList);
+                ,"/clubs/"+clubId, memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -50,14 +50,14 @@ public class MemberAlarmManger {
     public void sendRecruitmentBookMarkReminder(List<Member> memberList, String recruitmentName, Long recruitmentId) {
         String title = String.format("관심 등록하신 %s의 마감이 하루 남았습니다! 놓치지 말고 지금 확인해 보세요.", recruitmentName);
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
-                ,"/recruitments/"+recruitmentId, MemberAlarmType.APPLY, memberList);
+                ,"/recruitments/"+recruitmentId, memberList);
         sendList(memberAlarmEventList);
     }
     // 관심모집 마감임박 && 임시저장된 지원서 모집마감임박
     public void sendApplyTempReminder(List<Member> memberList) {
         String title = "임시 저장된 지원서의 모집 마감이 하루 남았습니다! 오늘 안에 제출을 완료해 주세요";
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
-                ,"/clubs/my", MemberAlarmType.APPLY, memberList);
+                ,"/clubs/my", memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -65,14 +65,14 @@ public class MemberAlarmManger {
     public void sendRecruitmentClosed(List<Member> memberList, String recruitmentName){
         String title = String.format("관심 등록하신 %s이 마감되었습니다. 더 이상 지원이 불가능합니다.", recruitmentName);
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
-                ,"/clubs/my", MemberAlarmType.APPLY, memberList);
+                ,"/clubs/my", memberList);
         sendList(memberAlarmEventList);
     }
 
     // 동아리 회원들 상태
     public void sendClubMembersStatusType(ClubMemberStatusType clubMemberStatusType, List<Member> memberList){
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(clubMemberStatusSelect(clubMemberStatusType)
-                ,"/clubs/my", MemberAlarmType.CLUB, memberList);
+                ,"/clubs/my", memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -82,7 +82,6 @@ public class MemberAlarmManger {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 title,
                 "/clubs/my",
-                MemberAlarmType.CLUB,
                 member
         );
         sendSingle(memberAlarmEvent);
@@ -94,7 +93,6 @@ public class MemberAlarmManger {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 title,
                 "/applies/my",
-                MemberAlarmType.APPLY,
                 member
         );
         sendSingle(memberAlarmEvent);
@@ -106,7 +104,6 @@ public class MemberAlarmManger {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 title,
                 "/clubs/"+clubId+"/club-questions",
-                MemberAlarmType.CLUB,
                 member
         );
         sendSingle(memberAlarmEvent);
@@ -119,7 +116,6 @@ public class MemberAlarmManger {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 title,
                 "/clubs/" +clubId,
-                MemberAlarmType.CLUB,
                 member
         );
         sendSingle(memberAlarmEvent);
@@ -133,7 +129,7 @@ public class MemberAlarmManger {
             return;
         }
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from("동아리 캘린더에 새로운 일정이 추가되었습니다! 알림을 클릭해 확인해 보세요."
-                        ,"/clubs/" + clubId + "/club-events/", MemberAlarmType.CLUB, memberList);
+                        ,"/clubs/" + clubId + "/club-events/", memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -144,7 +140,7 @@ public class MemberAlarmManger {
             return;
         }
         String title = String.format("관심 등록하신 %s의 모집이 시작되었습니다! 지금 확인해 보세요.", clubName);
-        MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title, "", MemberAlarmType.CLUB, memberList);
+        MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title, "", memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -155,7 +151,7 @@ public class MemberAlarmManger {
             return;
         }
         String title = String.format("관심 등록하신 %s이 폐쇄되었습니다. 관심 동아리에서 해당 동아리가 삭제됩니다.", clubName);
-        MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title, "/clubs", MemberAlarmType.CLUB, memberList);
+        MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title, "/clubs", memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -164,7 +160,6 @@ public class MemberAlarmManger {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 "작성하신 질문에 대한 답변이 등록되었습니다! 알림을 클릭해 확인해 보세요.",
                 "/clubs/" + clubId + "/club-questions/",
-                MemberAlarmType.CLUB,
                 member
         );
         sendSingle(memberAlarmEvent);
