@@ -17,6 +17,9 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, ApplyReposi
 
     Optional<Apply> findByMemberAndRecruitment(Member member, Recruitment recruitment);
 
-    @Query("select a from Apply a where a.applyStatusType = :status")
+    @Query("select a from Apply a " +
+            "join fetch a.recruitment r " +
+            "join fetch r.club " +
+            "where a.applyStatusType = :status")
     List<Apply> findApplyByApplyStatusType_Pendency(@Param("status") ApplyStatusType status);
 }

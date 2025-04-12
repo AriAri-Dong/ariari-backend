@@ -29,6 +29,7 @@ public interface RecruitmentBookmarkRepository extends JpaRepository<Recruitment
 
     @Query("select rb from RecruitmentBookmark rb " +
             "join fetch rb.recruitment r " +
+            "join fetch rb.member m " +
             "where r.endDateTime between :startDate and :endDate")
     List<RecruitmentBookmark> findAllByWithinRecruitment(@Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);

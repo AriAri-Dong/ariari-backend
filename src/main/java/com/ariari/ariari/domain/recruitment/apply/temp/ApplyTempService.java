@@ -125,7 +125,7 @@ public class ApplyTempService {
         return ApplyTempListRes.fromPage(page);
     }
 
-    // 관심모집 마감임박(D-1) 알림
+    // 임시저장된 지원서 모집마감임박(D-1) 알림
     @Scheduled(cron ="0 0 0 * * ?")
     @Transactional(readOnly = true)
     public void sendApplyTempReminder(){
@@ -133,19 +133,15 @@ public class ApplyTempService {
 
         // D-1 임시지원서 찾기
         List<ApplyTemp> applyTempList = applyTempRepository.findAllByWithinRecruitment(LocalDateTime.now(), endTime);
-        // 모집별로 임시지원서 불류
-        Map<Long, List<ApplyTemp>> groupByRecruitmentId = applyTempList.stream()
-                .collect(Collectors.groupingBy( applyTemp -> applyTemp.getRecruitment().getId()));
-
-        groupByRecruitmentId.forEach((id, applyTemps) ->{
-
-            if(applyTemps.isEmpty()){
-                return;
-            }
-
-            List<Member> memberList = applyTemps.stream().map(ApplyTemp::getMember).toList();
+        if(!applyTempList.isEmpty()){
+            List<Member> memberList = applyTempList.stream()
+                    .map(ApplyTemp::getMember)
+                    .distinct()
+                    .toList();
             memberAlarmManger.sendApplyTempReminder(memberList);
-        });
+        }
+
+
     }
 
 }

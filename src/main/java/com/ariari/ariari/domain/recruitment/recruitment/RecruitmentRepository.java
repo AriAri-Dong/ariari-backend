@@ -16,10 +16,12 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>,
 
 
     @Query("select r from Recruitment r " +
+            "join fetch r.club " +
             "where (r.endDateTime between :startDate and :endDate) " +
-            "or (r.endDateTime between :startDate and :endDate2)")
+            "or (r.endDateTime between :startDate2 and :endDate2)")
     List<Recruitment> findAllByWithinRecruitment(@Param("startDate") LocalDateTime startDate,
                                                  @Param("endDate") LocalDateTime endDate,
+                                                 @Param("startDate2") LocalDateTime startDate2,
                                                  @Param("endDate2") LocalDateTime endDate2);
 
 

@@ -16,9 +16,14 @@ public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, App
     Page<ApplyTemp> searchByMember(Member reqMember, Pageable pageable);
 
     @Query("select a from ApplyTemp a " +
+            "join fetch a.member m "+
             "join fetch a.recruitment r " +
             "where r.endDateTime between :startDate and :endDate")
     List<ApplyTemp> findAllByWithinRecruitment(@Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);
-
+    @Query("select a from ApplyTemp a " +
+            "join fetch a.member m "+
+            "join fetch a.recruitment r " +
+            "where a.recruitment = :recruitment")
+    List<ApplyTemp> findAllByRecruitment(@Param("recruitment") Recruitment recruitment);
 }
