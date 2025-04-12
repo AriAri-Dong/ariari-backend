@@ -79,7 +79,8 @@ jobs:
             client:
               id: ${KAKAO_CLIENT_ID}
               secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://localhost:3000/auth/kakao
+              admin: ${KAKAO_CLIENT_ADMIN}
+            redirect-uri: https://ariari.kr/auth/kakao
             login-uri: https://kauth.kakao.com/oauth/authorize
             auth-uri: https://kauth.kakao.com/oauth/token
             kapi-uri: https://kapi.kakao.com/v2/user/me
@@ -127,6 +128,7 @@ jobs:
           JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
           KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
           KAKAO_CLIENT_SECRET: ${{ secrets.KAKAO_CLIENT_SECRET }}
+          KAKAO_CLIENT_ADMIN: ${{ secrets.KAKAO_CLIENT_ADMIN }}
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
