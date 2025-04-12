@@ -27,4 +27,5 @@
         FROM pass_review pr
         WHERE pr.club_id = #{clubId}
     </select>
+
 </mapper>

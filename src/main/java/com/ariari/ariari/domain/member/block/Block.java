@@ -24,4 +24,8 @@ public class Block {
     @JoinColumn(name = "blocked_member_id")
     private Member blockedMember;
 
+    public Block(Member blockingMember, Member blockedMember) {
+        this.blockingMember = blockingMember;
+        this.blockedMember = blockedMember;
+    }
 }

@@ -5,9 +5,13 @@ import com.ariari.ariari.domain.club.activity.ClubActivity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE image SET deleted_date_time= CURRENT_TIMESTAMP WHERE image_id= ?")
+@SQLRestriction("deleted_date_time is null")
 @Getter
 public class ClubActivityImage extends Image {
 
