@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"club_activity_id", "member_id"})
+        }
+)
 public class ClubActivityLike {
 
     @Id @CustomPkGenerate
@@ -24,4 +29,8 @@ public class ClubActivityLike {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public ClubActivityLike(ClubActivity clubActivity, Member member) {
+        this.clubActivity = clubActivity;
+        this.member = member;
+    }
 }

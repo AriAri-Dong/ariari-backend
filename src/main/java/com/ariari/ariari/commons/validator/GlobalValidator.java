@@ -1,5 +1,6 @@
 package com.ariari.ariari.commons.validator;
 
+import com.ariari.ariari.commons.exception.exceptions.MaxSizeExceededException;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
@@ -14,6 +15,8 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.exceptions.ClosedRecruitmentException;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.exceptions.NoProperSchoolAuthException;
+
+import java.util.List;
 
 public class GlobalValidator {
 
@@ -70,5 +73,13 @@ public class GlobalValidator {
     }
 
 
+    public static void isLessThanMaxSize(List<?> list, int maxSize){
+        if(list == null || list.isEmpty()){
+            return;
+        }
+        if(list.size() > maxSize){
+            throw new MaxSizeExceededException();
+        }
+    }
 
 }
