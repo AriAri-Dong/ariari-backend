@@ -40,13 +40,10 @@ public class ClubActivityComment extends LogicalDeleteEntity {
     @JoinColumn(name = "parent_comment_id")
     private ClubActivityComment parentComment;
 
-<<<<<<< HEAD
-
     public void modifyClubMember(){
-        this.clubMember = null;
+        this.member = null;
     }
 
-=======
     public ClubActivityComment(String body, Member member, ClubActivity clubActivity) {
         this.body = body;
         this.member = member;
@@ -59,5 +56,4 @@ public class ClubActivityComment extends LogicalDeleteEntity {
         this.clubActivity = clubActivity;
         this.parentComment = parentComment;
     }
->>>>>>> feat/club-activity
 }

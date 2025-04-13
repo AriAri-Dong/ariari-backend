@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -169,9 +170,11 @@ public class ClubMemberService {
 
 
     public void deleteClubMember(ClubMember reqClubMember) {
-        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
+//        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember); TODO 충돌해결
+        List<ClubActivityComment> clubActivityCommentList = new ArrayList<>();
         List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
-        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
+//        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember); TODO 충돌해결
+        List<ClubActivity> clubActivityList = new ArrayList<>();
         List<Attendance> attendanceList = attendanceRepository.findAllByClubMember(reqClubMember);
 
         for (ClubActivityComment clubActivityComment : clubActivityCommentList) {

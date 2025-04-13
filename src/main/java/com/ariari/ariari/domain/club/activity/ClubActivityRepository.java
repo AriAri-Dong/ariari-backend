@@ -13,10 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ClubActivityRepository extends JpaRepository<ClubActivity, Long> {
+//    List<ClubActivity> findAllByClubMember(ClubMember reqClubMember);
 
-<<<<<<< HEAD
-    List<ClubActivity> findAllByClubMember(ClubMember reqClubMember);
-=======
     Page<ClubActivity> findByClub(Club club, Pageable pageable);
->>>>>>> feat/club-activity
 }
