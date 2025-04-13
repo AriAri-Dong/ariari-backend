@@ -4,6 +4,7 @@ import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
 import com.ariari.ariari.domain.club.event.attendance.Attendance;
+import com.ariari.ariari.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,12 +28,17 @@ public class ClubMemberListRes {
         );
     }
 
-    public static ClubMemberListRes createResByAttendances(Page<Attendance> page) {
-        List<Attendance> attendances = page.getContent();
-        List<ClubMember> clubMembers = attendances.stream().map(Attendance::getClubMember).toList();
+    public static ClubMemberListRes createResByAttendances(Page<Attendance> page,  List<ClubMember> clubMembers) {
+        List<Member> attendMembers = page.getContent().stream()
+                .map(Attendance::getMember)
+                .toList();
+
+        List<ClubMember> attendedClubMembers = clubMembers.stream()
+                .filter(clubMember -> attendMembers.contains(clubMember.getMember()))
+                .toList();
 
         return new ClubMemberListRes(
-                ClubMemberData.fromEntities(clubMembers),
+                ClubMemberData.fromEntities(attendedClubMembers),
                 PageInfo.fromPage(page)
         );
     }

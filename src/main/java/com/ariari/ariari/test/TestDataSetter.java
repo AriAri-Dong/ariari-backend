@@ -1,5 +1,6 @@
 package com.ariari.ariari.test;
 
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
@@ -15,6 +16,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
+import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
 import com.ariari.ariari.domain.club.notice.ClubNotice;
@@ -90,6 +92,7 @@ public class TestDataSetter {
     private final ClubAlarmRepository clubAlarmRepository;
     private final MemberAlarmRepository memberAlarmRepository;
     private final ClubNoticeRepository clubNoticeRepository;
+    private final ClubAlarmManger clubAlarmManger;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -388,6 +391,9 @@ public class TestDataSetter {
 
 
         // 동아리 알림
+        clubAlarmManger.sendClubQA(c1);
+        clubAlarmManger.quitClubMember(cm1_1.getName(), c1, LocalDateTime.now());
+
         ClubAlarm clubAlarm1 = ClubAlarm.builder()
                 .title("test 제목1")
                 .isChecked(false)
@@ -429,6 +435,8 @@ public class TestDataSetter {
         ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, cm1_3);
         ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, cm1_3);
         clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
+
+
 
 
     }

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ClubAlarmRepository extends JpaRepository<ClubAlarm, Long> {
 
-    @Query("SELECT ca FROM ClubAlarm ca WHERE ca.club = :club")
+    @Query("SELECT ca FROM ClubAlarm ca WHERE ca.club = :club ORDER BY ca.createdDateTime DESC")
     Page<ClubAlarm> findAllByClub(@Param("club") Club club, Pageable pageable);
 
     Optional<ClubAlarm> findByIdAndClub(Long id, Club clubId);

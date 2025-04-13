@@ -4,6 +4,7 @@ import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.event.ClubEvent;
+import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,20 +23,16 @@ public class Attendance extends LogicalDeleteEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_member_id")
-    private ClubMember clubMember;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_event_id")
     private ClubEvent clubEvent;
 
-    public Attendance(ClubMember clubMember, ClubEvent clubEvent) {
-        this.clubMember = clubMember;
+    public Attendance(Member member, ClubEvent clubEvent) {
+        this.member = member;
         this.clubEvent = clubEvent;
-    }
-
-    public void modifyClubMember(){
-        this.clubMember = null;
     }
 
 }

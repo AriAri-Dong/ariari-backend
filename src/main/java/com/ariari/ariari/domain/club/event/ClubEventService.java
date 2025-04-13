@@ -25,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -90,10 +92,16 @@ public class ClubEventService {
 
         Map<ClubEvent, List<ClubMember>> clubMemberListMap = new HashMap<>();
         Map<ClubEvent, Long> attendeeCountMap = new HashMap<>();
+        List<ClubMember> clubMembers = clubMemberRepository.findAllByClub(club);
         for (ClubEvent clubEvent : page.getContent()) {
             List<Attendance> attendances = attendanceRepository.findTop3ByClubEvent(clubEvent);
-            List<ClubMember> clubMembers = attendances.stream().map(Attendance::getClubMember).toList();
-            clubMemberListMap.put(clubEvent, clubMembers);
+            List<Member> members = attendances.stream().map(Attendance::getMember).toList();
+
+            Set<Long> memberIds = members.stream().map(Member::getId).collect(Collectors.toSet());
+            List<ClubMember> attendedClubMembers = clubMembers.stream()
+                            .filter(clubMember -> memberIds.contains(clubMember.getMember().getId()))
+                                    .toList();
+            clubMemberListMap.put(clubEvent, attendedClubMembers);
 
             Long attendeeCount = attendanceRepository.countByClubEvent(clubEvent);
             attendeeCountMap.put(clubEvent, attendeeCount);

@@ -15,7 +15,7 @@ public interface MemberAlarmRepository extends JpaRepository<MemberAlarm, Long> 
 
     Optional<MemberAlarm> findByIdAndMemberId(Long id, Long memberId);
 
-    @Query("SELECT ma FROM MemberAlarm ma WHERE ma.member = :member")
+    @Query("SELECT ma FROM MemberAlarm ma WHERE ma.member = :member ORDER BY ma.createdDateTime DESC")
     Page<MemberAlarm> findAllByMember(@Param("member") Member member, Pageable pageable);
 
     @Query("select count(*) from MemberAlarm  as ma where ma.member = :member and ma.isChecked=false")

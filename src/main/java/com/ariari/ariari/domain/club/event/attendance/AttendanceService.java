@@ -49,11 +49,12 @@ public class AttendanceService {
         for (ClubMember clubMember : clubMembers) {
             GlobalValidator.belongsToClub(clubMember, club);
 
-            if (attendanceRepository.findByClubEventAndClubMember(clubEvent, clubMember).isPresent()) {
+            Member member = clubMember.getMember();
+            if (attendanceRepository.findByClubEventAndMember(clubEvent, member).isPresent()) {
                 throw new ExistingAttendanceException();
             }
 
-            attendances.add(new Attendance(clubMember, clubEvent));
+            attendances.add(new Attendance(clubMember.getMember(), clubEvent));
         }
 
         attendanceRepository.saveAll(attendances);
@@ -72,7 +73,8 @@ public class AttendanceService {
         for (ClubMember clubMember : clubMembers) {
             GlobalValidator.belongsToClub(clubMember, club);
 
-            Attendance attendance = attendanceRepository.findByClubEventAndClubMember(clubEvent, clubMember).orElseThrow(NotFoundEntityException::new);
+            Member member = clubMember.getMember();
+            Attendance attendance = attendanceRepository.findByClubEventAndMember(clubEvent, member).orElseThrow(NotFoundEntityException::new);
             attendanceRepository.delete(attendance);
         }
     }
@@ -98,25 +100,27 @@ public class AttendanceService {
         Club club = clubEvent.getClub();
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        if (attendanceRepository.findByClubEventAndClubMember(clubEvent, reqClubMember).isPresent()) {
+        if (attendanceRepository.findByClubEventAndMember(clubEvent, reqMember).isPresent()) {
             throw new ExistingAttendanceException();
         }
 
-        Attendance attendance = new Attendance(reqClubMember, clubEvent);
+        Attendance attendance = new Attendance(reqMember, clubEvent);
         attendanceRepository.save(attendance);
     }
 
+    @Transactional
     public ClubMemberListRes findAttendees(Long reqMemberId, Long clubEventId, Pageable pageable) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubEvent clubEvent = clubEventRepository.findById(clubEventId).orElseThrow(NotFoundEntityException::new);
         Club club = clubEvent.getClub();
+        List<ClubMember> clubMemberList = clubMemberRepository.findAllByClub(club);
 
         if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
             throw new NotBelongInClubException();
         }
 
         Page<Attendance> page = attendanceRepository.findByClubEvent(clubEvent, pageable);
-        return ClubMemberListRes.createResByAttendances(page);
+        return ClubMemberListRes.createResByAttendances(page, clubMemberList);
     }
 
 }

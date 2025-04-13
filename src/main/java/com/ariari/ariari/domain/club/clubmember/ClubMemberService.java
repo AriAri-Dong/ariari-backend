@@ -155,7 +155,8 @@ public class ClubMemberService {
         String clubMemberName = reqClubMember.getName();
 
         GlobalValidator.isClubMemberAdmin(reqClubMember);
-
+        GlobalValidator.isSameClubMemberAsRequester(reqClubMember.getMember(), reqMember);
+        // 해당 req클럽 멤버만 진행할수있ㄷㅎㅀㄱ햐여헌더
 
 
         // DB에서는 ON DELETE SET NULL 가능하지만 JPA는 X 그래서 전부 업데이트 처리 아니면 배치 update JPQL 해야함
@@ -172,7 +173,8 @@ public class ClubMemberService {
         List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
         List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
         List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
-        List<Attendance> attendanceList = attendanceRepository.findAllByClubMember(reqClubMember);
+        List<Attendance> attendanceList = attendanceRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
+        attendanceRepository.deleteAll(attendanceList);
 
         for (ClubActivityComment clubActivityComment : clubActivityCommentList) {
             clubActivityComment.modifyClubMember();
@@ -183,13 +185,10 @@ public class ClubMemberService {
         for (ClubNotice clubNotice : clubNoticeList) {
             clubNotice.modifyClubMember();
         }
-        for (Attendance attendance : attendanceList) {
-            attendance.modifyClubMember();
-        }
 
         clubActivityCommentRepository.saveAll(clubActivityCommentList);
         clubNoticeRepository.saveAll(clubNoticeList);
         clubActivityRepository.saveAll(clubActivityList);
-        attendanceRepository.saveAll(attendanceList);
+
     }
 }
