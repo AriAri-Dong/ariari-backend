@@ -17,5 +17,6 @@ public interface ClubNoticeRepository extends JpaRepository<ClubNotice, Long> {
     @Query("select cn from ClubNotice cn where cn.isFixed= false and cn.club= :club")
     Page<ClubNotice> findUnfixedByClub(Club club, Pageable pageable);
 
-    List<ClubNotice> findAllByClubMember(ClubMember reqClubMember);
+//    List<ClubNotice> findAllByClubMember(ClubMember reqClubMember);
+
 }

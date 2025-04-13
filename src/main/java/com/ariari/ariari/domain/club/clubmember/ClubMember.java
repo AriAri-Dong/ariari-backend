@@ -62,9 +62,6 @@ public class ClubMember extends LogicalDeleteEntity {
     @OneToMany(mappedBy = "clubMember")
     private List<Attendance> attendances;
 
-    @OneToMany(mappedBy = "clubMember", cascade = CascadeType.REMOVE)
-    private List<ClubNotice> clubNotices;
-
     public static ClubMember createAdmin(Member member, Club club) {
         return new ClubMember(
                 "동아리 대표",
