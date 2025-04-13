@@ -6,6 +6,8 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.applyform.dto.ApplyFormData;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +32,11 @@ public class RecruitmentDetailRes {
     @Schema(description = "내가 지원한 모집인지 여부", example = "false")
     private Boolean isMyApply;
 
-    public static RecruitmentDetailRes fromEntity(Recruitment recruitment, Integer bookmarks, Member reqMember, Boolean isMyClub, Boolean isMyApply) {
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "내 최근 임시 지원서 id", example = "673012345142938986")
+    private Long myRecentApplyTempId;
+
+    public static RecruitmentDetailRes fromEntity(Recruitment recruitment, Integer bookmarks, Member reqMember, Boolean isMyClub, Boolean isMyApply, Long myRecentApplyTempId) {
         return new RecruitmentDetailRes(
                 RecruitmentData.fromEntity(recruitment, reqMember),
                 RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes()),
@@ -38,7 +44,8 @@ public class RecruitmentDetailRes {
                 ApplyFormData.fromEntity(recruitment.getApplyForm()),
                 bookmarks,
                 isMyClub,
-                isMyApply
+                isMyApply,
+                myRecentApplyTempId
         );
     }
 
