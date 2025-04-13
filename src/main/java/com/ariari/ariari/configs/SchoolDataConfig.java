@@ -70,7 +70,6 @@ public class SchoolDataConfig {
         schoolRepository.save(new School("계명대학교", "kmu.ac.kr"));
         schoolRepository.save(new School("고려대학교 서울캠퍼스", "korea.ac.kr"));
         schoolRepository.save(new School("고려대학교 세종캠퍼스", "korea.ac.kr"));
-        schoolRepository.save(new School("고려대학교 세종캠퍼스", "korea.ac.kr"));
         schoolRepository.save(new School("고신대학교", "kosin.ac.kr"));
         schoolRepository.save(new School("가톨릭관동대학교", "cku.ac.kr"));
         schoolRepository.save(new School("광신대학교", "kwangshin.ac.kr"));

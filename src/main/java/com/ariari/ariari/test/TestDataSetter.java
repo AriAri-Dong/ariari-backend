@@ -95,8 +95,8 @@ public class TestDataSetter {
     public void initTestData() {
         // school
         School school1 = new School("세종대학교2", "sejong.ac.kr");
-        School school2 = new School("두종대학교3");
-        School school3 = new School("네종대학교4");
+        School school2 = new School("두종대학교3", "dujong.ac.kr");
+        School school3 = new School("네종대학교4", "nejong.ac.kr");
         School school4 = new School("네이버대학교", "naver.com");
         schoolRepository.saveAll(List.of(school1, school2, school3, school4));
 
