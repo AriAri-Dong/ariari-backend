@@ -32,7 +32,7 @@ public class SchoolAuthService {
 
         String authCode = schoolAuthManager.issueSchoolAuthCode(reqMember, school);
 
-        mailManager.sendMail(
+        mailManager.sendTemplateMail(
                 email,
                 "[Ariari] 학교 인증 번호",
                 authCode);
