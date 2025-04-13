@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ariari.ariari.domain.club.activity.mapper.ClubActivityMapper">
+    <select id="findClubActivityImageCount">
+        SELECT COUNT(*)
+        FROM image
+        WHERE club_activity_id = #{clubActivityId}
+    </select>
+
+    <select id="findClubActivityForNotMember">
+        SELECT ca.club_activity_id AS id, ca.created_date_time, ca.member_id AS creatorId, cm2.name AS creatorName, ca.updated_date_time, ca.access_type, ca.body,
+                (SELECT COUNT(*)
+                 FROM club_activity_like cal
+                 WHERE cal.club_activity_id = ca.club_activity_id) AS likeCount,
+                (SELECT COUNT(*)
+                 FROM club_activity_comment cam
+                 WHERE cam.club_activity_id = ca.club_activity_id) AS commentCount
+        FROM club_activity ca
+        LEFT JOIN member cm ON ca.member_id = cm.member_id
+        LEFT JOIN club_member cm2 ON cm2.deleted_date_time = NULL AND cm2.club_id = #{clubId} AND cm2.member_id = ca.member_id
+        WHERE ca.deleted_date_time IS NULL AND ca.club_id = #{clubId} AND ca.access_type = 'ALL'
+        ORDER BY ca.created_date_time DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="findClubActivityForNotMemberAndNotClubMemberCount">
+        SELECT COUNT(*)
+        FROM club_activity ca
+        WHERE ca.deleted_date_time IS NULL AND ca.club_id = #{clubId} AND ca.access_type = 'ALL'
+        ORDER BY ca.created_date_time DESC
+    </select>
+
+    <select id="findClubActivityImageByClubActivityId">
+        SELECT image_id AS id, image_uri
+        FROM image
+        WHERE deleted_date_time IS NULL AND club_activity_id = #{clubActivityId}
+    </select>
+
+    <select id="findClubActivityForNotClubMember">
+        SELECT ca.club_activity_id AS id, ca.created_date_time, ca.member_id AS creatorId, cm2.name AS creatorName, ca.updated_date_time, ca.access_type, ca.body,
+               (SELECT COUNT(*)
+                FROM club_activity_like cal
+                WHERE cal.club_activity_id = ca.club_activity_id) AS likeCount,
+               CASE
+                   WHEN cal.club_activity_like_id IS NULL THEN FALSE
+                   ELSE TRUE
+                   END AS isMyLiked,
+--                cal.club_activity_like_id IS NOT NULL AS isMyLiked
+               (SELECT COUNT(*)
+                FROM club_activity_comment cam
+                WHERE cam.club_activity_id = ca.club_activity_id) AS commentCount
+        FROM club_activity ca
+            LEFT JOIN member cm ON ca.member_id = cm.member_id
+            LEFT JOIN club_activity_like cal ON cal.club_activity_id = ca.club_activity_id AND cal.member_id = #{memberId}
+            LEFT JOIN club_member cm2 ON cm2.deleted_date_time = NULL AND cm2.club_id = #{clubId} AND cm2.member_id = ca.member_id
+        WHERE ca.deleted_date_time IS NULL AND ca.club_id = #{clubId} AND ca.access_type = 'ALL'
+        ORDER BY ca.created_date_time DESC
+            LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="findClubActivityForClubMember">
+        SELECT ca.club_activity_id AS id, ca.created_date_time, ca.member_id AS creatorId, cm2.name AS creatorName, ca.updated_date_time, ca.access_type, ca.body,
+               (SELECT COUNT(*)
+                FROM club_activity_like cal
+                WHERE cal.club_activity_id = ca.club_activity_id) AS likeCount,
+               CASE
+                   WHEN cal.club_activity_like_id IS NULL THEN FALSE
+                   ELSE TRUE
+                   END AS isMyLiked,
+--                cal.club_activity_like_id IS NOT NULL AS isMyLiked
+               (SELECT COUNT(*)
+                FROM club_activity_comment cam
+                WHERE cam.club_activity_id = ca.club_activity_id) AS commentCount
+        FROM club_activity ca
+                 LEFT JOIN member cm ON ca.member_id = cm.member_id
+                 LEFT JOIN club_activity_like cal ON cal.club_activity_id = ca.club_activity_id AND cal.member_id = #{memberId}
+                 LEFT JOIN club_member cm2 ON cm2.deleted_date_time IS NULL AND cm2.club_id = #{clubId} AND cm2.member_id = ca.member_id
+        WHERE ca.deleted_date_time IS NULL AND ca.club_id = #{clubId}
+        ORDER BY ca.created_date_time DESC
+            LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="findClubActivityForClubMemberCount">
+        SELECT COUNT(*)
+        FROM club_activity ca
+        WHERE ca.deleted_date_time IS NULL AND ca.club_id = #{clubId}
+        ORDER BY ca.created_date_time DESC
+    </select>
+
+</mapper>

@@ -89,7 +89,7 @@ public class ClubMemberController {
     }
 
     @Operation(summary = "동아리 탈퇴", description = "해당 동아리에 탈퇴합니다.")
-    @DeleteMapping("/club-members/quit/{clubMemberId}")
+    @DeleteMapping("/club-members/withdrawal/{clubMemberId}")
     public void quitClubMember(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long clubMemberId) {
         Long reqMemberId = getMemberId(userDetails, true);
         clubMemberService.quitClubMember(reqMemberId, clubMemberId);

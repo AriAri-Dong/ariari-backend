@@ -22,64 +22,35 @@ import java.util.stream.Collectors;
 @Schema(description = "지원 형식 데이터")
 public class ApplyFormData {
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long gender;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long birthday;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long phone;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long email;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long education;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long major;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long occupation;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long mbti;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long availablePeriod;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long preferredActivityField;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long hobby;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long sns;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long motivation;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long activityExperience;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long skill;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long aspiration;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long availableTime;
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long referralSource;
+    @Schema(description = "특별 질문 리스트")
+    private SpecialQuestionList specialQuestionList;
 
     @Schema(description = "지원 형식 질문 데이터 리스트")
     private List<ApplyQuestionData> applyQuestionDataList;
 
+    private Boolean portfolio;
+
     public static ApplyFormData fromEntity(ApplyForm applyForm) {
         ApplyFormData applyFormData = new ApplyFormData();
         Map<String, Long> map = applyForm.getApplyQuestionBodyMap(); // body : id(pk)
+
+        SpecialQuestionList specialQuestionList = new SpecialQuestionList();
 
         List<ApplyQuestion> applyQuestions = applyForm.getApplyQuestions();
         Set<String> questions1 = applyQuestions.stream().map(ApplyQuestion::getBody).collect(Collectors.toSet());
         Set<String> questions2 = applyQuestions.stream().map(ApplyQuestion::getBody).collect(Collectors.toSet());
         for (String question : questions1) {
             try {
-                Field field = ApplyFormData.class.getDeclaredField(question);
+                Field field = SpecialQuestionList.class.getDeclaredField(question);
                 field.setAccessible(true);
-                field.set(applyFormData, map.get(question));
+                field.set(specialQuestionList, map.get(question));
                 questions2.remove(question);
             } catch (Exception ignored) {}
         }
 
+        applyFormData.setSpecialQuestionList(specialQuestionList);
         applyFormData.setApplyQuestionDataList(questions2.stream().map(q -> new ApplyQuestionData(map.get(q), q)).toList());
-
+        applyFormData.setPortfolio(applyForm.getRequiresPortfolio());
         return applyFormData;
     }
 

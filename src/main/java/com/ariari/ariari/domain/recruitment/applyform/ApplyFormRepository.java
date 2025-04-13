@@ -11,4 +11,6 @@ public interface ApplyFormRepository extends JpaRepository<ApplyForm, Long> {
     @EntityGraph(attributePaths = "applyQuestions")
     Optional<ApplyForm> findFirstByClubOrderByCreatedDateTimeDesc(Club club);
 
+
+
 }

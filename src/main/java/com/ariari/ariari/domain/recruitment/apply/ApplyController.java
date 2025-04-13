@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.InvalidListParamException;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchCondition;
@@ -14,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
 
@@ -45,27 +48,39 @@ public class ApplyController {
     }
 
     @Operation(summary = "지원 합격 처리", description = "해당 지원을 합격 처리합니다. 지원자가 동아리 회원으로 등록됩니다.")
-    @PostMapping("/applies/{applyId}/approve")
-    public void approveApply(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @PathVariable Long applyId) {
+    @PostMapping("/applies/approve")
+    public void approveApplies(@AuthenticationPrincipal CustomUserDetails userDetails,
+                               @RequestBody List<Long> applyIds) {
         Long reqMemberId = getMemberId(userDetails, true);
-        applyService.approveApply(reqMemberId, applyId);
+        if (applyIds == null || applyIds.isEmpty()) {
+            throw new InvalidListParamException();
+        }
+
+        applyService.approveApplies(reqMemberId, applyIds);
     }
 
     @Operation(summary = "지원 거절 처리", description = "")
-    @PostMapping("/applies/{applyId}/refuse")
+    @PostMapping("/applies/refuse")
     public void refuseApply(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @PathVariable Long applyId) {
+                            @RequestBody List<Long> applyIds) {
         Long reqMemberId = getMemberId(userDetails, true);
-        applyService.refuseApply(reqMemberId, applyId);
+        if (applyIds == null || applyIds.isEmpty()) {
+            throw new InvalidListParamException();
+        }
+
+        applyService.refuseApply(reqMemberId, applyIds);
     }
 
     @Operation(summary = "지원 상태를 INTERVIEW 로 변경", description = "")
-    @PostMapping("/applies/{applyId}/interview")
+    @PostMapping("/applies/interview")
     public void processApply(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @PathVariable Long applyId) {
+                             @RequestBody List<Long> applyIds) {
         Long reqMemberId = getMemberId(userDetails, true);
-        applyService.processApply(reqMemberId, applyId);
+        if (applyIds == null || applyIds.isEmpty()) {
+            throw new InvalidListParamException();
+        }
+
+        applyService.processApply(reqMemberId, applyIds);
     }
 
     @Operation(summary = "지원 삭제", description = "지원을 삭제합니다. 지원자 및 동아리 관리자만이 삭제할 수 있습니다.")
@@ -95,7 +110,5 @@ public class ApplyController {
         Long reqMemberId = getMemberId(userDetails, true);
         return applyListService.findMyApplies(reqMemberId, pageable, searchType);
     }
-
-
 
 }

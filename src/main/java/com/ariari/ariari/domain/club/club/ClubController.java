@@ -7,6 +7,7 @@ import com.ariari.ariari.domain.club.club.dto.req.ClubSaveReq;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
+import com.ariari.ariari.domain.club.club.dto.res.MyClubListRes;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,12 +57,11 @@ public class ClubController {
         return clubListService.searchInternalPage(reqMemberId, condition, pageable);
     }
 
-    @Operation(summary = "내 동아리 조회", description = "내가 속한 전체 동아리 리스트를 조회합니다. (페이지네이션)")
+    @Operation(summary = "내 동아리 조회", description = "내가 속한 전체 동아리 리스트를 조회합니다.")
     @GetMapping("/my")
-    public ClubListRes findMyClubList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                      Pageable pageable) {
+    public MyClubListRes findMyClubList(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long reqMemberId = getMemberId(userDetails, true);
-        return clubListService.findMyClubList(reqMemberId, pageable);
+        return clubListService.findMyClubList(reqMemberId);
     }
 
     @Operation(summary = "내 동아리 조회 (내가 최고관리자인)", description = "내가 속한 전체 동아리 중 내가 최고관리자인 동아리 리스트를 조회합니다.")
@@ -140,7 +140,7 @@ public class ClubController {
      * 검증 로직 수정 예정
      */
     @Operation(summary = "동아리 폐쇄", description = "*** 검증 로직 수정 예정 ***")
-    @DeleteMapping("/{clubId}")
+    @DeleteMapping("/close/{clubId}")
     public void removeClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                            @PathVariable Long clubId) {
         Long reqMemberId = getMemberId(userDetails, true);

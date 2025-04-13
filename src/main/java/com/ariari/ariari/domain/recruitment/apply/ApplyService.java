@@ -14,21 +14,20 @@ import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubExcepti
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
+import com.ariari.ariari.domain.recruitment.apply.dto.ApplyInfo;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.res.ApplyDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
-import com.ariari.ariari.domain.recruitment.apply.exception.*;
+import com.ariari.ariari.domain.recruitment.apply.exceptions.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -91,74 +90,94 @@ public class ApplyService {
     }
 
     @Transactional
-    public void approveApply(Long reqMemberId, Long applyId) {
+    public void approveApplies(Long reqMemberId, List<Long> applyIds) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
-        Club club = apply.getRecruitment().getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
+        List<Apply> applies = applyRepository.findAllByIdsWithClub(applyIds);
 
+        Club club = applies.get(0).getRecruitment().getClub();
+        for (Apply apply : applies) {
+            if (!apply.getRecruitment().getClub().equals(club)) {
+                throw new NotSameClubsAppliesException();
+            }
+        }
+
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        if (apply.getApplyStatusType().equals(ApplyStatusType.REFUSAL)) {
-            throw new ApplyProcessingException();
+        for (Apply apply : applies) {
+            if (apply.getApplyStatusType().equals(ApplyStatusType.REFUSAL)) {
+                throw new ApplyProcessingException();
+            }
+
+            if (clubMemberRepository.findByClubAndMember(club, apply.getMember()).isPresent()) {
+                throw new ExistingClubMemberException();
+            }
+
+            apply.setApplyStatusType(ApplyStatusType.APPROVE);
+
+            ClubMember clubMember = ClubMember.createGeneral(apply);
+            clubMemberRepository.save(clubMember);
+            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.APPROVE, apply.getMember(), club.getName(), club.getId());
         }
-
-        if (clubMemberRepository.findByClubAndMember(club, apply.getMember()).isPresent()) {
-            throw new ExistingClubMemberException();
-        }
-
-        apply.setApplyStatusType(ApplyStatusType.APPROVE);
-
-        ClubMember clubMember = ClubMember.createGeneral(apply);
-        clubMemberRepository.save(clubMember);
-        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.APPROVE, apply.getMember(), club.getName());
     }
 
     @Transactional
-    public void refuseApply(Long reqMemberId, Long applyId) {
+    public void refuseApply(Long reqMemberId, List<Long> applyIds) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
-        Club club = apply.getRecruitment().getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
+        List<Apply> applies = applyRepository.findAllByIdsWithClub(applyIds);
 
-        GlobalValidator.isClubManagerOrHigher(reqClubMember);
-
-        if (apply.getApplyStatusType().equals(ApplyStatusType.APPROVE)) {
-            throw new ApplyProcessingException();
+        Club club = applies.get(0).getRecruitment().getClub();
+        for (Apply apply : applies) {
+            if (!apply.getRecruitment().getClub().equals(club)) {
+                throw new NotSameClubsAppliesException();
+            }
         }
 
-        apply.setApplyStatusType(ApplyStatusType.REFUSAL);
-        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.REFUSAL, apply.getMember(), club.getName());
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+
+        for (Apply apply : applies) {
+            if (apply.getApplyStatusType().equals(ApplyStatusType.APPROVE)) {
+                throw new ApplyProcessingException();
+            }
+
+            apply.setApplyStatusType(ApplyStatusType.REFUSAL);
+            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.REFUSAL, apply.getMember(), club.getName(), club.getId());
+        }
     }
 
     @Transactional
-    public void processApply(Long reqMemberId, Long applyId) {
+    public void processApply(Long reqMemberId, List<Long> applyIds) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
-        Club club = apply.getRecruitment().getClub();
-        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
+        List<Apply> applies = applyRepository.findAllByIdsWithClub(applyIds);
 
-        GlobalValidator.isClubManagerOrHigher(reqClubMember);
-
-        if (!apply.getApplyStatusType().equals(ApplyStatusType.PENDENCY)) {
-            throw new ApplyProcessingException();
+        Club club = applies.get(0).getRecruitment().getClub();
+        for (Apply apply : applies) {
+            if (!apply.getRecruitment().getClub().equals(club)) {
+                throw new NotSameClubsAppliesException();
+            }
         }
 
-        apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
-        memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName());
+        ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
+        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+
+        for (Apply apply : applies) {
+            if (!apply.getApplyStatusType().equals(ApplyStatusType.PENDENCY)) {
+                throw new ApplyProcessingException();
+            }
+
+            apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
+            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName(), club.getId());
+        }
     }
 
     @Transactional
     public void removeApply(Long reqMemberId, Long applyId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Apply apply = applyRepository.findById(applyId).orElseThrow(NotFoundEntityException::new);
-        Club club = apply.getRecruitment().getClub();
 
         if (!reqMember.equals(apply.getMember())) {
-            ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NoApplyAuthException::new);
-            if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
-                throw new NoApplyAuthException();
-            }
+            throw new NoApplyAuthException();
         }
 
         if (apply.getCreatedDateTime().plusMonths(1).isAfter(LocalDateTime.now())) {
@@ -170,27 +189,26 @@ public class ApplyService {
 
     // 매주 월요일 미처리된 지원서가 있을 시
     @Scheduled(cron = "0 0 0 * * MON")
-    public void sendUncheckMember(){
+    public void sendUncheckApply() {
         List<Apply> applyList = applyRepository.findApplyByApplyStatusType_Pendency(ApplyStatusType.PENDENCY);
 
-        if(applyList.isEmpty()){
+        if (applyList.isEmpty()) {
             return;
         }
-        // 모집별로 불류
+        // 모집별 분류
         Map<Long, List<Apply>> groupByRecruitmentId = applyList.stream()
                 .collect(Collectors.groupingBy(a -> a.getRecruitment().getId()));
+        Map<Long, ApplyInfo> applyInfoMap = new HashMap<>();
+        for (Map.Entry<Long, List<Apply>> entry : groupByRecruitmentId.entrySet()) {
+            Long recruitmentId = entry.getKey();
+            String title = entry.getValue().get(0).getRecruitment().getTitle();
+            Club club = entry.getValue().get(0).getRecruitment().getClub();
 
-        groupByRecruitmentId.forEach((id, applys) -> {
+            applyInfoMap.put(recruitmentId, ApplyInfo.from(title, club));
+        }
 
-            String recruitmentTitle = applys.get(0).getRecruitment().getTitle();
-            List<Club> clubList = applys.stream().map( apply -> apply.getRecruitment().getClub()).toList();
-            clubAlarmManger.sendUncheckMember(clubList, recruitmentTitle);
-        });
-
+        clubAlarmManger.sendUncheckApply(applyInfoMap);
     }
-
-
-
 
 
 

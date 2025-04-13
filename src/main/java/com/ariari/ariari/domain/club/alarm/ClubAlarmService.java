@@ -41,12 +41,7 @@ public class ClubAlarmService {
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
         Page<ClubAlarm> clubAlarmPage = clubAlarmRepository.findAllByClub(club, pageable);
-        int unreadCount = 0;
-        for(ClubAlarm clubAlarm : clubAlarmPage){
-            if(!clubAlarm.getIsChecked()){
-                unreadCount++;
-            }
-        }
+        Integer unreadCount = clubAlarmRepository.countUnreadByClub(club);
 
         return ClubAlarmListRes.fromPage(clubAlarmPage, unreadCount);
     }
@@ -58,7 +53,6 @@ public class ClubAlarmService {
         // 단일 이벤트 처리
         ClubAlarm clubAlarm = ClubAlarm.builder()
                 .title(clubAlarmEvent.getTitle())
-                .clubAlarmType(clubAlarmEvent.getClubAlarmType())
                 .club(clubAlarmEvent.getClub())
                 .uri(clubAlarmEvent.getUri())
                 .isChecked(false)
@@ -75,8 +69,8 @@ public class ClubAlarmService {
                 .map( clubAlarmEvent -> ClubAlarm.builder()
                         .title(clubAlarmEvent.getTitle())
                         .uri(clubAlarmEvent.getUri())
-                        .clubAlarmType(clubAlarmEvent.getClubAlarmType())
                         .club(clubAlarmEvent.getClub())
+                        .isChecked(false)
                         .build())
                 .toList();
         // 알림 저장

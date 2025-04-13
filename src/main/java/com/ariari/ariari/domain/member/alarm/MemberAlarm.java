@@ -26,9 +26,7 @@ public class MemberAlarm extends LogicalDeleteEntity {
     @Column(length = 100)
     private String title;
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 20)
-    private MemberAlarmType memberAlarmType;
+
 
     private String uri;
 
@@ -39,10 +37,9 @@ public class MemberAlarm extends LogicalDeleteEntity {
     private Member member;
 
     @Builder
-    private MemberAlarm(Long id, String title, MemberAlarmType memberAlarmType, String uri, Member member, Boolean isChecked) {
+    private MemberAlarm(Long id, String title, String uri, Member member, Boolean isChecked) {
         this.id = id;
         this.title = title;
-        this.memberAlarmType = memberAlarmType;
         this.uri = uri;
         this.member = member;
         this.isChecked = isChecked;  // 기본값 설정

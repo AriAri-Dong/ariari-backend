@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.club.alarm.enums.ClubAlarmType;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 public class ClubAlarmEventList {
@@ -16,10 +17,8 @@ public class ClubAlarmEventList {
         this.clubAlarmEventList = clubAlarmEventList;
     }
 
-    public static ClubAlarmEventList from(String title, String uri, ClubAlarmType clubAlarmType, List<Club> clubs){
-        List<ClubAlarmEvent> clubAlarmEvents = clubs.stream()
-                .map( club -> ClubAlarmEvent.from(title, uri, clubAlarmType, club))
-                .toList();
-        return new ClubAlarmEventList(clubAlarmEvents);
+    public static ClubAlarmEventList from(List<ClubAlarmEvent> clubAlarmEventList){
+        return new ClubAlarmEventList(clubAlarmEventList);
     }
+
 }

@@ -20,10 +20,10 @@ public class School extends LogicalDeleteEntity {
     @Column(name = "school_id")
     private Long id;
 
-    @Column(length = 20)
+    @Column(length = 20, unique = true, nullable = false)
     private String name;
 
-    @Column(length = 30)
+    @Column(length = 30, nullable = false)
     private String email;
 
     public School(String name) {

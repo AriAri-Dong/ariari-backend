@@ -24,4 +24,8 @@ public class ClubActivityCommentLike {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    public ClubActivityCommentLike(ClubActivityComment clubActivityComment, Member member) {
+        this.clubActivityComment = clubActivityComment;
+        this.member = member;
+    }
 }

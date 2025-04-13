@@ -3,8 +3,8 @@ package com.ariari.ariari.domain.club.notice;
 import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
+import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,19 +39,19 @@ public class ClubNotice extends LogicalDeleteEntity {
     private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_member_id")
-    private ClubMember clubMember;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Setter
     @OneToMany(mappedBy = "clubNotice", cascade = CascadeType.ALL)
     private List<ClubNoticeImage> clubNoticeImages = new ArrayList<>();
 
-    public ClubNotice(String title, String body, Boolean isFixed, Club club, ClubMember clubMember) {
+    public ClubNotice(String title, String body, Boolean isFixed, Club club, Member member) {
         this.title = title;
         this.body = body;
         this.isFixed = isFixed;
         this.club = club;
-        this.clubMember = clubMember;
+        this.member = member;
     }
 
     public void modify(String title, String body) {
@@ -67,8 +67,8 @@ public class ClubNotice extends LogicalDeleteEntity {
         }
     }
 
-    public void modifyClubMember(){
-        this.clubMember = null;
+    public void modifyMember(){
+        this.member = null;
     }
 
 }

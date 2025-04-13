@@ -7,13 +7,10 @@ import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
-import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
-import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
-import com.ariari.ariari.domain.recruitment.apply.exception.AlreadyBelongToClubException;
+import com.ariari.ariari.domain.recruitment.apply.exceptions.AlreadyBelongToClubException;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempModifyReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempSaveReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempDetailRes;
@@ -58,7 +55,7 @@ public class ApplyTempService {
     }
 
     @Transactional
-    public void saveApplyTemp(Long reqMemberId, Long recruitmentId, ApplyTempSaveReq saveReq, MultipartFile file) {
+    public Long saveApplyTemp(Long reqMemberId, Long recruitmentId, ApplyTempSaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
@@ -77,6 +74,8 @@ public class ApplyTempService {
             applyTemp.setFileUri(fileUri);
         }
         applyTempRepository.save(applyTemp);
+
+        return applyTemp.getId();
     }
 
     @Transactional
@@ -128,7 +127,7 @@ public class ApplyTempService {
         return ApplyTempListRes.fromPage(page);
     }
 
-    // 관심모집 마감임박(D-1) 알림
+    // 임시저장된 지원서 모집마감임박(D-1) 알림
     @Scheduled(cron ="0 0 0 * * ?")
     @Transactional(readOnly = true)
     public void sendApplyTempReminder(){
@@ -136,19 +135,15 @@ public class ApplyTempService {
 
         // D-1 임시지원서 찾기
         List<ApplyTemp> applyTempList = applyTempRepository.findAllByWithinRecruitment(LocalDateTime.now(), endTime);
-        // 모집별로 임시지원서 불류
-        Map<Long, List<ApplyTemp>> groupByRecruitmentId = applyTempList.stream()
-                .collect(Collectors.groupingBy( applyTemp -> applyTemp.getRecruitment().getId()));
-
-        groupByRecruitmentId.forEach((id, applyTemps) ->{
-
-            if(applyTemps.isEmpty()){
-                return;
-            }
-
-            List<Member> memberList = applyTemps.stream().map(ApplyTemp::getMember).toList();
+        if(!applyTempList.isEmpty()){
+            List<Member> memberList = applyTempList.stream()
+                    .map(ApplyTemp::getMember)
+                    .distinct()
+                    .toList();
             memberAlarmManger.sendApplyTempReminder(memberList);
-        });
+        }
+
+
     }
 
 }

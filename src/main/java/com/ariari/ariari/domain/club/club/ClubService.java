@@ -88,7 +88,7 @@ public class ClubService {
             club.setProfileUri(uri);
         }
 
-        ApplyForm applyForm = new ApplyForm(club, new ArrayList<>());
+        ApplyForm applyForm = new ApplyForm(club, false, new ArrayList<>());
         applyFormRepository.save(applyForm);
     }
 

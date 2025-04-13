@@ -69,8 +69,7 @@ public class RecruitmentBookmarkService {
 
             List<Member> memberList = recruitmentBookmarks.stream().map(RecruitmentBookmark::getMember).toList();
             String title = recruitmentBookmarks.get(0).getRecruitment().getTitle();
-            Long recruitmentId = recruitmentBookmarks.get(0).getId();
-            memberAlarmManger.sendRecruitmentBookMarkReminder(memberList, title, recruitmentId);
+            memberAlarmManger.sendRecruitmentBookMarkReminder(memberList, title);
         });
     }
 

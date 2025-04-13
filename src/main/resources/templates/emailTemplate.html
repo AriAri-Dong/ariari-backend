@@ -1,33 +1,110 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>이메일 인증</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>학교 이메일 인증</title>
     <style>
-        .email-container {
-            background-color: #FFFFFF;
-            padding: 20px;
-            border-radius: 10px;
+        @font-face {
+            font-family: "Pretendard";
+            src: url("/fonts/PretendardVariable.woff2") format("woff2");
+            font-weight: 100 900;
+            font-display: swap;
+        }
+        body {
+            font-family: "Pretendard", Arial, sans-serif;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 80px;
+            max-width: 640px;
+            width: 100%;
+            text-align: left;
+        }
+        .inner-content {
+            max-width: 500px;
+        }
+        .logo {
+            margin-bottom: 40px;
+        }
+        .title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 40px;
+        }
+        .message {
+            font-size: 21px;
+            font-weight: 600;
+            white-space: nowrap;
+            color: #4b4f52;
+            margin-bottom: 5px;
+        }
+        .message-sub {
+            font-size: 21px;
+            font-weight: 600;
+            color: #589bff;
+            margin-bottom: 40px;
+        }
+        .code {
+            font-size: 32px;
+            font-weight: 600;
+            color: #589bff;
+            background-color: #f2f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            letter-spacing: 5px;
+            width: 639px;
+            height: 80px;
+            margin-top: 40px;
+            border-radius: 12px;
         }
-        .email-header {
-            color: #589BFF;
-            font-size: 24px;
-            margin-bottom: 20px;
+        .footer {
+            font-size: 13px;
+            font-weight: 400;
+            color: #4b4f52;
+            margin-top: 20px;
         }
-        .email-body {
-            color: #589BFF;
-            font-size: 16px;
+        .footer-sub {
+            font-size: 13px;
+            font-weight: 400;
+            color: #7d8595;
+            padding-top: 25px;
+            border-top: 1px solid #e3e3e3;
+            margin-top: 108px;
+        }
+        .footer a {
+            color: #589bff;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-<div class="email-container" style = "background-color: #FFFFFF; padding: 20px; border-radius: 10px; text-align: center;">
-    <div class="email-header" style = "color: #589BFF; font-size: 24px; margin-bottom: 20px;">
-        [Ariari] 회원가입 인증번호입니다.
+<div class="container">
+    <div class="inner-content">
+        <img src="/image/logo.svg" alt="Ariari Logo" class="logo" width="100" />
+        <div class="title">학교 이메일 인증</div>
+        <div class="message">
+            아리아리 서비스 이용을 위해 학교 이메일 주소 인증을 요청하셨습니다.
+        </div>
+        <div class="message-sub">아래의 인증번호를 입력창에 입력해주세요.</div>
     </div>
-    <div class="email-body" style = "color: #589BFF; font-size: 16px;">
-        이메일 인증 코드 : <span th:text="${authCode}"></span>
+    <div class="code" th:text="${authCode}">인증번호</div>
+    <div class="footer">
+        본인이 인증번호를 요청하지 않았을 경우 본 이메일을 무시해주세요.<br />
+        다른 사용자가 로그인 정보를 잘못 입력한 것일 수 있습니다.<br />
+    </div>
+    <div class="footer-sub">
+        본 메일은 발신전용 입니다. 메일 관련 궁금한 점이 있으면
+        <a href="#">고객센터</a>를 이용해주세요.<br />
+        © 2024 Ariari. All rights reserved. | 서비스 문의 메일
+        ariariservice.official@gmail.com
     </div>
 </div>
 </body>

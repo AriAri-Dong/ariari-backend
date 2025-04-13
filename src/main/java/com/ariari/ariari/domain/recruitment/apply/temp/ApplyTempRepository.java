@@ -10,15 +10,24 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, ApplyTempRepositoryCustom {
 
     Page<ApplyTemp> searchByMember(Member reqMember, Pageable pageable);
 
     @Query("select a from ApplyTemp a " +
+            "join fetch a.member m "+
             "join fetch a.recruitment r " +
             "where r.endDateTime between :startDate and :endDate")
     List<ApplyTemp> findAllByWithinRecruitment(@Param("startDate") LocalDateTime startDate,
                                                @Param("endDate") LocalDateTime endDate);
+    @Query("select a from ApplyTemp a " +
+            "join fetch a.member m "+
+            "join fetch a.recruitment r " +
+            "where a.recruitment = :recruitment")
+    List<ApplyTemp> findAllByRecruitment(@Param("recruitment") Recruitment recruitment);
+
+    Optional<ApplyTemp> findFirstByMemberAndRecruitmentOrderByCreatedDateTimeDesc(Member member, Recruitment recruitment);
 
 }

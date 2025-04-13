@@ -18,6 +18,7 @@ import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.applyform.exception.NoApplyFormException;
@@ -38,8 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -60,7 +60,7 @@ public class RecruitmentService {
     private final MemberAlarmManger memberAlarmManger;
     private final ClubAlarmManger clubAlarmManger;
     private final ClubBookmarkRepository clubBookmarkRepository;
-
+    private final ApplyTempRepository applyTempRepository;
 
     @Transactional
     public RecruitmentDetailRes findRecruitmentDetail(Long reqMemberId, Long recruitmentId, String clientIp) {
@@ -87,7 +87,15 @@ public class RecruitmentService {
             isMyApply = applyRepository.findByMemberAndRecruitment(reqMember, recruitment).isPresent();
         }
 
-        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember, isMyCLub, isMyApply);
+        Long myRecentApplyTempId = null;
+        if (reqMemberId != null) {
+            Optional<ApplyTemp> applyTempOptional = applyTempRepository.findFirstByMemberAndRecruitmentOrderByCreatedDateTimeDesc(reqMember, recruitment);
+            if (applyTempOptional.isPresent()) {
+                myRecentApplyTempId = applyTempOptional.get().getId();
+            }
+        }
+
+        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember, isMyCLub, isMyApply, myRecentApplyTempId);
     }
 
     @Transactional
@@ -122,7 +130,8 @@ public class RecruitmentService {
         List<Member> memberList = clubBookmarkRepository.findAllByClub(club).stream()
                         .map(ClubBookmark::getMember)
                         .toList();
-        memberAlarmManger.sendClubBookmarkRecruitmentAlarm(memberList, club.getName());
+
+        memberAlarmManger.sendClubBookmarkRecruitmentAlarm(memberList, club.getName(), clubId);
 
     }
 
@@ -144,6 +153,16 @@ public class RecruitmentService {
                     .toList();
             memberAlarmManger.sendRecruitmentClosed(memberList, recruitment.getTitle());
         }
+        // 임시 저장된 지원서에 해당하는 모집이 마감시
+        List<ApplyTemp> applyTempList = applyTempRepository.findAllByRecruitment(recruitment);
+        if(!applyTempList.isEmpty()){
+            List<Member> memberList = applyTempList.stream()
+                    .map(ApplyTemp::getMember)
+                    .toList();
+            memberAlarmManger.sendApplyTempClosed(memberList, recruitment.getTitle());
+        }
+
+
     }
 
     @Transactional
@@ -170,34 +189,34 @@ public class RecruitmentService {
         LocalDateTime d7EndTime = LocalDate.now().plusDays(8).atStartOfDay();  // D-7 범위 (현재+7일 ~ 현재+8일)
 
 
-        List<Recruitment> recruitmentList = recruitmentRepository.findAllByWithinRecruitment(LocalDateTime.now(), d1EndTime, d7EndTime);
+        List<Recruitment> recruitmentList = recruitmentRepository
+                .findAllByWithinRecruitment(LocalDateTime.now(), d1EndTime, d7StartTime, d7EndTime);
 
-        // 모집별로 임시지원서 불류
-        Map<Integer, List<Recruitment>> groupByEndDateTime = recruitmentList.stream()
-                .collect(Collectors.groupingBy(r -> {
-                    // d-1 범위 체크
-                    if (r.getEndDateTime().isAfter(d1StartTime) && r.getEndDateTime().isBefore(d1EndTime)) {
-                        return 1;
-                    } else if (r.getEndDateTime().isAfter(d7StartTime) && r.getEndDateTime().isBefore(d7EndTime)) {
-                        return 7;
-                    } else {
-                        return -1;  // 이 외의 범위는 "Other"로 분류
-                    }
-                }));
+        if(recruitmentList.isEmpty()){
+            return;
+        }
 
-        groupByEndDateTime.forEach((endTime, recruitments ) -> {
+        Map<Integer, List<Club>> recruitmentMap = recruitmentList.stream()
+                .collect(Collectors.groupingBy(
+                        recruitment -> {
+                            LocalDateTime end = recruitment.getEndDateTime();
+                            if (end.isAfter(d1StartTime) && end.isBefore(d1EndTime)) {
+                                return 1; // D-1
+                            } else {
+                                return 7; // D-7
+                            }
+                        },
+                        Collectors.mapping(Recruitment::getClub, Collectors.toList())
+                ));
 
-            if (endTime == 1 || endTime == 7) {
-                List<Club> clubList = recruitments.stream()
-                        .map(Recruitment::getClub)
-                        .collect(Collectors.toList());
+        clubAlarmManger.sendRecruitmentReminderD1AndD7(recruitmentMap);
 
-                clubAlarmManger.sendRecruitmentReminderD1AndD7(clubList, endTime);
-            }
-        });
     }
 
 
-
-
 }
+
+
+
+
+

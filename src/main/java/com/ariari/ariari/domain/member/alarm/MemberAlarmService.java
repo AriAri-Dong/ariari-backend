@@ -28,12 +28,8 @@ public class MemberAlarmService {
     public MemberAlarmListRes getAlarms(Long memberId, Pageable pageable) {
         Member reqMember = memberRepository.findById(memberId).orElseThrow(NotFoundEntityException::new);
         Page<MemberAlarm> memberAlarmsPage = memberAlarmRepository.findAllByMember(reqMember, pageable);
-        int unreadCount = 0;
-        for(MemberAlarm memberAlarm : memberAlarmsPage){
-            if(!memberAlarm.getIsChecked()){
-                unreadCount++;
-            }
-        }
+        Integer unreadCount = memberAlarmRepository.countUnreadByMember(reqMember);
+
         return MemberAlarmListRes.fromPage(memberAlarmsPage, unreadCount);
     }
 
@@ -44,7 +40,6 @@ public class MemberAlarmService {
         // 단일 이벤트 처리
         MemberAlarm memberAlarm = MemberAlarm.builder()
                 .title(memberAlarmEvent.getTitle())
-                .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
                 .uri(memberAlarmEvent.getUri())
                 .isChecked(false)
@@ -61,11 +56,10 @@ public class MemberAlarmService {
                 .map( memberAlarmEvent -> MemberAlarm.builder()
                 .title(memberAlarmEvent.getTitle())
                 .uri(memberAlarmEvent.getUri())
-                .memberAlarmType(memberAlarmEvent.getMemberAlarmType())
                 .member(memberAlarmEvent.getMember())
                 .isChecked(false)
                         .build())
-                        .toList();
+                .toList();
         // 알림 저장
         // 배치 처리 해야할까?
         memberAlarmRepository.saveAll(memberAlarms);

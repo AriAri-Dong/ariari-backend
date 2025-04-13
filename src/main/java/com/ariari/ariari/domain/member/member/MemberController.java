@@ -51,5 +51,4 @@ public class MemberController {
         Long reqMemberId = getMemberId(userDetails, true);
         return memberService.searchMembers(reqMemberId, nickname);
     }
-
 }

@@ -94,9 +94,9 @@ public class TestDataSetter {
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
         // school
-        School school1 = new School("세종대학교", "sejong.ac.kr");
-        School school2 = new School("두종대학교");
-        School school3 = new School("네종대학교");
+        School school1 = new School("세종대학교2", "sejong.ac.kr");
+        School school2 = new School("두종대학교3");
+        School school3 = new School("네종대학교4");
         School school4 = new School("네이버대학교", "naver.com");
         schoolRepository.saveAll(List.of(school1, school2, school3, school4));
 
@@ -182,7 +182,7 @@ public class TestDataSetter {
         ApplyQuestion aq1_4 = new ApplyQuestion("gender");
         ApplyQuestion aq1_5 = new ApplyQuestion("mbti");
 
-        ApplyForm af1 = new ApplyForm(c1, List.of(aq1_1, aq1_2, aq1_3, aq1_4, aq1_5));
+        ApplyForm af1 = new ApplyForm(c1, false, List.of(aq1_1, aq1_2, aq1_3, aq1_4, aq1_5));
         aq1_1.setApplyForm(af1);
         aq1_2.setApplyForm(af1);
         aq1_3.setApplyForm(af1);
@@ -191,21 +191,21 @@ public class TestDataSetter {
         ApplyQuestion aq2_1 = new ApplyQuestion("aq2_1");
         ApplyQuestion aq2_2 = new ApplyQuestion("aq2_2");
         ApplyQuestion aq2_3 = new ApplyQuestion("aq2_3");
-        ApplyForm af2 = new ApplyForm(c2, List.of(aq2_1, aq2_2, aq2_3));
+        ApplyForm af2 = new ApplyForm(c2, false, List.of(aq2_1, aq2_2, aq2_3));
         aq2_1.setApplyForm(af2);
         aq2_2.setApplyForm(af2);
         aq2_3.setApplyForm(af2);
         ApplyQuestion aq3_1 = new ApplyQuestion("aq3_1");
         ApplyQuestion aq3_2 = new ApplyQuestion("aq3_2");
         ApplyQuestion aq3_3 = new ApplyQuestion("aq3_3");
-        ApplyForm af3 = new ApplyForm(c9, List.of(aq3_1, aq3_2, aq3_3));
+        ApplyForm af3 = new ApplyForm(c9, false, List.of(aq3_1, aq3_2, aq3_3));
         aq3_1.setApplyForm(af3);
         aq3_2.setApplyForm(af3);
         aq3_3.setApplyForm(af3);
         ApplyQuestion aq4_1 = new ApplyQuestion("aq4_1");
         ApplyQuestion aq4_2 = new ApplyQuestion("aq4_2");
         ApplyQuestion aq4_3 = new ApplyQuestion("aq4_3");
-        ApplyForm af4 = new ApplyForm(c10, List.of(aq4_1, aq4_2, aq4_3));
+        ApplyForm af4 = new ApplyForm(c10, false, List.of(aq4_1, aq4_2, aq4_3));
         aq4_1.setApplyForm(af4);
         aq4_2.setApplyForm(af4);
         aq4_3.setApplyForm(af4);
@@ -256,10 +256,14 @@ public class TestDataSetter {
         ApplyAnswer aa1_1_1 = new ApplyAnswer("aa1_1_1", aq1_1);
         ApplyAnswer aa1_2_1 = new ApplyAnswer("aa1_2_1", aq1_2);
         ApplyAnswer aa1_3_1 = new ApplyAnswer("aa1_3_1", aq1_3);
-        Apply a1 = new Apply("a1", "portfolioUri1", m5, r1, List.of(aa1_1_1, aa1_2_1, aa1_3_1));
+        ApplyAnswer aa1_4_1 = new ApplyAnswer("남자", aq1_4);
+        ApplyAnswer aa1_5_1 = new ApplyAnswer("ENTJ", aq1_5);
+        Apply a1 = new Apply("a1", "portfolioUri1", m5, r1, List.of(aa1_1_1, aa1_2_1, aa1_3_1, aa1_4_1, aa1_5_1));
         aa1_1_1.setApply(a1);
         aa1_2_1.setApply(a1);
         aa1_3_1.setApply(a1);
+        aa1_4_1.setApply(a1);
+        aa1_5_1.setApply(a1);
         ApplyAnswer aa1_1_2 = new ApplyAnswer("aa1_1_2", aq1_1);
         ApplyAnswer aa1_2_2 = new ApplyAnswer("aa1_2_2", aq1_2);
         ApplyAnswer aa1_3_2 = new ApplyAnswer("aa1_3_2", aq1_3);
@@ -372,7 +376,6 @@ public class TestDataSetter {
                 .uri("/clubs/clubId")
                 .member(m1)
                 .isChecked(false)
-                .memberAlarmType(MemberAlarmType.CLUB)
                 .build();
 
         MemberAlarm memberAlarm2 = MemberAlarm.builder()
@@ -380,7 +383,6 @@ public class TestDataSetter {
                 .uri("/clubs/clubId")
                 .member(m2)
                 .isChecked(false)
-                .memberAlarmType(MemberAlarmType.APPLY)
                 .build();
         memberAlarmRepository.saveAll(List.of(memberAlarm1, memberAlarm2));
 
@@ -391,7 +393,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c1)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm2 = ClubAlarm.builder()
@@ -399,7 +400,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm3 = ClubAlarm.builder()
@@ -407,7 +407,6 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm4 = ClubAlarm.builder()
@@ -415,7 +414,6 @@ public class TestDataSetter {
                 .isChecked(true)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         ClubAlarm clubAlarm5 = ClubAlarm.builder()
@@ -423,14 +421,13 @@ public class TestDataSetter {
                 .isChecked(false)
                 .uri("clubs/{clubId}/club-questions")
                 .club(c9)
-                .clubAlarmType(ClubAlarmType.QUESTION)
                 .build();
 
         clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2, clubAlarm3, clubAlarm4, clubAlarm5));
 
 
-        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, cm1_3);
-        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, cm1_3);
+        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, m3);
+        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, m3);
         clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
 
 

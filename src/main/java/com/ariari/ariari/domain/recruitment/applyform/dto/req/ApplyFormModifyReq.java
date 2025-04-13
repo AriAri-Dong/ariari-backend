@@ -13,6 +13,8 @@ import java.util.List;
 @Schema(description = "지원 형식 수정 형식")
 public class ApplyFormModifyReq {
 
+    private Boolean requiresPortfolio;
+
     @Schema(description = "지원 형식 질문 리스트")
     private List<String> applyQuestionList = new ArrayList<>();
 
@@ -21,6 +23,7 @@ public class ApplyFormModifyReq {
 
         ApplyForm applyForm = new ApplyForm(
                 club,
+                requiresPortfolio,
                 applyQuestions
         );
 

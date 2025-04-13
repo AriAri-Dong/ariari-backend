@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.notice.dto;
 
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
 import com.ariari.ariari.domain.club.notice.ClubNotice;
 import com.ariari.ariari.domain.club.notice.image.dto.ClubNoticeImageData;
@@ -19,10 +20,10 @@ public class ClubNoticeDetailRes {
     @Schema(description = "동아리 공지사항 이미지 데이터 리스트")
     private List<ClubNoticeImageData> clubNoticeImageDataList;
 
-    public static ClubNoticeDetailRes createRes(ClubNotice clubNotice) {
+    public static ClubNoticeDetailRes createRes(ClubNotice clubNotice, ClubMember clubMember) {
         return new ClubNoticeDetailRes(
                 ClubNoticeData.fromEntity(clubNotice),
-                ClubMemberData.fromEntity(clubNotice.getClubMember()),
+                clubMember == null ? null : ClubMemberData.fromEntity(clubMember),
                 ClubNoticeImageData.fromEntities(clubNotice.getClubNoticeImages())
         );
     }
