@@ -46,11 +46,10 @@ jobs:
                       trust: smtp.naver.com
                   debug: true
             jpa:
-              database: mariadb
               database-platform: org.hibernate.dialect.MariaDBDialect
               show-sql: true
               hibernate:
-                ddl-auto: update
+                ddl-auto: create-drop
               properties:
                 hibernate:
                   format_sql: true
@@ -84,6 +83,7 @@ jobs:
             login-uri: https://kauth.kakao.com/oauth/authorize
             auth-uri: https://kauth.kakao.com/oauth/token
             kapi-uri: https://kapi.kakao.com/v2/user/me
+            unlink-uri: https://kapi.kakao.com/v1/user/unlink
           cloud:
             aws:
               credentials:
