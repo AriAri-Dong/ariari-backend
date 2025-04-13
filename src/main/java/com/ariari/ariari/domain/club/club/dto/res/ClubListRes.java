@@ -53,15 +53,6 @@ public class ClubListRes {
 //        );
 //    }
 
-    public static ClubListRes fromClubMemberPage(Page<ClubMember> page, Member reqMember) {
-        List<Club> clubs = page.getContent().stream().map(ClubMember::getClub).toList();
-
-        return new ClubListRes(
-                ClubData.fromEntities(clubs, reqMember),
-                PageInfo.fromPage(page)
-        );
-    }
-
     public static ClubListRes fromClubMemberList(List<ClubMember> clubMembers) {
         List<Club> clubs = clubMembers.stream().map(ClubMember::getClub).toList();
 

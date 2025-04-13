@@ -426,8 +426,8 @@ public class TestDataSetter {
         clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2, clubAlarm3, clubAlarm4, clubAlarm5));
 
 
-        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, cm1_3);
-        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, cm1_3);
+        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, m3);
+        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, m3);
         clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
 
 

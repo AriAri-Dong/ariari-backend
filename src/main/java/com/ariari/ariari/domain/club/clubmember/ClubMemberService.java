@@ -20,7 +20,6 @@ import com.ariari.ariari.domain.club.notice.ClubNotice;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import jakarta.persistence.OneToMany;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -172,7 +171,7 @@ public class ClubMemberService {
     public void deleteClubMember(ClubMember reqClubMember) {
 //        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember); TODO 충돌해결
         List<ClubActivityComment> clubActivityCommentList = new ArrayList<>();
-        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
+//        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
 //        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember); TODO 충돌해결
         List<ClubActivity> clubActivityList = new ArrayList<>();
         List<Attendance> attendanceList = attendanceRepository.findAllByClubMember(reqClubMember);
@@ -183,15 +182,15 @@ public class ClubMemberService {
         for (ClubActivity clubActivity : clubActivityList) {
             clubActivity.modifyClubMember();
         }
-        for (ClubNotice clubNotice : clubNoticeList) {
-            clubNotice.modifyClubMember();
-        }
+//        for (ClubNotice clubNotice : clubNoticeList) {
+//            clubNotice.modifyMember();
+//        }
         for (Attendance attendance : attendanceList) {
             attendance.modifyClubMember();
         }
 
         clubActivityCommentRepository.saveAll(clubActivityCommentList);
-        clubNoticeRepository.saveAll(clubNoticeList);
+//        clubNoticeRepository.saveAll(clubNoticeList);
         clubActivityRepository.saveAll(clubActivityList);
         attendanceRepository.saveAll(attendanceList);
     }

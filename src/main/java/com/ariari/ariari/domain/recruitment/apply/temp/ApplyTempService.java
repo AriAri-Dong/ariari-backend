@@ -55,7 +55,7 @@ public class ApplyTempService {
     }
 
     @Transactional
-    public void saveApplyTemp(Long reqMemberId, Long recruitmentId, ApplyTempSaveReq saveReq, MultipartFile file) {
+    public Long saveApplyTemp(Long reqMemberId, Long recruitmentId, ApplyTempSaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
@@ -74,6 +74,8 @@ public class ApplyTempService {
             applyTemp.setFileUri(fileUri);
         }
         applyTempRepository.save(applyTemp);
+
+        return applyTemp.getId();
     }
 
     @Transactional

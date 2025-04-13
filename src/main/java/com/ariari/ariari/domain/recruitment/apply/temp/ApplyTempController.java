@@ -34,12 +34,12 @@ public class ApplyTempController {
 
     @Operation(summary = "임시 지원 저장", description = "포트폴리오는 파일과 URI 중 하나만 저장할 수 있습니다. 우선순위는 URI 입니다. 둘 다 담길 경우 URI 만을 저장합니다.")
     @PostMapping(value = "/recruitments/{recruitmentId}/apply-temps", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void saveApplyTemp(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public Long saveApplyTemp(@AuthenticationPrincipal CustomUserDetails userDetails,
                               @PathVariable Long recruitmentId,
                               @RequestPart ApplyTempSaveReq saveReq,
                               @RequestPart(required = false) MultipartFile file) {
         Long reqMemberId = getMemberId(userDetails, true);
-        applyTempService.saveApplyTemp(reqMemberId, recruitmentId, saveReq, file);
+        return applyTempService.saveApplyTemp(reqMemberId, recruitmentId, saveReq, file);
     }
 
     @Operation(summary = "임시 지원 수정", description = "포트폴리오는 파일과 URI 중 하나만 저장할 수 있습니다. 우선순위는 URI 입니다. 기존에 파일이 저장되어 있는 상태에서 DTO 에 URI 필드가 담길 경우 기존 파일은 삭제되고 URI 만을 저장합니다.")

@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.notice.ClubNotice;
 import com.ariari.ariari.domain.club.notice.image.dto.ClubNoticeImageData;
+import com.ariari.ariari.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -20,13 +21,13 @@ public class ClubNoticeSaveReq {
     @Schema(description = "동아리 공지사항 고정 여부", example = "true")
     private Boolean isFixed;
 
-    public ClubNotice toEntity(Club club, ClubMember clubMember) {
+    public ClubNotice toEntity(Club club, Member reqMember) {
         return new ClubNotice(
                 title,
                 body,
                 isFixed,
                 club,
-                clubMember
+                reqMember
         );
     }
 
