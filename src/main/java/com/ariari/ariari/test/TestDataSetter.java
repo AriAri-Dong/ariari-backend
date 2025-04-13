@@ -98,7 +98,8 @@ public class TestDataSetter {
         School school2 = new School("두종대학교3", "dujong.ac.kr");
         School school3 = new School("네종대학교4", "nejong.ac.kr");
         School school4 = new School("네이버대학교", "naver.com");
-        schoolRepository.saveAll(List.of(school1, school2, school3, school4));
+        School school5 = new School("구글대학교", "gmail.com");
+        schoolRepository.saveAll(List.of(school1, school2, school3, school4, school5));
 
         // member
         Member admin = Member.createMember(null, "admin");
