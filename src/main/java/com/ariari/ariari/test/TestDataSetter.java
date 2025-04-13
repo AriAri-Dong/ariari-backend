@@ -97,9 +97,9 @@ public class TestDataSetter {
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
         // school
-        School school1 = new School("세종대학교", "sejong.ac.kr");
-        School school2 = new School("두종대학교");
-        School school3 = new School("네종대학교");
+        School school1 = new School("세종대학교2", "sejong.ac.kr");
+        School school2 = new School("두종대학교3");
+        School school3 = new School("네종대학교4");
         School school4 = new School("네이버대학교", "naver.com");
         schoolRepository.saveAll(List.of(school1, school2, school3, school4));
 
@@ -432,8 +432,8 @@ public class TestDataSetter {
         clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2, clubAlarm3, clubAlarm4, clubAlarm5));
 
 
-        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, cm1_3);
-        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, cm1_3);
+        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, m3);
+        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, m3);
         clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
 
 

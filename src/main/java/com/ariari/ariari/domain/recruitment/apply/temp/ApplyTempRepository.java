@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, ApplyTempRepositoryCustom {
 
@@ -26,4 +27,7 @@ public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, App
             "join fetch a.recruitment r " +
             "where a.recruitment = :recruitment")
     List<ApplyTemp> findAllByRecruitment(@Param("recruitment") Recruitment recruitment);
+
+    Optional<ApplyTemp> findFirstByMemberAndRecruitmentOrderByCreatedDateTimeDesc(Member member, Recruitment recruitment);
+
 }

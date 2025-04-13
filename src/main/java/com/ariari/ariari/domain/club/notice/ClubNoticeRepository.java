@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClubNoticeRepository extends JpaRepository<ClubNotice, Long> {
 
@@ -18,4 +19,7 @@ public interface ClubNoticeRepository extends JpaRepository<ClubNotice, Long> {
     Page<ClubNotice> findUnfixedByClub(Club club, Pageable pageable);
 
     List<ClubNotice> findAllByClubMember(ClubMember reqClubMember);
+
+    Optional<ClubNotice> findFirstByClubOrderByCreatedDateTimeDesc(Club club);
+
 }

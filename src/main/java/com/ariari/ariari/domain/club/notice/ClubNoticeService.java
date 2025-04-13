@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -53,7 +54,7 @@ public class ClubNoticeService {
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        ClubNotice clubNotice = saveReq.toEntity(club, reqClubMember);
+        ClubNotice clubNotice = saveReq.toEntity(club, reqMember);
         clubNoticeRepository.save(clubNotice);
 
         if (files != null) {
@@ -137,7 +138,13 @@ public class ClubNoticeService {
             throw new NotBelongInClubException();
         }
 
-        return ClubNoticeDetailRes.createRes(clubNotice);
+        Optional<ClubMember> clubMemberOptional = clubMemberRepository.findByClubAndMember(clubNotice.getClub(), clubNotice.getMember());
+        ClubMember clubMember = null;
+        if (clubMemberOptional.isPresent()) {
+            clubMember = clubMemberOptional.get();
+        }
+
+        return ClubNoticeDetailRes.createRes(clubNotice, clubMember);
     }
 
     public ClubNoticeListRes findFixedClubNotices(Long reqMemberId, Long clubId) {

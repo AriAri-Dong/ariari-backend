@@ -60,15 +60,6 @@ public class ClubMember extends LogicalDeleteEntity {
 //    private List<ClubAnswer> clubAnswers;
 
 
-    @OneToMany(mappedBy = "clubMember")
-    private List<ClubActivityComment> clubActivityComments;
-
-    @OneToMany(mappedBy = "clubMember")
-    private List<ClubNotice> clubNotices;
-
-    @OneToMany(mappedBy = "clubMember")
-    private List<ClubActivity> clubActivitys;
-
     public static ClubMember createAdmin(Member member, Club club) {
         return new ClubMember(
                 "동아리 대표",

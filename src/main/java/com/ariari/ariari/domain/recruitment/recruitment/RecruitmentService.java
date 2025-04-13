@@ -39,10 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -64,7 +61,6 @@ public class RecruitmentService {
     private final ClubAlarmManger clubAlarmManger;
     private final ClubBookmarkRepository clubBookmarkRepository;
     private final ApplyTempRepository applyTempRepository;
-
 
     @Transactional
     public RecruitmentDetailRes findRecruitmentDetail(Long reqMemberId, Long recruitmentId, String clientIp) {
@@ -91,7 +87,15 @@ public class RecruitmentService {
             isMyApply = applyRepository.findByMemberAndRecruitment(reqMember, recruitment).isPresent();
         }
 
-        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember, isMyCLub, isMyApply);
+        Long myRecentApplyTempId = null;
+        if (reqMemberId != null) {
+            Optional<ApplyTemp> applyTempOptional = applyTempRepository.findFirstByMemberAndRecruitmentOrderByCreatedDateTimeDesc(reqMember, recruitment);
+            if (applyTempOptional.isPresent()) {
+                myRecentApplyTempId = applyTempOptional.get().getId();
+            }
+        }
+
+        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember, isMyCLub, isMyApply, myRecentApplyTempId);
     }
 
     @Transactional

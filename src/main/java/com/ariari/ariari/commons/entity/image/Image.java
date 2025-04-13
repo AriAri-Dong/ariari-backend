@@ -12,7 +12,7 @@ import org.hibernate.annotations.SQLRestriction;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @SQLDelete(sql = "UPDATE image SET deleted_date_time= CURRENT_TIMESTAMP WHERE image_id= ?")
-@SQLRestriction("deleted_dt IS NULL")
+@SQLRestriction("deleted_date_time is null")
 @Getter
 public abstract class Image extends LogicalDeleteEntity {
 

@@ -20,7 +20,6 @@ import com.ariari.ariari.domain.club.notice.ClubNotice;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import jakarta.persistence.OneToMany;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -170,25 +170,37 @@ public class ClubMemberService {
 
 
     public void deleteClubMember(ClubMember reqClubMember) {
-        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
-        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
-        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
+
+//        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
+       List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
+//        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
         List<Attendance> attendanceList = attendanceRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
         attendanceRepository.deleteAll(attendanceList);
 
+//        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
+        List<ClubActivityComment> clubActivityCommentList = new ArrayList<>();
+//        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
+//        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
+        List<ClubActivity> clubActivityList = new ArrayList<>();
+
+
+
         for (ClubActivityComment clubActivityComment : clubActivityCommentList) {
-            clubActivityComment.modifyClubMember();
-        }
+         clubActivityComment.modifyClubMember();
+         }
         for (ClubActivity clubActivity : clubActivityList) {
             clubActivity.modifyClubMember();
         }
         for (ClubNotice clubNotice : clubNoticeList) {
-            clubNotice.modifyClubMember();
+            clubNotice.modifyMember();
         }
+
+
 
         clubActivityCommentRepository.saveAll(clubActivityCommentList);
         clubNoticeRepository.saveAll(clubNoticeList);
         clubActivityRepository.saveAll(clubActivityList);
+
 
     }
 }

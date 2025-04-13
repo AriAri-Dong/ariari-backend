@@ -35,4 +35,6 @@ public class Attendance extends LogicalDeleteEntity {
         this.clubEvent = clubEvent;
     }
 
+
+
 }
