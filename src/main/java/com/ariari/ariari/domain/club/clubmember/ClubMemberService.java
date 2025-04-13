@@ -171,19 +171,11 @@ public class ClubMemberService {
 
     public void deleteClubMember(ClubMember reqClubMember) {
 
-//        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
-       List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
-//        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
+        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
+        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
+        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
         List<Attendance> attendanceList = attendanceRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
-        attendanceRepository.deleteAll(attendanceList);
-
-//        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubMember(reqClubMember);
-        List<ClubActivityComment> clubActivityCommentList = new ArrayList<>();
-//        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubMember(reqClubMember);
-//        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubMember(reqClubMember);
-        List<ClubActivity> clubActivityList = new ArrayList<>();
-
-
+       //attendanceRepository.deleteAll(attendanceList);
 
         for (ClubActivityComment clubActivityComment : clubActivityCommentList) {
          clubActivityComment.modifyClubMember();
@@ -198,8 +190,8 @@ public class ClubMemberService {
 
 
         clubActivityCommentRepository.saveAll(clubActivityCommentList);
-        clubNoticeRepository.saveAll(clubNoticeList);
         clubActivityRepository.saveAll(clubActivityList);
+        clubNoticeRepository.saveAll(clubNoticeList);
 
 
     }
