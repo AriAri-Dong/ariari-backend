@@ -82,11 +82,16 @@ public class ClubAlarmManger {
         sendSingle(clubAlarmEvent);
 
     }
-
+    // 활동 내역 알림
+    public void sendClubActivity(Club club){
+        String title = "활동내역에 댓글이 달렸습니다. 지금 바로 확인해 보세요.";
+        Long clubId = club.getId();
+        ClubAlarmEvent clubAlarmEvent = ClubAlarmEvent.from(title,
+                "/club/activityHistory?clubId="+clubId,  club);
+        sendSingle(clubAlarmEvent);
+    }
 
     // 시스템 알림
-    // 활동 내역 알림
-
 
     private void sendSingle(ClubAlarmEvent clubAlarmEvent){
         eventPublisher.publishEvent(clubAlarmEvent);

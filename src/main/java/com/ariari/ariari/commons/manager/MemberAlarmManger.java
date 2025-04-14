@@ -181,6 +181,16 @@ public class MemberAlarmManger {
         sendSingle(memberAlarmEvent);
     }
 
+    //작성한 댓글의 답글이 달릴 시 알림
+    public void sendClubActivityComment(Long clubId, Member member){
+        MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
+                "작성하신 댓글에 답글이 달렸습니다! 알림을 클릭해 확인해 보세요.",
+                " /club/activityHistory?clubId="+clubId,
+                member
+        );
+        sendSingle(memberAlarmEvent);
+    }
+
     private String roleSelect(ClubMemberRoleType roleType){
         String role = "";
         if(roleType == ClubMemberRoleType.GENERAL) {
@@ -220,6 +230,8 @@ public class MemberAlarmManger {
         }
         return title;
     }
+
+
 
     private void sendSingle(MemberAlarmEvent memberAlarmEvent){
         eventPublisher.publishEvent(memberAlarmEvent);

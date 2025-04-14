@@ -3,6 +3,8 @@ package com.ariari.ariari.domain.club.activity;
 
 import com.ariari.ariari.commons.entity.image.ImageRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.ClubAlarmManger;
+import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
@@ -60,6 +62,8 @@ public class ClubActivityService {
     private final ClubActivityCommentLikeRepository clubActivityCommentLikeRepository;
     private final GroupedOpenApi clubActivity;
     private final BlockRepository blockRepository;
+    private final MemberAlarmManger memberAlarmManger;
+    private final ClubAlarmManger clubAlarmManger;
 
     public void saveClubActivityLike(Long reqMemberId, Long clubActivityId){
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -307,9 +311,13 @@ public class ClubActivityService {
             ClubActivityComment parentComment = clubActivityCommentRepository.findById(parentCommentId).orElseThrow(NotFoundEntityException::new);
             ClubActivityComment clubActivityComment = new ClubActivityComment(commentReq.getBody(), reqMember, clubActivity, parentComment);
             clubActivityCommentRepository.save(clubActivityComment);
+            Member member = parentComment.getMember();
+            memberAlarmManger.sendClubActivityComment(clubActivity.getClub().getId(), member);
         } else {
             ClubActivityComment clubActivityComment = new ClubActivityComment(commentReq.getBody(), reqMember, clubActivity);
             clubActivityCommentRepository.save(clubActivityComment);
+            clubAlarmManger.sendClubActivity(clubActivity.getClub());
+
         }
     }
 
