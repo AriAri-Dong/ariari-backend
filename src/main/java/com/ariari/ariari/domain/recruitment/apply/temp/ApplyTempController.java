@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempModifyRe
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempSaveReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempDetailRes;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempListRes;
+import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempSaveRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +35,10 @@ public class ApplyTempController {
 
     @Operation(summary = "임시 지원 저장", description = "포트폴리오는 파일과 URI 중 하나만 저장할 수 있습니다. 우선순위는 URI 입니다. 둘 다 담길 경우 URI 만을 저장합니다.")
     @PostMapping(value = "/recruitments/{recruitmentId}/apply-temps", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Long saveApplyTemp(@AuthenticationPrincipal CustomUserDetails userDetails,
-                              @PathVariable Long recruitmentId,
-                              @RequestPart ApplyTempSaveReq saveReq,
-                              @RequestPart(required = false) MultipartFile file) {
+    public ApplyTempSaveRes saveApplyTemp(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                          @PathVariable Long recruitmentId,
+                                          @RequestPart ApplyTempSaveReq saveReq,
+                                          @RequestPart(required = false) MultipartFile file) {
         Long reqMemberId = getMemberId(userDetails, true);
         return applyTempService.saveApplyTemp(reqMemberId, recruitmentId, saveReq, file);
     }

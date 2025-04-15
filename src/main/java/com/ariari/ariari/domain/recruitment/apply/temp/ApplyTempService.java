@@ -9,6 +9,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempSaveRes;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.exceptions.AlreadyBelongToClubException;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempModifyReq;
@@ -55,7 +56,7 @@ public class ApplyTempService {
     }
 
     @Transactional
-    public Long saveApplyTemp(Long reqMemberId, Long recruitmentId, ApplyTempSaveReq saveReq, MultipartFile file) {
+    public ApplyTempSaveRes saveApplyTemp(Long reqMemberId, Long recruitmentId, ApplyTempSaveReq saveReq, MultipartFile file) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Recruitment recruitment = recruitmentRepository.findById(recruitmentId).orElseThrow(NotFoundEntityException::new);
         Club club = recruitment.getClub();
@@ -75,7 +76,7 @@ public class ApplyTempService {
         }
         applyTempRepository.save(applyTemp);
 
-        return applyTemp.getId();
+        return ApplyTempSaveRes.createRes(applyTemp.getId());
     }
 
     @Transactional
