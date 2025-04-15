@@ -18,6 +18,8 @@ public interface RecruitmentRepositoryCustom {
 
     Page<Recruitment> searchInternalPage(School school, ClubSearchCondition condition, Pageable pageable);
 
+    Page<Recruitment> searchRecruitmentPageByQuery(School school, String query, Pageable pageable);
+
     List<Recruitment> findExternalRankingList();
 
     List<Recruitment> findInternalRankingList(School school);

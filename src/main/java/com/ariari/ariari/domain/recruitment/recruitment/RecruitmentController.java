@@ -82,10 +82,19 @@ public class RecruitmentController {
     @Operation(summary = "교내 모집 리스트 검색 조회", description = "검색 조건에 따라 교내 모집 리스트를 조회합니다. 현재 활성화된 모집 데이터만 조회합니다. (페이지네이션)")
     @GetMapping("/recruitments/internal")
     public RecruitmentListRes findInternalPage(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                                          @ModelAttribute ClubSearchCondition condition,
-                                                          Pageable pageable) {
+                                               @ModelAttribute ClubSearchCondition condition,
+                                               Pageable pageable) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         return recruitmentListService.searchInternalPage(reqMemberId, condition, pageable);
+    }
+
+    @Operation(summary = "모집 리스트 검색어 조회", description = "검색어에 따라 전체 모집 리스트를 조회합니다. 현재 활성화된 모집 데이터만 조회합니다. (페이지네이션)")
+    @GetMapping("/recruitments/search")
+    public RecruitmentListRes searchRecruitmentsByQuery(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                        @RequestParam String query,
+                                                        Pageable pageable) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+        return recruitmentListService.searchRecruitmentsByQuery(reqMemberId, query, pageable);
     }
 
     @Operation(summary = "내 북마크 모집 리스트 조회", description = "내가 북마크 등록한 모집 리스트를 조회합니다. (페이지네이션)")

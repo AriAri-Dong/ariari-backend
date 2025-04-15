@@ -64,7 +64,14 @@ public class RecruitmentListService {
         Page<Recruitment> page = recruitmentRepository.searchInternalPage(reqMember.getSchool(), condition, pageable);
         return RecruitmentListRes.fromPage(page, reqMember);
     }
-    
+
+    public RecruitmentListRes searchRecruitmentsByQuery(Long reqMemberId, String query, Pageable pageable) {
+        Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NoSchoolAuthException::new);
+
+        Page<Recruitment> page = recruitmentRepository.searchRecruitmentPageByQuery(reqMember.getSchool(), query, pageable);
+        return RecruitmentListRes.fromPage(page, reqMember);
+    }
+
     public RecruitmentListRes findMyBookmarkRecruitmentList(Long reqMemberId, Pageable pageable) {
         Member reqMember = memberRepository.findByIdWithRecruitmentBookmarks(reqMemberId).orElseThrow(NotFoundEntityException::new);
 

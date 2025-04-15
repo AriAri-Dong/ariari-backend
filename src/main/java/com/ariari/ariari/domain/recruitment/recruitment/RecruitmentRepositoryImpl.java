@@ -130,6 +130,35 @@ public class RecruitmentRepositoryImpl implements RecruitmentRepositoryCustom {
     }
 
     @Override
+    public Page<Recruitment> searchRecruitmentPageByQuery(School school, String query, Pageable pageable) {
+        JPAQuery<Recruitment> jpaQuery = queryFactory
+                .selectFrom(recruitment)
+                .where(isActivated(),
+                        schoolIsNull()
+                                .or(schoolEq(school)),
+                        recruitment.title.contains(query))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        for (Sort.Order o : pageable.getSort()) {
+            PathBuilder pathBuilder = new PathBuilder(recruitment.getType(), recruitment.getMetadata());
+            jpaQuery.orderBy(new OrderSpecifier<>(o.isAscending() ? Order.ASC : Order.DESC, pathBuilder.get(o.getProperty())));
+        }
+        List<Recruitment> content= jpaQuery.fetch();
+
+        Long total = queryFactory
+                .select(recruitment.count())
+                .from(recruitment)
+                .where(isActivated(),
+                        schoolIsNull()
+                                .or(schoolEq(school)),
+                        recruitment.title.contains(query))
+                .fetchOne();
+
+        return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
     public List<Recruitment> findExternalRankingList() {
         return queryFactory
                 .selectFrom(recruitment)
