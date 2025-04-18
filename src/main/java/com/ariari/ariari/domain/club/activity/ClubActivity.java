@@ -2,13 +2,10 @@ package com.ariari.ariari.domain.club.activity;
 
 
 import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
-import com.ariari.ariari.commons.enums.YnType;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.ariari.ariari.domain.club.activity.image.ClubActivityImage;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
-import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
 import com.ariari.ariari.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.Getter;

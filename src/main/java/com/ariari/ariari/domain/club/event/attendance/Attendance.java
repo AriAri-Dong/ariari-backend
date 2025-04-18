@@ -35,6 +35,10 @@ public class Attendance extends LogicalDeleteEntity {
         this.clubEvent = clubEvent;
     }
 
+    public void modifyMember(){
+        this.member = null;
+    }
+
 
 
 }

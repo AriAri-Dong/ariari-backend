@@ -7,6 +7,7 @@ import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -26,7 +27,15 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     Page<Attendance> findByClubEvent(ClubEvent clubEvent, Pageable pageable);
 
 
-    @Query("select a from Attendance a join fetch a.clubEvent ce where a.member = :member and ce.club = :club ")
-    List<Attendance> findAllByClubAndMember(@Param("club") Club club,
-                                            @Param("member") Member member);
+
+    @Modifying
+    @Query(value = """
+    UPDATE attendance a
+    JOIN club_event ce ON a.club_event_id = ce.club_event_id
+    SET a.member_id = null
+    WHERE ce.club_id = :clubId
+      AND a.member_id = :memberId
+    """, nativeQuery = true)
+    void attendanceUpdate(@Param("clubId") Long clubId, @Param("memberId") Long memberId);
+
 }

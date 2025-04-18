@@ -7,6 +7,7 @@ import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,9 +23,9 @@ public interface ClubNoticeRepository extends JpaRepository<ClubNotice, Long> {
     Page<ClubNotice> findUnfixedByClub(Club club, Pageable pageable);
 
 
-    @Query("select cn from ClubNotice cn where cn.member = :member and cn.club = :club ")
-    List<ClubNotice> findAllByClubAndMember(@Param("club") Club club,
-                                            @Param("member") Member member);
     Optional<ClubNotice> findFirstByClubOrderByCreatedDateTimeDesc(Club club);
 
+    @Modifying
+    @Query("update ClubNotice as cn set cn.member = null where cn.club= :club and cn.member = :member")
+    void clubNoticeUpdate(@Param("club") Club club, @Param("member") Member member);
 }

@@ -70,7 +70,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class TestDataSetter {
+public class    TestDataSetter {
 
     private final MemberRepository memberRepository;
     private final SchoolRepository schoolRepository;

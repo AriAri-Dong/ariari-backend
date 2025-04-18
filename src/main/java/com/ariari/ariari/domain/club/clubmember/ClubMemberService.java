@@ -20,6 +20,8 @@ import com.ariari.ariari.domain.club.notice.ClubNotice;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +36,9 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ClubMemberService {
+
+    @PersistenceContext
+    private EntityManager em;
 
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
@@ -156,11 +161,12 @@ public class ClubMemberService {
 
         GlobalValidator.isClubMemberAdmin(reqClubMember);
         GlobalValidator.isSameClubMemberAsRequester(reqClubMember.getMember(), reqMember);
-        // 해당 req클럽 멤버만 진행할수있ㄷㅎㅀㄱ햐여헌더
-
 
         // DB에서는 ON DELETE SET NULL 가능하지만 JPA는 X 그래서 전부 업데이트 처리 아니면 배치 update JPQL 해야함
         deleteClubMember(reqClubMember);
+        System.out.println("reqClubMember = " + reqClubMember);
+        System.out.println("clubMemberName = " + clubMemberName);
+        System.out.println("club = " + club);
         clubMemberRepository.delete(reqClubMember);
         clubAlarmManger.quitClubMember(clubMemberName, club, LocalDateTime.now());
 
@@ -170,29 +176,12 @@ public class ClubMemberService {
 
 
     public void deleteClubMember(ClubMember reqClubMember) {
-
-        List<ClubActivityComment> clubActivityCommentList = clubActivityCommentRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
-        List<ClubActivity> clubActivityList = clubActivityRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
-        List<ClubNotice> clubNoticeList = clubNoticeRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
-        List<Attendance> attendanceList = attendanceRepository.findAllByClubAndMember(reqClubMember.getClub(), reqClubMember.getMember());
-       //attendanceRepository.deleteAll(attendanceList);
-
-        for (ClubActivityComment clubActivityComment : clubActivityCommentList) {
-         clubActivityComment.modifyClubMember();
-         }
-        for (ClubActivity clubActivity : clubActivityList) {
-            clubActivity.modifyClubMember();
-        }
-        for (ClubNotice clubNotice : clubNoticeList) {
-            clubNotice.modifyMember();
-        }
-
-
-
-        clubActivityCommentRepository.saveAll(clubActivityCommentList);
-        clubActivityRepository.saveAll(clubActivityList);
-        clubNoticeRepository.saveAll(clubNoticeList);
-
+        Club club = reqClubMember.getClub();
+        Member member = reqClubMember.getMember();
+        clubActivityCommentRepository.clubActivityCommentUpdate(club, member);
+        clubActivityRepository.clubActivityUpdate(club, member);
+        clubNoticeRepository.clubNoticeUpdate(club, member);
+        attendanceRepository.attendanceUpdate(club.getId(), member.getId());
 
     }
 }
