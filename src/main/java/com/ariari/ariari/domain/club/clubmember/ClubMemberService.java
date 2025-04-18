@@ -164,9 +164,6 @@ public class ClubMemberService {
 
         // DB에서는 ON DELETE SET NULL 가능하지만 JPA는 X 그래서 전부 업데이트 처리 아니면 배치 update JPQL 해야함
         deleteClubMember(reqClubMember);
-        System.out.println("reqClubMember = " + reqClubMember);
-        System.out.println("clubMemberName = " + clubMemberName);
-        System.out.println("club = " + club);
         clubMemberRepository.delete(reqClubMember);
         clubAlarmManger.quitClubMember(clubMemberName, club, LocalDateTime.now());
 
