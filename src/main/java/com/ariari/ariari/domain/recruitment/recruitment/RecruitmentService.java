@@ -213,10 +213,11 @@ public class RecruitmentService {
 
     }
 
-//    public boolean findRecruitmentsExists(Long reqMemberId, Long clubId) {
-//        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-//        return recruitmentRepository.findByRecruitmentClosedCheck(clubId);
-//    }
+    public boolean findRecruitmentsExists(Long reqMemberId, Long clubId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        return recruitmentRepository.findByRecruitmentClosedCheck(club, LocalDateTime.now());
+    }
 
 
 }

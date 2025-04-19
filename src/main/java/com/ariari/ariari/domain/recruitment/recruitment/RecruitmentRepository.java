@@ -25,5 +25,8 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>,
                                                  @Param("endDate2") LocalDateTime endDate2);
 
 
-//    boolean findByRecruitmentClosedCheck(Long clubId);
+    @Query("select count(r) > 0 from Recruitment as r" +
+            " where ( :nowDate between r.startDateTime and r.endDateTime and r.isEarlyClosed = false )" +
+            " and r.club = :club")
+    boolean findByRecruitmentClosedCheck(@Param("club") Club club, @Param("nowDate") LocalDateTime nowDate);
 }
