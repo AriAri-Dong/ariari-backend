@@ -127,4 +127,11 @@ public class RecruitmentController {
         return recruitmentListService.findInternalRankingList(reqMemberId);
     }
 
+//    @Operation(summary = "교내 모집 랭킹 리스트 조회", description = "조회 수 기준 상위 9개의 교내 모집 리스트를 조회합니다.")
+//    @GetMapping("/recruitments/exists/{clubId}")
+//    public boolean findRecruitmentsExists(@AuthenticationPrincipal CustomUserDetails userDetails, Long clubId ) {
+//        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
+//        return recruitmentService.findRecruitmentsExists(reqMemberId, clubId);
+//    }
+
 }

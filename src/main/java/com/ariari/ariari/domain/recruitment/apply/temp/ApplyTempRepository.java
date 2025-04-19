@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,8 @@ import java.util.Optional;
 
 public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, ApplyTempRepositoryCustom {
 
-    Page<ApplyTemp> searchByMember(Member reqMember, Pageable pageable);
+    @EntityGraph(attributePaths = {"recruitment", "recruitment.club"})
+    Page<ApplyTemp> searchByMember(@Param("member") Member member, Pageable pageable);
 
     @Query("select a from ApplyTemp a " +
             "join fetch a.member m "+

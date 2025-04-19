@@ -41,6 +41,9 @@ import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
 import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
+import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
@@ -64,6 +67,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -93,6 +97,7 @@ public class    TestDataSetter {
     private final MemberAlarmRepository memberAlarmRepository;
     private final ClubNoticeRepository clubNoticeRepository;
     private final ClubAlarmManger clubAlarmManger;
+    private final ApplyTempRepository applyTempRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -373,6 +378,13 @@ public class    TestDataSetter {
         PassReviewNote prn8 = new PassReviewNote(NoteType.DOCUMENT, "제목", "저는.......");
         prn8.setPassReview(pr5);
         passReviewNoteRepository.saveAll(List.of(prn1, prn2, prn3, prn4, prn5, prn6, prn7, prn8));
+
+        List<ApplyAnswerTemp> applyAnswerTemps = new ArrayList<>();
+        //지원
+        ApplyTemp ap1 = new ApplyTemp("임시지원1", null, m1, r1, applyAnswerTemps);
+        ApplyTemp ap2 = new ApplyTemp("임시지원2", null, m1, r2, applyAnswerTemps);
+        ApplyTemp ap3 = new ApplyTemp("임시지원3", null, m1, r3, applyAnswerTemps);
+        applyTempRepository.saveAll(List.of(ap1, ap2, ap3));
 
         //유저 알림
         MemberAlarm memberAlarm1 = MemberAlarm.builder()

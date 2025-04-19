@@ -25,5 +25,5 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>,
                                                  @Param("endDate2") LocalDateTime endDate2);
 
 
-
+//    boolean findByRecruitmentClosedCheck(Long clubId);
 }

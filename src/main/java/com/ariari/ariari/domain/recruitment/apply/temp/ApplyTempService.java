@@ -9,6 +9,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.domain.recruitment.apply.temp.dto.ApplyTempData;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempSaveRes;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.exceptions.AlreadyBelongToClubException;
@@ -125,6 +126,7 @@ public class ApplyTempService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
         Page<ApplyTemp> page = applyTempRepository.searchByMember(reqMember, pageable);
+
         return ApplyTempListRes.fromPage(page);
     }
 

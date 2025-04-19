@@ -28,13 +28,18 @@ public class ApplyTempData {
     @Schema(description = "임시 지원한 모집이 속한 동아리 이름", example = "아리아리")
     private String clubName;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "임시 지원 모집 id", example = "673012345142938986")
+    private Long recruitmentId;
+
     public static ApplyTempData fromEntity(ApplyTemp applyTemp) {
         return new ApplyTempData(
                 applyTemp.getId(),
                 applyTemp.getName(),
                 applyTemp.getCreatedDateTime(),
                 applyTemp.getRecruitment().getTitle(),
-                applyTemp.getRecruitment().getClub().getName()
+                applyTemp.getRecruitment().getClub().getName(),
+                applyTemp.getRecruitment().getId()
         );
     }
 

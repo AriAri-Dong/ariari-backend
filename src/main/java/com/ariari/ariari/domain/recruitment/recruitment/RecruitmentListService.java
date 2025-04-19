@@ -112,4 +112,5 @@ public class RecruitmentListService {
         return RecruitmentListRes.fromList(recruitments, reqMember);
     }
 
+
 }
