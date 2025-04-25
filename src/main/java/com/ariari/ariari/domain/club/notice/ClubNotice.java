@@ -54,9 +54,10 @@ public class ClubNotice extends LogicalDeleteEntity {
         this.member = member;
     }
 
-    public void modify(String title, String body) {
+    public void modify(String title, String body, Boolean isFixed) {
         this.title = title;
         this.body = body;
+        this.isFixed = isFixed;
     }
 
     public void controlIsFixed() {
