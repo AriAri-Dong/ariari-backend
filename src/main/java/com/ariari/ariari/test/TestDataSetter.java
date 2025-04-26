@@ -379,12 +379,22 @@ public class    TestDataSetter {
         prn8.setPassReview(pr5);
         passReviewNoteRepository.saveAll(List.of(prn1, prn2, prn3, prn4, prn5, prn6, prn7, prn8));
 
-        List<ApplyAnswerTemp> applyAnswerTemps = new ArrayList<>();
-        //지원
+        //임시 지원
+        ApplyAnswerTemp aat1_1 = new ApplyAnswerTemp("aa1_1", aq1_1);
+        ApplyAnswerTemp aat1_2 = new ApplyAnswerTemp("aa1_2", aq1_2);
+        ApplyAnswerTemp aat1_3 = new ApplyAnswerTemp("aa1_3", aq1_3);
+        ApplyAnswerTemp aat1_4 = new ApplyAnswerTemp("MALE", aq1_4);
+        ApplyAnswerTemp aat1_5 = new ApplyAnswerTemp("ENTJ", aq1_5);
+        List<ApplyAnswerTemp> applyAnswerTemps = List.of(aat1_1, aat1_2, aat1_3, aat1_4, aat1_5);
         ApplyTemp ap1 = new ApplyTemp("임시지원1", null, m1, r1, applyAnswerTemps);
-        ApplyTemp ap2 = new ApplyTemp("임시지원2", null, m1, r2, applyAnswerTemps);
-        ApplyTemp ap3 = new ApplyTemp("임시지원3", null, m1, r3, applyAnswerTemps);
+        ApplyTemp ap2 = new ApplyTemp("임시지원2", null, m1, r2, List.of());
+        ApplyTemp ap3 = new ApplyTemp("임시지원3", null, m1, r3, List.of());
         applyTempRepository.saveAll(List.of(ap1, ap2, ap3));
+        aat1_1.setApplyTemp(ap1);
+        aat1_2.setApplyTemp(ap1);
+        aat1_3.setApplyTemp(ap1);
+        aat1_4.setApplyTemp(ap1);
+        aat1_5.setApplyTemp(ap1);
 
         //유저 알림
         MemberAlarm memberAlarm1 = MemberAlarm.builder()
