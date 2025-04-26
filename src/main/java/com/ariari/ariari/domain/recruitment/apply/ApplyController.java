@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.exception.exceptions.InvalidListParamException;
+import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInterviewReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchCondition;
@@ -74,13 +75,16 @@ public class ApplyController {
     @Operation(summary = "지원 상태를 INTERVIEW 로 변경", description = "")
     @PostMapping("/applies/interview")
     public void processApply(@AuthenticationPrincipal CustomUserDetails userDetails,
-                             @RequestBody List<Long> applyIds) {
+                             @RequestBody AppliesInterviewReq interviewReq) {
         Long reqMemberId = getMemberId(userDetails, true);
+        List<Long> applyIds = interviewReq.getApplyIds();
+        String interviewMessage = interviewReq.getInterviewMessage();
+
         if (applyIds == null || applyIds.isEmpty()) {
             throw new InvalidListParamException();
         }
 
-        applyService.processApply(reqMemberId, applyIds);
+        applyService.processApply(reqMemberId, applyIds, interviewMessage);
     }
 
     @Operation(summary = "지원 삭제", description = "지원을 삭제합니다. 지원자 및 동아리 관리자만이 삭제할 수 있습니다.")

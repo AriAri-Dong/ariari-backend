@@ -147,7 +147,7 @@ public class ApplyService {
     }
 
     @Transactional
-    public void processApply(Long reqMemberId, List<Long> applyIds) {
+    public void processApply(Long reqMemberId, List<Long> applyIds, String interviewMessage) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         List<Apply> applies = applyRepository.findAllByIdsWithClub(applyIds);
 
@@ -167,6 +167,7 @@ public class ApplyService {
             }
 
             apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
+            // 수정 예정 by 진원
             memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName(), club.getId());
         }
     }
