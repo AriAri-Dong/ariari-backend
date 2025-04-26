@@ -21,6 +21,7 @@ import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -51,6 +52,9 @@ public class Member extends LogicalDeleteEntity {
 
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<GrantedAuthority> authorities = new HashSet<>();
+
+    @Setter
+    private LocalDateTime lastLoginDateTime = LocalDateTime.now();
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
