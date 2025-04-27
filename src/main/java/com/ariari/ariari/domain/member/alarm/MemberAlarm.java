@@ -23,10 +23,8 @@ public class MemberAlarm extends LogicalDeleteEntity {
     @Column(name = "member_alarm_id")
     private Long id;
 
-    @Column(length = 100)
+    @Column(length = 1500)
     private String title;
-
-
 
     private String uri;
 

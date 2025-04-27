@@ -68,8 +68,8 @@ public class MemberAlarmManger {
     }
 
     //지원한 공고 서류 & 최종 처리 시
-    public void sendApplyStateAlarm(ApplyStatusType applyStatusType, Member member, String clubName, Long clubId) {
-        AlarmContent alarmContent = applyStatusTypeSelect(applyStatusType, clubName, clubId);
+    public void sendApplyStateAlarm(ApplyStatusType applyStatusType, Member member, String clubName, Long clubId, String interviewMessage) {
+        AlarmContent alarmContent = applyStatusTypeSelect(applyStatusType, clubName, clubId, interviewMessage);
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 alarmContent.getTitle(),
                 alarmContent.getUri(),
@@ -203,7 +203,7 @@ public class MemberAlarmManger {
         return role;
     }
 
-    private AlarmContent applyStatusTypeSelect(ApplyStatusType applyStatusType, String clubName, Long clubId) {
+    private AlarmContent applyStatusTypeSelect(ApplyStatusType applyStatusType, String clubName, Long clubId, String interviewMessage) {
         String title = "";
         String uri = null;
 
@@ -213,7 +213,12 @@ public class MemberAlarmManger {
         } else if (applyStatusType == ApplyStatusType.REFUSAL) {
             title = String.format("지원하신 %s에 아쉽게도 합류할 수 없게 되었습니다. 다음 기회에 다시 도전해 주세요.", clubName);
         } else if (applyStatusType == ApplyStatusType.INTERVIEW) {
-            title = String.format("지원하신 %s이 면접 전형으로 전환되었습니다. 알림을 클릭하여 동아리 운영진의 메시지를 확인해 주세요.", clubName);
+            title = String.format(
+                    "지원하신 %s이 면접 전형으로 전환되었습니다. 알림을 클릭하여 동아리 운영진의 메시지를 확인해 주세요. / %s",
+                    clubName,
+                    interviewMessage
+            );
+
         }
 
         return AlarmContent.from(title, uri);

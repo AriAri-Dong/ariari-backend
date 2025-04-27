@@ -117,7 +117,7 @@ public class ApplyService {
 
             ClubMember clubMember = ClubMember.createGeneral(apply);
             clubMemberRepository.save(clubMember);
-            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.APPROVE, apply.getMember(), club.getName(), club.getId());
+            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.APPROVE, apply.getMember(), club.getName(), club.getId(), "");
         }
     }
 
@@ -142,7 +142,7 @@ public class ApplyService {
             }
 
             apply.setApplyStatusType(ApplyStatusType.REFUSAL);
-            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.REFUSAL, apply.getMember(), club.getName(), club.getId());
+            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.REFUSAL, apply.getMember(), club.getName(), club.getId(), "");
         }
     }
 
@@ -168,7 +168,7 @@ public class ApplyService {
 
             apply.setApplyStatusType(ApplyStatusType.INTERVIEW);
             // 수정 예정 by 진원
-            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName(), club.getId());
+            memberAlarmManger.sendApplyStateAlarm(ApplyStatusType.INTERVIEW, apply.getMember(), club.getName(), club.getId(), interviewMessage);
         }
     }
 
