@@ -297,7 +297,7 @@ public class    TestDataSetter {
         ApplyAnswer aa3_1_1 = new ApplyAnswer("aa3_1_1", aq3_1);
         ApplyAnswer aa3_2_1 = new ApplyAnswer("aa3_2_1", aq3_2);
         ApplyAnswer aa3_3_1 = new ApplyAnswer("aa3_3_1", aq3_3);
-        Apply a5 = new Apply("a5", "portfolioUri5", m1, r9, List.of(aa3_1_1, aa3_2_1, aa3_3_1));
+        Apply a5 = new Apply("a5", "portfolioUri5", m2, r9, List.of(aa3_1_1, aa3_2_1, aa3_3_1));
         aa3_1_1.setApply(a5);
         aa3_2_1.setApply(a5);
         aa3_3_1.setApply(a5);

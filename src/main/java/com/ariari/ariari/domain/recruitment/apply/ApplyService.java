@@ -78,6 +78,7 @@ public class ApplyService {
             throw new ExistingApplyException();
         }
 
+
         Apply apply = saveReq.toEntity(reqMember, recruitment);
 
         if (file != null) {
