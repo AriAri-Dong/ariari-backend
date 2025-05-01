@@ -74,7 +74,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Transactional
-public class    TestDataSetter {
+public class TestDataSetter {
 
     private final MemberRepository memberRepository;
     private final SchoolRepository schoolRepository;
@@ -101,6 +101,10 @@ public class    TestDataSetter {
 
     @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
+        if(memberRepository.count() != 0) {
+            return;
+        }
+
         // school
         School school1 = new School("세종대학교2", "sejong.ac.kr");
         School school2 = new School("두종대학교3", "dujong.ac.kr");
