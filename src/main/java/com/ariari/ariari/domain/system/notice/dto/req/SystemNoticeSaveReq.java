@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.system.dto.req;
+package com.ariari.ariari.domain.system.notice.dto.req;
 
 import com.ariari.ariari.domain.club.notice.image.dto.ClubNoticeImageData;
 import com.ariari.ariari.domain.member.Member;

@@ -1,19 +1,13 @@
-package com.ariari.ariari.domain.system;
+package com.ariari.ariari.domain.system.notice;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
-import com.ariari.ariari.domain.club.notice.ClubNoticeService;
-import com.ariari.ariari.domain.club.notice.dto.ClubNoticeDetailRes;
-import com.ariari.ariari.domain.club.notice.dto.ClubNoticeListRes;
-import com.ariari.ariari.domain.club.notice.dto.ClubNoticeModifyReq;
-import com.ariari.ariari.domain.club.notice.dto.ClubNoticeSaveReq;
-import com.ariari.ariari.domain.system.dto.req.SystemNoticeModifyReq;
-import com.ariari.ariari.domain.system.dto.req.SystemNoticeSaveReq;
-import com.ariari.ariari.domain.system.dto.res.SystemNoticeDetailRes;
-import com.ariari.ariari.domain.system.dto.res.SystemNoticeListRes;
+import com.ariari.ariari.domain.system.notice.dto.req.SystemNoticeModifyReq;
+import com.ariari.ariari.domain.system.notice.dto.req.SystemNoticeSaveReq;
+import com.ariari.ariari.domain.system.notice.dto.res.SystemNoticeDetailRes;
+import com.ariari.ariari.domain.system.notice.dto.res.SystemNoticeListRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

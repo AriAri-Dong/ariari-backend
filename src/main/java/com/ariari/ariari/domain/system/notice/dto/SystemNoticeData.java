@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.system.dto;
+package com.ariari.ariari.domain.system.notice.dto;
 
 import com.ariari.ariari.domain.system.SystemNotice;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
