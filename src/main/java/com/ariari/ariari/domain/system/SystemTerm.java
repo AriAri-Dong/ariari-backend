@@ -27,7 +27,7 @@ public class SystemTerm extends LogicalDeleteEntity {
     private TermType termType;
 
     @Lob
-    @Column(name = "body")
+    @Column(columnDefinition = "TEXT", name = "body")
     private String body;
 
     public SystemTerm(TermType termType, String body) {
