@@ -4,14 +4,17 @@ import com.ariari.ariari.commons.exception.CustomException;
 import org.springframework.http.HttpStatus;
 
 public class DuplicateDataCreateException extends CustomException {
-    private static final String MESSAGE = "중복된 데이터를 생성할 수 없습니다.";
+//    private static final String MESSAGE = "중복된 데이터를 생성할 수 없습니다.";
+    private final String message;
     private static final HttpStatus HTTP_STATUS = HttpStatus.INTERNAL_SERVER_ERROR;
 
-    // TODO : 커스텀 익셉션 따로 추가
+    public DuplicateDataCreateException(String message) {
+        this.message = message;
+    }
 
     @Override
     public String getMessage() {
-        return MESSAGE;
+        return message;
     }
 
     @Override

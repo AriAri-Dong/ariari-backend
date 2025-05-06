@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.club.activity.dto;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
 import com.ariari.ariari.domain.club.activity.comment.QClubActivityComment;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.domain.member.Member;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -46,6 +47,9 @@ public class ClubActivityCommentData {
     @Schema(description = "본인이 좋아요 눌렀었는지", example = "")
     private boolean isMyLiked;
 
+    @Schema(description = "본인이 댓글인지", example = "")
+    private boolean isMine;
+
     @Schema(description = "본인이 차단했던 유저인지", example = "")
     private boolean isBlocked;
 
@@ -59,6 +63,23 @@ public class ClubActivityCommentData {
                 .updatedDateTime(clubActivityComment.getUpdatedDateTime())
                 .body(clubActivityComment.getBody())
                 .likeCount(likeCount)
+                .isMyLiked(isMyLiked)
+                .isMine(false)
+                .isBlocked(isBlocked)
+                .build();
+    }
+
+    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
+                                                     int likeCount, boolean isMyLiked, boolean isBlocked, Member reqMember) {
+        return ClubActivityCommentData.builder()
+                .id(clubActivityComment.getId())
+                .creatorId(clubActivityComment.getMember().getId()) // TODO : 나중에 null처리 고려도 해야할 듯...
+                .creatorName(clubMember.isPresent() ? clubMember.get().getName() : null)
+                .createdDateTime(clubActivityComment.getCreatedDateTime())
+                .updatedDateTime(clubActivityComment.getUpdatedDateTime())
+                .body(clubActivityComment.getBody())
+                .likeCount(likeCount)
+                .isMine(reqMember.equals(clubActivityComment.getMember()))
                 .isMyLiked(isMyLiked)
                 .isBlocked(isBlocked)
                 .build();

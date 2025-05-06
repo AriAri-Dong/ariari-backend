@@ -90,7 +90,7 @@ public class ClubReviewService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         if(clubReviewRepository.existsByClubAndMember(club, member)){
-            throw new DuplicateDataCreateException(); // 중복 작성 exception 추가해야함
+            throw new DuplicateDataCreateException("이미 활동후기를 작성하여, 작성할 수 없습니다.");
         }
         List<Tag> tags = tagRepository.findByIconIn(clubReviewSaveReq.getIcons()).orElseThrow(NotFoundEntityException::new);
         List<ClubReviewTag> clubReviewTags = tags.stream()

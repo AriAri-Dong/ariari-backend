@@ -41,6 +41,9 @@ public class ClubActivityData {
     @Schema(description = "접근 권한", example = "")
     private AccessType accessType;
 
+    @Schema(description = "profileUri", example = "")
+    private String profileUri;
+
     @Schema(description = "본문", example = "")
     private String body;
 

@@ -58,7 +58,7 @@ public class PassReviewService {
         Member member = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
         if (passReviewRepository.existsByClubAndMember(club, member)){
-            throw new DuplicateDataCreateException(); // 중복 작성 예외처리
+            throw new DuplicateDataCreateException("이미 합격후기를 작성하여, 작성할 수 없습니다."); // 중복 작성 예외처리
         }
 
         PassReview passReview = passReviewSaveReq.toEntity(passReviewSaveReq, club, member);

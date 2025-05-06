@@ -10,12 +10,12 @@
                 FROM pass_review_note prn
                 WHERE prn.pass_review_id = pr.pass_review_id
                   AND prn.note_type = 'DOCUMENT'
-                  AND prn.deleted_date_time IS NOT NULL) AS documentNoteCount,
+                  AND prn.deleted_date_time IS NULL) AS documentNoteCount,
                 (SELECT COUNT(*)
                  FROM pass_review_note prn2
                  WHERE prn2.pass_review_id = pr.pass_review_id
                  AND prn2.note_type = 'INTERVIEW'
-                 AND prn2.deleted_date_time IS NOT NULL) AS interviewNoteCount
+                 AND prn2.deleted_date_time IS NULL) AS interviewNoteCount
         FROM pass_review pr
         WHERE pr.club_id = #{clubId}
         ORDER BY pr.created_date_time DESC

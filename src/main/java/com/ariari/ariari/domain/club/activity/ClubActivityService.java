@@ -44,6 +44,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+// TODO : 리팩토링 필요
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -145,6 +148,7 @@ public class ClubActivityService {
         clubActivityRepository.delete(clubActivity);
     }
 
+    // TODO : 리팩토링 필요
     public ClubActivityListRes readClubActivityPage(Long reqMemberId, Long clubId, Pageable pageable) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
@@ -229,7 +233,7 @@ public class ClubActivityService {
 
             List<ClubActivityComment> parentClubActivityComments = clubActivityCommentRepository.findByClubActivityAndParentComment(clubActivity, null); /// 부모댓글만 조회
             for(ClubActivityComment clubActivityComment : parentClubActivityComments){ /// 부모댓글부터 순회
-                // TODO : clubMember조회가 너무 잦음, 리팩토링 필요(?), 쿼리레벨에서는 해결이 되는데... 뭐가 맞니?
+                // TODO : clubMember조회가 너무 잦음, 리팩토링 필요, 쿼리레벨에서는 해결이 되는데... 뭐가 맞니?
                 Optional<ClubMember> commentCreatorMember = clubMemberRepository.findByClubAndMember(clubActivityComment.getClubActivity().getClub(), clubActivityComment.getMember()); /// 구조가 잘못된거 같은데?
 
                 ClubActivityDetailRes.ClubActivityCommentRes clubActivityCommentRes = new ClubActivityDetailRes.ClubActivityCommentRes();
@@ -280,7 +284,7 @@ public class ClubActivityService {
 
                 clubActivityCommentRes.setCommentData(ClubActivityCommentData.fromEntity(clubActivityComment, commentCreatorMember,
                         clubActivityLikeCountMap.get(clubActivityComment), clubActivityLikeMemberSetMap.get(clubActivityComment).contains(reqMember),
-                        !blockSet.contains(clubActivityComment.getMember())));
+                        !blockSet.contains(clubActivityComment.getMember()), reqMember));
 
                 List<ClubActivityCommentData> childClubActivityCommentDataList = new ArrayList<>();
                 if(clubActivityCommentMap.containsKey(clubActivityComment)){
@@ -289,8 +293,10 @@ public class ClubActivityService {
                         Optional<ClubMember> childCommentCreatorMember = clubMemberRepository.findByClubAndMember(childClubActivityComment.getClubActivity().getClub(), childClubActivityComment.getMember());
                         ClubActivityCommentData childClubActivityCommentData = ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorMember,
                                 clubActivityLikeCountMap.get(childClubActivityComment), clubActivityLikeMemberSetMap.get(childClubActivityComment).contains(reqMember),
-                                !blockSet.contains(childClubActivityComment.getMember()));
-                        childClubActivityCommentDataList.add(childClubActivityCommentData);
+                                !blockSet.contains(childClubActivityComment.getMember()), reqMember);
+                        if(!blockSet.contains(childClubActivityComment.getMember())){
+                            childClubActivityCommentDataList.add(childClubActivityCommentData);
+                        }
                     }
                     clubActivityCommentRes.setCommentDataList(childClubActivityCommentDataList);
                 }
