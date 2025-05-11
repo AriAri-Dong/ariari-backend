@@ -1,7 +1,7 @@
-package com.ariari.ariari.domain.system.dto.res;
+package com.ariari.ariari.domain.system.notice.dto.res;
 
 import com.ariari.ariari.domain.system.SystemNotice;
-import com.ariari.ariari.domain.system.dto.SystemNoticeData;
+import com.ariari.ariari.domain.system.notice.dto.SystemNoticeData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
