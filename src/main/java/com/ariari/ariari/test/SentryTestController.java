@@ -13,3 +13,4 @@ public class SentryTestController {
         throw new RuntimeException("테스트용 예외입니다.");
     }
 }
+
