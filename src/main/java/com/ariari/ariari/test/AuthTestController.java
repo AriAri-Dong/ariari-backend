@@ -40,7 +40,7 @@ public class AuthTestController {
         return JwtTokenRes.createRes(
                 accessToken,
                 refreshToken,
-                false
+                null
         );
     }
 
