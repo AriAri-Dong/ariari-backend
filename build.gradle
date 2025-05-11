@@ -84,7 +84,7 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client:3.3.2'
 
 	//sentry
-	implementation 'io.sentry:sentry-spring-boot-starter:7.5.0'
+	implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.11.1'
 
 
 }

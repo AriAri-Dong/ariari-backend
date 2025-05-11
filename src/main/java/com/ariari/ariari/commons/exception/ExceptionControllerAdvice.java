@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.exception;
 
 import com.ariari.ariari.commons.exception.dto.ExceptionRes;
+import io.sentry.Sentry;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -24,6 +25,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler
     public ExceptionRes handleInternalException(HttpServletRequest request, Exception e) {
         log.error("exception !!", e);
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage()) // 배포 후 수정 예정
@@ -34,6 +36,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler
     public ExceptionRes handleCustomException(HttpServletRequest request, CustomException e) {
         log.info("exception", e);
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(e.getHttpStatus().value())
                 .message(e.getMessage())
@@ -44,6 +47,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(NoResourceFoundException.class)
     public ExceptionRes handleNoResourceFoundException(HttpServletRequest request, NoResourceFoundException e) {
         log.info("exception", e);
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(404)
                 .message("존재하지 않는 경로입니다.")
@@ -54,6 +58,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(DataAccessException.class)
     public ExceptionRes handleDataAccessException(HttpServletRequest request, DataAccessException e) {
         log.error("db 에러 : ", e);
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(400)
                 .message("DB 접근 중 에러가 발생했습니다." + e.getMessage())
@@ -63,7 +68,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
-
+        Sentry.captureException(ex);
         // 검증 실패한 필드와 그에 대한 오류 메시지를 반환
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
