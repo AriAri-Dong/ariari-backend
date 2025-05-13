@@ -99,7 +99,7 @@ public class    TestDataSetter {
     private final ClubAlarmManger clubAlarmManger;
     private final ApplyTempRepository applyTempRepository;
 
-    @EventListener(ApplicationReadyEvent.class)
+   //@EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
         // school
         School school1 = new School("세종대학교2", "sejong.ac.kr");
