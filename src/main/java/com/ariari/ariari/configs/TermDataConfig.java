@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class TermDataConfig {
     private final SystemTermRepository systemTermRepository;
 
-    @EventListener(ApplicationReadyEvent.class)
+    //@EventListener(ApplicationReadyEvent.class)
     public void systemTermDataInit(){
         systemTermRepository.save(new SystemTerm(TermType.PLATFORM_RULES, "# Ariari 동아리 운영원칙 - 최종 - 합\n" +
                 "\n" +
