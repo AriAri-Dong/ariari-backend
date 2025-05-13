@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class SchoolDataConfig {
     private final SchoolRepository schoolRepository;
 
-    @EventListener(ApplicationReadyEvent.class)
+    //@EventListener(ApplicationReadyEvent.class)
     public void schoolDataInit() {
         schoolRepository.save(new School("강릉원주대학교 강릉캠퍼스", "gwnu.ac.kr"));
         schoolRepository.save(new School("강릉원주대학교 원주캠퍼스", "gwnu.ac.kr"));
