@@ -17,6 +17,10 @@ public class TermDataConfig {
 
     //@EventListener(ApplicationReadyEvent.class)
     public void systemTermDataInit(){
+        if(systemTermRepository.count() != 0) {
+            return;
+        }
+
         systemTermRepository.save(new SystemTerm(TermType.PLATFORM_RULES, "# Ariari 동아리 운영원칙 - 최종 - 합\n" +
                 "\n" +
                 "# 제 1조 **아리아리 동아리 운영 원칙: 동아리 개설 관련 조항**\n" +

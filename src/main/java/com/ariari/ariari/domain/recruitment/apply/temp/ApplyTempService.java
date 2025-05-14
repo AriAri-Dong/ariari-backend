@@ -89,6 +89,7 @@ public class ApplyTempService {
             throw new NoApplyTempAuthException();
         }
 
+        System.out.println("modifyApplyTemp = " + modifyReq);
         modifyReq.modifyEntity(applyTemp);
 
         if (applyTemp.getPortfolioUrl() != null && applyTemp.getFileUri() != null) {

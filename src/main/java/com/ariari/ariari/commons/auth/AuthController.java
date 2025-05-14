@@ -24,18 +24,22 @@ public class AuthController {
     private final KakaoAuthManager kakaoAuthManager;
 
     /**
-     * kakao login callback
+     * kakao login
      */
     @GetMapping("/login/kakao")
     @Operation(summary = "로그인", description = "카카오 로그인")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
     public JwtTokenRes login(@RequestParam(name = "code") String code) {
-
-        String token = kakaoAuthManager.getKakaoToken(code);
-        Long kakaoId = kakaoAuthManager.getKakaoId(token);
-
-        return authService.login(kakaoId);
+        return authService.login(code);
     }
+
+    @PostMapping("/sign-up/kakao")
+    @Operation(summary = "회원가입", description = "회원가입")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
+    public JwtTokenRes signUp(@RequestParam String key) {
+        return authService.signUp(key);
+    }
+
 
     @PostMapping("/unregister")
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 (+ 카카오 회원 탈퇴 처리)")
