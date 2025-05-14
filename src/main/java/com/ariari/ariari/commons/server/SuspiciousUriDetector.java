@@ -16,7 +16,7 @@ public class SuspiciousUriDetector {
             "backdoor.php", "hack.php", "malicious.php",
 
             // 환경 설정 / 민감 정보
-            ".env", "phpinfo.php", "info.php", "config.php",
+            "phpinfo.php", "info.php", "config.php",
             "config.json", "web.config", "settings.py", ".git/config",
 
             // DB 백업 및 관리도구
