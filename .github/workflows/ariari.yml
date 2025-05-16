@@ -115,6 +115,13 @@ jobs:
           server-secret:
             host: ${SERVER_ADDRESS}
             port: ${SERVER_PORT}
+
+          sentry:
+            dsn: ${SENTRY_DSN}
+            environment: production
+            release: ariari@${GITHUB_SHA}
+            send-default-pii: true
+            exception-resolver-order: -2147483647
           
           EOT
         env:
@@ -141,6 +148,10 @@ jobs:
           SCHOOL_AUTH_KEY_NAME: ${{ secrets.SCHOOL_AUTH_KEY_NAME }}
           SCHOOL_AUTH_EXPRIATION_TIME: ${{ secrets.SCHOOL_AUTH_EXPIRATION_TIME }}
           SCHOOL_AUTH_CODE_LENGTH: ${{ secrets.SCHOOL_AUTH_CODE_LENGTH }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -166,6 +177,16 @@ jobs:
           context: .
           push: true
           tags: iuholic83/ariari:latest
+          
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ariari@${{ github.sha }}
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
