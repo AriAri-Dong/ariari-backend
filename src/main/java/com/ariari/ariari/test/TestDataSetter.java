@@ -99,7 +99,7 @@ public class TestDataSetter {
     private final ClubAlarmManger clubAlarmManger;
     private final ApplyTempRepository applyTempRepository;
 
-    @EventListener(ApplicationReadyEvent.class)
+   //@EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
         if(memberRepository.count() != 0) {
             return;

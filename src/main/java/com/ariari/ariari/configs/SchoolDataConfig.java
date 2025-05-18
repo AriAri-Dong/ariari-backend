@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class SchoolDataConfig {
     private final SchoolRepository schoolRepository;
 
-    @EventListener(ApplicationReadyEvent.class)
+    //@EventListener(ApplicationReadyEvent.class)
     public void schoolDataInit() {
         if(schoolRepository.count() != 0) {
             return;
