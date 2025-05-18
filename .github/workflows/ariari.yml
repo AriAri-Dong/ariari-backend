@@ -15,7 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
+        with:
+          fetch-depth: 0 
       - name: Give Gradle wrapper execute permissions
         run: chmod +x ./gradlew  # gradlew에 실행 권한 부여
 
@@ -189,7 +190,7 @@ jobs:
         with:
           environment: production
           version: ariari@${{ github.sha }}
-          fetch-depth: 0
+    
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
