@@ -27,6 +27,8 @@ jobs:
               time-zone: Asia/Seoul
             application:
               name: ariari
+            profiles:
+              active: prod
             datasource:
               driver-class-name: org.mariadb.jdbc.Driver
               url: ${MARIADB_URL}
