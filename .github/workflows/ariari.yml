@@ -189,6 +189,7 @@ jobs:
         with:
           environment: production
           version: ariari@${{ github.sha }}
+          fetch-depth: 0
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
