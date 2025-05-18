@@ -38,9 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String ip = request.getRemoteAddr();
-//        String uri = request.getRequestURI();
-        String uri = request.getHeader("X-Forwarded-For");
+//        String ip = request.getRemoteAddr();
+        String ip = request.getHeader("X-Forwarded-For");
+        String uri = request.getRequestURI();
         boolean isSuspicious = isSuspiciousUri(uri);
 
         securityLogService.SaveSecurityAccessLog(ip, uri, isSuspicious);
