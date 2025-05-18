@@ -3,6 +3,7 @@ import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -11,11 +12,15 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class SchoolDataConfig {
+
+    @Value("${spring.profiles.active}")
+    private String profiles;
+
     private final SchoolRepository schoolRepository;
 
-    //@EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void schoolDataInit() {
-        if(schoolRepository.count() != 0) {
+        if (profiles.equals("prod")){
             return;
         }
 

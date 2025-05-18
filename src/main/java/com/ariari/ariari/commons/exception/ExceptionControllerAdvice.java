@@ -92,6 +92,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
+        handleSentryError(request, ex, HttpStatus.BAD_REQUEST.value(), "검증 오류입니다.");
         // 검증 실패한 필드와 그에 대한 오류 메시지를 반환
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         handleSentryError(request, ex, HttpStatus.BAD_REQUEST.value(), ex.getMessage());

@@ -2,21 +2,17 @@ package com.ariari.ariari.test;
 
 import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.activity.ClubActivity;
-import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.ariari.ariari.domain.club.alarm.ClubAlarm;
 import com.ariari.ariari.domain.club.alarm.ClubAlarmRepository;
-import com.ariari.ariari.domain.club.alarm.enums.ClubAlarmType;
-import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
+import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
-import com.ariari.ariari.domain.club.club.enums.ParticipantType;
-import com.ariari.ariari.domain.club.event.ClubEvent;
 import com.ariari.ariari.domain.club.financial.FinancialRecord;
 import com.ariari.ariari.domain.club.financial.FinancialRecordRepository;
 import com.ariari.ariari.domain.club.notice.ClubNotice;
@@ -38,36 +34,36 @@ import com.ariari.ariari.domain.club.review.tag.Tag;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
-import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
-import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
-import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
+import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
-import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
+import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
+import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
-import jakarta.persistence.*;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -75,6 +71,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class TestDataSetter {
+
+    @Value("${spring.profiles.active}")
+    private String profiles;
 
     private final MemberRepository memberRepository;
     private final SchoolRepository schoolRepository;
@@ -99,11 +98,11 @@ public class TestDataSetter {
     private final ClubAlarmManger clubAlarmManger;
     private final ApplyTempRepository applyTempRepository;
 
-   //@EventListener(ApplicationReadyEvent.class)
+   @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
-        if(memberRepository.count() != 0) {
-            return;
-        }
+       if (profiles.equals("prod")){
+           return;
+       }
 
         // school
         School school1 = new School("세종대학교2", "sejong.ac.kr");
