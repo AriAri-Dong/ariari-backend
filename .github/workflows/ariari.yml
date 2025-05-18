@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 
+          fetch-depth: 0
       - name: Give Gradle wrapper execute permissions
         run: chmod +x ./gradlew  # gradlew에 실행 권한 부여
 
@@ -187,9 +187,11 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+          SENTRY_LOG_LEVEL: debug
         with:
           environment: production
           version: ariari@${{ github.sha }}
+          args: --ignore-missing
     
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
