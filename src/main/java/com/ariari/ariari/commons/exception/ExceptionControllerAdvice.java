@@ -61,7 +61,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler
     public ExceptionRes handleCustomException(HttpServletRequest request, CustomException e) {
         log.info("exception", e);
-        handleSentryError(request, e, HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        //handleSentryError(request, e, HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return ExceptionRes.builder()
                 .code(e.getHttpStatus().value())
                 .message(e.getMessage())
@@ -92,10 +92,9 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
-        handleSentryError(request, ex, HttpStatus.BAD_REQUEST.value(), "검증 오류입니다.");
+        //handleSentryError(request, ex, HttpStatus.BAD_REQUEST.value(), "검증 오류입니다.");
         // 검증 실패한 필드와 그에 대한 오류 메시지를 반환
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
-        handleSentryError(request, ex, HttpStatus.BAD_REQUEST.value(), ex.getMessage());
         // 400 응답과 함께 오류 메시지 반환
         return ResponseEntity.badRequest().body(errors);
     }
