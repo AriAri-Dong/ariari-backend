@@ -38,6 +38,20 @@ public class SchoolAuthService {
                 authCode);
     }
 
+    public void sendSchoolAuthCodeForFirstLogin(SchoolAuthReq schoolAuthReq) {
+        String email = schoolAuthReq.getEmail();
+
+        String emailSuffix = email.split("@")[1];
+        School school = schoolRepository.findByEmail(emailSuffix).orElseThrow(NotFoundEntityException::new);
+
+        String authCode = schoolAuthManager.issueSchoolAuthCode(schoolAuthReq.getEmail());
+
+        mailManager.sendTemplateMail(
+                email,
+                "[Ariari] 학교 인증 번호",
+                authCode);
+    }
+
     public void validateSchoolAuthCode(Long reqMemberId, SchoolAuthCodeReq schoolAuthCodeReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
@@ -47,6 +61,16 @@ public class SchoolAuthService {
         School school = schoolRepository.findById(schoolId).orElseThrow(NotFoundEntityException::new);
 
         reqMember.setSchool(school);
+    }
+
+    public void validateSchoolAuthCode(Member member, String email, String schoolAuthCode) {
+        schoolAuthManager.validateAuthCode(email, schoolAuthCode);
+
+        String schoolDomain = email.substring(email.indexOf('@') + 1);
+
+        School school = schoolRepository.findByEmail(schoolDomain).orElseThrow(NotFoundEntityException::new);
+
+        member.setSchool(school);
     }
 
     public void removeMySchoolAuth(Long reqMemberId) {

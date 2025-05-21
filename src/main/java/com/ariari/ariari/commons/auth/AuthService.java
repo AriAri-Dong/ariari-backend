@@ -3,6 +3,7 @@ package com.ariari.ariari.commons.auth;
 import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
 import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
 import com.ariari.ariari.commons.auth.dto.LogoutReq;
+import com.ariari.ariari.commons.auth.dto.SignUpReq;
 import com.ariari.ariari.commons.auth.nickname.NicknameCreator;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.oauth.OAuthSignUpManager;
@@ -12,6 +13,7 @@ import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.club.question.ClubQuestionService;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
+import com.ariari.ariari.domain.school.auth.SchoolAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ public class AuthService {
     private final KakaoAuthManager kakaoAuthManager;
     private final ClubQuestionService clubQuestionService;
     private final OAuthSignUpManager oAuthSignUpManager;
+    private final SchoolAuthService schoolAuthService;
 
     public JwtTokenRes login(String code) {
 
@@ -83,6 +86,25 @@ public class AuthService {
                 null);
     }
 
+    public JwtTokenRes signUp(String key, SignUpReq signUpReq) {
+        String token = oAuthSignUpManager.getToken(key);
+        Long kakaoId = kakaoAuthManager.getKakaoId(token);
+
+        Member member = signUp(kakaoId, signUpReq.getNickName());
+
+        String accessToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), ACCESS_TOKEN);
+        String refreshToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), REFRESH_TOKEN);
+
+        member.setLastLoginDateTime(LocalDateTime.now());
+
+        schoolAuthService.validateSchoolAuthCode(member, signUpReq.getEmail(), signUpReq.getSchoolAuthCode());
+
+        return JwtTokenRes.createRes(
+                accessToken,
+                refreshToken,
+                null);
+    }
+
     private Member signUp(Long kakaoId) {
         String nickname = nicknameCreator.createUniqueNickname();
 
@@ -90,6 +112,18 @@ public class AuthService {
         newMember.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
         memberRepository.save(newMember);
         return newMember;
+    }
+
+    private Member signUp(Long kakaoId, String nickname) {
+        Member newMember = Member.createMember(kakaoId, nickname);
+        newMember.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
+        memberRepository.save(newMember);
+        memberRepository.flush();
+        return newMember;
+    }
+
+    public String generateRandomNickname(){
+        return nicknameCreator.createUniqueNickname();
     }
 
     public void unregister(Long reqMemberId) {

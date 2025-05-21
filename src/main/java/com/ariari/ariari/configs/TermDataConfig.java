@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 public class TermDataConfig {
     private final SystemTermRepository systemTermRepository;
 
-    //@EventListener(ApplicationReadyEvent.class)
+    @EventListener(ApplicationReadyEvent.class)
     public void systemTermDataInit(){
-        if(systemTermRepository.count() != 0) {
+        if(systemTermRepository.count() > 0) {
             return;
         }
 

@@ -1,9 +1,6 @@
 package com.ariari.ariari.commons.auth;
 
-import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
-import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
-import com.ariari.ariari.commons.auth.dto.LogoutReq;
-import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
+import com.ariari.ariari.commons.auth.dto.*;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -36,10 +34,15 @@ public class AuthController {
     @PostMapping("/sign-up/kakao")
     @Operation(summary = "회원가입", description = "회원가입")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
-    public JwtTokenRes signUp(@RequestParam String key) {
-        return authService.signUp(key);
+    public JwtTokenRes signUp(@RequestParam String key, @RequestBody @Valid SignUpReq signUpReq) {
+        return authService.signUp(key, signUpReq);
     }
 
+    @GetMapping("/sign-up/random-nickname")
+    @Operation(summary = "랜덤 닉네임 발급", description = "회원가입 시 1회 요청")
+    public String getRandomNickname() {
+        return authService.generateRandomNickname();
+    }
 
     @PostMapping("/unregister")
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 (+ 카카오 회원 탈퇴 처리)")
