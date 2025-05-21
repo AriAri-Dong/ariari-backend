@@ -27,6 +27,8 @@ jobs:
               time-zone: Asia/Seoul
             application:
               name: ariari
+            profiles:
+              active: prod
             datasource:
               driver-class-name: org.mariadb.jdbc.Driver
               url: ${MARIADB_URL}
@@ -177,7 +179,7 @@ jobs:
           context: .
           push: true
           tags: iuholic83/ariari:latest
-          
+
       - name: Create Sentry release
         uses: getsentry/action-release@v1
         env:
@@ -187,6 +189,7 @@ jobs:
         with:
           environment: production
           version: ariari@${{ github.sha }}
+          fetch-depth: 0
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
