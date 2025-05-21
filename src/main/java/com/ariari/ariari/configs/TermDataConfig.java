@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.system.enums.TermType;
 import com.ariari.ariari.domain.system.term.SystemTermRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class TermDataConfig {
+
+    @Value("${spring.profiles.active}")
+    private String profiles;
+
     private final SystemTermRepository systemTermRepository;
 
     @EventListener(ApplicationReadyEvent.class)
