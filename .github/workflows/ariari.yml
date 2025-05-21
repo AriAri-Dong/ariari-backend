@@ -14,9 +14,8 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@v2
+
       - name: Give Gradle wrapper execute permissions
         run: chmod +x ./gradlew  # gradlew에 실행 권한 부여
 
@@ -28,6 +27,8 @@ jobs:
               time-zone: Asia/Seoul
             application:
               name: ariari
+            profiles:
+              active: prod
             datasource:
               driver-class-name: org.mariadb.jdbc.Driver
               url: ${MARIADB_URL}
@@ -120,7 +121,7 @@ jobs:
           sentry:
             dsn: ${SENTRY_DSN}
             environment: production
-            release: ariari@${GITHUB_RUN_NUMBER}
+            release: ariari@${GITHUB_SHA}
             send-default-pii: true
             exception-resolver-order: -2147483647
           
@@ -153,7 +154,6 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          SENTRY_RELEASE: ariari@${{ github.run_number }}
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -179,24 +179,18 @@ jobs:
           context: .
           push: true
           tags: iuholic83/ariari:latest
-          
+
       - name: Create Sentry release
-        uses: getsentry/action-release@v3
+        uses: getsentry/action-release@v1
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          SENTRY_LOG_LEVEL: debug
         with:
           environment: production
-<<<<<<< HEAD
           version: ariari@${{ github.sha }}
+          fetch-depth: 0
 
-=======
-          version: ariari@${{ github.run_number }}
-          args: --ignore-missing
-    
->>>>>>> 76d782610b0da78cb521aee5b9e54454677165cb
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
