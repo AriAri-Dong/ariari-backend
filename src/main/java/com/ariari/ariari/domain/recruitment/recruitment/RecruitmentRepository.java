@@ -2,13 +2,13 @@ package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>, RecruitmentRepositoryCustom {
 
@@ -29,4 +29,10 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long>,
             " where ( :nowDate between r.startDateTime and r.endDateTime and r.isEarlyClosed = false )" +
             " and r.club = :club")
     boolean findByRecruitmentClosedCheck(@Param("club") Club club, @Param("nowDate") LocalDateTime nowDate);
+
+    @Query("select r from Recruitment r" +
+            " where r.club= :club and" +
+            " (CURRENT_TIMESTAMP between r.startDateTime and r.endDateTime) and r.isEarlyClosed = false")
+    Optional<Recruitment> findActiveByClub(Club club);
+
 }
