@@ -9,10 +9,10 @@ public class JwtTokenRes {
 
     private String accessToken;
     private String refreshToken;
-    private Boolean isFirstLogin;
+    private String oAuthSignUpKey;
 
-    public static JwtTokenRes createRes(String accessToken, String refreshToken, Boolean isFirstLogin) {
-        return new JwtTokenRes(accessToken, refreshToken, isFirstLogin);
+    public static JwtTokenRes createRes(String accessToken, String refreshToken, String oAuthSignUpKey) {
+        return new JwtTokenRes(accessToken, refreshToken, oAuthSignUpKey);
     }
 
 }

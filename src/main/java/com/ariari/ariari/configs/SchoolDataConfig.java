@@ -15,10 +15,10 @@ public class SchoolDataConfig {
 
     @EventListener(ApplicationReadyEvent.class)
     public void schoolDataInit() {
-        if(schoolRepository.count() != 0) {
+        if(schoolRepository.count() > 6) {
             return;
         }
-
+//        schoolRepository.save(new School("네이버대학교", "naver.com"));
         schoolRepository.save(new School("강릉원주대학교 강릉캠퍼스", "gwnu.ac.kr"));
         schoolRepository.save(new School("강릉원주대학교 원주캠퍼스", "gwnu.ac.kr"));
         schoolRepository.save(new School("강원대학교 춘천캠퍼스", "kangwon.ac.kr"));

@@ -17,7 +17,7 @@ public class TermDataConfig {
 
     @EventListener(ApplicationReadyEvent.class)
     public void systemTermDataInit(){
-        if(systemTermRepository.count() != 0) {
+        if(systemTermRepository.count() > 0) {
             return;
         }
 

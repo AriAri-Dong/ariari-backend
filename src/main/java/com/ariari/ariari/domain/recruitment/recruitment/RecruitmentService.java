@@ -24,11 +24,13 @@ import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.applyform.exception.NoApplyFormException;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentDetailRes;
 import com.ariari.ariari.domain.recruitment.exception.ExistsDuplicatePeriodRecruitment;
 import com.ariari.ariari.domain.recruitment.exception.StartAfterEndException;
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentRes;
 import com.ariari.ariari.domain.school.School;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -219,6 +221,17 @@ public class RecruitmentService {
         return recruitmentRepository.findByRecruitmentClosedCheck(club, LocalDateTime.now());
     }
 
+    public RecruitmentRes findActiveRecruitment(Long reqMemberId, Long clubId) {
+        Member reqMember = null;
+        if (reqMemberId != null) {
+            reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        }
+        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+
+        Recruitment recruitment = recruitmentRepository.findActiveByClub(club).orElse(null);
+
+        return RecruitmentRes.createRes(recruitment, reqMember);
+    }
 
 }
 

@@ -3,6 +3,7 @@ package com.ariari.ariari.commons.auth.springsecurity;
 import com.ariari.ariari.commons.exception.CustomException;
 import com.ariari.ariari.commons.exception.dto.ExceptionRes;
 import com.ariari.ariari.commons.manager.JwtManager;
+import com.ariari.ariari.commons.server.SecurityLogService;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -20,19 +21,29 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
+
+import static com.ariari.ariari.commons.server.SuspiciousUriDetector.isSuspiciousUri;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     private final MemberRepository memberRepository;
     private final JwtManager jwtManager;
     private final AuthenticationManager authenticationManager;
     private final ObjectMapper objectMapper;
+    private final SecurityLogService securityLogService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+//        String ip = request.getRemoteAddr();
+        String ip = request.getHeader("X-Forwarded-For");
+        String uri = request.getRequestURI();
+        boolean isSuspicious = isSuspiciousUri(uri);
+
+        securityLogService.SaveSecurityAccessLog(ip, uri, isSuspicious);
 
         String token = jwtManager.extractToken(request);
 
@@ -62,5 +73,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(responseBody));
     }
-
 }

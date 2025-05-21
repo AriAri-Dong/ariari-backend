@@ -1,9 +1,6 @@
 package com.ariari.ariari.commons.auth;
 
-import com.ariari.ariari.commons.auth.dto.AccessTokenRes;
-import com.ariari.ariari.commons.auth.dto.JwtTokenRes;
-import com.ariari.ariari.commons.auth.dto.LogoutReq;
-import com.ariari.ariari.commons.auth.dto.RefreshTokenReq;
+import com.ariari.ariari.commons.auth.dto.*;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +22,26 @@ public class AuthController {
     private final KakaoAuthManager kakaoAuthManager;
 
     /**
-     * kakao login callback
+     * kakao login
      */
     @GetMapping("/login/kakao")
     @Operation(summary = "로그인", description = "카카오 로그인")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
     public JwtTokenRes login(@RequestParam(name = "code") String code) {
+        return authService.login(code);
+    }
 
-        String token = kakaoAuthManager.getKakaoToken(code);
-        Long kakaoId = kakaoAuthManager.getKakaoId(token);
+    @PostMapping("/sign-up/kakao")
+    @Operation(summary = "회원가입", description = "회원가입")
+    @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
+    public JwtTokenRes signUp(@RequestParam String key, @RequestBody @Valid SignUpReq signUpReq) {
+        return authService.signUp(key, signUpReq);
+    }
 
-        return authService.login(kakaoId);
+    @GetMapping("/sign-up/random-nickname")
+    @Operation(summary = "랜덤 닉네임 발급", description = "회원가입 시 1회 요청")
+    public String getRandomNickname() {
+        return authService.generateRandomNickname();
     }
 
     @PostMapping("/unregister")

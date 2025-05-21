@@ -42,6 +42,12 @@ public class SchoolAuthManager {
         return authCode;
     }
 
+    public String issueSchoolAuthCode(String schoolEmail) {
+        String authCode = generateCode();
+        redisManager.setExData(schoolEmail, authCode, EXPIRATION_TIME, TimeUnit.MINUTES);
+        return authCode;
+    }
+
     /**
      * @return schoolId
      */
@@ -57,6 +63,18 @@ public class SchoolAuthManager {
         }
 
         return Long.valueOf(extractSchoolId(value));
+    }
+
+    public void validateAuthCode(String schoolEmail, String authCode) {
+        String value = (String) redisManager.getData(schoolEmail);
+
+        if (value == null) {
+            throw new NoSchoolAuthCodeException();
+        }
+
+        if(!value.equals(authCode)){
+            throw new InvalidAuthCodeException();
+        }
     }
 
     private String resolveKey(Member member) {

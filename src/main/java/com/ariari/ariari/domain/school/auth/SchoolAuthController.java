@@ -25,6 +25,12 @@ public class SchoolAuthController {
         schoolAuthService.sendSchoolAuthCode(reqMemberId, schoolAuthReq);
     }
 
+    @Operation(summary = "회원가입 시 학교 인증 이메일 발송 요청", description = "요청 body 로 받은 email 로 학교 인증 코드 발송을 요청합니다. 5분 내로 인증번호를 입력해야 합니다.")
+    @PostMapping("/send/first-login")
+    public void sendSchoolAuthCodeForFirstLogin(@RequestBody SchoolAuthReq schoolAuthReq) {
+        schoolAuthService.sendSchoolAuthCodeForFirstLogin(schoolAuthReq);
+    }
+
     @Operation(summary = "학교 인증 코드 검증", description = "요청 body 로 받은 학교 인증 코드를 검증합니다.")
     @PostMapping("/validate")
     public void validateSchoolAuthCode(@AuthenticationPrincipal CustomUserDetails userDetails,

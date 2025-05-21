@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentDetailRes;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentListRes;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -132,6 +133,14 @@ public class RecruitmentController {
     public boolean findRecruitmentsExists(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long clubId ) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         return recruitmentService.findRecruitmentsExists(reqMemberId, clubId);
+    }
+
+    @Operation(summary = "진행중인 모집 조회", description = "동아리의 진행중인 모집을 조회합니다.")
+    @GetMapping("/clubs/{clubId}/recruitments/active")
+    public RecruitmentRes findActiveRecruitment(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                @PathVariable Long clubId) {
+        Long reqMemberId = CustomUserDetails.getMemberId(userDetails, false);
+        return recruitmentService.findActiveRecruitment(reqMemberId, clubId);
     }
 
 }
