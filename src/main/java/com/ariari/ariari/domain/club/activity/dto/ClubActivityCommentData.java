@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
 import com.ariari.ariari.domain.club.activity.comment.QClubActivityComment;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -29,8 +30,11 @@ public class ClubActivityCommentData {
     @Schema(description = "작성자 id", example = "")
     private Long creatorId;
 
-    @Schema(description = "", example = "")
+    @Schema(description = "작성자명", example = "")
     private String creatorName;
+
+    @Schema(description = "댓글 작성자 프로필사진", example = "")
+    private ProfileType creatorProfileType;
 
     @Schema(description = "작성일자", example = "")
     private LocalDateTime createdDateTime;
@@ -55,10 +59,24 @@ public class ClubActivityCommentData {
 
     public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
                                               int likeCount, boolean isMyLiked, boolean isBlocked) {
+        // TODO : 리팩토링 예정, 성능우려
+        Long creatorId = clubMember
+                .map(ClubMember::getMember)
+                .map(Member::getId)
+                .orElse(null);
+        String creatorName = clubMember
+                .map(ClubMember::getName)
+                .orElse(null);
+        ProfileType creatorProfileType = clubMember
+                .map(ClubMember::getMember)
+                .map(Member::getProfileType)
+                .orElse(null);
+
         return ClubActivityCommentData.builder()
                 .id(clubActivityComment.getId())
-                .creatorId(clubActivityComment.getMember().getId())
-                .creatorName(clubMember.isPresent() ? clubMember.get().getName() : null)
+                .creatorId(creatorId)
+                .creatorName(creatorName)
+                .creatorProfileType(creatorProfileType)
                 .createdDateTime(clubActivityComment.getCreatedDateTime())
                 .updatedDateTime(clubActivityComment.getUpdatedDateTime())
                 .body(clubActivityComment.getBody())
@@ -71,10 +89,23 @@ public class ClubActivityCommentData {
 
     public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
                                                      int likeCount, boolean isMyLiked, boolean isBlocked, Member reqMember) {
+        Long creatorId = clubMember
+                .map(ClubMember::getMember)
+                .map(Member::getId)
+                .orElse(null);
+        String creatorName = clubMember
+                .map(ClubMember::getName)
+                .orElse(null);
+        ProfileType creatorProfileType = clubMember
+                .map(ClubMember::getMember)
+                .map(Member::getProfileType)
+                .orElse(null);
+
         return ClubActivityCommentData.builder()
                 .id(clubActivityComment.getId())
-                .creatorId(clubActivityComment.getMember().getId()) // TODO : 나중에 null처리 고려도 해야할 듯...
-                .creatorName(clubMember.isPresent() ? clubMember.get().getName() : null)
+                .creatorId(creatorId)
+                .creatorName(creatorName)
+                .creatorProfileType(creatorProfileType)
                 .createdDateTime(clubActivityComment.getCreatedDateTime())
                 .updatedDateTime(clubActivityComment.getUpdatedDateTime())
                 .body(clubActivityComment.getBody())
