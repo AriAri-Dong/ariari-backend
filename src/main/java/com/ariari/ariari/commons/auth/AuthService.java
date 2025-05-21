@@ -128,13 +128,6 @@ public class AuthService {
         return nicknameCreator.createUniqueNickname();
     }
 
-    public void unregister(Long reqMemberId) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        clubQuestionService.changeStateByMember(reqMemberId);
-        kakaoAuthManager.unregister(reqMember);
-        memberRepository.delete(reqMember);
-    }
-
     public void logout(LogoutReq logoutReq) {
         String accessToken = logoutReq.getAccessToken();
         String refreshToken = logoutReq.getRefreshToken();

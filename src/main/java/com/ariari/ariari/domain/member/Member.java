@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.member;
 
 import com.ariari.ariari.commons.entity.LogicalDeleteEntity;
+import com.ariari.ariari.commons.entity.report.Report;
 import com.ariari.ariari.commons.pkgenerator.CustomPkGenerate;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
@@ -69,6 +70,29 @@ public class Member extends LogicalDeleteEntity {
     @JoinColumn(name = "school_id")
     private School school;
 
+    /* -------------------- reverse mapping  -------------------- */
+
+    @OneToMany(mappedBy = "member")
+    private List<PassReview> passReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubReview> clubReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reporter")
+    private List<Report> reports = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubNotice> clubNotices = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubQuestion> clubQuestions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubActivity> clubActivities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<ClubActivityComment> clubActivityComments = new ArrayList<>();
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberAlarm> memberAlarms = new ArrayList<>();
 
@@ -97,34 +121,18 @@ public class Member extends LogicalDeleteEntity {
     private List<Attendance> attendances = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubNotice> clubNotices = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubQuestion> clubQuestions = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubActivity> clubActivities = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ClubActivityLike> clubActivityLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubActivityComment> clubActivityComments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ClubActivityCommentLike> clubActivityCommentLikes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<PassReview> passReviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubReview> clubReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<PointHistory> pointHistories = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<SystemNotice> systemNotices = new ArrayList<>();
+
+    /* --------------------------------------------------- */
 
     public static Member createMember(Long kakaoId, String nickname) {
         Member member = new Member(kakaoId, nickname);

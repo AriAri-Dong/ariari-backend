@@ -4,6 +4,7 @@ import com.ariari.ariari.commons.auth.dto.*;
 import com.ariari.ariari.commons.auth.exceptions.IllegalEmailException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.auth.springsecurity.UnregisterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,6 +22,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final KakaoAuthManager kakaoAuthManager;
+    private final UnregisterService unregisterService;
 
     /**
      * kakao login
@@ -53,7 +55,7 @@ public class AuthController {
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 (+ 카카오 회원 탈퇴 처리)")
     public void unregister(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
-        authService.unregister(reqMemberId);
+        unregisterService.unregister(reqMemberId);
     }
 
     /**
