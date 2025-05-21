@@ -97,7 +97,9 @@ public class AuthService {
 
         member.setLastLoginDateTime(LocalDateTime.now());
 
-        schoolAuthService.validateSchoolAuthCode(member, signUpReq.getEmail(), signUpReq.getSchoolAuthCode());
+        if (signUpReq.getEmail() != null) {
+            schoolAuthService.validateSchoolAuthCode(member, signUpReq.getEmail(), signUpReq.getSchoolAuthCode());
+        }
 
         return JwtTokenRes.createRes(
                 accessToken,

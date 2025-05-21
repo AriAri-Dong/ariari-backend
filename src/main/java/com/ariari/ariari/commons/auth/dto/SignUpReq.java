@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.auth.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -14,6 +15,6 @@ public class SignUpReq {
     private String schoolAuthCode;
 
     @Schema(description = "닉네임", example = "다정한토끼248")
-    @NotEmpty(message = "닉네임을 입력해주세요.")
+    @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickName;
 }

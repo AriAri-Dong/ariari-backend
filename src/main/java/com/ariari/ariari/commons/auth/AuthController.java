@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.*;
+import com.ariari.ariari.commons.auth.exceptions.IllegalEmailException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +36,10 @@ public class AuthController {
     @Operation(summary = "회원가입", description = "회원가입")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
     public JwtTokenRes signUp(@RequestParam String key, @RequestBody @Valid SignUpReq signUpReq) {
+        if (signUpReq.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new IllegalEmailException();
+        }
+
         return authService.signUp(key, signUpReq);
     }
 
