@@ -1,4 +1,4 @@
-package com.ariari.ariari.commons.auth.springsecurity;
+package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.entity.report.ReportRepository;
@@ -8,7 +8,6 @@ import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentReposit
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
-import com.ariari.ariari.domain.club.question.ClubQuestionService;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
@@ -37,6 +36,12 @@ public class UnregisterService {
 
         // member_id -> null
         passReviewRepository.updateMemberNull(reqMember);
+        clubReviewRepository.updateMemberNull(reqMember);
+        reportRepository.updateMemberNull(reqMember);
+        clubNoticeRepository.updateMemberNull(reqMember);
+        clubQuestionRepository.updateMemberNull(reqMember);
+        clubActivityRepository.updateMemberNull(reqMember);
+        clubActivityCommentRepository.updateMemberNull(reqMember);
 
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);

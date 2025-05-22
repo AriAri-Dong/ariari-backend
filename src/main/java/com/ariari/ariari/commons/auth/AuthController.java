@@ -4,7 +4,6 @@ import com.ariari.ariari.commons.auth.dto.*;
 import com.ariari.ariari.commons.auth.exceptions.IllegalEmailException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
-import com.ariari.ariari.commons.auth.springsecurity.UnregisterService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
