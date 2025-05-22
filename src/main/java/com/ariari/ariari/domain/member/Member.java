@@ -94,6 +94,9 @@ public class Member extends LogicalDeleteEntity {
     private List<ClubActivityComment> clubActivityComments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ClubMember> clubMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberAlarm> memberAlarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "blockingMember", cascade = CascadeType.REMOVE)
@@ -101,9 +104,6 @@ public class Member extends LogicalDeleteEntity {
 
     @OneToMany(mappedBy = "blockedMember", cascade = CascadeType.REMOVE)
     private List<Block> blockeds = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ClubMember> clubMembers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ClubBookmark> clubBookmarks = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.clubmember;
 
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,5 +23,7 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     @Query("select count(cm) from ClubMember as cm where cm.club = :club")
     Long countByClub(Club club);
+
+    boolean existsByMemberAndClubMemberRoleType(Member member, ClubMemberRoleType memberRoleType);
 
 }

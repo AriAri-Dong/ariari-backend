@@ -1,10 +1,13 @@
 package com.ariari.ariari.commons.auth;
 
+import com.ariari.ariari.commons.auth.exceptions.ExistingAdminRoleException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.entity.report.ReportRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentRepository;
+import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
@@ -28,6 +31,7 @@ public class UnregisterService {
     private final ClubQuestionRepository clubQuestionRepository;
     private final ClubActivityRepository clubActivityRepository;
     private final ClubActivityCommentRepository clubActivityCommentRepository;
+    private final ClubMemberRepository clubMemberRepository;
 
     private final KakaoAuthManager kakaoAuthManager;
 
@@ -42,6 +46,10 @@ public class UnregisterService {
         clubQuestionRepository.updateMemberNull(reqMember);
         clubActivityRepository.updateMemberNull(reqMember);
         clubActivityCommentRepository.updateMemberNull(reqMember);
+
+        if (clubMemberRepository.existsByMemberAndClubMemberRoleType(reqMember, ClubMemberRoleType.ADMIN)) {
+            throw new ExistingAdminRoleException();
+        }
 
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);
