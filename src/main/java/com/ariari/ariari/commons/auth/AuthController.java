@@ -1,6 +1,7 @@
 package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.dto.*;
+import com.ariari.ariari.commons.auth.exceptions.IllegalEmailException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final KakaoAuthManager kakaoAuthManager;
+    private final UnregisterService unregisterService;
 
     /**
      * kakao login
@@ -35,6 +37,10 @@ public class AuthController {
     @Operation(summary = "회원가입", description = "회원가입")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
     public JwtTokenRes signUp(@RequestParam String key, @RequestBody @Valid SignUpReq signUpReq) {
+        if (signUpReq.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            throw new IllegalEmailException();
+        }
+
         return authService.signUp(key, signUpReq);
     }
 
@@ -48,7 +54,7 @@ public class AuthController {
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 (+ 카카오 회원 탈퇴 처리)")
     public void unregister(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
-        authService.unregister(reqMemberId);
+        unregisterService.unregister(reqMemberId);
     }
 
     /**

@@ -97,7 +97,9 @@ public class AuthService {
 
         member.setLastLoginDateTime(LocalDateTime.now());
 
-        schoolAuthService.validateSchoolAuthCode(member, signUpReq.getEmail(), signUpReq.getSchoolAuthCode());
+        if (signUpReq.getEmail() != null) {
+            schoolAuthService.validateSchoolAuthCode(member, signUpReq.getEmail(), signUpReq.getSchoolAuthCode());
+        }
 
         return JwtTokenRes.createRes(
                 accessToken,
@@ -124,13 +126,6 @@ public class AuthService {
 
     public String generateRandomNickname(){
         return nicknameCreator.createUniqueNickname();
-    }
-
-    public void unregister(Long reqMemberId) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        clubQuestionService.changeStateByMember(reqMemberId);
-        kakaoAuthManager.unregister(reqMember);
-        memberRepository.delete(reqMember);
     }
 
     public void logout(LogoutReq logoutReq) {
