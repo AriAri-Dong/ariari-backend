@@ -136,6 +136,7 @@ public class ClubController {
         clubService.modifyClub(reqMemberId, clubId, modifyReq, profileFile, bannerFile);
     }
 
+
     /**
      * 검증 로직 수정 예정
      */

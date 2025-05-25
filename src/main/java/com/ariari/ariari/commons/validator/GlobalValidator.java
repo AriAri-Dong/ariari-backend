@@ -3,6 +3,7 @@ package com.ariari.ariari.commons.validator;
 import com.ariari.ariari.commons.exception.exceptions.MaxSizeExceededException;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.club.invite.exception.InvalidInviteKeyException;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.exception.ClubMemberValidatorException;
@@ -86,6 +87,12 @@ public class GlobalValidator {
         }
         if(list.size() > maxSize){
             throw new MaxSizeExceededException();
+        }
+    }
+
+    public static void eqClubSchoolAsreqMember(School clubSchool, School memberSchool){
+        if(!clubSchool.equals(memberSchool)){
+            throw new InvalidInviteKeyException();
         }
     }
 

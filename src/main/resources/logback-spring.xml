@@ -19,11 +19,9 @@
         <file>${LOG_PATH}/application.log</file>
 
         <!-- 날짜 + 용량 기준 롤링 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 날짜 + 인덱스가 붙는 형식 -->
-            <fileNamePattern>${LOG_PATH}/application.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <!-- 파일 하나당 최대 크기 -->
-            <maxFileSize>50MB</maxFileSize>
+            <fileNamePattern>${LOG_PATH}/application.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 로그 보존 기간 -->
             <maxHistory>7</maxHistory>
             <!-- 전체 저장 용량 제한 (선택) -->
