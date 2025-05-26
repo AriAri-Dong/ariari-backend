@@ -92,7 +92,6 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(HttpServletRequest request, MethodArgumentNotValidException ex){
         Map<String, String> errors = new HashMap<>();
-        //handleSentryError(request, ex, HttpStatus.BAD_REQUEST.value(), "검증 오류입니다.");
         // 검증 실패한 필드와 그에 대한 오류 메시지를 반환
         ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         // 400 응답과 함께 오류 메시지 반환
@@ -101,16 +100,17 @@ public class ExceptionControllerAdvice {
 
     private void handleSentryError(HttpServletRequest request, Exception e, int httpStatus, String message){
 
-            Sentry.withScope(scope -> {
-                scope.setTag("HTTP_STATUS", String.valueOf(httpStatus));
-                scope.setTag("API", request.getRequestURI());
-                scope.setExtra("QueryParams", request.getQueryString());
-                scope.setTag("OS", request.getHeader("User-Agent")); // 운영체제, 브라우저 정보
-                scope.setExtra("AppVersion", request.getHeader("X-App-Version")); // 앱 버전 (모바일이면)
-                Sentry.captureException(e);
-                Sentry.captureMessage(request.getRequestURI() + " - " + message);
-                Sentry.flush(3000);
-            });
+        Sentry.captureException(e);
+//            Sentry.withScope(scope -> {
+//                scope.setTag("HTTP_STATUS", String.valueOf(httpStatus));
+//                scope.setTag("API", request.getRequestURI());
+//                scope.setExtra("QueryParams", request.getQueryString());
+//                scope.setTag("OS", request.getHeader("User-Agent")); // 운영체제, 브라우저 정보
+//                scope.setExtra("AppVersion", request.getHeader("X-App-Version")); // 앱 버전 (모바일이면)
+//                Sentry.captureException(e);
+//                Sentry.captureMessage(request.getRequestURI() + " - " + message);
+//                Sentry.flush(3000);
+//            });
 
     }
 
