@@ -33,14 +33,20 @@
         </encoder>
     </appender>
     <!-- Hibernate SQL 로그 -->
-    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="true">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="true">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
+
+    <logger name="org.springframework.web" level="INFO" additivity="true">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
 
     <!-- 프로젝트 패키지 전체 로그  -->
     <logger name="com.ariari" level="INFO" additivity="true" />
