@@ -101,6 +101,7 @@ public class ExceptionControllerAdvice {
     private void handleSentryError(HttpServletRequest request, Exception e, int httpStatus, String message){
 
         Sentry.captureException(e);
+        
 //            Sentry.withScope(scope -> {
 //                scope.setTag("HTTP_STATUS", String.valueOf(httpStatus));
 //                scope.setTag("API", request.getRequestURI());
