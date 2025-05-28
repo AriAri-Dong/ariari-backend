@@ -199,5 +199,10 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /home/ubuntu/ariari.kr
+            
+            # 빌드 캐시 및 중간 이미지 제거 (다른 프로젝트 영향 없이)
+            sudo docker compose down --rmi local --volumes --remove-orphans
+      
             sudo docker compose pull
-            sudo docker compose up -d --build
+            sudo docker compose build --no-cache
+            sudo docker compose up -d

@@ -37,7 +37,7 @@ public class AuthController {
     @Operation(summary = "회원가입", description = "회원가입")
     @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = JwtTokenRes.class)))
     public JwtTokenRes signUp(@RequestParam String key, @RequestBody @Valid SignUpReq signUpReq) {
-        if (signUpReq.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+        if (signUpReq.getEmail() != null && signUpReq.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             throw new IllegalEmailException();
         }
 
