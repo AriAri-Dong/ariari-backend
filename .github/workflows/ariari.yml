@@ -21,7 +21,7 @@ jobs:
 
       - name: Create application.yml file
         run: |
-          cat <<EOT >> src/main/resources/application.yml
+          cat src/main/resources/application.yml
           spring:
             jackson:
               time-zone: Asia/Seoul
@@ -124,8 +124,7 @@ jobs:
             release: ariari@${GITHUB_SHA}
             send-default-pii: true
             exception-resolver-order: -2147483647
-          
-          EOT
+
         env:
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           SERVER_PORT: ${{secrets.SERVER_PORT}}

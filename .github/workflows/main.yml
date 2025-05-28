@@ -23,7 +23,7 @@ jobs:
 
       - name: Create application.yml file
         run: |
-          cat <<EOT >> src/main/resources/application.yml
+          cat src/main/resources/application.yml
           spring:
             jackson:
               time-zone: Asia/Seoul
@@ -121,8 +121,7 @@ jobs:
           server-secret:
             host: ${SERVER_ADDRESS}
             port: ${SERVER_PORT}
-              
-          EOT
+
         env:
           SERVER_TEST_URL: ${{secrets.SERVER_TEST_URL}}
           TEST_SERVER_URL: ${{secrets.TEST_SERVER_URL}}
