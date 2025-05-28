@@ -28,7 +28,7 @@ public class InviteController {
     }
 
     @Operation(summary = "동아리 초대 키 확인", description = "")
-    @PostMapping("/enter")
+    @GetMapping("/enter")
     public void verifyInvite(@AuthenticationPrincipal CustomUserDetails userDetails,
                                @RequestParam String inviteKey){
         Long reqMemberId = getMemberId(userDetails, true);

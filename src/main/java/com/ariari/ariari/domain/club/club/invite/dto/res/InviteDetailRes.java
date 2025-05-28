@@ -12,15 +12,15 @@ public class InviteDetailRes {
     @Schema(description = "동아리 초대 키", example = "5345fgddras")
     private String key;
     @Schema(description = "동아리 아이디", example = "63552413")
-    private Long clubId;
+    private String clubName;
 
-    private InviteDetailRes(String key, Long clubId){
+    private InviteDetailRes(String key, String clubName){
         this.key = key;
-        this.clubId = clubId;
+        this.clubName = clubName;
     }
 
 
-    public static InviteDetailRes of(String key, Long clubId){
-        return new InviteDetailRes(key, clubId);
+    public static InviteDetailRes of(String key, String clubName){
+        return new InviteDetailRes(key, clubName);
     }
 }

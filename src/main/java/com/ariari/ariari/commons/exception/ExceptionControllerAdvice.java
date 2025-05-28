@@ -28,7 +28,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler
     public ExceptionRes handleInternalException(HttpServletRequest request, Exception e) {
         log.error("exception !!", e);
-        handleSentryError(request, e, HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage()) // 배포 후 수정 예정
@@ -39,7 +39,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(NullPointerException.class)
     public ExceptionRes handleNullPointerException(HttpServletRequest request, NullPointerException e){
         log.info("exception", e);
-        handleSentryError(request, e, HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 내부 오류가 발생했습니다. 관리자에게 문의하세요.");
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage())
@@ -50,7 +50,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(IllegalStateException.class)
     public ExceptionRes handleIllegalStateException(HttpServletRequest request, IllegalStateException e){
         log.info("exception", e);
-        handleSentryError(request, e, HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버 상태가 올바르지 않습니다. 잠시 후 다시 시도해주세요.");
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(e.getMessage())
@@ -61,7 +61,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler
     public ExceptionRes handleCustomException(HttpServletRequest request, CustomException e) {
         log.info("exception", e);
-        handleSentryError(request, e, HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(e.getHttpStatus().value())
                 .message(e.getMessage())
@@ -82,7 +82,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(DataAccessException.class)
     public ExceptionRes handleDataAccessException(HttpServletRequest request, DataAccessException e) {
         log.error("db 에러 : ", e);
-        handleSentryError(request, e, HttpStatus.BAD_REQUEST.value(), "DB 접근 중 에러가 발생했습니다." + e.getMessage());
+        Sentry.captureException(e);
         return ExceptionRes.builder()
                 .code(400)
                 .message("DB 접근 중 에러가 발생했습니다." + e.getMessage())
@@ -98,21 +98,5 @@ public class ExceptionControllerAdvice {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    private void handleSentryError(HttpServletRequest request, Exception e, int httpStatus, String message){
-
-        Sentry.captureException(e);
-        
-//            Sentry.withScope(scope -> {
-//                scope.setTag("HTTP_STATUS", String.valueOf(httpStatus));
-//                scope.setTag("API", request.getRequestURI());
-//                scope.setExtra("QueryParams", request.getQueryString());
-//                scope.setTag("OS", request.getHeader("User-Agent")); // 운영체제, 브라우저 정보
-//                scope.setExtra("AppVersion", request.getHeader("X-App-Version")); // 앱 버전 (모바일이면)
-//                Sentry.captureException(e);
-//                Sentry.captureMessage(request.getRequestURI() + " - " + message);
-//                Sentry.flush(3000);
-//            });
-
-    }
 
 }
