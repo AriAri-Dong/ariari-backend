@@ -21,7 +21,7 @@ jobs:
 
       - name: Create application.yml file
         run: |
-          cat src/main/resources/application.yml
+          cat <<EOT >> src/main/resources/application.yml
           spring:
             jackson:
               time-zone: Asia/Seoul
@@ -124,7 +124,8 @@ jobs:
             release: ariari@${GITHUB_SHA}
             send-default-pii: true
             exception-resolver-order: -2147483647
-
+          
+          EOT
         env:
           SERVER_ADDRESS: ${{secrets.SERVER_ADDRESS}}
           SERVER_PORT: ${{secrets.SERVER_PORT}}
@@ -201,7 +202,7 @@ jobs:
             
             # 빌드 캐시 및 중간 이미지 제거 (다른 프로젝트 영향 없이)
             sudo docker compose down --rmi local --volumes --remove-orphans
-      
+            
             sudo docker compose pull
             sudo docker compose build --no-cache
             sudo docker compose up -d
