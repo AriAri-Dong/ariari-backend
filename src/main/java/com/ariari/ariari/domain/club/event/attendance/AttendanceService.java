@@ -115,7 +115,7 @@ public class AttendanceService {
         Club club = clubEvent.getClub();
         List<ClubMember> clubMemberList = clubMemberRepository.findAllByClub(club);
 
-        if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
+        if (!reqMember.isSuperAdmin() && clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
             throw new NotBelongInClubException();
         }
 

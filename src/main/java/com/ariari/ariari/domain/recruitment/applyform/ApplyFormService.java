@@ -30,7 +30,7 @@ public class ApplyFormService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+        GlobalValidator.isClubManagerOrHigher(reqMember, reqClubMember);
 
         ApplyForm applyForm = applyFormRepository.findFirstByClubOrderByCreatedDateTimeDesc(club).orElse(null);
         return applyForm == null ? null : ApplyFormRes.fromEntity(applyForm);

@@ -37,6 +37,8 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class ClubListService {
 
+    // TODO : queryDSL기반 교내 동아리 목록 조회 슈퍼어드민처리 필요함
+
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;

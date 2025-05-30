@@ -134,7 +134,7 @@ public class ClubNoticeService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         ClubNotice clubNotice = clubNoticeRepository.findById(clubNoticeId).orElseThrow(NotFoundEntityException::new);
 
-        if (clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).isEmpty()) {
+        if (!reqMember.isSuperAdmin() && clubMemberRepository.findByClubAndMember(clubNotice.getClub(), reqMember).isEmpty()) {
             throw new NotBelongInClubException();
         }
 
@@ -163,7 +163,7 @@ public class ClubNoticeService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
-        if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
+        if (!reqMember.isSuperAdmin() && clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
             throw new NotBelongInClubException();
         }
 

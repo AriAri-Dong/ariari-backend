@@ -55,7 +55,7 @@ public class ClubMemberService {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
-        GlobalValidator.isClubManagerOrHigher(reqClubMember);
+        GlobalValidator.isClubManagerOrHigher(reqMember, reqClubMember);
 
         Page<ClubMember> page = clubMemberRepository.searchClubMember(club, statusType, query, pageable);
         return ClubMemberListRes.createRes(page);

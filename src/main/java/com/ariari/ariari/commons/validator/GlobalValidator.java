@@ -23,7 +23,15 @@ import java.util.List;
 public class GlobalValidator {
 
     public static void hasSchoolAuth(Member member) {
-        if (member == null || member.getSchool() == null) {
+        if(member == null){
+            throw new NoSchoolAuthException();
+        }
+
+        if (member.isSuperAdmin()){
+            return;
+        }
+
+        if (member.getSchool() == null) {
             throw new NoSchoolAuthException();
         }
     }
@@ -33,12 +41,26 @@ public class GlobalValidator {
             return;
         }
 
+        if (member != null && member.isSuperAdmin()){
+            return;
+        }
+
         if (member == null || member.getSchool() == null || !member.getSchool().equals(school)) {
             throw new NoProperSchoolAuthException();
         }
     }
 
     public static void isClubManagerOrHigher(ClubMember reqClubMember) {
+        if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
+            throw new NoClubManagerException();
+        }
+    }
+
+    public static void isClubManagerOrHigher(Member reqMember, ClubMember reqClubMember) {
+        if(reqMember.isSuperAdmin()){
+            return;
+        }
+
         if (reqClubMember.getClubMemberRoleType().equals(ClubMemberRoleType.GENERAL)) {
             throw new NoClubManagerException();
         }

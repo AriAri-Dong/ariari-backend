@@ -48,7 +48,7 @@ public class MemberService {
     public MemberListRes searchMembers(Long reqMemberId, String nickname) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
-        if (!clubMemberRepository.existsMyManagerOrHigher(reqMember)) {
+        if (!reqMember.isSuperAdmin() && !clubMemberRepository.existsMyManagerOrHigher(reqMember)) {
             throw new NoMemberSearchingAuthException();
         }
 

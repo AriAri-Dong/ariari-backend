@@ -84,7 +84,7 @@ public class ClubEventService {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
-        if (clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
+        if (!reqMember.isSuperAdmin() && clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) {
             throw new NotBelongInClubException();
         }
 

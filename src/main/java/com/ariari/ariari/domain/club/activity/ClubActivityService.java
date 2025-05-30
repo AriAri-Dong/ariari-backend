@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.club.activity;
 
 
 import com.ariari.ariari.commons.entity.image.ImageRepository;
+import com.ariari.ariari.commons.exception.exceptions.DuplicateDataCreateException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
@@ -80,7 +81,6 @@ public class ClubActivityService {
             clubActivityLikeRepository.save(clubActivityLike);
         }
     }
-
 
     public void saveClubActivity(Long reqMemberId, Long clubId, ClubActivitySaveReq clubActivitySaveReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -169,7 +169,7 @@ public class ClubActivityService {
 
             List<ClubActivityData> clubActivityDataList = new ArrayList<>();
             int totalSize = 0;
-            if(clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty()) { // 동아리 비회원
+            if(clubMemberRepository.findByClubAndMember(club, reqMember).isEmpty() && !reqMember.isSuperAdmin()) { // 동아리 비회원
                 clubActivityDataList = clubActivityMapper.findClubActivityForNotClubMember(clubId, reqMemberId,
                         pageable.getPageSize(), pageable.getPageNumber() * pageable.getPageSize());
                 totalSize = clubActivityMapper.findClubActivityForNotMemberAndNotClubMemberCount(clubId,
@@ -188,7 +188,7 @@ public class ClubActivityService {
         }
     }
 
-    // TODO : 리팩토링 필요
+    // TODO : 리팩토링 필요, 리팩토링이 필요한 친구라서 superAdmin처리도 애매한 친구
     public ClubActivityDetailRes readClubActivityDetail(Long reqMemberId, Long clubActivityId) {
         ClubActivityDetailRes clubActivityDetailRes = new ClubActivityDetailRes();
         ClubActivity clubActivity = clubActivityRepository.findById(clubActivityId).orElseThrow(NotFoundEntityException::new);
@@ -323,7 +323,6 @@ public class ClubActivityService {
             ClubActivityComment clubActivityComment = new ClubActivityComment(commentReq.getBody(), reqMember, clubActivity);
             clubActivityCommentRepository.save(clubActivityComment);
             clubAlarmManger.sendClubActivity(clubActivity.getClub());
-
         }
     }
 
@@ -379,7 +378,7 @@ public class ClubActivityService {
 
         Optional<Block> blockOP = blockRepository.findByBlockedMemberAndBlockingMember(comment.getMember(), reqMember);
         if(blockOP.isPresent()){
-            throw new RuntimeException(); // TODO 예외처리 필요 이미 차단됨
+            throw new DuplicateDataCreateException("중복 차단할 수 없습니다.");
         }
 
         Block block = new Block(reqMember, comment.getMember());

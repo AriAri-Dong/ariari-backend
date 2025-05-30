@@ -59,6 +59,9 @@ public class Member extends LogicalDeleteEntity {
     @Column(length = 20)
     private ProfileType profileType;
 
+    @Column(nullable = false)
+    private boolean isSuperAdmin;
+
     @ElementCollection(fetch = FetchType.LAZY)
     private Set<GrantedAuthority> authorities = new HashSet<>();
 
