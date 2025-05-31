@@ -2,15 +2,21 @@ package com.ariari.ariari.domain.school.auth;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MailManager;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.domain.school.auth.exceptions.ClubMemberRoleAdminLockException;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
 import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthCodeReq;
 import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthReq;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -21,6 +27,7 @@ public class SchoolAuthService {
     private final SchoolRepository schoolRepository;
     private final SchoolAuthManager schoolAuthManager;
     private final MailManager mailManager;
+    private final ClubMemberRepository clubMemberRepository;
 
     public void sendSchoolAuthCode(Long reqMemberId, SchoolAuthReq schoolAuthReq) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -73,8 +80,23 @@ public class SchoolAuthService {
         member.setSchool(school);
     }
 
-    public void removeMySchoolAuth(Long reqMemberId) {
+    public void cancelMySchoolAuth(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        School school = reqMember.getSchool();
+
+        List<ClubMember> clubMembers = reqMember.getClubMembers();
+        for (ClubMember clubMember : clubMembers) {
+            School clubSchool = clubMember.getClub().getSchool();
+            if (clubSchool == null || !clubSchool.equals(school)) {
+                continue;
+            }
+
+            if (clubMember.getClubMemberRoleType() == ClubMemberRoleType.ADMIN) {
+                throw new ClubMemberRoleAdminLockException();
+            }
+
+            clubMemberRepository.delete(clubMember);
+        }
 
         reqMember.setSchool(null);
     }
