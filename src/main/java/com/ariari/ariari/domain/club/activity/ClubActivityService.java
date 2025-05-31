@@ -21,7 +21,6 @@ import com.ariari.ariari.domain.club.activity.dto.req.ClubActivitySaveReq;
 import com.ariari.ariari.domain.club.activity.dto.req.CommentReq;
 import com.ariari.ariari.domain.club.activity.dto.res.ClubActivityDetailRes;
 import com.ariari.ariari.domain.club.activity.dto.res.ClubActivityListRes;
-import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.ariari.ariari.domain.club.activity.image.ClubActivityImage;
 import com.ariari.ariari.domain.club.activity.image.ClubActivityImageRepository;
 import com.ariari.ariari.domain.club.activity.like.ClubActivityLike;
@@ -44,6 +43,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.ariari.ariari.domain.club.activity.ClubActivityUtils.initializeFindClubActivityMap;
 
 
 // TODO : 리팩토링 필요
@@ -118,7 +119,7 @@ public class ClubActivityService {
             List<ClubActivityImage> deletedImages = clubActivityImageRepository.findAllById(clubActivityModifyReq.getDeletedImageIds());
             for(ClubActivityImage deletedImage : deletedImages) {
                 if(!deletedImage.getClubActivity().equals(clubActivity)) {
-                    throw new NotBelongInClubException(); // TODO : 멘트 확인 필요
+                    throw new NotFoundEntityException();
                 }
                 clubActivityImageRepository.delete(deletedImage);
             }
@@ -148,8 +149,7 @@ public class ClubActivityService {
         clubActivityRepository.delete(clubActivity);
     }
 
-    // TODO : 리팩토링 필요
-    public ClubActivityListRes readClubActivityPage(Long reqMemberId, Long clubId, Pageable pageable) {
+    public ClubActivityListRes findClubActivityPage(Long reqMemberId, Long clubId, Pageable pageable) {
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
 
         if(reqMemberId == null){ // 비로그인 회원
@@ -188,7 +188,7 @@ public class ClubActivityService {
         }
     }
 
-    // TODO : 리팩토링 필요, 리팩토링이 필요한 친구라서 superAdmin처리도 애매한 친구
+    // TODO : 리팩토링 필요
     public ClubActivityDetailRes readClubActivityDetail(Long reqMemberId, Long clubActivityId) {
         ClubActivityDetailRes clubActivityDetailRes = new ClubActivityDetailRes();
         ClubActivity clubActivity = clubActivityRepository.findById(clubActivityId).orElseThrow(NotFoundEntityException::new);
@@ -197,33 +197,15 @@ public class ClubActivityService {
         Map<ClubActivityComment, Integer> clubActivityLikeCountMap = new HashMap<>();
         Map<ClubActivityComment, Set<Member>> clubActivityLikeMemberSetMap = new HashMap<>();
 
-        /// 댓글 데이터 맵
         List<ClubActivityComment> clubActivityComments = clubActivityCommentRepository.findByClubActivity(clubActivity);
-        for(ClubActivityComment clubActivityComment : clubActivityComments){
-            clubActivityLikeCountMap.putIfAbsent(clubActivityComment, 0);
-            clubActivityLikeMemberSetMap.putIfAbsent(clubActivityComment, new HashSet<>());
-            if(clubActivityComment.getParentComment() == null){
-                clubActivityCommentMap.putIfAbsent(clubActivityComment, new ArrayList<>());
-            }
-            else {
-                clubActivityCommentMap.get(clubActivityComment.getParentComment()).add(clubActivityComment);
-            }
-        }
-
-        /// 좋아요 데이터 맵
         List<ClubActivityCommentLike> clubActivityCommentLikes = clubActivityCommentLikeRepository.findByClubActivityComment_ClubActivity(clubActivity);
-        for(ClubActivityCommentLike clubActivityCommentLike : clubActivityCommentLikes){
-            clubActivityLikeCountMap.putIfAbsent(clubActivityCommentLike.getClubActivityComment(), 0);
-            clubActivityLikeCountMap.put(clubActivityCommentLike.getClubActivityComment(), clubActivityLikeCountMap.get(clubActivityCommentLike.getClubActivityComment()) + 1);
-            clubActivityLikeMemberSetMap.putIfAbsent(clubActivityCommentLike.getClubActivityComment(), new HashSet<>());
-            clubActivityLikeMemberSetMap.get(clubActivityCommentLike.getClubActivityComment()).add(clubActivityCommentLike.getMember());
-        }
 
-        /// 활동후기 기본 데이터 세팅 시작
+        initializeFindClubActivityMap(clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap, clubActivityComments, clubActivityCommentLikes);
+
         Optional<ClubMember> creatorMember = clubMemberRepository.findByClubAndMember(clubActivity.getClub(), clubActivity.getMember());
 
-        int likeCount = clubActivityLikeRepository.countByClubActivity(clubActivity); /// 활동후기 좋아요수
-        int commentCount = clubActivityCommentRepository.countByClubActivity(clubActivity); /// 활동후기 댓글수
+        int likeCount = clubActivityLikeRepository.countByClubActivity(clubActivity);
+        int commentCount = clubActivityCommentRepository.countByClubActivity(clubActivity);
 
         if(reqMemberId == null){
             ClubActivityData clubActivityData = ClubActivityData.fromEntity(clubActivity, creatorMember,
@@ -233,7 +215,7 @@ public class ClubActivityService {
 
             List<ClubActivityComment> parentClubActivityComments = clubActivityCommentRepository.findByClubActivityAndParentComment(clubActivity, null); /// 부모댓글만 조회
             for(ClubActivityComment clubActivityComment : parentClubActivityComments){ /// 부모댓글부터 순회
-                // TODO : clubMember조회가 너무 잦음, 리팩토링 필요, 쿼리레벨에서는 해결이 되는데... 뭐가 맞니?
+                // TODO : clubMember조회가 너무 잦음, 리팩토링 필요
                 Optional<ClubMember> commentCreatorMember = clubMemberRepository.findByClubAndMember(clubActivityComment.getClubActivity().getClub(), clubActivityComment.getMember()); /// 구조가 잘못된거 같은데?
 
                 ClubActivityDetailRes.ClubActivityCommentRes clubActivityCommentRes = new ClubActivityDetailRes.ClubActivityCommentRes();

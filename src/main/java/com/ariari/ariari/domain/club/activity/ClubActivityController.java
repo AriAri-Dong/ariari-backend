@@ -6,13 +6,11 @@ import com.ariari.ariari.domain.club.activity.dto.req.ClubActivitySaveReq;
 import com.ariari.ariari.domain.club.activity.dto.req.CommentReq;
 import com.ariari.ariari.domain.club.activity.dto.res.ClubActivityDetailRes;
 import com.ariari.ariari.domain.club.activity.dto.res.ClubActivityListRes;
-import com.ariari.ariari.domain.club.passreview.dto.req.PassReviewSaveReq;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +27,7 @@ public class ClubActivityController {
     public ClubActivityListRes read_club_activity_page(@AuthenticationPrincipal CustomUserDetails userDetails,
                                                        Pageable pageable, @PathVariable(name = "clubId") Long clubId) {
         Long reqMemberId = getMemberId(userDetails, false);
-        return clubActivityService.readClubActivityPage(reqMemberId, clubId, pageable);
+        return clubActivityService.findClubActivityPage(reqMemberId, clubId, pageable);
     }
 
     @PostMapping("/like/{clubActivityId}")
