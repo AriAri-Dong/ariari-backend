@@ -1,5 +1,10 @@
 package com.ariari.ariari.domain.recruitment.recruitment.dto;
 
+import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.club.enums.ClubAffiliationType;
+import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
@@ -24,6 +29,7 @@ public class RecruitmentInClubData extends RecruitmentData {
     }
 
     private static RecruitmentInClubData fromEntity(Recruitment recruitment) {
+        Club club = recruitment.getClub();
         return new RecruitmentInClubData(
                 recruitment.getId(),
                 recruitment.getTitle(),
@@ -34,15 +40,19 @@ public class RecruitmentInClubData extends RecruitmentData {
                 recruitment.getCreatedDateTime(),
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
-                recruitment.getClub().getId(),
+                club.getId(),
+                club.getSchool() == null ? ClubAffiliationType.EXTERNAL : ClubAffiliationType.INTERNAL,
+                club.getClubCategoryType(),
+                club.getClubRegionType(),
+                club.getParticipantType(),
                 recruitment.getRecruitmentStatusType(),
                 null,
                 RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes())
         );
     }
 
-    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, RecruitmentStatusType recruitmentStatusType, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
-        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, recruitmentStatusType, isMyBookmark);
+    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, ClubAffiliationType clubAffiliationType, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, RecruitmentStatusType recruitmentStatusType, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
+        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, clubAffiliationType, clubCategoryType, clubRegionType, participantType, recruitmentStatusType, isMyBookmark);
         this.recruitmentNoteDataList = recruitmentNoteDataList;
     }
 
