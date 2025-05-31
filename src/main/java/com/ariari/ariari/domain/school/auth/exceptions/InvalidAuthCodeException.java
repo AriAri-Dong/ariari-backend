@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.school.auth.exception;
+package com.ariari.ariari.domain.school.auth.exceptions;
 
 import com.ariari.ariari.commons.exception.CustomException;
 import org.springframework.http.HttpStatus;

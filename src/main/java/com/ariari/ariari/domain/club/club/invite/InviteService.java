@@ -30,7 +30,7 @@ public class InviteService {
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isSameClubMemberAsRequester(reqClubMember.getMember(), reqMember);
-        return InviteDetailRes.of(inviteManager.createKey(clubId), clubId);
+        return InviteDetailRes.of(inviteManager.createKey(clubId), club.getName());
     }
 
     @Transactional

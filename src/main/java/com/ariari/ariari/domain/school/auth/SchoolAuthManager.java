@@ -1,11 +1,10 @@
 package com.ariari.ariari.domain.school.auth;
 
-import com.ariari.ariari.commons.manager.MailManager;
 import com.ariari.ariari.commons.manager.RedisManager;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.school.School;
-import com.ariari.ariari.domain.school.auth.exception.InvalidAuthCodeException;
-import com.ariari.ariari.domain.school.auth.exception.NoSchoolAuthCodeException;
+import com.ariari.ariari.domain.school.auth.exceptions.InvalidAuthCodeException;
+import com.ariari.ariari.domain.school.auth.exceptions.NoSchoolAuthCodeException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

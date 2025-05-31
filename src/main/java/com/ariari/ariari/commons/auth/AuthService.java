@@ -12,6 +12,7 @@ import com.ariari.ariari.commons.manager.JwtControlManager;
 import com.ariari.ariari.commons.manager.JwtManager;
 import com.ariari.ariari.domain.club.question.ClubQuestionService;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.school.auth.SchoolAuthService;
 import lombok.RequiredArgsConstructor;
@@ -90,7 +91,7 @@ public class AuthService {
         String token = oAuthSignUpManager.getToken(key);
         Long kakaoId = kakaoAuthManager.getKakaoId(token);
 
-        Member member = signUp(kakaoId, signUpReq.getNickName());
+        Member member = signUp(kakaoId, signUpReq.getNickName(), signUpReq.getProfileType());
 
         String accessToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), ACCESS_TOKEN);
         String refreshToken = jwtManager.generateToken(member.getAuthorities(), member.getId(), REFRESH_TOKEN);
@@ -118,6 +119,14 @@ public class AuthService {
 
     private Member signUp(Long kakaoId, String nickname) {
         Member newMember = Member.createMember(kakaoId, nickname);
+        newMember.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
+        memberRepository.save(newMember);
+        memberRepository.flush();
+        return newMember;
+    }
+
+    private Member signUp(Long kakaoId, String nickname, ProfileType profileType) {
+        Member newMember = Member.createMember(kakaoId, nickname, profileType);
         newMember.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
         memberRepository.save(newMember);
         memberRepository.flush();

@@ -103,15 +103,23 @@ public class ClubService {
         modifyReq.modifyEntity(club);
 
         if (profileFile != null) {
-            String profileUri = fileManager.saveFile(profileFile, "club");
-            fileManager.deleteFile(club.getProfileUri());
-            club.setProfileUri(profileUri);
+            String profileUri = club.getProfileUri();
+            if (profileUri != null) {
+                fileManager.deleteFile(profileUri);
+            }
+
+            String newProfileUri = fileManager.saveFile(profileFile, "club");
+            club.setProfileUri(newProfileUri);
         }
 
         if (bannerFile != null) {
-            String bannerUri = fileManager.saveFile(bannerFile, "club");
-            fileManager.deleteFile(club.getBannerUri());
-            club.setBannerUri(bannerUri);
+            String bannerUri = club.getBannerUri();
+            if (bannerUri != null) {
+                fileManager.deleteFile(bannerUri);
+            }
+
+            String newBannerUri = fileManager.saveFile(bannerFile, "club");
+            club.setBannerUri(newBannerUri);
         }
     }
 

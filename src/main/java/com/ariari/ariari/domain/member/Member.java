@@ -143,6 +143,12 @@ public class Member extends LogicalDeleteEntity {
         return member;
     }
 
+    public static Member createMember(Long kakaoId, String nickname, ProfileType profileType) {
+        Member member = new Member(kakaoId, nickname, profileType);
+        member.addAuthority(new SimpleGrantedAuthority("ROLE_USER"));
+        return member;
+    }
+
     public Member(Long kakaoId) {
         this.kakaoId = kakaoId;
     }
@@ -150,6 +156,12 @@ public class Member extends LogicalDeleteEntity {
     public Member(Long kakaoId, String nickName) {
         this.kakaoId = kakaoId;
         this.nickName = nickName;
+    }
+
+    public Member(Long kakaoId, String nickName, ProfileType profileType) {
+        this.kakaoId = kakaoId;
+        this.nickName = nickName;
+        this.profileType = profileType;
     }
 
     public void addAuthority(GrantedAuthority authority) {

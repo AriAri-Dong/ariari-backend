@@ -1,5 +1,10 @@
 package com.ariari.ariari.domain.recruitment.recruitment.dto;
 
+import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.club.enums.ClubAffiliationType;
+import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
+import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
+import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
@@ -49,12 +54,22 @@ public class RecruitmentData {
     @Schema(description = "모집이 속한 동아리 id", example = "673012345142938986")
     private Long clubId;
 
+    @Schema(description = "동아리 소속", example = "INTERNAL")
+    private ClubAffiliationType clubAffiliationType;
+    @Schema(description = "동아리 카테고리", example = "VOLUNTEER")
+    private ClubCategoryType clubCategoryType;
+    @Schema(description = "동아리 지역", example = "SEOUL_GYEONGGI")
+    private ClubRegionType clubRegionType;
+    @Schema(description = "동아리 참여 대상", example = "UNIVERSITY_STUDENT")
+    private ParticipantType participantType;
+
     @Schema(description = "모집 상태 (예정, 모집중, 모집 마감)", example = "OPEN")
     private RecruitmentStatusType recruitmentStatusType;
     @Schema(description = "내가 북마크한 모집인지 여부", example = "true")
     private Boolean isMyBookmark;
 
     public static RecruitmentData fromEntity(Recruitment recruitment, Member reqMember) {
+        Club club = recruitment.getClub();
         return new RecruitmentData(
                 recruitment.getId(),
                 recruitment.getTitle(),
@@ -65,7 +80,11 @@ public class RecruitmentData {
                 recruitment.getCreatedDateTime(),
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
-                recruitment.getClub().getId(),
+                club.getId(),
+                club.getSchool() == null ? ClubAffiliationType.EXTERNAL : ClubAffiliationType.INTERNAL,
+                club.getClubCategoryType(),
+                club.getClubRegionType(),
+                club.getParticipantType(),
                 recruitment.getRecruitmentStatusType(),
                 getMyBookmarkRecruitments(reqMember).contains(recruitment)
         );
@@ -82,6 +101,7 @@ public class RecruitmentData {
     }
 
     private static RecruitmentData fromEntity(Recruitment recruitment, Set<Recruitment> myBookmarkRecruitments) {
+        Club club = recruitment.getClub();
         return new RecruitmentData(
                 recruitment.getId(),
                 recruitment.getTitle(),
@@ -92,7 +112,11 @@ public class RecruitmentData {
                 recruitment.getCreatedDateTime(),
                 recruitment.getStartDateTime(),
                 recruitment.getEndDateTime(),
-                recruitment.getClub().getId(),
+                club.getId(),
+                club.getSchool() == null ? ClubAffiliationType.EXTERNAL : ClubAffiliationType.INTERNAL,
+                club.getClubCategoryType(),
+                club.getClubRegionType(),
+                club.getParticipantType(),
                 recruitment.getRecruitmentStatusType(),
                 myBookmarkRecruitments.contains(recruitment)
         );
