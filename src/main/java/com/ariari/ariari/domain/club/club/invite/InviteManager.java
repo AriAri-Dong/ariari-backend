@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.club.invite;
 
 import com.ariari.ariari.commons.manager.RedisManager;
-import com.ariari.ariari.domain.club.event.attendance.exception.InvalidAttendanceKeyException;
+import com.ariari.ariari.domain.club.club.invite.exception.InvalidInviteKeyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,9 +25,9 @@ public class InviteManager{
     public Long getInviteKey(String key) {
         Long clubId = (Long) redisManager.getData(PREFIX + key);
         if (clubId == null) {
-            throw new InvalidAttendanceKeyException();
+            throw new InvalidInviteKeyException();
         }
-
+        redisManager.deleteData(PREFIX + key);
         return clubId;
     }
 }

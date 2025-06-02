@@ -27,4 +27,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.nickName like %:nickname% order by m.nickName asc limit 20")
     List<Member> find20ByNickNameContains(String nickname);
 
+    @Query("select m from Member as m left join fetch m.school where m.id = :id")
+    Optional<Member> findByIdWithSchool(Long id);
+
 }

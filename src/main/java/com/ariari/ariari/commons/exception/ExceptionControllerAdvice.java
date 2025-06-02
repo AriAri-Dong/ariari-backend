@@ -2,15 +2,11 @@ package com.ariari.ariari.commons.exception;
 
 import com.ariari.ariari.commons.exception.dto.ExceptionRes;
 import io.sentry.Sentry;
-import io.sentry.SentryEvent;
-import io.sentry.SentryLevel;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

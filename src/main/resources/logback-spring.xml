@@ -33,18 +33,18 @@
         </encoder>
     </appender>
     <!-- Hibernate SQL 로그 -->
-    <logger name="org.hibernate.SQL" level="DEBUG" additivity="true">
+    <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
-    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="true">
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.springframework.web" level="INFO" additivity="true">
-        <appender-ref ref="FILE"/>
+    <logger name="org.springframework.web" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </logger>
 
 
