@@ -175,16 +175,6 @@ jobs:
           push: true
           tags: iuholic83/ariaritest:latest
 
-      - name: Create Sentry release
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          version: ariari@${{ github.sha }}
-
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
