@@ -14,7 +14,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Give Gradle wrapper execute permissions
         run: chmod +x ./gradlew  # gradlew에 실행 권한 부여
@@ -123,7 +125,6 @@ jobs:
             environment: production
             release: ariari@${GITHUB_SHA}
             send-default-pii: true
-            exception-resolver-order: -2147483647
           
           EOT
         env:
@@ -181,7 +182,7 @@ jobs:
           tags: iuholic83/ariari:latest
 
       - name: Create Sentry release
-        uses: getsentry/action-release@v1
+        uses: getsentry/action-release@v3
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
@@ -189,7 +190,6 @@ jobs:
         with:
           environment: production
           version: ariari@${{ github.sha }}
-          fetch-depth: 0
 
       - name: Deploy with SSH
         uses: appleboy/ssh-action@v0.1.6
