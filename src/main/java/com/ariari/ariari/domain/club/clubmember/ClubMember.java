@@ -78,6 +78,15 @@ public class ClubMember extends LogicalDeleteEntity {
         );
     }
 
+    public static ClubMember createInvited(String name, Member member, Club club){
+        return new ClubMember(
+                name,
+                GENERAL,
+                member,
+                club
+        );
+    }
+
     public ClubMember(String name, ClubMemberRoleType clubMemberRoleType, Member member, Club club) {
         this.name = name;
         this.clubMemberRoleType = clubMemberRoleType;
@@ -92,5 +101,7 @@ public class ClubMember extends LogicalDeleteEntity {
             return true;
         } else return myRole.equals(MANAGER) && hisRole.equals(GENERAL);
     }
+
+
 
 }

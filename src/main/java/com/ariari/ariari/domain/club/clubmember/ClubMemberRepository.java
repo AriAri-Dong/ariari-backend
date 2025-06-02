@@ -26,4 +26,6 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     boolean existsByMemberAndClubMemberRoleType(Member member, ClubMemberRoleType memberRoleType);
 
+    boolean existsByMemberIdAndClubId(Long  memberId, Long clubId);
+
 }

@@ -4,7 +4,9 @@ import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
+import com.ariari.ariari.domain.club.club.invite.dto.req.InviteRequest;
 import com.ariari.ariari.domain.club.club.invite.dto.res.InviteDetailRes;
+import com.ariari.ariari.domain.club.club.invite.exception.ExistsClubMemberException;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
@@ -24,23 +26,35 @@ public class InviteService {
     private final InviteManager inviteManager;
 
     @Transactional
-    public InviteDetailRes createInvite(Long reqMemberId, Long clubId) {
+    public String createInvite(Long reqMemberId, Long clubId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
         GlobalValidator.isSameClubMemberAsRequester(reqClubMember.getMember(), reqMember);
-        return InviteDetailRes.of(inviteManager.createKey(clubId), club.getName());
+        return inviteManager.createKey(clubId);
     }
 
     @Transactional
-    public void verifyInviteKey(Long reqMemberId, String inviteKey) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Long clubId = inviteManager.getInviteKey(inviteKey);
-        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+    public InviteDetailRes verifyInviteKey(Long reqMemberId, InviteRequest inviteRequest) {
+        Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Long clubId = inviteManager.getInviteKey(inviteRequest.getInviteKey());
+        System.out.println("확인");
+        Club club = clubRepository.findByIdWithSchool(clubId).orElseThrow(NotFoundEntityException::new);
 
-        if(club.getSchool()!=null){
-            GlobalValidator.eqClubSchoolAsreqMember(reqMember.getSchool(), club.getSchool());
+        // 회원이 이미 해당 동아리에 가입되어 있는지 확인
+        if(clubMemberRepository.existsByMemberIdAndClubId(reqMemberId, clubId)){
+            throw new ExistsClubMemberException();
         }
+
+        // 해당 교내 동아리와 회원의 학교가 같은지 확인
+        if(club.getSchool()!=null){
+            GlobalValidator.eqClubSchoolAsreqMember(reqMember.getSchool().getId(), club.getSchool().getId());
+        }
+
+        ClubMember clubMember= ClubMember.createInvited(inviteRequest.getName(), reqMember, club);
+        clubMemberRepository.save(clubMember);
+
+        return InviteDetailRes.of(clubId, club.getName());
     }
 }
