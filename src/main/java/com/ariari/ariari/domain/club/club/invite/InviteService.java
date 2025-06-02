@@ -39,7 +39,6 @@ public class InviteService {
     public InviteDetailRes verifyInviteKey(Long reqMemberId, InviteRequest inviteRequest) {
         Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Long clubId = inviteManager.getInviteKey(inviteRequest.getInviteKey());
-        System.out.println("확인");
         Club club = clubRepository.findByIdWithSchool(clubId).orElseThrow(NotFoundEntityException::new);
 
         // 회원이 이미 해당 동아리에 가입되어 있는지 확인
