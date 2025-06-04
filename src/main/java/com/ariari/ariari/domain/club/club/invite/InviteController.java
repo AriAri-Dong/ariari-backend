@@ -21,16 +21,14 @@ public class InviteController {
 
     @Operation(summary = "동아리 초대 키 생성", description = "")
     @PostMapping("/{clubId}/invite")
-    public String createInvite(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                        @PathVariable Long clubId){
+    public String createInvite(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long clubId){
         Long reqMemberId = getMemberId(userDetails, true);
         return inviteService.createInvite(reqMemberId, clubId);
     }
 
     @Operation(summary = "동아리 초대 키 확인", description = "")
     @PostMapping("/enter")
-    public String verifyInvite(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                        @RequestBody InviteRequest inviteRequest){
+    public String verifyInvite(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteRequest inviteRequest){
         Long reqMemberId = getMemberId(userDetails, true);
         return inviteService.verifyInviteKey(reqMemberId, inviteRequest);
     }
