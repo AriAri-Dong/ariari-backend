@@ -27,7 +27,6 @@ public class InviteManager{
         if (clubId == null) {
             throw new InvalidInviteKeyException();
         }
-        redisManager.deleteData(PREFIX + key);
         return clubId;
     }
 }
