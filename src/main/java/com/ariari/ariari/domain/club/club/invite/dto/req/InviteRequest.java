@@ -1,6 +1,5 @@
 package com.ariari.ariari.domain.club.club.invite.dto.req;
 
-import com.ariari.ariari.domain.club.club.invite.dto.res.InviteDetailRes;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
