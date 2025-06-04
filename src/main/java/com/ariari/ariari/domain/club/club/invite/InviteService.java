@@ -5,7 +5,6 @@ import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.club.invite.dto.req.InviteRequest;
-import com.ariari.ariari.domain.club.club.invite.dto.res.InviteDetailRes;
 import com.ariari.ariari.domain.club.club.invite.exception.ExistsClubMemberException;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
@@ -36,7 +35,7 @@ public class InviteService {
     }
 
     @Transactional
-    public InviteDetailRes verifyInviteKey(Long reqMemberId, InviteRequest inviteRequest) {
+    public String verifyInviteKey(Long reqMemberId, InviteRequest inviteRequest) {
         Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Long clubId = inviteManager.getInviteKey(inviteRequest.getInviteKey());
         Club club = clubRepository.findByIdWithSchool(clubId).orElseThrow(NotFoundEntityException::new);
@@ -54,6 +53,6 @@ public class InviteService {
         ClubMember clubMember= ClubMember.createInvited(inviteRequest.getName(), reqMember, club);
         clubMemberRepository.save(clubMember);
 
-        return InviteDetailRes.of(clubId, club.getName());
+        return club.getName();
     }
 }

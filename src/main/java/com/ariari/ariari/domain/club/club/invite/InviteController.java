@@ -3,7 +3,6 @@ package com.ariari.ariari.domain.club.club.invite;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.club.club.invite.dto.req.InviteRequest;
-import com.ariari.ariari.domain.club.club.invite.dto.res.InviteDetailRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,7 @@ public class InviteController {
 
     @Operation(summary = "동아리 초대 키 확인", description = "")
     @PostMapping("/enter")
-    public InviteDetailRes verifyInvite(@AuthenticationPrincipal CustomUserDetails userDetails,
+    public String verifyInvite(@AuthenticationPrincipal CustomUserDetails userDetails,
                                         @RequestBody InviteRequest inviteRequest){
         Long reqMemberId = getMemberId(userDetails, true);
         return inviteService.verifyInviteKey(reqMemberId, inviteRequest);
