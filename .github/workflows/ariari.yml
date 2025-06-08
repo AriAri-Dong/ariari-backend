@@ -63,8 +63,8 @@ jobs:
                 port: 6379
             servlet:
               multipart:
-                maxFileSize: 10MB
-                maxRequestSize: 10MB
+                maxFileSize: 15MB
+                maxRequestSize: 15MB
           server:
             port: 8282
           
