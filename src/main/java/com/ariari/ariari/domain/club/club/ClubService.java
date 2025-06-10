@@ -80,7 +80,7 @@ public class ClubService {
         Club club = saveReq.toEntity(school);
         clubRepository.save(club);
 
-        ClubMember clubMember = ClubMember.createAdmin(reqMember, club);
+        ClubMember clubMember = ClubMember.createAdmin(reqMember, club, saveReq.getClubMemberName());
         clubMemberRepository.save(clubMember);
 
         if (file != null) {

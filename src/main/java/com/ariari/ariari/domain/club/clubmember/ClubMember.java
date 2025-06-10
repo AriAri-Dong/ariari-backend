@@ -69,6 +69,15 @@ public class ClubMember extends LogicalDeleteEntity {
         );
     }
 
+    public static ClubMember createAdmin(Member member, Club club, String clubMemberName) {
+        return new ClubMember(
+                clubMemberName,
+                ADMIN,
+                member,
+                club
+        );
+    }
+
     public static ClubMember createGeneral(Apply apply) {
         return new ClubMember(
                 apply.getName(),
