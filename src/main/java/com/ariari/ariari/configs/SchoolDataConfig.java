@@ -23,9 +23,9 @@ public class SchoolDataConfig {
         if(schoolRepository.count() > 6) {
                 return;
         }
-        if (profiles.equals("prod")){
-            return;
-        }
+//        if (profiles.equals("prod")){
+//            return;
+//        }
 //        schoolRepository.save(new School("네이버대학교", "naver.com"));
         schoolRepository.save(new School("강릉원주대학교 강릉캠퍼스", "gwnu.ac.kr"));
         schoolRepository.save(new School("강릉원주대학교 원주캠퍼스", "gwnu.ac.kr"));
