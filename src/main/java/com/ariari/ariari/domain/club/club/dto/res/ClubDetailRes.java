@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.school.School;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,13 @@ public class ClubDetailRes {
     public static ClubDetailRes fromEntity(Club club, ClubMember reqClubMember, Member reqMember) {
         return new ClubDetailRes(
                 ClubData.fromEntity(club, reqMember),
+                ClubMemberData.fromEntity(reqClubMember)
+        );
+    }
+
+    public static ClubDetailRes fromEntity(Club club, School school, ClubMember reqClubMember, Member reqMember) {
+        return new ClubDetailRes(
+                ClubData.fromEntity(club, school, reqMember),
                 ClubMemberData.fromEntity(reqClubMember)
         );
     }

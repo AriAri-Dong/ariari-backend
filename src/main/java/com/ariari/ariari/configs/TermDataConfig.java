@@ -26,7 +26,7 @@ public class TermDataConfig {
             return;
         }
 
-        systemTermRepository.save(new SystemTerm(TermType.PLATFORM_RULES, "# 아리아리 이용수칙\n" +
+        systemTermRepository.save(new SystemTerm(TermType.PLATFORM_RULES, "## 아리아리 이용수칙\n" +
                 "\n" +
                 "본 이용수칙은 아리아리가 제공하는 서비스를 이용함에 있어, 플랫폼과 사용자 간의 권리, 의무 및 책임을 규정합니다. 서비스를 이용하기 전에 본 이용수칙을 주의 깊게 읽어주시기 바랍니다.\n" +
                 "\n" +
@@ -95,7 +95,7 @@ public class TermDataConfig {
                 "\n" +
                 "1. 본 이용수칙과 서비스 이용에 관한 모든 사항은 대한민국 법령에 따라 규정됩니다.\n" +
                 "2. 플랫폼과 이용자간에 발생한 분쟁에 관한 소송은 민사소송법 등 관련법령에서 정한 절차에 따른 법원을 관할법원으로 합니다."));
-        systemTermRepository.save(new SystemTerm(TermType.CLUB_RULES, "# ariari 동아리 운영원칙\n" +
+        systemTermRepository.save(new SystemTerm(TermType.CLUB_RULES, "## ariari 동아리 운영원칙\n" +
                 "\n" +
                 "### 제 1조 아리아리 동아리 운영 원칙: 동아리 개설 관련 조항\n" +
                 "\n" +
@@ -369,9 +369,9 @@ public class TermDataConfig {
                 "\n" +
                 "1. 책임 제한 조항은 아리아리 플랫폼 이용자와의 법적 관계를 규율하며, 플랫폼의 의도적 과실이나 법적 의무를 위반한 경우를 제외하고, 모든 책임을 제한합니다.\n" +
                 "2. 책임과 관련된 문의 사항은 플랫폼 내 고객센터를 통해 진행할 수 있습니다."));
-        systemTermRepository.save(new SystemTerm(TermType.PRIVACY_POLICY, "# 개인정보 이용수칙\n" +
+        systemTermRepository.save(new SystemTerm(TermType.PRIVACY_POLICY, "## 개인정보 이용수칙\n" +
                 "\n" +
-                "## **개인정보처리방침**\n" +
+                "### **개인정보처리방침**\n" +
                 "\n" +
                 "(최종 수정일: [2025-03-21])\n" +
                 "\n" +

@@ -146,7 +146,7 @@ public class RecruitmentService {
 
         GlobalValidator.isClubManagerOrHigher(reqClubMember);
 
-        recruitment.setIsEarlyClosed(Boolean.FALSE);
+        recruitment.setIsEarlyClosed(Boolean.TRUE);
         // 북마크 모집 마감시
         List<RecruitmentBookmark> recruitmentBookmarkList = recruitmentBookmarkRepository.findAllByRecruitment(recruitment);
         if(!recruitmentBookmarkList.isEmpty()) {

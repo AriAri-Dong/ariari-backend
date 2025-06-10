@@ -15,6 +15,8 @@ public class ClubSaveReq {
 
     @Schema(description = "동아리 이름", example = "아리아리")
     private String name;
+    @Schema(description = "동아리 동아리 활동 이름", example = "아리아리")
+    private String clubMemberName;
     @Schema(description = "동아리 한 줄 소개", example = "아리아리는 동아리 커뮤니티 서비스를 개발하는 동아리입니다.")
     private String body;
     @Schema(description = "동아리 소속 타입", example = "EXTERNAL")

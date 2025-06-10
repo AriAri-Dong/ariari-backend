@@ -52,6 +52,7 @@ public class ClubService {
         }
 
         Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        School school = club.getSchool();
         GlobalValidator.eqSchoolAuth(reqMember, club.getSchool());
 
         if (!viewsManager.checkForDuplicateView(club, clientIp)) {
@@ -64,7 +65,7 @@ public class ClubService {
             reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElse(null);
         }
 
-        return ClubDetailRes.fromEntity(club, reqClubMember, reqMember);
+        return ClubDetailRes.fromEntity(club, school, reqClubMember, reqMember);
     }
 
     @Transactional
@@ -80,7 +81,7 @@ public class ClubService {
         Club club = saveReq.toEntity(school);
         clubRepository.save(club);
 
-        ClubMember clubMember = ClubMember.createAdmin(reqMember, club);
+        ClubMember clubMember = ClubMember.createAdmin(reqMember, club, saveReq.getClubMemberName());
         clubMemberRepository.save(clubMember);
 
         if (file != null) {
