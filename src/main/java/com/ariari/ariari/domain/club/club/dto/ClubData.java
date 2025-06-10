@@ -6,6 +6,7 @@ import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.dto.SchoolData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -57,6 +58,11 @@ public class ClubData {
         return fromEntity(club, myBookmarkClubs, reqMember);
     }
 
+    public static ClubData fromEntity(Club club, School school, Member reqMember) {
+        Set<Club> myBookmarkClubs = getMyBookmarkClubs(reqMember);
+        return fromEntity(club, school, myBookmarkClubs);
+    }
+
     public static List<ClubData> fromEntities(List<Club> clubs, Member reqMember) {
         // 북마크 클럽 집합
         Set<Club> myBookmarkClubs = getMyBookmarkClubs(reqMember);
@@ -73,6 +79,26 @@ public class ClubData {
         if (reqMember != null && reqMember.getSchool() != null) {
             schoolData = SchoolData.fromEntity(reqMember.getSchool());
         }
+        return new ClubData(
+                club.getId(),
+                club.getName(),
+                club.getProfileUri(),
+                club.getBody(),
+                club.getBannerUri(),
+                club.getClubCategoryType(),
+                club.getClubRegionType(),
+                club.getParticipantType(),
+                schoolData,
+                myBookmarkClubs.contains(club)
+        );
+    }
+
+    private static ClubData fromEntity(Club club, School school, Set<Club> myBookmarkClubs) {
+        SchoolData schoolData = null;
+        if (school != null) {
+            schoolData = SchoolData.fromEntity(school);
+        }
+
         return new ClubData(
                 club.getId(),
                 club.getName(),
