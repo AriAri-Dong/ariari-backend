@@ -72,11 +72,11 @@ public class UnregisterService {
             ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).get();
 
             if (clubMember.getClubMemberRoleType() == ClubMemberRoleType.ADMIN) {
-                Optional<ClubMember> clubMemberOptional = clubMemberRepository.findFirstByClubAndClubMemberRoleType(club, ClubMemberRoleType.MANAGER);
+                Optional<ClubMember> clubMemberOptional = clubMemberRepository.findFirstByClubAndClubMemberRoleTypeExceptMember(club, ClubMemberRoleType.MANAGER, reqMember);
                 if (clubMemberOptional.isPresent()) {
                     clubMemberOptional.get().setClubMemberRoleType(ClubMemberRoleType.ADMIN);
                 } else {
-                    Optional<ClubMember> clubMemberOptional2 = clubMemberRepository.findFirstByClubAndClubMemberRoleType(club, ClubMemberRoleType.GENERAL);
+                    Optional<ClubMember> clubMemberOptional2 = clubMemberRepository.findFirstByClubAndClubMemberRoleTypeExceptMember(club, ClubMemberRoleType.GENERAL, reqMember);
                     if (clubMemberOptional2.isPresent()) {
                         clubMemberOptional2.get().setClubMemberRoleType(ClubMemberRoleType.ADMIN);
                     } else {

@@ -28,6 +28,7 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     boolean existsByMemberIdAndClubId(Long  memberId, Long clubId);
 
-    Optional<ClubMember> findFirstByClubAndClubMemberRoleType(Club club, ClubMemberRoleType clubMemberRoleType);
+    @Query("select cm from ClubMember cm where cm.club= :club and cm.clubMemberRoleType= :clubMemberRoleType and cm.member!= :member limit 1")
+    Optional<ClubMember> findFirstByClubAndClubMemberRoleTypeExceptMember(Club club, ClubMemberRoleType clubMemberRoleType, Member member);
 
 }
