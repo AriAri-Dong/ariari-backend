@@ -45,6 +45,9 @@ public class UnregisterService {
     public void unregister(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
+        // handle ADMIN club
+        entrustClubAdmin(reqMember);
+
         // member_id -> null
         passReviewRepository.updateMemberNull(reqMember);
         clubReviewRepository.updateMemberNull(reqMember);
@@ -53,9 +56,6 @@ public class UnregisterService {
         clubQuestionRepository.updateMemberNull(reqMember);
         clubActivityRepository.updateMemberNull(reqMember);
         clubActivityCommentRepository.updateMemberNull(reqMember);
-
-        // handle ADMIN club
-        entrustClubAdmin(reqMember);
 
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);
