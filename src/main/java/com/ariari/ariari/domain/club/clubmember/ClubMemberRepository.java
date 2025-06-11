@@ -28,4 +28,6 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     boolean existsByMemberIdAndClubId(Long  memberId, Long clubId);
 
+    Optional<ClubMember> findFirstByClubAndClubMemberRoleType(Club club, ClubMemberRoleType clubMemberRoleType);
+
 }

@@ -4,8 +4,11 @@ import com.ariari.ariari.commons.auth.exceptions.ExistingAdminRoleException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.entity.report.ReportRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentRepository;
+import com.ariari.ariari.domain.club.club.ClubRepository;
+import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
@@ -17,6 +20,9 @@ import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -32,6 +38,7 @@ public class UnregisterService {
     private final ClubActivityRepository clubActivityRepository;
     private final ClubActivityCommentRepository clubActivityCommentRepository;
     private final ClubMemberRepository clubMemberRepository;
+    private final ClubRepository clubRepository;
 
     private final KakaoAuthManager kakaoAuthManager;
 
@@ -47,12 +54,37 @@ public class UnregisterService {
         clubActivityRepository.updateMemberNull(reqMember);
         clubActivityCommentRepository.updateMemberNull(reqMember);
 
-        if (clubMemberRepository.existsByMemberAndClubMemberRoleType(reqMember, ClubMemberRoleType.ADMIN)) {
-            throw new ExistingAdminRoleException();
-        }
+        // handle ADMIN club
+        entrustClubAdmin(reqMember);
 
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);
+    }
+
+    /**
+     * entrust MANAGER or GENERAL member if reqMember is ADMIN (priority : MANAGER -> GENERAL)
+     *  - remove club if no member excluding reqMember
+     */
+    void entrustClubAdmin(Member reqMember) {
+        List<Club> clubs = reqMember.getClubMembers().stream().map(ClubMember::getClub).toList();
+
+        for (Club club : clubs) {
+            ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).get();
+
+            if (clubMember.getClubMemberRoleType() == ClubMemberRoleType.ADMIN) {
+                Optional<ClubMember> clubMemberOptional = clubMemberRepository.findFirstByClubAndClubMemberRoleType(club, ClubMemberRoleType.MANAGER);
+                if (clubMemberOptional.isPresent()) {
+                    clubMemberOptional.get().setClubMemberRoleType(ClubMemberRoleType.ADMIN);
+                } else {
+                    Optional<ClubMember> clubMemberOptional2 = clubMemberRepository.findFirstByClubAndClubMemberRoleType(club, ClubMemberRoleType.GENERAL);
+                    if (clubMemberOptional2.isPresent()) {
+                        clubMemberOptional2.get().setClubMemberRoleType(ClubMemberRoleType.ADMIN);
+                    } else {
+                        clubRepository.delete(club);
+                    }
+                }
+            }
+        }
     }
 
 }
