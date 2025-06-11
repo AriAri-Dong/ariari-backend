@@ -32,13 +32,13 @@ public class OAuthSignUpManager {
         }
 
         String value = (String) redisManager.getData(convertPrefix(key));
-        deleteKey(key);
+//        deleteKey(key);
 
         return value.split("¦")[1];
     }
 
     // 데이터 삭제
-    private void deleteKey(String key) {
+    public void deleteKey(String key) {
         redisManager.deleteData(convertPrefix(key));
     }
 
