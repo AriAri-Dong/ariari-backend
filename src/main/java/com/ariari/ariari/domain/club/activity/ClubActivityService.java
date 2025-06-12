@@ -266,7 +266,7 @@ public class ClubActivityService {
 
                 clubActivityCommentRes.setCommentData(ClubActivityCommentData.fromEntity(clubActivityComment, commentCreatorMember,
                         clubActivityLikeCountMap.get(clubActivityComment), clubActivityLikeMemberSetMap.get(clubActivityComment).contains(reqMember),
-                        !blockSet.contains(clubActivityComment.getMember()), reqMember));
+                        blockSet.contains(clubActivityComment.getMember()), reqMember));
 
                 List<ClubActivityCommentData> childClubActivityCommentDataList = new ArrayList<>();
                 if(clubActivityCommentMap.containsKey(clubActivityComment)){
@@ -275,7 +275,7 @@ public class ClubActivityService {
                         Optional<ClubMember> childCommentCreatorMember = clubMemberRepository.findByClubAndMember(childClubActivityComment.getClubActivity().getClub(), childClubActivityComment.getMember());
                         ClubActivityCommentData childClubActivityCommentData = ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorMember,
                                 clubActivityLikeCountMap.get(childClubActivityComment), clubActivityLikeMemberSetMap.get(childClubActivityComment).contains(reqMember),
-                                !blockSet.contains(childClubActivityComment.getMember()), reqMember);
+                                blockSet.contains(childClubActivityComment.getMember()), reqMember);
                         childClubActivityCommentDataList.add(childClubActivityCommentData);
                     }
                     clubActivityCommentRes.setCommentDataList(childClubActivityCommentDataList);
