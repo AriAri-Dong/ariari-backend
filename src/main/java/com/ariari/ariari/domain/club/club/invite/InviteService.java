@@ -75,9 +75,16 @@ public class InviteService {
         // 만약 교내 동아리라면 초대 대상이 같은 학교여야 함
         validateSchoolMatchIfNeeded(club, reqMember);
         validateSchoolMatchIfNeeded(club, inviteMember);
+        String clubType = "";
+        if(club.getSchool() == null){
+            clubType = "연합";
+        }else {
+            clubType = "교내";
+        }
+
 
         String inviteAlarmCode = inviteManager.createKey(club.getId());
-        memberAlarmManger.sendInviteAlarm(club, inviteMember, inviteAlarmCode);
+        memberAlarmManger.sendInviteAlarm(clubType, club, inviteMember, inviteAlarmCode);
     }
 
     @Transactional
@@ -103,7 +110,7 @@ public class InviteService {
         ClubMember clubMember = ClubMember.createInvited(clubMemberName, reqMember, club);
         clubMemberRepository.saveAndFlush(clubMember);
 
-        memberAlarmRepository.deleteAlarmsByClubId(club, "초대장");
+        memberAlarmRepository.deleteAlarmsByClubId(reqMemberId, club, "초대장");
     }
 
     // 교내 동아리일 경우에만 inviteMember(또는 수락하는 회원)의 학교가 동아리 학교와 같은지 검증

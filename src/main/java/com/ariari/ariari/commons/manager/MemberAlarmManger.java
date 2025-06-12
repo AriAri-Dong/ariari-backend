@@ -192,10 +192,10 @@ public class MemberAlarmManger {
     }
 
     //회원 동아리 초대 알림
-    public void sendInviteAlarm(Club club, Member member, String inviteAlarmCode) {
+    public void sendInviteAlarm(String clubType, Club club, Member member, String inviteAlarmCode) {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
-                club.getName()+"동아리에서 초대장이 왔습니다",
-                " /club/invite?inviteAlarmCode="+inviteAlarmCode,
+                clubType + "동아리 " + club.getName() + "에서 초대장이 왔습니다",
+                "?invite?inviteAlarmCode="+inviteAlarmCode,
                 member
         );
         sendSingle(memberAlarmEvent);
