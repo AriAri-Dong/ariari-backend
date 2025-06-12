@@ -9,6 +9,7 @@ import com.ariari.ariari.domain.club.club.invite.dto.req.InviteAcceptRequest;
 import com.ariari.ariari.domain.club.club.invite.dto.req.InviteAlarmRequest;
 import com.ariari.ariari.domain.club.club.invite.dto.req.InviteRequest;
 import com.ariari.ariari.domain.club.club.invite.exception.ExistsClubMemberException;
+import com.ariari.ariari.domain.club.club.invite.exception.InvalidClubInviteException;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
@@ -32,10 +33,12 @@ public class InviteService {
 
     @Transactional(readOnly = true)
     public String createInviteKey(Long reqMemberId, Long clubId) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(NotFoundEntityException::new);
+        Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Club club = clubRepository.findByIdWithSchool(clubId).orElseThrow(NotFoundEntityException::new);
         ClubMember reqClubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
 
+        // 해당 교내 동아리와 회원의 학교가 같은지 확인
+        validateSchoolMatchIfNeeded(club, reqMember);
         GlobalValidator.isSameClubMemberAsRequester(reqClubMember.getMember(), reqMember);
         return inviteManager.createKey(clubId);
     }
@@ -52,9 +55,7 @@ public class InviteService {
         }
 
         // 해당 교내 동아리와 회원의 학교가 같은지 확인
-        if(club.getSchool()!=null){
-            GlobalValidator.eqClubSchoolAsreqMember(reqMember.getSchool().getId(), club.getSchool().getId());
-        }
+        validateSchoolMatchIfNeeded(club, reqMember);
 
         ClubMember clubMember= ClubMember.createInvited(inviteRequest.getName(), reqMember, club);
         clubMemberRepository.save(clubMember);
@@ -71,8 +72,12 @@ public class InviteService {
 
         GlobalValidator.isHigherRoleTypeThan(clubMember, clubMember);
 
-        memberAlarmManger.sendInviteAlarm(club, inviteMember);
+        // 만약 교내 동아리라면 초대 대상이 같은 학교여야 함
+        validateSchoolMatchIfNeeded(club, reqMember);
+        validateSchoolMatchIfNeeded(club, inviteMember);
 
+        String inviteAlarmCode = inviteManager.createKey(club.getId());
+        memberAlarmManger.sendInviteAlarm(club, inviteMember, inviteAlarmCode);
     }
 
     @Transactional
@@ -80,20 +85,32 @@ public class InviteService {
         Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findByIdWithSchool(inviteAcceptRequest.getClubId()).orElseThrow(NotFoundEntityException::new);
         String clubMemberName = inviteAcceptRequest.getName();
+        Long reqClubId = inviteManager.getInviteKey(inviteAcceptRequest.getInviteAlarmCode());
+
+        // 초대한 동아리와 키 값의 동아리 일치 여부 확인
+        if (!reqClubId.equals(club.getId())) {
+            throw new InvalidClubInviteException();
+        }
 
         // 회원이 이미 해당 동아리에 가입되어 있는지 확인
         if(clubMemberRepository.existsByMemberIdAndClubId(reqMemberId, club.getId())){
             throw new ExistsClubMemberException();
         }
 
-        if(club.getSchool()!=null){
-            GlobalValidator.eqClubSchoolAsreqMember(reqMember.getSchool().getId(), club.getSchool().getId());
-        }
-
+        // 교내 동아리일 때만 학교 일치 검사
+        validateSchoolMatchIfNeeded(club, reqMember);
 
         ClubMember clubMember = ClubMember.createInvited(clubMemberName, reqMember, club);
         clubMemberRepository.saveAndFlush(clubMember);
 
         memberAlarmRepository.deleteAlarmsByClubId(club, "초대장");
+    }
+
+    // 교내 동아리일 경우에만 inviteMember(또는 수락하는 회원)의 학교가 동아리 학교와 같은지 검증
+    // 연합 동아리는 무조건 통과
+    private void validateSchoolMatchIfNeeded(Club club, Member reqMember) {
+        if (club.getSchool() != null) {
+            GlobalValidator.eqClubSchoolAsreqMember(reqMember.getSchool().getId(), club.getSchool().getId());
+        }
     }
 }

@@ -15,6 +15,10 @@ public class InviteAcceptRequest {
     private String name;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @Schema(description = "초대하는 동아리 아이디", example = "3453453453")
+    @Schema(description = "동아리 초대 알림키", example = "5kgdfsd54353")
+    private String inviteAlarmCode;
+
+    @JsonSerialize(using = ToStringSerializer.class)
+    @Schema(description = "초대하는 동아리 아이디", example = "720970760776991695")
     private Long clubId;
 }

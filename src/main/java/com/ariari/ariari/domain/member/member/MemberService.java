@@ -8,6 +8,7 @@ import com.ariari.ariari.domain.member.member.dto.req.ProfileModifyReq;
 import com.ariari.ariari.domain.member.member.dto.res.MemberDetailRes;
 import com.ariari.ariari.domain.member.exceptions.ExistingNicknameException;
 import com.ariari.ariari.domain.member.member.dto.res.MemberListRes;
+import com.ariari.ariari.domain.member.member.dto.res.MemberSchoolListRes;
 import com.ariari.ariari.domain.member.member.exceptions.NoMemberSearchingAuthException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class MemberService {
         modifyReq.modifyNickname(reqMember);
     }
 
-    public MemberListRes searchMembers(Long reqMemberId, String nickname) {
+    public MemberSchoolListRes searchMembers(Long reqMemberId, String nickname) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
         if (!reqMember.isSuperAdmin() && !clubMemberRepository.existsMyManagerOrHigher(reqMember)) {
@@ -53,7 +54,7 @@ public class MemberService {
         }
 
         List<Member> members = memberRepository.find20ByNickNameContains(nickname);
-        return MemberListRes.createRes(members);
+        return MemberSchoolListRes.createRes(members);
     }
 
 }

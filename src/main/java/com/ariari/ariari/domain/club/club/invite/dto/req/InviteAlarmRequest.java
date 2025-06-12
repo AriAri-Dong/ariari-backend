@@ -12,11 +12,11 @@ import lombok.Setter;
 public class InviteAlarmRequest {
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @Schema(description = "초대 유저 아이디", example = "3453453453")
+    @Schema(description = "초대 유저 아이디", example = "720970760776991695")
     private Long memberId;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    @Schema(description = "초대하는 동아리 아이디", example = "3453453453")
+    @Schema(description = "초대하는 동아리 아이디", example = "720970760776991695")
     private Long clubId;
 
 }

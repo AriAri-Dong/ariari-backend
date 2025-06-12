@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.member.member.dto.req.NicknameModifyReq;
 import com.ariari.ariari.domain.member.member.dto.req.ProfileModifyReq;
 import com.ariari.ariari.domain.member.member.dto.res.MemberDetailRes;
 import com.ariari.ariari.domain.member.member.dto.res.MemberListRes;
+import com.ariari.ariari.domain.member.member.dto.res.MemberSchoolListRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -46,9 +47,10 @@ public class MemberController {
 
     @Operation(summary = "닉네임으로 회원 리스트 검색", description = "닉네임을 contains 검색합니다. 닉네임으로 정렬되며 최대 20개의 데이터를 반환합니다.")
     @GetMapping
-    public MemberListRes searchMemberList(@AuthenticationPrincipal CustomUserDetails userDetails,
-                                          @RequestParam String nickname) {
+    public MemberSchoolListRes searchMemberList(@AuthenticationPrincipal CustomUserDetails userDetails,
+                                                @RequestParam String nickname) {
         Long reqMemberId = getMemberId(userDetails, true);
         return memberService.searchMembers(reqMemberId, nickname);
     }
+
 }
