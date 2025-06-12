@@ -28,4 +28,5 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
 
     boolean existsByMemberIdAndClubId(Long  memberId, Long clubId);
 
+    List<ClubMember> findByMemberAndClubMemberRoleTypeAndClub_SchoolIsNotNull(Member reqMember, ClubMemberRoleType clubMemberRoleType);
 }

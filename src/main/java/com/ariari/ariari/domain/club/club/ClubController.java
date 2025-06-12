@@ -148,4 +148,11 @@ public class ClubController {
         clubService.removeClub(reqMemberId, clubId);
     }
 
+    @Operation(summary = "동아리장인 교내 동아리 조회", description = "")
+    @GetMapping("/my/admin/school")
+    public ClubListRes findSchoolAdminClub(@AuthenticationPrincipal CustomUserDetails userDetails){
+        Long reqMemberId = getMemberId(userDetails, true);
+        return clubService.findSchoolAdminClub(reqMemberId);
+    }
+
 }

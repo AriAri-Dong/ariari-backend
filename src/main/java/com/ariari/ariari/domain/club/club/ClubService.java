@@ -8,6 +8,8 @@ import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
+import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
+import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.club.dto.req.ClubModifyReq;
@@ -144,6 +146,13 @@ public class ClubService {
         memberAlarmManger.sendClubBookmarkClosedAlarm(memberList, club.getName());
         clubRepository.delete(club);
 
+    }
+
+    @Transactional(readOnly = true)
+    public ClubListRes findSchoolAdminClub(Long reqMemberId) {
+        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        List<ClubMember> clubMembers = clubMemberRepository.findByMemberAndClubMemberRoleTypeAndClub_SchoolIsNotNull(reqMember, ClubMemberRoleType.ADMIN);
+        return ClubListRes.fromClubMemberList(clubMembers);
     }
 
 }

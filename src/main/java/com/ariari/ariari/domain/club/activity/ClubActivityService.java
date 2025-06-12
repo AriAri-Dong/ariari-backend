@@ -276,9 +276,7 @@ public class ClubActivityService {
                         ClubActivityCommentData childClubActivityCommentData = ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorMember,
                                 clubActivityLikeCountMap.get(childClubActivityComment), clubActivityLikeMemberSetMap.get(childClubActivityComment).contains(reqMember),
                                 !blockSet.contains(childClubActivityComment.getMember()), reqMember);
-                        if(!blockSet.contains(childClubActivityComment.getMember())){
-                            childClubActivityCommentDataList.add(childClubActivityCommentData);
-                        }
+                        childClubActivityCommentDataList.add(childClubActivityCommentData);
                     }
                     clubActivityCommentRes.setCommentDataList(childClubActivityCommentDataList);
                 }
