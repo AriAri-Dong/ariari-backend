@@ -81,6 +81,8 @@ public class AuthService {
 
         member.setLastLoginDateTime(LocalDateTime.now());
 
+        oAuthSignUpManager.deleteKey(key);
+
         return JwtTokenRes.createRes(
                 accessToken,
                 refreshToken,
@@ -101,6 +103,8 @@ public class AuthService {
         if (signUpReq.getEmail() != null) {
             schoolAuthService.validateSchoolAuthCode(member, signUpReq.getEmail(), signUpReq.getSchoolAuthCode());
         }
+
+        oAuthSignUpManager.deleteKey(key);
 
         return JwtTokenRes.createRes(
                 accessToken,

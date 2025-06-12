@@ -246,7 +246,7 @@ public class SwaggerConfig {
     public GroupedOpenApi clubInvite() {
         return GroupedOpenApi.builder()
                 .group("27. 동아리 초대 형식 API")
-                .packagesToScan("com.ariari.ariari.domain.club.club.invite;")
+                .packagesToScan("com.ariari.ariari.domain.club.club.invite")
                 .build();
     }
 
