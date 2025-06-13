@@ -17,21 +17,16 @@ public class MemberAlarmRepositoryImpl implements MemberAlarmRepositoryCustom{
 
 
     @Override
-    public void deleteAlarmsByClubId(Club club, String keyword) {
+    public void deleteAlarmsByClubId(Club club, Long memberId, String keyword) {
         QMemberAlarm ma = QMemberAlarm.memberAlarm;
-        QClubMember cm = QClubMember.clubMember;
 
         jpaQueryFactory
                 .update(ma)
                 .set(ma.deletedDateTime, LocalDateTime.now())
-                .where(ma.member.id.in(
-                        JPAExpressions.select(cm.member.id)
-                                .from(cm)
-                                .where(cm.club.eq(club))
-                        )
-                        .and(ma.title.contains(keyword))
+                .where(
+                        ma.member.id.eq(memberId)
+                                .and(ma.uri.like("% | " + keyword))
                 )
                 .execute();
-
     }
 }

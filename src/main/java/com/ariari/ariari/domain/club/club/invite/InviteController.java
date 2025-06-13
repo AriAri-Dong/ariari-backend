@@ -22,14 +22,14 @@ public class InviteController {
     private final InviteService inviteService;
     @Operation(summary = "동아리 초대 알림 생성", description = "")
     @PostMapping("/inviteAlarm/")
-    public void createInviteAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteAlarmRequest inviteAlarmRequest){
+    public void createInviteAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteAlarmRequest inviteAlarmRequest) throws Exception {
         Long reqMemberId = getMemberId(userDetails, true);
         inviteService.createInviteAlarm(reqMemberId, inviteAlarmRequest);
     }
 
     @Operation(summary = "동아리 초대 알림 수락", description = "")
     @PostMapping("/{clubId}/AlarmAccept")
-    public void acceptInviteAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteAcceptRequest inviteAcceptRequest){
+    public void acceptInviteAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteAcceptRequest inviteAcceptRequest) throws Exception {
         Long reqMemberId = getMemberId(userDetails, true);
         inviteService.acceptInviteAlarm(reqMemberId, inviteAcceptRequest);
     }

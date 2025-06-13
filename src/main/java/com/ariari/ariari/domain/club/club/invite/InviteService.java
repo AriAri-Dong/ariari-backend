@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.club.invite;
 
+import com.ariari.ariari.commons.auth.security.AESUtil;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
@@ -30,6 +31,7 @@ public class InviteService {
     private final InviteManager inviteManager;
     private final MemberAlarmManger memberAlarmManger;
     private final MemberAlarmRepository memberAlarmRepository;
+    private final AESUtil aesUtil;
 
     @Transactional(readOnly = true)
     public String createInviteKey(Long reqMemberId, Long clubId) {
@@ -64,7 +66,7 @@ public class InviteService {
     }
 
     @Transactional(readOnly = true)
-    public void createInviteAlarm(Long reqMemberId, InviteAlarmRequest inviteAlarmRequest) {
+    public void createInviteAlarm(Long reqMemberId, InviteAlarmRequest inviteAlarmRequest) throws Exception {
         Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findByIdWithSchool(inviteAlarmRequest.getClubId()).orElseThrow(NotFoundEntityException::new);
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, reqMember).orElseThrow(NotBelongInClubException::new);
@@ -76,16 +78,22 @@ public class InviteService {
         validateSchoolMatchIfNeeded(club, reqMember);
         validateSchoolMatchIfNeeded(club, inviteMember);
 
-        String inviteAlarmCode = inviteManager.createKey(club.getId());
+        String inviteAlarmCode = aesUtil.encrypt(club.getId().toString());
         memberAlarmManger.sendInviteAlarm(club, inviteMember, inviteAlarmCode);
     }
 
     @Transactional
-    public void acceptInviteAlarm(Long reqMemberId, InviteAcceptRequest inviteAcceptRequest) {
+    public void acceptInviteAlarm(Long reqMemberId, InviteAcceptRequest inviteAcceptRequest) throws Exception {
         Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findByIdWithSchool(inviteAcceptRequest.getClubId()).orElseThrow(NotFoundEntityException::new);
         String clubMemberName = inviteAcceptRequest.getName();
-        Long reqClubId = inviteManager.getInviteKey(inviteAcceptRequest.getInviteAlarmCode());
+        String inviteAlarmCode = inviteAcceptRequest.getInviteAlarmCode();
+        String decodeId = aesUtil.decrypt(inviteAlarmCode);
+        Long reqClubId = Long.parseLong(decodeId);
+
+
+
+        //Long reqClubId = inviteManager.getInviteKey(inviteAcceptRequest.getInviteAlarmCode());
 
         // 초대한 동아리와 키 값의 동아리 일치 여부 확인
         if (!reqClubId.equals(club.getId())) {
@@ -103,7 +111,7 @@ public class InviteService {
         ClubMember clubMember = ClubMember.createInvited(clubMemberName, reqMember, club);
         clubMemberRepository.saveAndFlush(clubMember);
 
-        memberAlarmRepository.deleteAlarmsByClubId(club, "초대장");
+        memberAlarmRepository.deleteAlarmsByClubId(club, reqMember.getId(), " | " + decodeId);
     }
 
     // 교내 동아리일 경우에만 inviteMember(또는 수락하는 회원)의 학교가 동아리 학교와 같은지 검증
