@@ -29,9 +29,9 @@ public class InviteController {
 
     @Operation(summary = "동아리 초대 알림 수락", description = "")
     @PostMapping("/{clubId}/AlarmAccept")
-    public void acceptInviteAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteAcceptRequest inviteAcceptRequest) throws Exception {
+    public String acceptInviteAlarm(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody InviteAcceptRequest inviteAcceptRequest) throws Exception {
         Long reqMemberId = getMemberId(userDetails, true);
-        inviteService.acceptInviteAlarm(reqMemberId, inviteAcceptRequest);
+        return inviteService.acceptInviteAlarm(reqMemberId, inviteAcceptRequest);
     }
 
     @Operation(summary = "동아리 초대 키 생성", description = "")
