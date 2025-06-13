@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.club.club.invite;
 
 import com.ariari.ariari.commons.auth.security.AESUtil;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
+import com.ariari.ariari.commons.manager.InviteManager;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.club.Club;

@@ -195,7 +195,7 @@ public class MemberAlarmManger {
     public void sendInviteAlarm(Club club, Member member, String inviteAlarmCode) {
         MemberAlarmEvent memberAlarmEvent = MemberAlarmEvent.from(
                 club.getName()+"동아리에서 초대장이 왔습니다",
-                " /club/invite?inviteAlarmCode=" + inviteAlarmCode + " | " + club.getId().toString(),
+                "/club/invite?inviteAlarmCode=" + inviteAlarmCode + " | " + club.getId().toString(),
                 member
         );
         sendSingle(memberAlarmEvent);
