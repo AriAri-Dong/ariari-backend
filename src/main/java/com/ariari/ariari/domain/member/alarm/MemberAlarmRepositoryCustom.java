@@ -4,5 +4,5 @@ import com.ariari.ariari.domain.club.Club;
 
 public interface MemberAlarmRepositoryCustom {
 
-    void deleteAlarmsByClubId(Long reqMemberId, Club club, String keyword);
+    void deleteAlarmsByClubId(Club club, Long memberId, String keyword);
 }
