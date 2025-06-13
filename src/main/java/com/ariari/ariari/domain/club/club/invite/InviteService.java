@@ -84,7 +84,7 @@ public class InviteService {
     }
 
     @Transactional
-    public void acceptInviteAlarm(Long reqMemberId, InviteAcceptRequest inviteAcceptRequest) throws Exception {
+    public String acceptInviteAlarm(Long reqMemberId, InviteAcceptRequest inviteAcceptRequest) throws Exception {
         Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
         Club club = clubRepository.findByIdWithSchool(inviteAcceptRequest.getClubId()).orElseThrow(NotFoundEntityException::new);
         String clubMemberName = inviteAcceptRequest.getName();
@@ -113,6 +113,7 @@ public class InviteService {
         clubMemberRepository.saveAndFlush(clubMember);
 
         memberAlarmRepository.deleteAlarmsByClubId(club, reqMember.getId(), " | " + decodeId);
+        return club.getName();
     }
 
     // 교내 동아리일 경우에만 inviteMember(또는 수락하는 회원)의 학교가 동아리 학교와 같은지 검증
