@@ -4,7 +4,6 @@ import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.domain.member.member.dto.req.NicknameModifyReq;
 import com.ariari.ariari.domain.member.member.dto.req.ProfileModifyReq;
 import com.ariari.ariari.domain.member.member.dto.res.MemberDetailRes;
-import com.ariari.ariari.domain.member.member.dto.res.MemberListRes;
 import com.ariari.ariari.domain.member.member.dto.res.MemberSchoolListRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
