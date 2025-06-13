@@ -20,9 +20,8 @@ public class MemberSchoolData {
     @Schema(description = "회원 id", example = "673012345142938986")
     private Long memberId;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    @Schema(description = "회원 id", example = "673012345142938986")
-    private Long schoolId;
+    @Schema(description = "학교 이름", example = "네이버대학교")
+    private String schoolName;
 
     @Schema(description = "회원 닉네임", example = "귀여운대머리")
     private String nickname;
@@ -33,7 +32,7 @@ public class MemberSchoolData {
     public static MemberSchoolData fromEntity(Member member) {
         return new MemberSchoolData(
                 member.getId(),
-                member.getSchool().getId(),
+                member.getSchool() != null ? member.getSchool().getName() : null,
                 member.getNickName(),
                 member.getProfileType()
         );

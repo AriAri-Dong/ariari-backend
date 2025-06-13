@@ -3,11 +3,10 @@ package com.ariari.ariari.domain.member.member;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.exceptions.ExistingNicknameException;
 import com.ariari.ariari.domain.member.member.dto.req.NicknameModifyReq;
 import com.ariari.ariari.domain.member.member.dto.req.ProfileModifyReq;
 import com.ariari.ariari.domain.member.member.dto.res.MemberDetailRes;
-import com.ariari.ariari.domain.member.exceptions.ExistingNicknameException;
-import com.ariari.ariari.domain.member.member.dto.res.MemberListRes;
 import com.ariari.ariari.domain.member.member.dto.res.MemberSchoolListRes;
 import com.ariari.ariari.domain.member.member.exceptions.NoMemberSearchingAuthException;
 import lombok.RequiredArgsConstructor;
@@ -47,9 +46,9 @@ public class MemberService {
     }
 
     public MemberSchoolListRes searchMembers(Long reqMemberId, String nickname) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
+        Member reqMember = memberRepository.findByIdWithSchool(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
-        if (!reqMember.isSuperAdmin() && !clubMemberRepository.existsMyManagerOrHigher(reqMember)) {
+        if(!clubMemberRepository.existsMyManagerOrHigher(reqMember)){
             throw new NoMemberSearchingAuthException();
         }
 
