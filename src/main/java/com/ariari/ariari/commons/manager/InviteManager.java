@@ -1,4 +1,4 @@
-package com.ariari.ariari.domain.club.club.invite;
+package com.ariari.ariari.commons.manager;
 
 import com.ariari.ariari.commons.manager.RedisManager;
 import com.ariari.ariari.domain.club.club.invite.exception.InvalidInviteKeyException;
