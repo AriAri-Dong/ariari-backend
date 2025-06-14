@@ -33,22 +33,17 @@ public class SystemNotice extends LogicalDeleteEntity {
     @Column(length = 1000)
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @Setter
     @OneToMany(mappedBy = "systemNotice", cascade = CascadeType.ALL)
     private List<SystemNoticeImage> systemNoticeImages = new ArrayList<>();
 
-    private SystemNotice(String title, String body, Member member) {
+    private SystemNotice(String title, String body) {
         this.title = title;
         this.body = body;
-        this.member = member;
     }
 
-    public static SystemNotice create(String title, String body, Member member){
-        return new SystemNotice(title, body, member);
+    public static SystemNotice create(String title, String body){
+        return new SystemNotice(title, body);
     }
 
 
