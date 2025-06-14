@@ -132,9 +132,6 @@ public class Member extends LogicalDeleteEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<PointHistory> pointHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<SystemNotice> systemNotices = new ArrayList<>();
-
     /* --------------------------------------------------- */
 
     public static Member createMember(Long kakaoId, String nickname) {
