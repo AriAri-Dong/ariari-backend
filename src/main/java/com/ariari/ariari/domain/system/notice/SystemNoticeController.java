@@ -41,7 +41,7 @@ public class SystemNoticeController {
         }
 
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
-        systemNoticeService.saveSystemNotice(reqMemberId, saveReq, files);
+        systemNoticeService.saveSystemNotice(saveReq, files);
     }
 
     @Operation(summary = "서비스 공지사항 수정", description = "운영 관리자만이 수정할 수 있습니다.")
