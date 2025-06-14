@@ -110,6 +110,12 @@ jobs:
             expiration-date:
               view-duplicate: ${VIEW_DUPLICATE_DUE}
               view: ${VIEW_DUE}
+          
+          springdoc:
+            api-docs:
+              enabled: false
+            swagger-ui:
+              enabled: false
 
           school-auth:
             key-name: ${SCHOOL_AUTH_KEY_NAME}
