@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
@@ -16,6 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFile;
 
 @Tag(name = "recruitment", description = "모집 기능")
 @RestController
@@ -42,6 +45,10 @@ public class RecruitmentController {
                                 @PathVariable Long clubId,
                                 @RequestPart RecruitmentSaveReq saveReq,
                                 @RequestPart(required = false) MultipartFile file) {
+        if(!isValidTypeFile(file)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         recruitmentService.saveRecruitment(reqMemberId, clubId, saveReq, file);
     }

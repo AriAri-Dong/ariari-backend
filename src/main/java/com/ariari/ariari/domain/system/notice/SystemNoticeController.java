@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.system.notice;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.domain.system.notice.dto.req.SystemNoticeModifyReq;
 import com.ariari.ariari.domain.system.notice.dto.req.SystemNoticeSaveReq;
 import com.ariari.ariari.domain.system.notice.dto.res.SystemNoticeDetailRes;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFileList;
 
 @Tag(name = "system_notice", description = "서비스 공지사항 기능")
 @RestController
@@ -33,6 +36,10 @@ public class SystemNoticeController {
     public void saveSystemNotice(@AuthenticationPrincipal CustomUserDetails userDetails,
                                @RequestPart SystemNoticeSaveReq saveReq,
                                @RequestPart(required = false) List<MultipartFile> files) {
+        if(!isValidTypeFileList(files)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         systemNoticeService.saveSystemNotice(reqMemberId, saveReq, files);
     }
@@ -43,6 +50,10 @@ public class SystemNoticeController {
                                  @PathVariable Long systemNoticeId,
                                  @RequestPart SystemNoticeModifyReq modifyReq,
                                  @RequestPart(required = false) List<MultipartFile> files) {
+        if(!isValidTypeFileList(files)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         systemNoticeService.modifySystemNotice(reqMemberId, systemNoticeId, modifyReq, files);
     }

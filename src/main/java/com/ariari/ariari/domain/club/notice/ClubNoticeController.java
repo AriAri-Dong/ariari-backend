@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.notice;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeDetailRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeListRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeModifyReq;
@@ -16,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFile;
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFileList;
+
 @Tag(name = "club_notice", description = "동아리 공지사항 기능")
 @RestController
 @RequestMapping
@@ -30,6 +34,10 @@ public class ClubNoticeController {
                                @PathVariable Long clubId,
                                @RequestPart ClubNoticeSaveReq saveReq,
                                @RequestPart(required = false) List<MultipartFile> files) {
+        if(!isValidTypeFileList(files)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         clubNoticeService.saveClubNotice(reqMemberId, clubId, saveReq, files);
     }
@@ -40,6 +48,10 @@ public class ClubNoticeController {
                                  @PathVariable Long clubNoticeId,
                                  @RequestPart ClubNoticeModifyReq modifyReq,
                                  @RequestPart(required = false) List<MultipartFile> files) {
+        if(!isValidTypeFileList(files)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = CustomUserDetails.getMemberId(userDetails, true);
         clubNoticeService.modifyClubNotice(reqMemberId, clubNoticeId, modifyReq, files);
     }

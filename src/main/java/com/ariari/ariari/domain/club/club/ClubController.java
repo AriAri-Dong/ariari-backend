@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.domain.club.club.dto.req.ClubModifyReq;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSaveReq;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.*;
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFile;
 
 @Tag(name = "club", description = "동아리 기능")
 @RestController
@@ -121,6 +123,10 @@ public class ClubController {
     public void saveClub(@AuthenticationPrincipal CustomUserDetails userDetails,
                          @RequestPart ClubSaveReq saveReq,
                          @RequestPart(required = false) MultipartFile file) {
+        if(!isValidTypeFile(file)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = getMemberId(userDetails, true);
         clubService.saveClub(reqMemberId, saveReq, file);
     }
@@ -132,6 +138,10 @@ public class ClubController {
                            @RequestPart ClubModifyReq modifyReq,
                            @RequestPart(required = false) MultipartFile profileFile,
                            @RequestPart(required = false) MultipartFile bannerFile) {
+        if(!isValidTypeFile(profileFile)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = getMemberId(userDetails, true);
         clubService.modifyClub(reqMemberId, clubId, modifyReq, profileFile, bannerFile);
     }

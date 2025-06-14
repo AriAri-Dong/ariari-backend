@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.activity;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.domain.club.activity.dto.req.ClubActivityModifyReq;
 import com.ariari.ariari.domain.club.activity.dto.req.ClubActivitySaveReq;
 import com.ariari.ariari.domain.club.activity.dto.req.CommentReq;
@@ -10,11 +11,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFileList;
 
 @RestController
 @RequestMapping("/club-activity")
@@ -51,6 +55,10 @@ public class ClubActivityController {
     public void save_club_activity(@AuthenticationPrincipal CustomUserDetails userDetails,
                                    @PathVariable(name = "clubId") Long clubId,
                                    @ModelAttribute @Valid ClubActivitySaveReq clubActivitySaveReq){
+        if(!isValidTypeFileList(clubActivitySaveReq.getImages())){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = getMemberId(userDetails, true);
         clubActivityService.saveClubActivity(reqMemberId, clubId, clubActivitySaveReq);
     }
@@ -60,6 +68,11 @@ public class ClubActivityController {
     public void modify_club_activity_detail(@AuthenticationPrincipal CustomUserDetails userDetails,
                                             @PathVariable(name = "clubActivityId") Long clubActivityId,
                                             @ModelAttribute @Valid ClubActivityModifyReq clubActivityModifyReq){
+        if(!isValidTypeFileList(clubActivityModifyReq.getNewImages())){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
+
         Long reqMemberId = getMemberId(userDetails, true);
         clubActivityService.modifyClubActivity(clubActivityId, reqMemberId, clubActivityModifyReq);
     }

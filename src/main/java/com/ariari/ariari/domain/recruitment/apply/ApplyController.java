@@ -2,6 +2,7 @@ package com.ariari.ariari.domain.recruitment.apply;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
 import com.ariari.ariari.commons.exception.exceptions.InvalidListParamException;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInterviewReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFile;
 
 @Tag(name = "apply", description = "지원 기능")
 @RestController
@@ -44,6 +46,10 @@ public class ApplyController {
                           @PathVariable Long recruitmentId,
                           @RequestPart ApplySaveReq saveReq,
                           @RequestPart(required = false) MultipartFile file) {
+        if(!isValidTypeFile(file)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = getMemberId(userDetails, true);
         applyService.saveApply(reqMemberId, recruitmentId, saveReq, file);
     }

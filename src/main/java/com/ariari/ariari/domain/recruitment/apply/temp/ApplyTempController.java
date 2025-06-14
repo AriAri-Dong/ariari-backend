@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
+import com.ariari.ariari.commons.exception.exceptions.UnsupportedMultipartFileTypeException;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempModifyReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.req.ApplyTempSaveReq;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempDetailRes;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import static com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails.getMemberId;
+import static com.ariari.ariari.commons.manager.ValidateMultipartFileManager.isValidTypeFile;
 
 @Tag(name = "apply-temp", description = "임시 지원 기능 (임시 지원 기능은 작성자 본인만이 사용할 수 있습니다.")
 @RestController
@@ -39,6 +41,10 @@ public class ApplyTempController {
                                           @PathVariable Long recruitmentId,
                                           @RequestPart ApplyTempSaveReq saveReq,
                                           @RequestPart(required = false) MultipartFile file) {
+        if(!isValidTypeFile(file)){
+            throw new UnsupportedMultipartFileTypeException();
+        }
+
         Long reqMemberId = getMemberId(userDetails, true);
         return applyTempService.saveApplyTemp(reqMemberId, recruitmentId, saveReq, file);
     }
