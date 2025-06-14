@@ -18,8 +18,8 @@ public class SystemNoticeSaveReq {
     @Schema(description = "서비스 공지사항 내용", example = "아리아리에서 개발한 동아리 커뮤니티 서비스의 배포가 시작되었습니다!")
     private String body;
     
-    public SystemNotice toEntity(String title, String body, Member member) {
-        return SystemNotice.create(title,body, member);
+    public SystemNotice toEntity(String title, String body) {
+        return SystemNotice.create(title,body);
     }
 
 

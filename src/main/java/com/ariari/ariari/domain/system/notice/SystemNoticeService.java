@@ -41,12 +41,10 @@ public class SystemNoticeService {
 
 
     @Transactional
-    public void saveSystemNotice(Long reqMemberId, SystemNoticeSaveReq saveReq, List<MultipartFile> files) {
-        Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
-
+    public void saveSystemNotice(SystemNoticeSaveReq saveReq, List<MultipartFile> files) {
         // 검증 로직이 필요함
 
-        SystemNotice systemNotice = saveReq.toEntity(saveReq.getTitle(), saveReq.getBody(), reqMember);
+        SystemNotice systemNotice = saveReq.toEntity(saveReq.getTitle(), saveReq.getBody());
         systemNoticeRepository.save(systemNotice);
 
         if (files != null) {
