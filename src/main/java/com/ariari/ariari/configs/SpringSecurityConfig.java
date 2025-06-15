@@ -53,11 +53,10 @@ public class SpringSecurityConfig {
             "/login/**",
             "/club-faqs/**",
             "/club-activity/**",
-            "/test",
+            "/test/**",
             "/pass-review/**",
             "/club-review/**",
-
-
+            "/club/**",
 
 
             // 에러 페이지

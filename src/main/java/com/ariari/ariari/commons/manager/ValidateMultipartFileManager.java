@@ -21,9 +21,7 @@ public class ValidateMultipartFileManager {
     }
 
     public static boolean isValidTypeFileList(List<MultipartFile> files) {
-        if (files == null) return false;
-
-        if (files.isEmpty()) return true;
+        if (files == null || files.isEmpty()) return true;
 
         return files.stream().allMatch(ValidateMultipartFileManager::isValidTypeFile);
     }
