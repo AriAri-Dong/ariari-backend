@@ -14,14 +14,16 @@ public class ValidateMultipartFileManager {
     );
 
     public static boolean isValidTypeFile(MultipartFile file) {
-        if (file == null || file.isEmpty()) return false;
+        if (file == null) return true;
 
         String contentType = file.getContentType();
         return contentType != null && ALLOWED_CONTENT_TYPES.contains(contentType);
     }
 
     public static boolean isValidTypeFileList(List<MultipartFile> files) {
-        if (files == null || files.isEmpty()) return false;
+        if (files == null) return false;
+
+        if (files.isEmpty()) return true;
 
         return files.stream().allMatch(ValidateMultipartFileManager::isValidTypeFile);
     }

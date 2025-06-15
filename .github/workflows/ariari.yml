@@ -51,7 +51,6 @@ jobs:
                   debug: true
             jpa:
               database-platform: org.hibernate.dialect.MariaDBDialect
-              show-sql: true
               hibernate:
                 ddl-auto: create-drop
               properties:
