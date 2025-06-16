@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -34,7 +36,7 @@ public class AESUtil {
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, gcmParameterSpec);
 
-        byte[] encrypted = cipher.doFinal(plainText.getBytes());
+        byte[] encrypted = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
         // [IV (12바이트)] + [실제 암호화된 데이터]
         // IV + 암호문 합치기
         byte[] encryptedWithIv = new byte[iv.length + encrypted.length];
@@ -43,12 +45,12 @@ public class AESUtil {
         // 암호문을 iv 뒤에 붙임
         System.arraycopy(encrypted, 0, encryptedWithIv, iv.length, encrypted.length);
 
-        return Base64.getEncoder().encodeToString(encryptedWithIv);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(encryptedWithIv);
     }
 
     //복호화
     public String decrypt(String cipherText) throws Exception {
-        byte[] decoded = Base64.getDecoder().decode(cipherText);
+        byte[] decoded = Base64.getUrlDecoder().decode(cipherText);
 
         byte[] iv = new byte[GCM_IV_LENGTH];
         byte[] encrypted = new byte[decoded.length - GCM_IV_LENGTH];
@@ -62,7 +64,7 @@ public class AESUtil {
         cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmSpec);
 
         byte[] decrypted = cipher.doFinal(encrypted);
-        return new String(decrypted);
+        return new String(decrypted, StandardCharsets.UTF_8);
     }
 
 }
