@@ -93,9 +93,6 @@ public class InviteService {
         Long reqClubId = Long.parseLong(decodeId);
 
 
-
-        //Long reqClubId = inviteManager.getInviteKey(inviteAcceptRequest.getInviteAlarmCode());
-
         // 초대한 동아리와 키 값의 동아리 일치 여부 확인
         if (!reqClubId.equals(club.getId())) {
             throw new InvalidClubInviteException();
@@ -112,7 +109,7 @@ public class InviteService {
         ClubMember clubMember = ClubMember.createInvited(clubMemberName, reqMember, club);
         clubMemberRepository.saveAndFlush(clubMember);
 
-        memberAlarmRepository.deleteAlarmsByClubId(club, reqMember.getId(), " | " + decodeId);
+        memberAlarmRepository.deleteAlarmsByClubId(club, reqMember.getId(), decodeId);
         return club.getName();
     }
 

@@ -49,6 +49,7 @@ public class UnregisterService {
         entrustClubAdmin(reqMember);
 
         // member_id -> null
+        // persistence context clear after update query
         passReviewRepository.updateMemberNull(reqMember);
         clubReviewRepository.updateMemberNull(reqMember);
         reportRepository.updateMemberNull(reqMember);
@@ -57,6 +58,8 @@ public class UnregisterService {
         clubActivityRepository.updateMemberNull(reqMember);
         clubActivityCommentRepository.updateMemberNull(reqMember);
 
+        // reload reqMember to reattach it
+        reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         kakaoAuthManager.unregister(reqMember);
         memberRepository.delete(reqMember);
     }

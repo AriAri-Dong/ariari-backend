@@ -1,9 +1,6 @@
 package com.ariari.ariari.domain.member.alarm;
 
 import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.QClub;
-import com.ariari.ariari.domain.club.clubmember.QClubMember;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
