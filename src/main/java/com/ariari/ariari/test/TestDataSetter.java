@@ -2,6 +2,11 @@ package com.ariari.ariari.test;
 
 import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
+import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
+import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentRepository;
+import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.ariari.ariari.domain.club.alarm.ClubAlarm;
 import com.ariari.ariari.domain.club.alarm.ClubAlarmRepository;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
@@ -55,6 +60,7 @@ import com.ariari.ariari.domain.school.school.SchoolRepository;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -72,7 +78,8 @@ import java.util.List;
 @Transactional
 public class TestDataSetter {
 
-    @Value("${spring.profiles.active}")
+ private final GroupedOpenApi clubActivity;
+ @Value("${spring.profiles.active}")
     private String profiles;
 
     private final MemberRepository memberRepository;
@@ -85,6 +92,8 @@ public class TestDataSetter {
     private final RecruitmentBookmarkRepository recruitmentBookmarkRepository;
     private final ApplyRepository applyRepository;
     private final FinancialRecordRepository financialRecordRepository;
+    private final ClubActivityRepository clubActivityRepository;
+    private final ClubActivityCommentRepository clubActivityCommentRepository;
 
     private final EntityManager em;
     private final ClubReviewRepository clubReviewRepository;
@@ -461,8 +470,27 @@ public class TestDataSetter {
         clubAlarmRepository.saveAll(List.of(clubAlarm1, clubAlarm2, clubAlarm3, clubAlarm4, clubAlarm5));
 
 
-        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, m3);
-        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, m3);
+        ClubActivity clubActivity1 = new ClubActivity(c1,m2, AccessType.CLUB_MEMBER, "test");
+        ClubActivity clubActivity2 = new ClubActivity(c1,m2, AccessType.CLUB_MEMBER, "test");
+        ClubActivity clubActivity3 = new ClubActivity(c2,m2, AccessType.CLUB_MEMBER, "test");
+        ClubActivity clubActivity4 = new ClubActivity(c2,m2, AccessType.CLUB_MEMBER, "test");
+        clubActivityRepository.saveAll(List.of(clubActivity1, clubActivity2, clubActivity3, clubActivity4));
+
+        ClubActivityComment clubActivityComment1 = new ClubActivityComment("test", m2, clubActivity1);
+        ClubActivityComment clubActivityComment2 = new ClubActivityComment("test", m2, clubActivity2);
+        ClubActivityComment clubActivityComment3 = new ClubActivityComment("test", m2, clubActivity2);
+        ClubActivityComment clubActivityComment4 = new ClubActivityComment("test", m2, clubActivity1, clubActivityComment1);
+        ClubActivityComment clubActivityComment5 = new ClubActivityComment("test", m2, clubActivity1);
+        ClubActivityComment clubActivityComment6 = new ClubActivityComment("test", m2, clubActivity3, clubActivityComment5);
+        ClubActivityComment clubActivityComment7 = new ClubActivityComment("test", m2, clubActivity4, clubActivityComment6);
+        ClubActivityComment clubActivityComment8 = new ClubActivityComment("test", m2, clubActivity4);
+        clubActivityCommentRepository.saveAll(List.of(clubActivityComment1, clubActivityComment2, clubActivityComment3, clubActivityComment4,
+                clubActivityComment5, clubActivityComment6, clubActivityComment7, clubActivityComment8));
+
+
+
+        ClubNotice clubNotice1 = new ClubNotice("Test 제목1", "Test 내용1", false, c1, m2);
+        ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, m2);
         clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
 
 

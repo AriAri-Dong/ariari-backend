@@ -134,6 +134,7 @@ public class ClubMemberService {
         GlobalValidator.belongsToClub(clubMember, club);
         GlobalValidator.isHigherRoleTypeThan(reqClubMember, clubMember);
 
+        deleteClubMember(clubMember);
         clubMemberRepository.delete(clubMember);
         memberAlarmManger.sendClubMemberRemove(clubMember.getMember(), club.getName(), club.getId());
     }
@@ -163,22 +164,19 @@ public class ClubMemberService {
         GlobalValidator.isSameClubMemberAsRequester(reqClubMember.getMember(), reqMember);
 
         // DB에서는 ON DELETE SET NULL 가능하지만 JPA는 X 그래서 전부 업데이트 처리 아니면 배치 update JPQL 해야함
+        // 또한 해당 프로젝트는 soft delete 방식임 그리고 update join 쿼리는 mysql, mariadb 만 가능...
         deleteClubMember(reqClubMember);
         clubMemberRepository.delete(reqClubMember);
         clubAlarmManger.quitClubMember(clubMemberName, club, LocalDateTime.now());
 
-
     }
-
-
 
     public void deleteClubMember(ClubMember reqClubMember) {
         Club club = reqClubMember.getClub();
         Member member = reqClubMember.getMember();
-        clubActivityCommentRepository.clubActivityCommentUpdate(club, member);
+        clubActivityCommentRepository.clubActivityCommentUpdate(club.getId(), member.getId());
         clubActivityRepository.clubActivityUpdate(club, member);
         clubNoticeRepository.clubNoticeUpdate(club, member);
         attendanceRepository.attendanceUpdate(club.getId(), member.getId());
-
     }
 }
