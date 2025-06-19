@@ -22,9 +22,19 @@ public interface ClubActivityCommentRepository extends JpaRepository<ClubActivit
 
     List<ClubActivityComment> findByClubActivity(ClubActivity clubActivity);
 
+
     @Modifying
-    @Query("update ClubActivityComment as cac set cac.member = null where cac.clubActivity.club= :club and cac.member = :member")
-    void clubActivityCommentUpdate(@Param("club") Club club, @Param("member") Member member);
+    @Query(value = """
+    UPDATE club_activity_comment cac
+    JOIN club_activity ca ON cac.club_activity_id = ca.club_activity_id
+    SET cac.member_id = NULL
+    WHERE ca.club_id = :clubId
+      AND cac.member_id = :memberId
+      AND cac.deleted_date_time IS NULL
+    """, nativeQuery = true)
+    void clubActivityCommentUpdate(@Param("clubId") Long clubId, @Param("memberId") Long memberId);
+
+
 
     @Modifying(clearAutomatically = true)
     @Query("update ClubActivityComment cac set cac.member= null where cac.member= :member")
