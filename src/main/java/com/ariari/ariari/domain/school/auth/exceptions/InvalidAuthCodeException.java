@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 public class InvalidAuthCodeException extends CustomException {
 
     private static final String MESSAGE = "잘못된 학교 인증 코드입니다.";
-    private static final HttpStatus HTTP_STATUS = HttpStatus.BAD_REQUEST;
+    private static final HttpStatus HTTP_STATUS = HttpStatus.UNPROCESSABLE_ENTITY;
 
     @Override
     public String getMessage() {
