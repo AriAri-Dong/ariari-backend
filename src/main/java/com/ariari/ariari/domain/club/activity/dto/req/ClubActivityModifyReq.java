@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.club.activity.dto.req;
 
+import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -26,4 +27,9 @@ public class ClubActivityModifyReq {
     @JsonSerialize(contentUsing = ToStringSerializer.class)
     @Schema(description = "삭제해야할 이미지 리스트", example = "")
     private List<Long> deletedImageIds;
+
+    public void modifyClubActivity(ClubActivity clubActivity){
+        clubActivity.setBody(this.body);
+        clubActivity.setAccessType(this.accessType);
+    }
 }

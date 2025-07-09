@@ -53,8 +53,8 @@
         FROM club_activity ca
             LEFT JOIN member cm ON ca.member_id = cm.member_id
             LEFT JOIN club_activity_like cal ON cal.club_activity_id = ca.club_activity_id AND cal.member_id = #{memberId}
-            LEFT JOIN club_member cm2 ON cm2.deleted_date_time = NULL AND cm2.club_id = #{clubId} AND cm2.member_id = ca.member_id
             LEFT JOIN club c ON c.club_id = ca.club_id
+            LEFT JOIN club_member cm2 ON cm2.deleted_date_time = NULL AND cm2.club_id = ca.club_id AND cm2.member_id = ca.member_id
         WHERE ca.deleted_date_time IS NULL AND ca.club_id = #{clubId} AND ca.access_type = 'ALL'
         ORDER BY ca.created_date_time DESC
             LIMIT #{size} OFFSET #{offset}

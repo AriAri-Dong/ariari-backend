@@ -137,6 +137,7 @@ public class ClubActivityService {
             clubActivity.getClubActivityImages().addAll(newImages);
         }
 
+        clubActivityModifyReq.modifyClubActivity(clubActivity);
         clubActivityRepository.save(clubActivity);
     }
 

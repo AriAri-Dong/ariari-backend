@@ -39,7 +39,7 @@ public class Club extends LogicalDeleteEntity implements ViewsContent {
     @Column(name = "club_id")
     private Long id;
 
-    @Column(length = 20)
+    @Column(length = 30)
     private String name;
 
     @Setter

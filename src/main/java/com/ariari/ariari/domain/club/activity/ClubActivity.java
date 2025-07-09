@@ -30,9 +30,11 @@ public class ClubActivity extends LogicalDeleteEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
+    @Setter
     private AccessType accessType;
 
     @Column(length = 500)
+    @Setter
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY)
