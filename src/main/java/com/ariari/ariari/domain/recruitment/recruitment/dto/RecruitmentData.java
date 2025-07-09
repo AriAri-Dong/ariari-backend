@@ -123,7 +123,8 @@ public class RecruitmentData {
                 club.getClubRegionType(),
                 club.getParticipantType(),
                 recruitment.getRecruitmentStatusType(),
-                myBookmarkRecruitments.contains(recruitment)
+                myBookmarkRecruitments.contains(recruitment),
+                recruitment.getClub().getName()
         );
     }
 
