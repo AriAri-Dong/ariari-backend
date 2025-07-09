@@ -68,6 +68,10 @@ public class RecruitmentData {
     @Schema(description = "내가 북마크한 모집인지 여부", example = "true")
     private Boolean isMyBookmark;
 
+    @Schema(description = "동아리 제목", example = "아리아리")
+    private String clubName;
+
+
     public static RecruitmentData fromEntity(Recruitment recruitment, Member reqMember) {
         Club club = recruitment.getClub();
         return new RecruitmentData(
@@ -86,7 +90,8 @@ public class RecruitmentData {
                 club.getClubRegionType(),
                 club.getParticipantType(),
                 recruitment.getRecruitmentStatusType(),
-                getMyBookmarkRecruitments(reqMember).contains(recruitment)
+                getMyBookmarkRecruitments(reqMember).contains(recruitment),
+                recruitment.getClub().getName()
         );
     }
 
