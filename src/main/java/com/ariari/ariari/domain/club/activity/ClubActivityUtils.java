@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.club.activity;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
 import com.ariari.ariari.domain.club.activity.comment.like.ClubActivityCommentLike;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.block.Block;
 
 import java.util.*;
 
@@ -33,5 +34,13 @@ public class ClubActivityUtils {
         }
     }
 
+    public static void initializeSetBlockData(Set<Member> blockSet, List<Block> blockingList, List<Block> blockedList){
+        for(Block block : blockingList){
+            blockSet.add(block.getBlockedMember());
+        }
+        for(Block block : blockedList){
+            blockSet.add(block.getBlockingMember());
+        }
+    }
 
 }

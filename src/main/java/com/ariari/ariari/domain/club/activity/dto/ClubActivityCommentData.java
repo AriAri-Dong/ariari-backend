@@ -57,20 +57,40 @@ public class ClubActivityCommentData {
     @Schema(description = "본인이 차단했던 유저인지", example = "")
     private boolean isBlocked;
 
-    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
-                                              int likeCount, boolean isMyLiked, boolean isBlocked) {
-        // TODO : 리팩토링 예정, 성능우려
-        Long creatorId = clubMember
-                .map(ClubMember::getMember)
-                .map(Member::getId)
-                .orElse(null);
-        String creatorName = clubMember
-                .map(ClubMember::getName)
-                .orElse(null);
-        ProfileType creatorProfileType = clubMember
-                .map(ClubMember::getMember)
-                .map(Member::getProfileType)
-                .orElse(null);
+//    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
+//                                              int likeCount, boolean isMyLiked, boolean isBlocked) {
+//        Long creatorId = clubMember
+//                .map(ClubMember::getMember)
+//                .map(Member::getId)
+//                .orElse(null);
+//        String creatorName = clubMember
+//                .map(ClubMember::getName)
+//                .orElse(null);
+//        ProfileType creatorProfileType = clubMember
+//                .map(ClubMember::getMember)
+//                .map(Member::getProfileType)
+//                .orElse(null);
+//
+//        return ClubActivityCommentData.builder()
+//                .id(clubActivityComment.getId())
+//                .creatorId(creatorId)
+//                .creatorName(creatorName)
+//                .creatorProfileType(creatorProfileType)
+//                .createdDateTime(clubActivityComment.getCreatedDateTime())
+//                .updatedDateTime(clubActivityComment.getUpdatedDateTime())
+//                .body(clubActivityComment.getBody())
+//                .likeCount(likeCount)
+//                .isMyLiked(isMyLiked)
+//                .isMine(false)
+//                .isBlocked(isBlocked)
+//                .build();
+//    }
+
+    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, ClubMember clubMember, Member member,
+                                                     int likeCount, boolean isMyLiked, boolean isBlocked) {
+        Long creatorId = (member != null) ? member.getId() : null;
+        String creatorName = (clubMember != null) ? clubMember.getName() : null;
+        ProfileType creatorProfileType = (member != null) ? member.getProfileType() : null;
 
         return ClubActivityCommentData.builder()
                 .id(clubActivityComment.getId())
@@ -87,19 +107,40 @@ public class ClubActivityCommentData {
                 .build();
     }
 
-    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
+//    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment, Optional<ClubMember> clubMember,
+//                                                     int likeCount, boolean isMyLiked, boolean isBlocked, Member reqMember) {
+//        Long creatorId = clubMember
+//                .map(ClubMember::getMember)
+//                .map(Member::getId)
+//                .orElse(null);
+//        String creatorName = clubMember
+//                .map(ClubMember::getName)
+//                .orElse(null);
+//        ProfileType creatorProfileType = clubMember
+//                .map(ClubMember::getMember)
+//                .map(Member::getProfileType)
+//                .orElse(null);
+//
+//        return ClubActivityCommentData.builder()
+//                .id(clubActivityComment.getId())
+//                .creatorId(creatorId)
+//                .creatorName(creatorName)
+//                .creatorProfileType(creatorProfileType)
+//                .createdDateTime(clubActivityComment.getCreatedDateTime())
+//                .updatedDateTime(clubActivityComment.getUpdatedDateTime())
+//                .body(clubActivityComment.getBody())
+//                .likeCount(likeCount)
+//                .isMine(reqMember.equals(clubActivityComment.getMember()))
+//                .isMyLiked(isMyLiked)
+//                .isBlocked(isBlocked)
+//                .build();
+//    }
+
+    public static ClubActivityCommentData fromEntity(ClubActivityComment clubActivityComment,  ClubMember clubMember, Member member,
                                                      int likeCount, boolean isMyLiked, boolean isBlocked, Member reqMember) {
-        Long creatorId = clubMember
-                .map(ClubMember::getMember)
-                .map(Member::getId)
-                .orElse(null);
-        String creatorName = clubMember
-                .map(ClubMember::getName)
-                .orElse(null);
-        ProfileType creatorProfileType = clubMember
-                .map(ClubMember::getMember)
-                .map(Member::getProfileType)
-                .orElse(null);
+        Long creatorId = (member != null) ? member.getId() : null;
+        String creatorName = (clubMember != null) ? clubMember.getName() : null;
+        ProfileType creatorProfileType = (member != null) ? member.getProfileType() : null;
 
         return ClubActivityCommentData.builder()
                 .id(clubActivityComment.getId())

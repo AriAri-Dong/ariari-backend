@@ -3,6 +3,7 @@ package com.ariari.ariari.domain.club.activity.dto;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.domain.member.Member;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,7 +15,9 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -59,13 +62,33 @@ public class ClubActivityData {
     @Schema(description = "댓글 수", example = "")
     private Integer commentCount;
 
-    public static ClubActivityData fromEntity(ClubActivity clubActivity, Optional<ClubMember> clubMember, List<ClubActivityImageData> clubActivityImageDataList,
+//    public static ClubActivityData fromEntity(ClubActivity clubActivity, Optional<ClubMember> clubMember, List<ClubActivityImageData> clubActivityImageDataList,
+//                                              Integer likeCount, boolean isMyLiked, Integer commentCount) {
+//        return ClubActivityData
+//                .builder()
+//                .id(clubActivity.getId())
+//                .creatorId(clubActivity.getMember().getId())
+//                .creatorName(clubMember.isPresent() ? clubMember.get().getName() : null)
+//                .createdDateTime(clubActivity.getCreatedDateTime())
+//                .updatedDateTime(clubActivity.getUpdatedDateTime())
+//                .accessType(clubActivity.getAccessType())
+//                .body(clubActivity.getBody())
+//                .clubActivityImageDataList(clubActivityImageDataList)
+//                .likeCount(likeCount)
+//                .isMyLiked(isMyLiked)
+//                .commentCount(commentCount)
+//                .build();
+//    }
+
+    public static ClubActivityData fromEntity(ClubActivity clubActivity, Map<Member, ClubMember> clubMemberMap, Member creatorMember, List<ClubActivityImageData> clubActivityImageDataList,
                                               Integer likeCount, boolean isMyLiked, Integer commentCount) {
+        ClubMember clubMemberOfCreator = clubMemberMap.get(creatorMember);
+
         return ClubActivityData
                 .builder()
                 .id(clubActivity.getId())
                 .creatorId(clubActivity.getMember().getId())
-                .creatorName(clubMember.isPresent() ? clubMember.get().getName() : null)
+                .creatorName(clubMemberOfCreator != null ? clubMemberOfCreator.getName() : null)
                 .createdDateTime(clubActivity.getCreatedDateTime())
                 .updatedDateTime(clubActivity.getUpdatedDateTime())
                 .accessType(clubActivity.getAccessType())

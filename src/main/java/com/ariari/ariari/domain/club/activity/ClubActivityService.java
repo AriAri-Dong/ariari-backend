@@ -42,9 +42,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.ariari.ariari.domain.club.activity.ClubActivityAssembler.assemble;
 import static com.ariari.ariari.domain.club.activity.ClubActivityUtils.initializeFindClubActivityMap;
+import static com.ariari.ariari.domain.club.activity.ClubActivityUtils.initializeSetBlockData;
 
 
 // TODO : 리팩토링 필요
@@ -199,91 +202,38 @@ public class ClubActivityService {
 
         List<ClubActivityComment> clubActivityComments = clubActivityCommentRepository.findByClubActivity(clubActivity);
         List<ClubActivityCommentLike> clubActivityCommentLikes = clubActivityCommentLikeRepository.findByClubActivityComment_ClubActivity(clubActivity);
+        List<ClubActivityComment> parentClubActivityComments = clubActivityCommentRepository.findByClubActivityAndParentComment(clubActivity, null);
 
         initializeFindClubActivityMap(clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap, clubActivityComments, clubActivityCommentLikes);
 
-        Optional<ClubMember> creatorMember = clubMemberRepository.findByClubAndMember(clubActivity.getClub(), clubActivity.getMember());
+        Member creatorMember = clubActivity.getMember();
 
         int likeCount = clubActivityLikeRepository.countByClubActivity(clubActivity);
         int commentCount = clubActivityCommentRepository.countByClubActivity(clubActivity);
 
+        List<ClubMember> clubMembers = clubActivity.getClub().getClubMembers();
+        Map<Member, ClubMember> clubMemberMap = clubMembers.stream()
+                .collect(Collectors.toMap(ClubMember::getMember, Function.identity(), (existing, replacement) -> existing, LinkedHashMap::new));
+        Set<Member> commentsOfMembers = clubActivityComments.stream().map(ClubActivityComment::getMember).collect(Collectors.toSet());
+
         if(reqMemberId == null){
-            ClubActivityData clubActivityData = ClubActivityData.fromEntity(clubActivity, creatorMember,
-                    ClubActivityImageData.toEntityList(clubActivity.getClubActivityImages()),
-                    likeCount, false, commentCount); /// 활동후기 데이터 세팅
-            clubActivityDetailRes.setClubActivityData(clubActivityData); /// 활동후기 상세res에 setter
-
-            List<ClubActivityComment> parentClubActivityComments = clubActivityCommentRepository.findByClubActivityAndParentComment(clubActivity, null); /// 부모댓글만 조회
-            for(ClubActivityComment clubActivityComment : parentClubActivityComments){ /// 부모댓글부터 순회
-                // TODO : clubMember조회가 너무 잦음, 리팩토링 필요
-                Optional<ClubMember> commentCreatorMember = clubMemberRepository.findByClubAndMember(clubActivityComment.getClubActivity().getClub(), clubActivityComment.getMember()); /// 구조가 잘못된거 같은데?
-
-                ClubActivityDetailRes.ClubActivityCommentRes clubActivityCommentRes = new ClubActivityDetailRes.ClubActivityCommentRes();
-
-                clubActivityCommentRes.setCommentData(ClubActivityCommentData.fromEntity(clubActivityComment, commentCreatorMember,
-                        clubActivityLikeCountMap.get(clubActivityComment), false, false));
-
-                List<ClubActivityCommentData> childClubActivityCommentDataList = new ArrayList<>();
-                if(clubActivityCommentMap.containsKey(clubActivityComment)){
-                    List<ClubActivityComment> childClubActivityComments = clubActivityCommentMap.get(clubActivityComment);
-                    for(ClubActivityComment childClubActivityComment : childClubActivityComments){
-                        Optional<ClubMember> childCommentCreatorMember = clubMemberRepository.findByClubAndMember(childClubActivityComment.getClubActivity().getClub(), childClubActivityComment.getMember());
-                        ClubActivityCommentData childClubActivityCommentData = ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorMember,
-                                clubActivityLikeCountMap.get(childClubActivityComment), false, false);
-                        childClubActivityCommentDataList.add(childClubActivityCommentData);
-                    }
-                    clubActivityCommentRes.setCommentDataList(childClubActivityCommentDataList);
-                }
-
-                clubActivityDetailRes.getClubActivityCommentResList().add(clubActivityCommentRes);
-            }
-        }
-        else{
+            assemble(clubActivityDetailRes, clubActivity, clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap,
+                    clubActivityComments, clubActivityCommentLikes, parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap, commentsOfMembers);
+        }else{
             Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
             boolean isMyLiked = clubActivityLikeRepository.findByClubActivityAndMember(clubActivity, reqMember).isPresent();
 
-            ClubActivityData clubActivityData = ClubActivityData.fromEntity(clubActivity, creatorMember,
-                    ClubActivityImageData.toEntityList(clubActivity.getClubActivityImages()),
-                    likeCount, isMyLiked, commentCount); /// 활동후기 데이터 세팅
-            clubActivityDetailRes.setClubActivityData(clubActivityData); /// 활동후기 상세res에 setter
-
-            /// 차단 관련 데이터 세팅
             Set<Member> blockSet = new HashSet<>();
-            List<Block> blockings = reqMember.getBlockings();
-            List<Block> blockeds = reqMember.getBlockeds();
-            for(Block block : blockings){
-                blockSet.add(block.getBlockedMember());
-            }
-            for(Block block : blockeds){
-                blockSet.add(block.getBlockingMember());
-            }
+            List<Block> blockingList = reqMember.getBlockings();
+            List<Block> blockedList = reqMember.getBlockeds();
+            initializeSetBlockData(blockSet, blockingList, blockedList);
 
-            List<ClubActivityComment> parentClubActivityComments = clubActivityCommentRepository.findByClubActivityAndParentComment(clubActivity, null); /// 부모댓글만 조회
-            for(ClubActivityComment clubActivityComment : parentClubActivityComments){
-                Optional<ClubMember> commentCreatorMember = clubMemberRepository.findByClubAndMember(clubActivityComment.getClubActivity().getClub(), clubActivityComment.getMember()); /// 구조가 잘못된거 같은데?
+            assemble(clubActivityDetailRes, clubActivity, clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap,
+                    clubActivityComments, clubActivityCommentLikes, parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap, commentsOfMembers, reqMember, isMyLiked, blockSet);
 
-                ClubActivityDetailRes.ClubActivityCommentRes clubActivityCommentRes = new ClubActivityDetailRes.ClubActivityCommentRes();
 
-                clubActivityCommentRes.setCommentData(ClubActivityCommentData.fromEntity(clubActivityComment, commentCreatorMember,
-                        clubActivityLikeCountMap.get(clubActivityComment), clubActivityLikeMemberSetMap.get(clubActivityComment).contains(reqMember),
-                        blockSet.contains(clubActivityComment.getMember()), reqMember));
-
-                List<ClubActivityCommentData> childClubActivityCommentDataList = new ArrayList<>();
-                if(clubActivityCommentMap.containsKey(clubActivityComment)){
-                    List<ClubActivityComment> childClubActivityComments = clubActivityCommentMap.get(clubActivityComment);
-                    for(ClubActivityComment childClubActivityComment : childClubActivityComments){
-                        Optional<ClubMember> childCommentCreatorMember = clubMemberRepository.findByClubAndMember(childClubActivityComment.getClubActivity().getClub(), childClubActivityComment.getMember());
-                        ClubActivityCommentData childClubActivityCommentData = ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorMember,
-                                clubActivityLikeCountMap.get(childClubActivityComment), clubActivityLikeMemberSetMap.get(childClubActivityComment).contains(reqMember),
-                                blockSet.contains(childClubActivityComment.getMember()), reqMember);
-                        childClubActivityCommentDataList.add(childClubActivityCommentData);
-                    }
-                    clubActivityCommentRes.setCommentDataList(childClubActivityCommentDataList);
-                }
-
-                clubActivityDetailRes.getClubActivityCommentResList().add(clubActivityCommentRes);
-            }
         }
+
 
         return clubActivityDetailRes;
     }
