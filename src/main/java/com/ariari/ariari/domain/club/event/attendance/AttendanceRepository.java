@@ -38,4 +38,8 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     """, nativeQuery = true)
     void attendanceUpdate(@Param("clubId") Long clubId, @Param("memberId") Long memberId);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update Attendance a set a.member= null where a.member= :member")
+    void updateMemberNull(Member member);
+
 }

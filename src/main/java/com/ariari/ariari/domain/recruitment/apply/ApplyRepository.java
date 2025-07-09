@@ -4,6 +4,7 @@ import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,4 +23,9 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, ApplyReposi
             "join fetch r.club " +
             "where a.applyStatusType = :status")
     List<Apply> findApplyByApplyStatusType_Pendency(@Param("status") ApplyStatusType status);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Apply a set a.member= null where a.member= :member")
+    void updateMemberNull(Member member);
+
 }

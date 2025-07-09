@@ -47,12 +47,13 @@ public class RecruitmentInClubData extends RecruitmentData {
                 club.getParticipantType(),
                 recruitment.getRecruitmentStatusType(),
                 null,
-                RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes())
+                RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes()),
+                club.getName()
         );
     }
 
-    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, ClubAffiliationType clubAffiliationType, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, RecruitmentStatusType recruitmentStatusType, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList) {
-        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, clubAffiliationType, clubCategoryType, clubRegionType, participantType, recruitmentStatusType, isMyBookmark);
+    public RecruitmentInClubData(Long id, String title, String body, String posterUri, ProcedureType procedureType, Integer limits, LocalDateTime createdDateTime, LocalDateTime startDateTime, LocalDateTime endDateTime, Long clubId, ClubAffiliationType clubAffiliationType, ClubCategoryType clubCategoryType, ClubRegionType clubRegionType, ParticipantType participantType, RecruitmentStatusType recruitmentStatusType, Boolean isMyBookmark, List<RecruitmentNoteData> recruitmentNoteDataList, String clubName) {
+        super(id, title, body, posterUri, procedureType, limits, createdDateTime, startDateTime, endDateTime, clubId, clubAffiliationType, clubCategoryType, clubRegionType, participantType, recruitmentStatusType, isMyBookmark, clubName);
         this.recruitmentNoteDataList = recruitmentNoteDataList;
     }
 
