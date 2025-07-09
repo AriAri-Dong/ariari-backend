@@ -229,9 +229,8 @@ public class ClubActivityService {
             initializeSetBlockData(blockSet, blockingList, blockedList);
 
             assemble(clubActivityDetailRes, clubActivity, clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap,
-                    clubActivityComments, clubActivityCommentLikes, parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap, commentsOfMembers, reqMember, isMyLiked, blockSet);
-
-
+                    clubActivityComments, clubActivityCommentLikes, parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap,
+                    commentsOfMembers, reqMember, isMyLiked, blockSet);
         }
 
 

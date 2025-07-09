@@ -72,7 +72,7 @@ public class ClubActivityAssembler {
                                 Member reqMember, boolean isMyLiked, Set<Member> blockSet){
         ClubActivityData clubActivityData = ClubActivityData.fromEntity(clubActivity, clubMemberMap, creatorMember,
                 ClubActivityImageData.toEntityList(clubActivity.getClubActivityImages()),
-                likeCount, false, commentCount); /// 활동후기 데이터 세팅
+                likeCount, isMyLiked, commentCount); /// 활동후기 데이터 세팅
         clubActivityDetailRes.setClubActivityData(clubActivityData); /// 활동후기 상세res에 setter
 
         for(ClubActivityComment clubActivityComment : parentClubActivityComments){
