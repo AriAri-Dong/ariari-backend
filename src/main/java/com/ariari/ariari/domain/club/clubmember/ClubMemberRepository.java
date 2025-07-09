@@ -5,6 +5,7 @@ import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -32,5 +33,9 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long>, C
     List<ClubMember> findByClubAndClubMemberRoleTypeExceptMember(Club club, ClubMemberRoleType clubMemberRoleType, Member member);
 
     List<ClubMember> findByMemberAndClubMemberRoleTypeAndClub_SchoolIsNotNull(Member reqMember, ClubMemberRoleType clubMemberRoleType);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update ClubMember cm set cm.member= null where cm.member= :member")
+    void updateMemberNull(Member member);
 
 }

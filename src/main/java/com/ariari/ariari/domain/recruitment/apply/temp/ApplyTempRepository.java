@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -31,5 +32,9 @@ public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, App
     List<ApplyTemp> findAllByRecruitment(@Param("recruitment") Recruitment recruitment);
 
     Optional<ApplyTemp> findFirstByMemberAndRecruitmentOrderByCreatedDateTimeDesc(Member member, Recruitment recruitment);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update ApplyTemp at set at.member= null where at.member= :member")
+    void updateMemberNull(Member member);
 
 }

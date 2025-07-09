@@ -11,12 +11,17 @@ import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
+import com.ariari.ariari.domain.club.event.attendance.AttendanceRepository;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
 import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
 import com.ariari.ariari.domain.member.member.MemberRepository;
+import com.ariari.ariari.domain.member.point.PointHistoryRepository;
+import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
+import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +46,11 @@ public class UnregisterService {
     private final ClubRepository clubRepository;
 
     private final KakaoAuthManager kakaoAuthManager;
+    private final MemberAlarmRepository memberAlarmRepository;
+    private final ApplyRepository applyRepository;
+    private final ApplyTempRepository applyTempRepository;
+    private final AttendanceRepository attendanceRepository;
+    private final PointHistoryRepository pointHistoryRepository;
 
     public void unregister(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -57,6 +67,12 @@ public class UnregisterService {
         clubQuestionRepository.updateMemberNull(reqMember);
         clubActivityRepository.updateMemberNull(reqMember);
         clubActivityCommentRepository.updateMemberNull(reqMember);
+        clubMemberRepository.updateMemberNull(reqMember);
+        memberAlarmRepository.updateMemberNull(reqMember);
+        applyRepository.updateMemberNull(reqMember);
+        applyTempRepository.updateMemberNull(reqMember);
+        attendanceRepository.updateMemberNull(reqMember);
+        pointHistoryRepository.updateMemberNull(reqMember);
 
         // reload reqMember to reattach it
         reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);

@@ -22,4 +22,8 @@ public interface MemberAlarmRepository extends JpaRepository<MemberAlarm, Long>,
     @Query("select count(*) from MemberAlarm  as ma where ma.member = :member and ma.isChecked=false")
     Integer countUnreadByMember(@Param("member") Member member);
 
+    @Modifying(clearAutomatically = true)
+    @Query("update MemberAlarm ma set ma.member= null where ma.member= :member")
+    void updateMemberNull(Member member);
+
 }
