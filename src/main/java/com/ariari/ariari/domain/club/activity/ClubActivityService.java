@@ -191,7 +191,6 @@ public class ClubActivityService {
         }
     }
 
-    // TODO : 리팩토링 필요
     public ClubActivityDetailRes readClubActivityDetail(Long reqMemberId, Long clubActivityId) {
         ClubActivityDetailRes clubActivityDetailRes = new ClubActivityDetailRes();
         ClubActivity clubActivity = clubActivityRepository.findById(clubActivityId).orElseThrow(NotFoundEntityException::new);
@@ -214,11 +213,10 @@ public class ClubActivityService {
         List<ClubMember> clubMembers = clubActivity.getClub().getClubMembers();
         Map<Member, ClubMember> clubMemberMap = clubMembers.stream()
                 .collect(Collectors.toMap(ClubMember::getMember, Function.identity(), (existing, replacement) -> existing, LinkedHashMap::new));
-        Set<Member> commentsOfMembers = clubActivityComments.stream().map(ClubActivityComment::getMember).collect(Collectors.toSet());
 
         if(reqMemberId == null){
-            assemble(clubActivityDetailRes, clubActivity, clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap,
-                    clubActivityComments, clubActivityCommentLikes, parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap, commentsOfMembers);
+            assemble(clubActivityDetailRes, clubActivity, clubActivityCommentMap, clubActivityLikeCountMap,
+                    parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap);
         }else{
             Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
             boolean isMyLiked = clubActivityLikeRepository.findByClubActivityAndMember(clubActivity, reqMember).isPresent();
@@ -229,10 +227,8 @@ public class ClubActivityService {
             initializeSetBlockData(blockSet, blockingList, blockedList);
 
             assemble(clubActivityDetailRes, clubActivity, clubActivityCommentMap, clubActivityLikeCountMap, clubActivityLikeMemberSetMap,
-                    clubActivityComments, clubActivityCommentLikes, parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap,
-                    commentsOfMembers, reqMember, isMyLiked, blockSet);
+                    parentClubActivityComments, creatorMember, likeCount, commentCount, clubMemberMap, reqMember, isMyLiked, blockSet);
         }
-
 
         return clubActivityDetailRes;
     }

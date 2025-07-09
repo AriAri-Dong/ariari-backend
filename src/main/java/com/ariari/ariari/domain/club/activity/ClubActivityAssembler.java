@@ -18,12 +18,9 @@ public class ClubActivityAssembler {
     public static void assemble(ClubActivityDetailRes clubActivityDetailRes, ClubActivity clubActivity,
                                 Map<ClubActivityComment, List<ClubActivityComment>> clubActivityCommentMap,
                                 Map<ClubActivityComment, Integer> clubActivityLikeCountMap,
-                                Map<ClubActivityComment, Set<Member>> clubActivityLikeMemberSetMap,
-                                List<ClubActivityComment> clubActivityComments, List<ClubActivityCommentLike> clubActivityCommentLikes,
                                 List<ClubActivityComment> parentClubActivityComments,
                                 Member creatorMember, int likeCount, int commentCount,
-                                Map<Member, ClubMember> clubMemberMap, Set<Member> commentsOfMembers
-                                ){
+                                Map<Member, ClubMember> clubMemberMap){
         ClubActivityData clubActivityData = ClubActivityData.fromEntity(clubActivity, clubMemberMap, creatorMember,
                 ClubActivityImageData.toEntityList(clubActivity.getClubActivityImages()),
                 likeCount, false, commentCount); /// 활동후기 데이터 세팅
@@ -65,10 +62,9 @@ public class ClubActivityAssembler {
                                 Map<ClubActivityComment, List<ClubActivityComment>> clubActivityCommentMap,
                                 Map<ClubActivityComment, Integer> clubActivityLikeCountMap,
                                 Map<ClubActivityComment, Set<Member>> clubActivityLikeMemberSetMap,
-                                List<ClubActivityComment> clubActivityComments, List<ClubActivityCommentLike> clubActivityCommentLikes,
                                 List<ClubActivityComment> parentClubActivityComments,
                                 Member creatorMember, int likeCount, int commentCount,
-                                Map<Member, ClubMember> clubMemberMap, Set<Member> commentsOfMembers,
+                                Map<Member, ClubMember> clubMemberMap,
                                 Member reqMember, boolean isMyLiked, Set<Member> blockSet){
         ClubActivityData clubActivityData = ClubActivityData.fromEntity(clubActivity, clubMemberMap, creatorMember,
                 ClubActivityImageData.toEntityList(clubActivity.getClubActivityImages()),
