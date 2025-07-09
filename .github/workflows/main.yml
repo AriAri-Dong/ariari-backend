@@ -78,8 +78,8 @@ jobs:
 
           jwt:
             secret-key: ${JWT_SECRET_KEY}
-            access-expiration-time: 60000
-            refresh-expiration-time: 180000
+            access-expiration-time: 36000000
+            refresh-expiration-time: 180000000
           kakao:
             client:
               id: ${KAKAO_CLIENT_ID}
