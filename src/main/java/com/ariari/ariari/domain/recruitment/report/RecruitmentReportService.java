@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.report;
 
 import com.ariari.ariari.commons.entity.report.dto.ReportReq;
+import com.ariari.ariari.commons.entity.report.enums.LocationType;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.member.Member;
@@ -37,6 +38,8 @@ public class RecruitmentReportService {
                 .reportedRecruitment(reportedRecruitment)
                 .reportType(reportRecruitmentReq.getReportType())
                 .body(reportRecruitmentReq.getBody())
+                .locationUrl("/recruitments/"+reportedRecruitment.getId())
+                .locationType(LocationType.RECRUIT)
                 .build();
 
         // 모집 신고 저장

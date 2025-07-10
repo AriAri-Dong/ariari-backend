@@ -34,6 +34,7 @@ public class MemberReportService {
                .reportedMember(reportedMember)
                .reportType(reportMemberReq.getReportType())
                .body(reportMemberReq.getBody())
+               .locationUrl("")
                .build();
 
        // 회원 신고 저장

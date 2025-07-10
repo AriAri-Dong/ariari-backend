@@ -38,6 +38,7 @@ public class ApplyReportService {
                 .reportedApply(reportedApply)
                 .reportType(reportApplyReq.getReportType())
                 .body(reportApplyReq.getBody())
+                .locationUrl("/applies/"+reportedApply.getId())
                 .build();
 
         // 지원 신고 저장

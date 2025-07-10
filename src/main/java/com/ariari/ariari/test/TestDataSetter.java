@@ -1,12 +1,18 @@
 package com.ariari.ariari.test;
 
+import com.ariari.ariari.commons.entity.report.enums.LocationType;
+import com.ariari.ariari.commons.enums.ReportType;
 import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.domain.club.Club;
 import com.ariari.ariari.domain.club.activity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentRepository;
+import com.ariari.ariari.domain.club.activity.comment.report.ClubActivityCommentReport;
+import com.ariari.ariari.domain.club.activity.comment.report.ClubActivityCommentReportRepository;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
+import com.ariari.ariari.domain.club.activity.report.ClubActivityReport;
+import com.ariari.ariari.domain.club.activity.report.ClubActivityReportRepository;
 import com.ariari.ariari.domain.club.alarm.ClubAlarm;
 import com.ariari.ariari.domain.club.alarm.ClubAlarmRepository;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
@@ -44,6 +50,8 @@ import com.ariari.ariari.domain.recruitment.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
+import com.ariari.ariari.domain.recruitment.apply.report.ApplyReport;
+import com.ariari.ariari.domain.recruitment.apply.report.ApplyReportRepository;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
 import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
@@ -55,6 +63,8 @@ import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkReposito
 import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
+import com.ariari.ariari.domain.recruitment.report.RecruitmentReport;
+import com.ariari.ariari.domain.recruitment.report.RecruitmentReportRepository;
 import com.ariari.ariari.domain.school.School;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
 import jakarta.persistence.EntityManager;
@@ -106,6 +116,10 @@ public class TestDataSetter {
     private final ClubNoticeRepository clubNoticeRepository;
     private final ClubAlarmManger clubAlarmManger;
     private final ApplyTempRepository applyTempRepository;
+    private final ClubActivityCommentReportRepository clubActivityCommentReportRepository;
+    private final ClubActivityReportRepository clubActivityReportRepository;
+    private final RecruitmentReportRepository recruitmentReportRepository;
+    private final ApplyReportRepository applyReportRepository;
 
    @EventListener(ApplicationReadyEvent.class)
     public void initTestData() {
@@ -493,6 +507,48 @@ public class TestDataSetter {
         ClubNotice clubNotice2 = new ClubNotice("Test 제목2", "Test 내용2", false, c1, m2);
         clubNoticeRepository.saveAll(List.of(clubNotice1, clubNotice2));
 
+
+        ClubActivityCommentReport report1 = ClubActivityCommentReport.builder()
+                .reporter(m1)
+                .reportType(ReportType.ETC)
+                .reportedClubActivityComment(clubActivityComment1)
+                .body("test")
+                .locationUrl("/test")
+                .locationType(LocationType.COMMENT)
+                .build();
+
+
+        ClubActivityReport report2 = ClubActivityReport.builder()
+                .reporter(m1)
+                .reportType(ReportType.ETC)
+                .reportedClubActivity(clubActivity1)
+                .body("test")
+                .locationUrl("/test")
+                .locationType(LocationType.ACTIVITY)
+                .build();
+
+        RecruitmentReport report3 = RecruitmentReport.builder()
+                .reporter(m1)
+                .reportType(ReportType.ETC)
+                .reportedRecruitment(r1)
+                .body("test")
+                .locationUrl("/test")
+                .locationType(LocationType.RECRUIT)
+                .build();
+
+        ApplyReport report4 = ApplyReport.builder()
+                .reporter(m1)
+                .reportType(ReportType.ETC)
+                .reportedApply(a1)
+                .body("test")
+                .locationUrl("/test")
+                .locationType(LocationType.ACTIVITY_REVIEW)
+                .build();
+
+       clubActivityCommentReportRepository.save(report1);
+       clubActivityReportRepository.save(report2);
+       recruitmentReportRepository.save(report3);
+       applyReportRepository.save(report4);
 
 
 

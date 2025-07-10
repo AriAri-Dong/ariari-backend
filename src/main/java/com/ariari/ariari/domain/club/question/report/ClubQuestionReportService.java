@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.question.report;
 
 import com.ariari.ariari.commons.entity.report.dto.ReportReq;
+import com.ariari.ariari.commons.entity.report.enums.LocationType;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.club.question.ClubQuestion;
@@ -31,12 +32,15 @@ public class ClubQuestionReportService {
             throw new ReportExistsException();
         };
 
-        // 동아리 질문 신고 생성
-        ClubQuestionReport report = ClubQuestionReport.builder()
+        // 동아리 Q&A 질문 신고 생성
+         ClubQuestionReport report = ClubQuestionReport.builder()
                 .reporter(reporterMember)
                 .reportedClubQuestion(reportedClubQuestion)
                 .reportType(reportClubQuestionReq.getReportType())
                 .body(reportClubQuestionReq.getBody())
+                .locationUrl("/clubs/"+reportedClubQuestion.getClub().getId()
+                        +"/question/"+reportedClubQuestion.getId()+"/answers")
+                 .locationType(LocationType.QNA)
                 .build();
 
         // 동아리 질문 신고 생성

@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.report;
 
 import com.ariari.ariari.commons.entity.report.dto.ReportReq;
+import com.ariari.ariari.commons.entity.report.enums.LocationType;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.club.Club;
@@ -36,6 +37,8 @@ public class ClubReportService {
                 .reportType(reportClubReq.getReportType())
                 .reporter(reporterMember)
                 .body(reportClubReq.getBody())
+                .locationUrl("/clubs/"+reportedClub.getId())
+                .locationType(LocationType.CLUB)
                 .build();
         // 동아리 신고 저장
         clubReportRepository.save(report);

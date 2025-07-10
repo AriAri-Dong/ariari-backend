@@ -88,10 +88,10 @@ public class MemberAlarmManger {
     }
 
     // 관심 모집 마감
-    public void sendRecruitmentClosed(List<Member> memberList, String recruitmentName){
+    public void sendRecruitmentClosed(List<Member> memberList, String recruitmentName, Long recruitmentId) {
         String title = String.format("관심 등록하신 %s이 마감되었습니다. 더 이상 지원이 불가능합니다.", recruitmentName);
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from(title
-                ,"null", memberList);
+                ,"/recruitments/"+recruitmentId, memberList);
         sendList(memberAlarmEventList);
     }
 
@@ -145,7 +145,7 @@ public class MemberAlarmManger {
             return;
         }
         MemberAlarmEventList memberAlarmEventList = MemberAlarmEventList.from("동아리 캘린더에 새로운 일정이 추가되었습니다! 알림을 클릭해 확인해 보세요."
-                        ,"/club/management/activity/schedule?clubId="+clubId, memberList);
+                        ,"/club/event?clubId="+clubId, memberList);
         sendList(memberAlarmEventList);
     }
 

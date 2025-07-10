@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.review.report;
 
 import com.ariari.ariari.commons.entity.report.dto.ReportReq;
+import com.ariari.ariari.commons.entity.report.enums.LocationType;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.club.review.ClubReview;
@@ -37,6 +38,8 @@ public class ClubReviewReportService {
                 .reportType(reportClubReviewReq.getReportType())
                 .reporter(reporterMember)
                 .body(reportClubReviewReq.getBody())
+                .locationUrl("/detail/"+reportedClubReview.getId())
+                .locationType(LocationType.ACTIVITY_REVIEW)
                 .build();
         // 동아리 리뷰 신고 저장
         clubReviewReportRepository.save(report);

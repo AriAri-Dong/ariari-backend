@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.passreview.report;
 
 import com.ariari.ariari.commons.entity.report.dto.ReportReq;
+import com.ariari.ariari.commons.entity.report.enums.LocationType;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.club.passreview.PassReview;
@@ -37,6 +38,8 @@ public class PassReviewReportService {
                 .reportType(reportPassReviewReq.getReportType())
                 .reporter(reporterMember)
                 .body(reportPassReviewReq.getBody())
+                .locationUrl("/pass-review/detail/"+reportedPassReview.getId())
+                .locationType(LocationType.PASS_REVIEW)
                 .build();
         // 합격 후기 신고 저장
         passReviewReportRepository.save(report);

@@ -153,7 +153,7 @@ public class RecruitmentService {
             List<Member> memberList = recruitmentBookmarkList.stream()
                     .map(RecruitmentBookmark::getMember)
                     .toList();
-            memberAlarmManger.sendRecruitmentClosed(memberList, recruitment.getTitle());
+            memberAlarmManger.sendRecruitmentClosed(memberList, recruitment.getTitle(), recruitmentId);
         }
         // 임시 저장된 지원서에 해당하는 모집이 마감시
         List<ApplyTemp> applyTempList = applyTempRepository.findAllByRecruitment(recruitment);
