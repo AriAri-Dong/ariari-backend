@@ -64,6 +64,7 @@ jobs:
               multipart:
                 max-file-size: 15MB
                 max-request-size: 150MB
+          
           server:
             port: 8282
           

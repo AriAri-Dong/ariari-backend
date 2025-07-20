@@ -85,6 +85,8 @@ dependencies {
 	//sentry
 	implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.11.1'
 
+	// multipartFile
+	implementation 'commons-fileupload:commons-fileupload:1.5'
 
 }
 
