@@ -96,7 +96,7 @@ public class Member extends LogicalDeleteEntity {
     @OneToMany(mappedBy = "member")
     private List<ClubActivityComment> clubActivityComments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member")
     private List<ClubMember> clubMembers = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)

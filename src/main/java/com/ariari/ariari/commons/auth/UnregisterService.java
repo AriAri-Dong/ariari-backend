@@ -22,6 +22,8 @@ import com.ariari.ariari.domain.member.member.MemberRepository;
 import com.ariari.ariari.domain.member.point.PointHistoryRepository;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,6 +54,9 @@ public class UnregisterService {
     private final AttendanceRepository attendanceRepository;
     private final PointHistoryRepository pointHistoryRepository;
 
+    @PersistenceContext
+    private EntityManager em;
+
     public void unregister(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
 
@@ -73,6 +78,10 @@ public class UnregisterService {
         applyTempRepository.updateMemberNull(reqMember);
         attendanceRepository.updateMemberNull(reqMember);
         pointHistoryRepository.updateMemberNull(reqMember);
+
+        // flush and clear for sync between memory and DB
+        em.flush();
+        em.clear();
 
         // reload reqMember to reattach it
         reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
