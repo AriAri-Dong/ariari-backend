@@ -7,8 +7,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PointHistoryRepository extends JpaRepository<PointHistory, Long> {
 
-    @Modifying(clearAutomatically = true)
-    @Query("update PointHistory ph set ph.member= null where ph.member= :member")
-    void updateMemberNull(Member member);
-
 }

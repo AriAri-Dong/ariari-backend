@@ -33,8 +33,4 @@ public interface ApplyTempRepository extends JpaRepository<ApplyTemp, Long>, App
 
     Optional<ApplyTemp> findFirstByMemberAndRecruitmentOrderByCreatedDateTimeDesc(Member member, Recruitment recruitment);
 
-    @Modifying(clearAutomatically = true)
-    @Query("update ApplyTemp at set at.member= null where at.member= :member")
-    void updateMemberNull(Member member);
-
 }
