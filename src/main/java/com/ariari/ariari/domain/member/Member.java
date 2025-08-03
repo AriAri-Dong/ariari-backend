@@ -22,11 +22,12 @@ import com.ariari.ariari.domain.recruitment.apply.Apply;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
 import com.ariari.ariari.domain.school.School;
-import com.ariari.ariari.domain.system.SystemNotice;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -39,8 +40,8 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
-//@SQLDelete(sql = "UPDATE member SET deleted_date_time= CURRENT_TIMESTAMP WHERE member_id= ?")
-//@SQLRestriction("deleted_date_time is null")
+@SQLDelete(sql = "UPDATE member SET deleted_date_time= CURRENT_TIMESTAMP WHERE member_id= ?")
+@SQLRestriction("deleted_date_time is null")
 public class Member extends LogicalDeleteEntity {
 
     @Id @CustomPkGenerate
@@ -163,6 +164,10 @@ public class Member extends LogicalDeleteEntity {
 
     public void addAuthority(GrantedAuthority authority) {
         this.authorities.add(authority);
+    }
+
+    public void setKakaoIdNull() {
+        this.kakaoId = null;
     }
 
 }

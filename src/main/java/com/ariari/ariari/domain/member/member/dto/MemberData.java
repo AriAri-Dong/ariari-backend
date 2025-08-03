@@ -25,7 +25,7 @@ public class MemberData {
     private ProfileType profileType;
 
     public static MemberData fromEntity(Member member) {
-        return new MemberData(
+        return member == null ? null : new MemberData(
                 member.getId(),
                 member.getNickName(),
                 member.getProfileType()

@@ -136,6 +136,7 @@ public class KakaoAuthManager {
         }
 
         String kakaoId = String.valueOf(jsonObject.get("id"));
+        reqMember.setKakaoIdNull();
         log.info("unregister : {}", kakaoId);
     }
 
