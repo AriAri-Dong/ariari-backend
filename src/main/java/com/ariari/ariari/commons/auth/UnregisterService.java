@@ -1,6 +1,5 @@
 package com.ariari.ariari.commons.auth;
 
-import com.ariari.ariari.commons.auth.exceptions.ExistingAdminRoleException;
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
 import com.ariari.ariari.commons.entity.report.ReportRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
@@ -11,23 +10,19 @@ import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.event.attendance.AttendanceRepository;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.member.point.PointHistoryRepository;
-import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -46,11 +41,9 @@ public class UnregisterService {
     private final ClubRepository clubRepository;
 
     private final KakaoAuthManager kakaoAuthManager;
-    private final MemberAlarmRepository memberAlarmRepository;
-    private final ApplyRepository applyRepository;
-    private final ApplyTempRepository applyTempRepository;
-    private final AttendanceRepository attendanceRepository;
-    private final PointHistoryRepository pointHistoryRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     public void unregister(Long reqMemberId) {
         Member reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
@@ -68,15 +61,16 @@ public class UnregisterService {
         clubActivityRepository.updateMemberNull(reqMember);
         clubActivityCommentRepository.updateMemberNull(reqMember);
         clubMemberRepository.updateMemberNull(reqMember);
-        memberAlarmRepository.updateMemberNull(reqMember);
-        applyRepository.updateMemberNull(reqMember);
-        applyTempRepository.updateMemberNull(reqMember);
-        attendanceRepository.updateMemberNull(reqMember);
-        pointHistoryRepository.updateMemberNull(reqMember);
+
+        // flush and clear for sync between memory and DB
+        em.flush();
+        em.clear();
 
         // reload reqMember to reattach it
         reqMember = memberRepository.findById(reqMemberId).orElseThrow(NotFoundEntityException::new);
         kakaoAuthManager.unregister(reqMember);
+        em.flush(); // for forcing dirty checking update
+
         memberRepository.delete(reqMember);
     }
 

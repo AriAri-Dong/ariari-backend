@@ -24,8 +24,4 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, ApplyReposi
             "where a.applyStatusType = :status")
     List<Apply> findApplyByApplyStatusType_Pendency(@Param("status") ApplyStatusType status);
 
-    @Modifying(clearAutomatically = true)
-    @Query("update Apply a set a.member= null where a.member= :member")
-    void updateMemberNull(Member member);
-
 }
