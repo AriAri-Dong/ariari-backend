@@ -1,13 +1,13 @@
 package com.ariari.ariari.commons.auth;
 
 import com.ariari.ariari.commons.auth.oauth.KakaoAuthManager;
-import com.ariari.ariari.commons.entity.report.ReportRepository;
+import com.ariari.ariari.commons.commonentity.report.ReportRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
 import com.ariari.ariari.domain.club.activity.comment.ClubActivityCommentRepository;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;

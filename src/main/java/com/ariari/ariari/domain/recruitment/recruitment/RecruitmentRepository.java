@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.Recruitment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,15 +1,15 @@
 package com.ariari.ariari.domain.recruitment.apply.temp;
 
+import com.ariari.ariari.commons.entity.ApplyTemp;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.apply.temp.dto.ApplyTempData;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.res.ApplyTempSaveRes;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.exceptions.AlreadyBelongToClubException;
@@ -29,8 +29,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)

@@ -2,9 +2,9 @@ package com.ariari.ariari.commons.validator;
 
 import com.ariari.ariari.commons.exception.exceptions.MaxSizeExceededException;
 import com.ariari.ariari.commons.exception.exceptions.NoSchoolAuthException;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.invite.exception.InvalidSchoolException;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.exception.ClubMemberValidatorException;
 import com.ariari.ariari.domain.club.clubmember.exception.DelegateAdminException;
@@ -13,9 +13,9 @@ import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubExcepti
 import com.ariari.ariari.domain.club.exceptions.NoClubAdminException;
 import com.ariari.ariari.domain.club.exceptions.NoClubManagerException;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.exceptions.ClosedRecruitmentException;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import com.ariari.ariari.domain.school.exceptions.NoProperSchoolAuthException;
 
 import java.util.List;

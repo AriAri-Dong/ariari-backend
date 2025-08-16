@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.event.attendance;
 
 import com.ariari.ariari.commons.manager.RedisManager;
-import com.ariari.ariari.domain.club.event.ClubEvent;
+import com.ariari.ariari.commons.entity.ClubEvent;
 import com.ariari.ariari.domain.club.event.attendance.exception.InvalidAttendanceKeyException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

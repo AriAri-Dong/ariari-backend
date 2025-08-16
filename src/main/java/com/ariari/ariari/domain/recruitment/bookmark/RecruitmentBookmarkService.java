@@ -1,12 +1,12 @@
 package com.ariari.ariari.domain.recruitment.bookmark;
 
+import com.ariari.ariari.commons.entity.RecruitmentBookmark;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.bookmark.exception.AlreadyExistsRecruitmentBookmarkException;
 import lombok.RequiredArgsConstructor;

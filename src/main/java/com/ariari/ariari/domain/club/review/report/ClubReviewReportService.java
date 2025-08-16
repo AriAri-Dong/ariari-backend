@@ -1,10 +1,11 @@
 package com.ariari.ariari.domain.club.review.report;
 
-import com.ariari.ariari.commons.entity.report.dto.ReportReq;
-import com.ariari.ariari.commons.entity.report.enums.LocationType;
+import com.ariari.ariari.commons.commonentity.report.dto.ReportReq;
+import com.ariari.ariari.commons.commonentity.report.enums.LocationType;
+import com.ariari.ariari.commons.entity.ClubReviewReport;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
-import com.ariari.ariari.domain.club.review.ClubReview;
+import com.ariari.ariari.commons.entity.ClubReview;
 import com.ariari.ariari.domain.club.review.repository.ClubReviewRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;

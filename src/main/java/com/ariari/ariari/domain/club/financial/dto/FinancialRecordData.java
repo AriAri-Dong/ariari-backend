@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.financial.dto;
 
-import com.ariari.ariari.domain.club.financial.FinancialRecord;
+import com.ariari.ariari.commons.entity.FinancialRecord;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;

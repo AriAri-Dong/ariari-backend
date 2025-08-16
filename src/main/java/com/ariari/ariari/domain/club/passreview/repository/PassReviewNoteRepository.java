@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.club.passreview.repository;
 
-import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.commons.entity.PassReview;
 import com.ariari.ariari.domain.club.passreview.enums.NoteType;
-import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.commons.entity.PassReviewNote;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

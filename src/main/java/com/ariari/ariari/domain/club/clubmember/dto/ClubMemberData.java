@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.clubmember.dto;
 
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.member.member.dto.MemberData;

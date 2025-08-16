@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply.dto.res;
 
 import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.recruitment.apply.Apply;
+import com.ariari.ariari.commons.entity.Apply;
 import com.ariari.ariari.domain.recruitment.apply.dto.ApplyData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

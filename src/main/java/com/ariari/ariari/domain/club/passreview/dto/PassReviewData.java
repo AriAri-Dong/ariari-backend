@@ -1,15 +1,13 @@
 package com.ariari.ariari.domain.club.passreview.dto;
 
-import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.commons.entity.PassReview;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
 import com.ariari.ariari.domain.club.passreview.enums.NoteType;
-import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.commons.entity.PassReviewNote;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,10 +16,7 @@ import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Data
 @Builder

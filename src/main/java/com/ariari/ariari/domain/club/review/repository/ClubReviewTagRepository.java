@@ -1,10 +1,8 @@
 package com.ariari.ariari.domain.club.review.repository;
 
-import com.ariari.ariari.domain.club.review.ClubReview;
-import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
+import com.ariari.ariari.commons.entity.ClubReview;
+import com.ariari.ariari.commons.entity.ClubReviewTag;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

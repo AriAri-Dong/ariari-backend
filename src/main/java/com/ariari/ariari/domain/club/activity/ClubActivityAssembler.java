@@ -1,12 +1,12 @@
 package com.ariari.ariari.domain.club.activity;
 
-import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
-import com.ariari.ariari.domain.club.activity.comment.like.ClubActivityCommentLike;
+import com.ariari.ariari.commons.entity.ClubActivity;
+import com.ariari.ariari.commons.entity.ClubActivityComment;
 import com.ariari.ariari.domain.club.activity.dto.ClubActivityCommentData;
 import com.ariari.ariari.domain.club.activity.dto.ClubActivityData;
 import com.ariari.ariari.domain.club.activity.dto.ClubActivityImageData;
 import com.ariari.ariari.domain.club.activity.dto.res.ClubActivityDetailRes;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.member.Member;
 
 import java.util.ArrayList;

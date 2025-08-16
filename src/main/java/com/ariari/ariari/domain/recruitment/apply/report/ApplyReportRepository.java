@@ -1,7 +1,8 @@
 package com.ariari.ariari.domain.recruitment.apply.report;
 
+import com.ariari.ariari.commons.entity.ApplyReport;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.apply.Apply;
+import com.ariari.ariari.commons.entity.Apply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

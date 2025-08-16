@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.activity.comment;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.commons.entity.ClubActivity;
+import com.ariari.ariari.commons.entity.ClubActivityComment;
 import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

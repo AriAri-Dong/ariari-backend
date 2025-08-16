@@ -1,15 +1,15 @@
 package com.ariari.ariari.domain.club.faq;
 
+import com.ariari.ariari.commons.entity.ClubFaq;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.faq.dto.req.ClubFaqSaveReq;
 import com.ariari.ariari.domain.club.faq.dto.res.ClubFaqListRes;
-import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;

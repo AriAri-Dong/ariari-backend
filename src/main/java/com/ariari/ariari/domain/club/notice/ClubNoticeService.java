@@ -1,14 +1,14 @@
 package com.ariari.ariari.domain.club.notice;
 
-import com.ariari.ariari.commons.entity.image.ImageRepository;
+import com.ariari.ariari.commons.commonentity.image.ImageRepository;
+import com.ariari.ariari.commons.entity.ClubNotice;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeDetailRes;
@@ -16,7 +16,7 @@ import com.ariari.ariari.domain.club.notice.dto.ClubNoticeListRes;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeModifyReq;
 import com.ariari.ariari.domain.club.notice.dto.ClubNoticeSaveReq;
 import com.ariari.ariari.domain.club.notice.exceptions.TooManyFixedClubNoticeException;
-import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
+import com.ariari.ariari.commons.entity.ClubNoticeImage;
 import com.ariari.ariari.domain.club.notice.image.ClubNoticeImageRepository;
 import com.ariari.ariari.domain.club.notice.image.exception.NotBelongInClubNoticeException;
 import com.ariari.ariari.domain.member.Member;

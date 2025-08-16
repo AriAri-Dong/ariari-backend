@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.club.notice.dto;
 
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
-import com.ariari.ariari.domain.club.notice.ClubNotice;
+import com.ariari.ariari.commons.entity.ClubNotice;
 import com.ariari.ariari.domain.club.notice.image.dto.ClubNoticeImageData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

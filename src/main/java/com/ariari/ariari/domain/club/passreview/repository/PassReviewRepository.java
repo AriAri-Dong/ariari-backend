@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.passreview.repository;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.PassReview;
 import com.ariari.ariari.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

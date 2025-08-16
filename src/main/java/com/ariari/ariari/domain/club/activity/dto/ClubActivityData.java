@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.club.activity.dto;
 
-import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.commons.entity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.member.Member;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -11,13 +11,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor

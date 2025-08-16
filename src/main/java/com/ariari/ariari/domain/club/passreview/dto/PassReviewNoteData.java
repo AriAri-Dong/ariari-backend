@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.club.passreview.dto;
 
-import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
-import com.ariari.ariari.domain.club.passreview.note.QPassReviewNote;
+import com.ariari.ariari.commons.entity.PassReviewNote;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

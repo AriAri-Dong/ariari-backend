@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.club.review.dto;
 
-import com.ariari.ariari.domain.club.review.ClubReview;
-import com.ariari.ariari.domain.member.Member;
+import com.ariari.ariari.commons.entity.ClubReview;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

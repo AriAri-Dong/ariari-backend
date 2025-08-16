@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.club.faq.dto;
 
-import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
-import com.ariari.ariari.domain.club.faq.ClubFaq;
+import com.ariari.ariari.commons.entity.ClubFaq;
 import com.ariari.ariari.domain.club.faq.enums.ClubFaqColorType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

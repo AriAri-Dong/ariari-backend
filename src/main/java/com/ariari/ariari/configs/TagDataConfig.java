@@ -2,7 +2,7 @@ package com.ariari.ariari.configs;
 
 import com.ariari.ariari.domain.club.review.enums.Icon;
 import com.ariari.ariari.domain.club.review.repository.TagRepository;
-import com.ariari.ariari.domain.club.review.tag.Tag;
+import com.ariari.ariari.commons.entity.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

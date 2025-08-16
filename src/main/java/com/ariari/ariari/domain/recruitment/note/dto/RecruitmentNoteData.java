@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.note.dto;
 
-import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
+import com.ariari.ariari.commons.entity.RecruitmentNote;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

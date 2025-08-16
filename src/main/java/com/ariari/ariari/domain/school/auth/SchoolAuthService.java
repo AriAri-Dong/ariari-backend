@@ -2,12 +2,12 @@ package com.ariari.ariari.domain.school.auth;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MailManager;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import com.ariari.ariari.domain.school.auth.exceptions.ClubMemberRoleAdminLockException;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
 import com.ariari.ariari.domain.school.auth.dto.req.SchoolAuthCodeReq;

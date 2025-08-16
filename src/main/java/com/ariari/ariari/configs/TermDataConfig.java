@@ -1,6 +1,6 @@
 package com.ariari.ariari.configs;
 
-import com.ariari.ariari.domain.system.SystemTerm;
+import com.ariari.ariari.commons.entity.SystemTerm;
 import com.ariari.ariari.domain.system.enums.TermType;
 import com.ariari.ariari.domain.system.term.SystemTermRepository;
 import lombok.RequiredArgsConstructor;

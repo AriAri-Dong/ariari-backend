@@ -1,13 +1,11 @@
 package com.ariari.ariari.domain.school.dto;
 
-import com.ariari.ariari.domain.school.QSchool;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

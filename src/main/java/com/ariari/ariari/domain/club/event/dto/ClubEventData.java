@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.club.event.dto;
 
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.dto.ClubMemberData;
-import com.ariari.ariari.domain.club.event.ClubEvent;
+import com.ariari.ariari.commons.entity.ClubEvent;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,10 +1,9 @@
 package com.ariari.ariari.domain.recruitment.apply.temp.dto.req;
 
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
-import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
+import com.ariari.ariari.commons.entity.ApplyTemp;
+import com.ariari.ariari.commons.entity.ApplyAnswerTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.answer.dto.req.ApplyAnswerTempModifyReq;
-import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
-import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.commons.entity.ApplyQuestion;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

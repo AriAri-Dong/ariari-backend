@@ -1,8 +1,7 @@
 package com.ariari.ariari.domain.club.activity.comment.report;
 
 import com.ariari.ariari.commons.auth.springsecurity.CustomUserDetails;
-import com.ariari.ariari.commons.entity.report.dto.ReportReq;
-import com.ariari.ariari.domain.member.member.MemberRepository;
+import com.ariari.ariari.commons.commonentity.report.dto.ReportReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

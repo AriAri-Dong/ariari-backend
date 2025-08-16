@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.question.answer;
 
-import com.ariari.ariari.domain.club.question.ClubQuestion;
+import com.ariari.ariari.commons.entity.ClubAnswer;
+import com.ariari.ariari.commons.entity.ClubQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.school.dto;
 
 import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

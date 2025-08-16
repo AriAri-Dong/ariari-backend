@@ -1,11 +1,7 @@
 package com.ariari.ariari.domain.member.alarm.dto.res;
 
 import com.ariari.ariari.commons.manager.AlarmPageInfo;
-import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.club.financial.FinancialRecord;
-import com.ariari.ariari.domain.club.financial.dto.FinancialRecordData;
-import com.ariari.ariari.domain.club.financial.dto.FinancialRecordListRes;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.commons.entity.MemberAlarm;
 import com.ariari.ariari.domain.member.alarm.dto.MemberAlarmData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -13,7 +9,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 
 @Data
 @Schema(description = "회원 알림 리스트 응답")

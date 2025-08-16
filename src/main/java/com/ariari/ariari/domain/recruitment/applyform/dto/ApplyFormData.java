@@ -1,10 +1,8 @@
 package com.ariari.ariari.domain.recruitment.applyform.dto;
 
-import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
-import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.commons.entity.ApplyForm;
+import com.ariari.ariari.commons.entity.ApplyQuestion;
 import com.ariari.ariari.domain.recruitment.applyform.applyquestion.dto.ApplyQuestionData;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;

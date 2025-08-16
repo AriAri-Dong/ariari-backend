@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.recruitment.applyform;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.ApplyForm;
+import com.ariari.ariari.commons.entity.Club;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 

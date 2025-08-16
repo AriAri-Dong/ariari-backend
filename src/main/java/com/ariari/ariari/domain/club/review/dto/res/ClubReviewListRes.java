@@ -1,9 +1,7 @@
 package com.ariari.ariari.domain.club.review.dto.res;
 
 import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewListRes;
-import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewRes;
-import com.ariari.ariari.domain.club.review.ClubReview;
+import com.ariari.ariari.commons.entity.ClubReview;
 import com.ariari.ariari.domain.club.review.dto.ClubReviewData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

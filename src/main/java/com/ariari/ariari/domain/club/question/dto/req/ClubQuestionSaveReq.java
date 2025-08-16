@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.question.dto.req;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.question.ClubQuestion;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubQuestion;
 import com.ariari.ariari.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

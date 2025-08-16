@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.system.notice;
 
-import com.ariari.ariari.domain.system.SystemNotice;
+import com.ariari.ariari.commons.entity.SystemNotice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

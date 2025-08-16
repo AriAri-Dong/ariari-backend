@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.activity.dto.req;
 
-import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.commons.entity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.enums.AccessType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

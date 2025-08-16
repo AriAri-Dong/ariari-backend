@@ -1,8 +1,8 @@
 package com.ariari.ariari.domain.recruitment.applyform.dto.req;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
-import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ApplyForm;
+import com.ariari.ariari.commons.entity.ApplyQuestion;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

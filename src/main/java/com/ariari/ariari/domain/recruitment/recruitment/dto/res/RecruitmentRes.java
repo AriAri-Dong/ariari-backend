@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment.recruitment.dto.res;
 
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import lombok.AllArgsConstructor;
 import lombok.Data;

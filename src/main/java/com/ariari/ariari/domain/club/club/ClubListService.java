@@ -2,8 +2,8 @@ package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.activity.ClubActivity;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubActivity;
 import com.ariari.ariari.domain.club.activity.ClubActivityRepository;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.MyClubData;
@@ -11,16 +11,14 @@ import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.dto.res.MyClubListRes;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
-import com.ariari.ariari.domain.club.event.ClubEvent;
-import com.ariari.ariari.domain.club.event.ClubEventRepository;
-import com.ariari.ariari.domain.club.notice.ClubNotice;
+import com.ariari.ariari.commons.entity.ClubNotice;
 import com.ariari.ariari.domain.club.notice.ClubNoticeRepository;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)

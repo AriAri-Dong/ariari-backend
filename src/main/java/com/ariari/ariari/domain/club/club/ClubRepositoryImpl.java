@@ -1,17 +1,15 @@
 package com.ariari.ariari.domain.club.club;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.QRecruitment;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;

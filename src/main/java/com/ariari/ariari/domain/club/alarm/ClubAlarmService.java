@@ -1,13 +1,14 @@
 package com.ariari.ariari.domain.club.alarm;
 
+import com.ariari.ariari.commons.entity.ClubAlarm;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.alarm.dto.res.ClubAlarmListRes;
 import com.ariari.ariari.domain.club.alarm.event.ClubAlarmEvent;
 import com.ariari.ariari.domain.club.alarm.event.ClubAlarmEventList;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;

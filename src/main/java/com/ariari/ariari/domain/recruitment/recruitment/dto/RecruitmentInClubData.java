@@ -1,11 +1,11 @@
 package com.ariari.ariari.domain.recruitment.recruitment.dto;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.enums.ClubAffiliationType;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.RecruitmentStatusType;

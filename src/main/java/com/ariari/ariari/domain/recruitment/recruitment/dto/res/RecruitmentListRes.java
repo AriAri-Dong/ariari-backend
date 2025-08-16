@@ -2,8 +2,8 @@ package com.ariari.ariari.domain.recruitment.recruitment.dto.res;
 
 import com.ariari.ariari.commons.manager.PageInfo;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmark;
+import com.ariari.ariari.commons.entity.Recruitment;
+import com.ariari.ariari.commons.entity.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentInClubData;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.apply.dto;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.alarm.event.ClubAlarmEvent;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package com.ariari.ariari.commons.manager;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.alarm.event.ClubAlarmEvent;
 import com.ariari.ariari.domain.club.alarm.event.ClubAlarmEventList;
 import com.ariari.ariari.domain.member.Member;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

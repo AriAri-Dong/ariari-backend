@@ -1,5 +1,5 @@
 package com.ariari.ariari.configs;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import com.ariari.ariari.domain.school.school.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

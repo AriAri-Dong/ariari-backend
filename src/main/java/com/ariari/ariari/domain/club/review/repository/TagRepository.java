@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.club.review.repository;
 
 import com.ariari.ariari.domain.club.review.enums.Icon;
 import com.ariari.ariari.domain.club.review.enums.IconType;
-import com.ariari.ariari.domain.club.review.tag.Tag;
+import com.ariari.ariari.commons.entity.Tag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

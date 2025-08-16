@@ -1,12 +1,13 @@
 package com.ariari.ariari.domain.recruitment.report;
 
-import com.ariari.ariari.commons.entity.report.dto.ReportReq;
-import com.ariari.ariari.commons.entity.report.enums.LocationType;
+import com.ariari.ariari.commons.commonentity.report.dto.ReportReq;
+import com.ariari.ariari.commons.commonentity.report.enums.LocationType;
+import com.ariari.ariari.commons.entity.RecruitmentReport;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

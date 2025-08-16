@@ -1,19 +1,20 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
+import com.ariari.ariari.commons.entity.Apply;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.exception.ExistingClubMemberException;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.dto.ApplyInfo;
 import com.ariari.ariari.domain.recruitment.recruitment.RecruitmentRepository;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.ApplySaveReq;

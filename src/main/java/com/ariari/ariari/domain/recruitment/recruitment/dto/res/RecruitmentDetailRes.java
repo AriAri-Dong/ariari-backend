@@ -2,7 +2,7 @@ package com.ariari.ariari.domain.recruitment.recruitment.dto.res;
 
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.applyform.dto.ApplyFormData;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteData;

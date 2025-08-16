@@ -5,8 +5,8 @@ import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.bookmark.ClubBookmark;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.club.dto.res.ClubListRes;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
@@ -15,14 +15,14 @@ import com.ariari.ariari.domain.club.club.dto.res.ClubDetailRes;
 import com.ariari.ariari.domain.club.club.dto.req.ClubModifyReq;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSaveReq;
 import com.ariari.ariari.domain.club.club.enums.ClubAffiliationType;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.exceptions.RemovingClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.commons.entity.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
-import com.ariari.ariari.domain.school.School;
+import com.ariari.ariari.commons.entity.School;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Transactional(readOnly = true)

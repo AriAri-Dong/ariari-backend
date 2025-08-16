@@ -1,7 +1,7 @@
 package com.ariari.ariari.configs;
 
-import com.ariari.ariari.domain.system.SystemNotice;
-import com.ariari.ariari.domain.system.faq.SystemFaq;
+import com.ariari.ariari.commons.entity.SystemNotice;
+import com.ariari.ariari.commons.entity.SystemFaq;
 import com.ariari.ariari.domain.system.faq.SystemFaqRepository;
 import com.ariari.ariari.domain.system.faq.enums.SystemFaqStatusType;
 import com.ariari.ariari.domain.system.notice.SystemNoticeRepository;

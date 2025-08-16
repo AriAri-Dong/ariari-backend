@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.recruitment.applyform.dto.res;
 
-import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.commons.entity.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.dto.ApplyFormData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

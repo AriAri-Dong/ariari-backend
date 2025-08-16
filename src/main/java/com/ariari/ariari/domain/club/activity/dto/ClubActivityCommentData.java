@@ -1,8 +1,7 @@
 package com.ariari.ariari.domain.club.activity.dto;
 
-import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
-import com.ariari.ariari.domain.club.activity.comment.QClubActivityComment;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubActivityComment;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.enums.ProfileType;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -14,8 +13,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Data
 @NoArgsConstructor

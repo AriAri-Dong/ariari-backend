@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.system.faq;
 
+import com.ariari.ariari.commons.entity.SystemFaq;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;

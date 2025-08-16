@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.clubmember.dto.req;
 
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

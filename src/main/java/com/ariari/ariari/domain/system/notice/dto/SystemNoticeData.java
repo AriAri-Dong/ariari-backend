@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.system.notice.dto;
 
-import com.ariari.ariari.domain.system.SystemNotice;
+import com.ariari.ariari.commons.entity.SystemNotice;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;

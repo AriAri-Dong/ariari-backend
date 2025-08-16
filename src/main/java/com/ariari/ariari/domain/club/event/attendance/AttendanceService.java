@@ -1,13 +1,14 @@
 package com.ariari.ariari.domain.club.event.attendance;
 
+import com.ariari.ariari.commons.entity.Attendance;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.dto.res.ClubMemberListRes;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
-import com.ariari.ariari.domain.club.event.ClubEvent;
+import com.ariari.ariari.commons.entity.ClubEvent;
 import com.ariari.ariari.domain.club.event.ClubEventRepository;
 import com.ariari.ariari.domain.club.event.attendance.exception.ExistingAttendanceException;
 import com.ariari.ariari.domain.member.Member;

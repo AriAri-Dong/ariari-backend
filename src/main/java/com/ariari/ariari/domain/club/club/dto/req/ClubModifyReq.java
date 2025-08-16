@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.club.dto.req;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

@@ -1,9 +1,8 @@
 package com.ariari.ariari.domain.club.alarm;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
+import com.ariari.ariari.commons.entity.ClubAlarm;
+import com.ariari.ariari.commons.entity.Club;
 import io.lettuce.core.dynamic.annotation.Param;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

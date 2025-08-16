@@ -1,11 +1,9 @@
 package com.ariari.ariari.domain.club.review.dto.req;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
-import com.ariari.ariari.domain.club.review.ClubReview;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubReview;
 import com.ariari.ariari.domain.club.review.enums.Icon;
-import com.ariari.ariari.domain.club.review.reviewtag.ClubReviewTag;
-import com.ariari.ariari.domain.club.review.tag.Tag;
+import com.ariari.ariari.commons.entity.ClubReviewTag;
 import com.ariari.ariari.domain.member.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

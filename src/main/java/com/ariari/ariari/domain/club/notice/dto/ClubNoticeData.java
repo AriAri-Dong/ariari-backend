@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.notice.dto;
 
-import com.ariari.ariari.domain.club.notice.ClubNotice;
-import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
+import com.ariari.ariari.commons.entity.ClubNotice;
+import com.ariari.ariari.commons.entity.ClubNoticeImage;
 import com.ariari.ariari.domain.club.notice.image.dto.ClubNoticeImageData;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;

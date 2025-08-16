@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.financial.dto;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.financial.FinancialRecord;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.FinancialRecord;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

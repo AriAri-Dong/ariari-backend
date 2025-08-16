@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.club.financial;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.FinancialRecord;
+import com.ariari.ariari.commons.entity.Club;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

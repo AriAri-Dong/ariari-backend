@@ -1,10 +1,10 @@
 package com.ariari.ariari.domain.recruitment.recruitment.dto.req;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.recruitment.Recruitment;
-import com.ariari.ariari.domain.recruitment.applyform.ApplyForm;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.Recruitment;
+import com.ariari.ariari.commons.entity.ApplyForm;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;
-import com.ariari.ariari.domain.recruitment.note.RecruitmentNote;
+import com.ariari.ariari.commons.entity.RecruitmentNote;
 import com.ariari.ariari.domain.recruitment.note.dto.RecruitmentNoteSaveReq;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

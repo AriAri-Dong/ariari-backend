@@ -1,11 +1,10 @@
 package com.ariari.ariari.domain.club.passreview.dto.req;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
-import com.ariari.ariari.domain.club.passreview.PassReview;
+import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.PassReview;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewRatioType;
 import com.ariari.ariari.domain.club.passreview.enums.InterviewType;
-import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.commons.entity.PassReviewNote;
 import com.ariari.ariari.domain.club.passreview.note.dto.req.PassReviewNoteReq;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.recruitment.enums.ProcedureType;

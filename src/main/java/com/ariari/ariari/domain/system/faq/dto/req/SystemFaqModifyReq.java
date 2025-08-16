@@ -1,7 +1,6 @@
 package com.ariari.ariari.domain.system.faq.dto.req;
 
-import com.ariari.ariari.domain.system.SystemNotice;
-import com.ariari.ariari.domain.system.faq.SystemFaq;
+import com.ariari.ariari.commons.entity.SystemFaq;
 import com.ariari.ariari.domain.system.faq.enums.SystemFaqStatusType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

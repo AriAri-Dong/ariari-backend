@@ -1,8 +1,9 @@
 package com.ariari.ariari.domain.club.passreview;
 
+import com.ariari.ariari.commons.entity.PassReview;
 import com.ariari.ariari.commons.exception.exceptions.DuplicateDataCreateException;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.ClubRepository;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.passreview.dto.PassReviewData;
@@ -12,7 +13,7 @@ import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewListRes;
 import com.ariari.ariari.domain.club.passreview.dto.res.PassReviewRes;
 import com.ariari.ariari.domain.club.passreview.enums.NoteType;
 import com.ariari.ariari.domain.club.passreview.mapper.PassReviewMapper;
-import com.ariari.ariari.domain.club.passreview.note.PassReviewNote;
+import com.ariari.ariari.commons.entity.PassReviewNote;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewNoteRepository;
 import com.ariari.ariari.domain.club.passreview.repository.PassReviewRepository;
 import com.ariari.ariari.domain.member.Member;

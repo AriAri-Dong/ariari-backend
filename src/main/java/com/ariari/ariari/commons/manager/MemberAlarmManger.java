@@ -1,26 +1,17 @@
 package com.ariari.ariari.commons.manager;
 
-import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.dto.AlarmContent;
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
-import com.ariari.ariari.domain.club.question.ClubQuestion;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
-import com.ariari.ariari.domain.member.alarm.MemberAlarmRepository;
-import com.ariari.ariari.domain.member.alarm.dto.res.MemberAlarmListRes;
-import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEventList;
 import com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

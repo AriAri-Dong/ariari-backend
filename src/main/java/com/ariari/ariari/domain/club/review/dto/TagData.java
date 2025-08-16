@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.review.dto;
 
 import com.ariari.ariari.domain.club.review.enums.Icon;
-import com.ariari.ariari.domain.club.review.tag.Tag;
+import com.ariari.ariari.commons.entity.Tag;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

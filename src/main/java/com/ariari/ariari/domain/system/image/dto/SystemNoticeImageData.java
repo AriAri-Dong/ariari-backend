@@ -1,8 +1,6 @@
 package com.ariari.ariari.domain.system.image.dto;
 
-import com.ariari.ariari.domain.club.notice.image.ClubNoticeImage;
-import com.ariari.ariari.domain.club.notice.image.dto.ClubNoticeImageData;
-import com.ariari.ariari.domain.system.image.SystemNoticeImage;
+import com.ariari.ariari.commons.entity.SystemNoticeImage;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.recruitment.apply.temp.dto.res;
 
 import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
+import com.ariari.ariari.commons.entity.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.ApplyTempData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

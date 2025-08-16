@@ -1,9 +1,9 @@
 package com.ariari.ariari.domain.club.activity;
 
-import com.ariari.ariari.domain.club.activity.comment.ClubActivityComment;
-import com.ariari.ariari.domain.club.activity.comment.like.ClubActivityCommentLike;
+import com.ariari.ariari.commons.entity.ClubActivityComment;
+import com.ariari.ariari.commons.entity.ClubActivityCommentLike;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.block.Block;
+import com.ariari.ariari.commons.entity.Block;
 
 import java.util.*;
 

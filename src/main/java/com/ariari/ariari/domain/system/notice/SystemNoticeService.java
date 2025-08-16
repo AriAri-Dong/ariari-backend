@@ -1,18 +1,18 @@
 package com.ariari.ariari.domain.system.notice;
 
-import com.ariari.ariari.commons.entity.image.ImageRepository;
+import com.ariari.ariari.commons.commonentity.image.ImageRepository;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.domain.club.notice.image.exception.NotBelongInClubNoticeException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.domain.system.SystemNotice;
+import com.ariari.ariari.commons.entity.SystemNotice;
 import com.ariari.ariari.domain.system.notice.dto.req.SystemNoticeModifyReq;
 import com.ariari.ariari.domain.system.notice.dto.req.SystemNoticeSaveReq;
 import com.ariari.ariari.domain.system.notice.dto.res.SystemNoticeDetailRes;
 import com.ariari.ariari.domain.system.notice.dto.res.SystemNoticeListRes;
-import com.ariari.ariari.domain.system.image.SystemNoticeImage;
+import com.ariari.ariari.commons.entity.SystemNoticeImage;
 import com.ariari.ariari.domain.system.image.SystemNoticeImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

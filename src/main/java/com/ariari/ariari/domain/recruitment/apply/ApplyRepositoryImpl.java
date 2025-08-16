@@ -1,10 +1,10 @@
 package com.ariari.ariari.domain.recruitment.apply;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Apply;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.AppliesInClubSearchCondition;
 import com.ariari.ariari.domain.recruitment.apply.dto.req.MyAppliesSearchCondition;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

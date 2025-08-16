@@ -1,6 +1,7 @@
 package com.ariari.ariari.domain.member.report;
 
-import com.ariari.ariari.commons.entity.report.dto.ReportReq;
+import com.ariari.ariari.commons.commonentity.report.dto.ReportReq;
+import com.ariari.ariari.commons.entity.MemberReport;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.exception.exceptions.ReportExistsException;
 import com.ariari.ariari.domain.member.Member;

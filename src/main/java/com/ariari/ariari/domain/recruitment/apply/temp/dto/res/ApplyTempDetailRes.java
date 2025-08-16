@@ -1,14 +1,13 @@
 package com.ariari.ariari.domain.recruitment.apply.temp.dto.res;
 
-import com.ariari.ariari.domain.club.Club;
+import com.ariari.ariari.commons.entity.Club;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
-import com.ariari.ariari.domain.recruitment.Recruitment;
+import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.dto.SpecialAnswerList;
-import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTemp;
-import com.ariari.ariari.domain.recruitment.apply.temp.answer.ApplyAnswerTemp;
+import com.ariari.ariari.commons.entity.ApplyTemp;
+import com.ariari.ariari.commons.entity.ApplyAnswerTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.answer.dto.ApplyAnswerTempData;
 import com.ariari.ariari.domain.recruitment.apply.temp.dto.ApplyTempData;
-import com.ariari.ariari.domain.recruitment.applyform.dto.SpecialQuestionList;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.RecruitmentData;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

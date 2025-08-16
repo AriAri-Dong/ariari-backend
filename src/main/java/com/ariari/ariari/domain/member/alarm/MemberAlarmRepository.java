@@ -1,12 +1,12 @@
 package com.ariari.ariari.domain.member.alarm;
 
+import com.ariari.ariari.commons.entity.MemberAlarm;
 import com.ariari.ariari.domain.member.Member;
 
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 

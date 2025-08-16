@@ -1,21 +1,20 @@
 package com.ariari.ariari.domain.club.question.answer;
 
+import com.ariari.ariari.commons.entity.ClubAnswer;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.domain.club.clubmember.ClubMember;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
-import com.ariari.ariari.domain.club.question.ClubQuestion;
+import com.ariari.ariari.commons.entity.ClubQuestion;
 import com.ariari.ariari.domain.club.question.ClubQuestionRepository;
 import com.ariari.ariari.domain.club.question.answer.dto.req.ClubAnswerSaveReq;
 import com.ariari.ariari.domain.club.question.answer.exception.ExistingClubAnswerException;
 import com.ariari.ariari.domain.club.question.answer.exception.NoClubAnswerException;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.domain.member.alarm.event.MemberAlarmEvent;
 import com.ariari.ariari.domain.member.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

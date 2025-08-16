@@ -1,6 +1,6 @@
 package com.ariari.ariari.domain.club.activity.dto;
 
-import com.ariari.ariari.domain.club.activity.image.ClubActivityImage;
+import com.ariari.ariari.commons.entity.ClubActivityImage;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -8,12 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
-import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor

@@ -1,12 +1,10 @@
 package com.ariari.ariari.domain.club.financial;
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.QClub;
+import com.ariari.ariari.commons.entity.Club;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.ariari.ariari.domain.club.QClub.club;
 import static com.ariari.ariari.domain.club.financial.QFinancialRecord.financialRecord;

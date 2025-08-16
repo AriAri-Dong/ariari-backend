@@ -1,11 +1,9 @@
 package com.ariari.ariari.domain.member.alarm.dto;
 
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
-import com.ariari.ariari.domain.member.alarm.enums.MemberAlarmType;
+import com.ariari.ariari.commons.entity.MemberAlarm;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 

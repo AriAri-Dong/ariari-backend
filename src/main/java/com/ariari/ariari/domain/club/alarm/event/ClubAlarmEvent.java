@@ -1,8 +1,7 @@
 package com.ariari.ariari.domain.club.alarm.event;
 
 
-import com.ariari.ariari.domain.club.Club;
-import com.ariari.ariari.domain.club.alarm.enums.ClubAlarmType;
+import com.ariari.ariari.commons.entity.Club;
 
 import lombok.Getter;
 

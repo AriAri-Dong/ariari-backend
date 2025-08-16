@@ -1,14 +1,12 @@
 package com.ariari.ariari.domain.recruitment.apply.answer.dto.req;
 
 import com.ariari.ariari.commons.serializer.StringToLongDeserializer;
-import com.ariari.ariari.domain.recruitment.apply.Apply;
-import com.ariari.ariari.domain.recruitment.apply.answer.ApplyAnswer;
-import com.ariari.ariari.domain.recruitment.applyform.applyquestion.ApplyQuestion;
+import com.ariari.ariari.commons.entity.ApplyAnswer;
+import com.ariari.ariari.commons.entity.ApplyQuestion;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data

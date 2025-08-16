@@ -1,10 +1,8 @@
 package com.ariari.ariari.domain.club.alarm.dto.res;
 
 import com.ariari.ariari.commons.manager.AlarmPageInfo;
-import com.ariari.ariari.commons.manager.PageInfo;
-import com.ariari.ariari.domain.club.alarm.ClubAlarm;
+import com.ariari.ariari.commons.entity.ClubAlarm;
 import com.ariari.ariari.domain.club.alarm.dto.ClubAlarmData;
-import com.ariari.ariari.domain.member.alarm.MemberAlarm;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.data.domain.Page;
