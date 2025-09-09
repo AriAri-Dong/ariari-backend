@@ -1,7 +1,7 @@
 package com.ariari.ariari.domain.club.clubmember;
 
-import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberRoleType;
 import com.ariari.ariari.domain.club.clubmember.enums.ClubMemberStatusType;
 import com.ariari.ariari.domain.member.Member;
@@ -19,7 +19,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-import static com.ariari.ariari.domain.club.clubmember.QClubMember.clubMember;
+import static com.ariari.ariari.commons.entity.QClubMember.clubMember;
 
 @RequiredArgsConstructor
 public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {

@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ariari.ariari.domain.recruitment.apply.QApply.*;
+import static com.ariari.ariari.commons.entity.QApply.apply;
 import static com.ariari.ariari.domain.recruitment.apply.enums.ApplyStatusType.*;
 
 @RequiredArgsConstructor

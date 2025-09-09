@@ -9,7 +9,7 @@ import lombok.Data;
 
 import java.util.List;
 
-import static com.ariari.ariari.domain.school.QSchool.school;
+import static com.ariari.ariari.commons.entity.QSchool.school;
 
 @Data
 @AllArgsConstructor

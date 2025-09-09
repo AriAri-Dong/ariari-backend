@@ -1,12 +1,12 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
 import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.Recruitment;
+import com.ariari.ariari.commons.entity.School;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
-import com.ariari.ariari.commons.entity.Recruitment;
-import com.ariari.ariari.commons.entity.School;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,8 +23,8 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ariari.ariari.domain.club.QClub.club;
-import static com.ariari.ariari.domain.recruitment.QRecruitment.recruitment;
+import static com.ariari.ariari.commons.entity.QClub.club;
+import static com.ariari.ariari.commons.entity.QRecruitment.recruitment;
 
 @Slf4j
 @RequiredArgsConstructor

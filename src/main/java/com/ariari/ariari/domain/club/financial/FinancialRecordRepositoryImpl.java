@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.ariari.ariari.domain.club.QClub.club;
-import static com.ariari.ariari.domain.club.financial.QFinancialRecord.financialRecord;
+import static com.ariari.ariari.commons.entity.QClub.club;
+import static com.ariari.ariari.commons.entity.QFinancialRecord.financialRecord;
 
 
 @RequiredArgsConstructor

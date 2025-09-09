@@ -1,13 +1,13 @@
 package com.ariari.ariari.domain.club.club;
 
 import com.ariari.ariari.commons.entity.Club;
+import com.ariari.ariari.commons.entity.School;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.club.club.dto.req.ClubSearchCondition;
 import com.ariari.ariari.domain.club.club.enums.ClubCategoryType;
 import com.ariari.ariari.domain.club.club.enums.ClubRegionType;
 import com.ariari.ariari.domain.club.club.enums.ParticipantType;
 import com.ariari.ariari.domain.member.Member;
-import com.ariari.ariari.commons.entity.School;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,10 +23,10 @@ import org.springframework.data.domain.Sort;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ariari.ariari.domain.club.QClub.*;
-import static com.ariari.ariari.domain.club.bookmark.QClubBookmark.*;
-import static com.ariari.ariari.domain.recruitment.QRecruitment.recruitment;
-import static com.ariari.ariari.domain.school.QSchool.school;
+import static com.ariari.ariari.commons.entity.QClub.club;
+import static com.ariari.ariari.commons.entity.QClubBookmark.clubBookmark;
+import static com.ariari.ariari.commons.entity.QRecruitment.recruitment;
+import static com.ariari.ariari.commons.entity.QSchool.school;
 
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom {
