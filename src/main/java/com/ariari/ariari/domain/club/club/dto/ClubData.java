@@ -57,6 +57,11 @@ public class ClubData {
         return fromEntity(club, myBookmarkClubs, reqMember);
     }
 
+    public static ClubData fromEntity(School school, Club club, Member reqMember) {
+        Set<Club> myBookmarkClubs = getMyBookmarkClubs(reqMember);
+        return fromEntity(school, club, myBookmarkClubs, reqMember);
+    }
+
     public static ClubData fromEntity(Club club, School school, Member reqMember) {
         Set<Club> myBookmarkClubs = getMyBookmarkClubs(reqMember);
         return fromEntity(club, school, myBookmarkClubs);
@@ -74,6 +79,25 @@ public class ClubData {
     }
 
     private static ClubData fromEntity(Club club, Set<Club> myBookmarkClubs, Member reqMember) {
+        SchoolData schoolData = null;
+        if (reqMember != null && reqMember.getSchool() != null) {
+            schoolData = SchoolData.fromEntity(reqMember.getSchool());
+        }
+        return new ClubData(
+                club.getId(),
+                club.getName(),
+                club.getProfileUri(),
+                club.getBody(),
+                club.getBannerUri(),
+                club.getClubCategoryType(),
+                club.getClubRegionType(),
+                club.getParticipantType(),
+                schoolData,
+                myBookmarkClubs.contains(club)
+        );
+    }
+
+    private static ClubData fromEntity(School school, Club club, Set<Club> myBookmarkClubs, Member reqMember) {
         SchoolData schoolData = null;
         if (reqMember != null && reqMember.getSchool() != null) {
             schoolData = SchoolData.fromEntity(reqMember.getSchool());

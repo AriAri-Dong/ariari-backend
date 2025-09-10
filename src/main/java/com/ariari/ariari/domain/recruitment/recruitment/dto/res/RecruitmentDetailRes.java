@@ -1,5 +1,6 @@
 package com.ariari.ariari.domain.recruitment.recruitment.dto.res;
 
+import com.ariari.ariari.commons.entity.School;
 import com.ariari.ariari.domain.club.club.dto.ClubData;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.commons.entity.Recruitment;
@@ -41,6 +42,19 @@ public class RecruitmentDetailRes {
                 RecruitmentData.fromEntity(recruitment, reqMember),
                 RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes()),
                 ClubData.fromEntity(recruitment.getClub(), reqMember),
+                ApplyFormData.fromEntity(recruitment.getApplyForm()),
+                bookmarks,
+                isMyClub,
+                isMyApply,
+                myRecentApplyTempId
+        );
+    }
+
+    public static RecruitmentDetailRes fromEntity(School school,  Recruitment recruitment, Integer bookmarks, Member reqMember, Boolean isMyClub, Boolean isMyApply, Long myRecentApplyTempId) {
+        return new RecruitmentDetailRes(
+                RecruitmentData.fromEntity(recruitment, reqMember),
+                RecruitmentNoteData.fromEntities(recruitment.getRecruitmentNotes()),
+                ClubData.fromEntity(school, recruitment.getClub(), reqMember),
                 ApplyFormData.fromEntity(recruitment.getApplyForm()),
                 bookmarks,
                 isMyClub,
