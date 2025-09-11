@@ -99,8 +99,8 @@ public class ClubData {
 
     private static ClubData fromEntity(School school, Club club, Set<Club> myBookmarkClubs, Member reqMember) {
         SchoolData schoolData = null;
-        if (reqMember != null && reqMember.getSchool() != null) {
-            schoolData = SchoolData.fromEntity(reqMember.getSchool());
+        if (school != null) {
+            schoolData = SchoolData.fromEntity(school);
         }
         return new ClubData(
                 club.getId(),

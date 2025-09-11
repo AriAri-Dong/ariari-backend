@@ -1,36 +1,28 @@
 package com.ariari.ariari.domain.recruitment.recruitment;
 
+import com.ariari.ariari.commons.entity.*;
 import com.ariari.ariari.commons.exception.exceptions.NotFoundEntityException;
 import com.ariari.ariari.commons.manager.ClubAlarmManger;
 import com.ariari.ariari.commons.manager.MemberAlarmManger;
 import com.ariari.ariari.commons.manager.file.FileManager;
 import com.ariari.ariari.commons.manager.views.ViewsManager;
 import com.ariari.ariari.commons.validator.GlobalValidator;
-import com.ariari.ariari.commons.entity.Club;
-import com.ariari.ariari.commons.entity.ClubBookmark;
 import com.ariari.ariari.domain.club.bookmark.ClubBookmarkRepository;
 import com.ariari.ariari.domain.club.club.ClubRepository;
-import com.ariari.ariari.commons.entity.ClubMember;
 import com.ariari.ariari.domain.club.clubmember.ClubMemberRepository;
 import com.ariari.ariari.domain.club.clubmember.exception.NotBelongInClubException;
 import com.ariari.ariari.domain.member.Member;
 import com.ariari.ariari.domain.member.member.MemberRepository;
-import com.ariari.ariari.commons.entity.Recruitment;
 import com.ariari.ariari.domain.recruitment.apply.ApplyRepository;
-import com.ariari.ariari.commons.entity.ApplyTemp;
 import com.ariari.ariari.domain.recruitment.apply.temp.ApplyTempRepository;
-import com.ariari.ariari.commons.entity.ApplyForm;
 import com.ariari.ariari.domain.recruitment.applyform.ApplyFormRepository;
 import com.ariari.ariari.domain.recruitment.applyform.exception.NoApplyFormException;
-import com.ariari.ariari.commons.entity.RecruitmentBookmark;
 import com.ariari.ariari.domain.recruitment.bookmark.RecruitmentBookmarkRepository;
-import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
-import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentDetailRes;
 import com.ariari.ariari.domain.recruitment.exception.ExistsDuplicatePeriodRecruitment;
 import com.ariari.ariari.domain.recruitment.exception.StartAfterEndException;
-import com.ariari.ariari.commons.entity.RecruitmentNote;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.req.RecruitmentSaveReq;
+import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentDetailRes;
 import com.ariari.ariari.domain.recruitment.recruitment.dto.res.RecruitmentRes;
-import com.ariari.ariari.commons.entity.School;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -40,7 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -96,7 +90,7 @@ public class RecruitmentService {
             }
         }
 
-        return RecruitmentDetailRes.fromEntity(recruitment, bookmarks, reqMember, isMyCLub, isMyApply, myRecentApplyTempId);
+        return RecruitmentDetailRes.fromEntity(school, recruitment, bookmarks, reqMember, isMyCLub, isMyApply, myRecentApplyTempId);
     }
 
     @Transactional
