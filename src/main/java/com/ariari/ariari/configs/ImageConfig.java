@@ -1,0 +1,18 @@
+package com.ariari.ariari.configs;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.beans.factory.annotation.Value;
+
+@Configuration
+public class ImageConfig implements WebMvcConfigurer{
+
+    @Value("${file.upload.path:uploads}")
+    private String uploadPath;
+
+    @Override public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/files/**") .addResourceLocations("file:" + uploadPath + "/");
+    }
+}
+

@@ -76,10 +76,8 @@ public class SpringSecurityConfig {
             "/v3/api-docs/**",
             "/manifest.json",
 
-
-            // 운영에선 안슴
-            // "/s3/**"
-            // "/mail/**"
+            // file 경로
+            "/files/**"
     };
 
     @Bean

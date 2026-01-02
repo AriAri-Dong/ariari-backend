@@ -18,7 +18,8 @@ public class CorsConfig {
                         .allowedOrigins("http://localhost:3000", "https://main.d2ux83pqp6klo1.amplifyapp.com/",
                                 "https://release.d2ux83pqp6klo1.amplifyapp.com", "https://www.ariari.kr",
                                 "https://ariari.kr", "http://localhost:3000", "http://localhost:3001",
-                                "https://admin.ariari.kr:8484")  // 3000번 허용
+                                "https://admin.ariari.kr:8484",
+                                "https://ariari-api.winterholic.net", "http://localhost:9002")  // 3000번 허용
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);  // 모든 헤더 허용
