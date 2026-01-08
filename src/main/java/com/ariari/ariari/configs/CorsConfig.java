@@ -15,11 +15,9 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "https://main.d2ux83pqp6klo1.amplifyapp.com/",
-                                "https://release.d2ux83pqp6klo1.amplifyapp.com", "https://www.ariari.kr",
-                                "https://ariari.kr", "http://localhost:3000", "http://localhost:3001",
-                                "https://admin.ariari.kr:8484",
-                                "https://ariari-api.winterholic.net", "http://localhost:9002")  // 3000번 허용
+                        .allowedOrigins("https://ariari.space/", "https://ariari.kr/",
+                                "https://ariari.vercel.app/",
+                                "https://ariari-api.winterholic.net")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);  // 모든 헤더 허용

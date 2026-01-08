@@ -48,7 +48,7 @@ public class ClubActivityAssembler {
                         childCommentCreatorClubMember = clubMemberMap.get(childCommentCreatorMember);
                     }
 
-                    ClubActivityCommentData childClubActivityCommentData = ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorClubMember, childCommentCreatorMember,
+                    ClubActivityCommentData childClubActivityCommentData =ClubActivityCommentData.fromEntity(childClubActivityComment, childCommentCreatorClubMember, childCommentCreatorMember,
                             clubActivityLikeCountMap.get(childClubActivityComment), false, false);
                     childClubActivityCommentDataList.add(childClubActivityCommentData);
                 }
